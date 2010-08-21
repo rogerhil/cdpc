@@ -24,7 +24,7 @@ Esse programa é útil durante o desenvolvimento, porém, para a
 produção, o mod_wsgi é a indicação.
 """
 
-from main import create_app
+from cdcp.main import create_app
 
 def main():
     """Chama o método run() da aplicação retornada pela função
