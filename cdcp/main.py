@@ -24,8 +24,8 @@ aplicação pode ser usada pelo executável `cdcp', que chama o método
 
 from flask import Flask, send_from_directory
 from jinja2 import FileSystemLoader
-from app.usuarios import module as usuarios
-import config
+from .app.usuarios import module as usuarios
+from .config import STATIC_DIR, TEMPLATE_DIR
 import os
 
 class WebApp(Flask):
@@ -61,7 +61,7 @@ class WebApp(Flask):
 def create_app():
     """Constroi a aplicação flask e registra outros modulos nela.
     """
-    app = WebApp(__name__, media_path=config.STATIC_DIR)
-    app.jinja_env.loader = FileSystemLoader(config.TEMPLATE_DIR)
+    app = WebApp(__name__, media_path=STATIC_DIR)
+    app.jinja_env.loader = FileSystemLoader(TEMPLATE_DIR)
     app.register_module(usuarios, url_prefix="/usuarios/")
     return app
