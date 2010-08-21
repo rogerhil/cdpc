@@ -15,19 +15,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Integra todos os modulos flask declarados noutros lugares.
-
-Esses `outros' modulos são registrados numa aplicação flask. Essa nova
-aplicação pode ser usada pelo executável `cdcp', que chama o método
-`.run()' da aplicação ou pelo mod_wsgi no apache.
+"""Contém as visualizações para a gestão de usuários
 """
 
-from flask import Flask
-from app.usuarios import module as usuarios
+from flask import Module, render_template
 
-def create_app():
-    """Constroi a aplicação flask e registra outros modulos nela.
+module = Module(__name__)
+
+@module.route("novo/")
+def novo():
+    """Renderiza o formulário de cadastro de usuários
     """
-    app = Flask(__name__)
-    app.register_module(usuarios, url_prefix="/usuarios/")
-    return app
+    return 'oi'
