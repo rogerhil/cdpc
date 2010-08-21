@@ -18,8 +18,8 @@ ul, ol { list-style:none none; padding:0; }
 li { margin-bottom:0.3em; }
 
 /* Tamanho genérico para campos */
-input[type=text] { min-width:250px; }
-label { display:block; width:140px; float:left; }
+.form input[type=text] { min-width:250px; }
+.form label { display:block; width:140px; float:left; }
 
 /* Estilos para campos específicos do form */
 #papelParticipante {
