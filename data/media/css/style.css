@@ -21,6 +21,7 @@ p { margin:8px 0;}
 
 /* Generic classes */
 .definedWidth { width:960px; margin:0 auto; }
+.displayNone { display:none; }
 .clear { clear:both; }
 
 /* Top */
@@ -49,12 +50,13 @@ h3 { color:#5dad14; margin:10px 0; }
 /* forms */
 input, select, textarea {
     border:solid 1px #d2d2d2;
-    border-radius:3px; -moz-border-radius:3px; }
+    border-radius:3px; -moz-border-radius:3px;
+    font-size:10pt; }
 
 /* footer */
 #footer { background:#adadad; margin-top:30px; padding:10px 0; }
 #footer h2 { color:#000; }
 #footer .softwareLivre { width:400px; }
 #footer pre {
-    display:block; padding:2px; margin:2px; 0; border:dotted 1px gray;
+    display:block; padding:2px; margin:2px 0; border:dotted 1px gray;
     background:#ccc; }
