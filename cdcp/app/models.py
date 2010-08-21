@@ -24,20 +24,28 @@ from elixir import metadata, setup_all, Entity, Field, Unicode, \
 from ..config import DATABASE_URI
 
 class Telefone(Entity):
+    """Wrapper para a entidade telefone no banco de dados
+    """
     numero = Field(Unicode(32))
     pessoas = ManyToMany('Pessoa')
 
 class RedeSocial(Entity):
+    """Wrapper para a entidade redesocial no banco de dados
+    """
     nome = Field(Unicode(128))
     link = Field(Unicode(128))
     pessoas = ManyToMany('Pessoa')
 
 class Feed(Entity):
+    """Wrapper para a entidade feed no banco de dados
+    """
     nome = Field(Unicode(128))
     link = Field(Unicode(128))
     pessoas = ManyToMany('Pessoa')
 
 class Pessoa(Entity):
+    """Wrapper para a entidade pessoa no banco de dados
+    """
     # -- Meta informação
     data_cadastro = Field(DateTime, default=datetime.now)
     ip_addr = Field(Unicode(16))
