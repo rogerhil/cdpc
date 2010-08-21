@@ -1,0 +1,60 @@
+/* Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+* { margin:0; padding:0; border:0; }
+body { font:normal 12px sans-serif; }
+ul, ol { padding-left:20px; }
+p { margin:8px 0;}
+
+/* Generic classes */
+.definedWidth { width:960px; margin:0 auto; }
+.clear { clear:both; }
+
+/* Top */
+#top {  }
+
+/* Logo */
+h1.logo { padding:15px 0; }
+h1.logo a { text-decoration:none; color:#000; }
+
+/* Main menu bar */
+#mainNavWraper { background:#00a4ec; }
+#mainNav { padding:10px; }
+#mainNav ul { list-style:none none; float:left; padding:0; }
+#mainNav a { color:#fff; text-decoration:none; }
+#mainNav li { display:inline; padding-right:10px; }
+#mainNav li.selected { font-size:16px; font-weight:bold; }
+
+/* Search form */
+#search { float:right; }
+#search input { padding:3px; border-radius:3px; -moz-border-radius:3px; }
+
+/* Generic Headers */
+h2 { color:#e47f00; margin:10px 0; }
+h3 { color:#5dad14; margin:10px 0; }
+
+/* forms */
+input, select, textarea {
+    border:solid 1px #d2d2d2;
+    border-radius:3px; -moz-border-radius:3px; }
+
+/* footer */
+#footer { background:#adadad; margin-top:30px; padding:10px 0; }
+#footer h2 { color:#000; }
+#footer .softwareLivre { width:400px; }
+#footer pre {
+    display:block; padding:2px; margin:2px; 0; border:dotted 1px gray;
+    background:#ccc; }

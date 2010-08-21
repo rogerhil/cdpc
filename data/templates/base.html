@@ -3,19 +3,52 @@
   <head>
     <meta charset="UTF-8">
     <title>Cadastre seu ponto de cultura</title>
+    <link
+       rel="stylesheet" type="text/css"
+       href="{{ url_for('.static', filename='css/style.css') }}" />
   </head>
   <body>
     <div id="top">
       <h1 class="logo definedWidth">
         <a href="#">Cadastre seu ponto de cultura</a>
       </h1>
-    </div>
+      <div id="mainNavWraper">
+        <div id="mainNav" class="definedWidth">
+          <ul>
+            <li class="selected"><a href="#">pessoas</a></li>
+            <li><a href="#">projetos</a></li>
+            <li><a href="#">estatísticas</a></li>
+          </ul>
 
-    <div id="content">
+          <form id="search">
+            <input type="text" placeholder="procurar">
+          </form>
+          <br class="clear">
+        </div>
+      </div><!-- mainNavWraper -->
+    </div><!-- top -->
+
+    <div id="content" class="definedWidth">
       {% block content %}{% endblock %}
     </div>
 
     <div id="footer">
-    </div>
+      <div id="footerWrapper" class="definedWidth">
+        <div class="softwareLivre">
+          <h2>Código do site</h2>
+          <p>
+            O código desse site está lisenciado sob a Affero GPL v3+ e
+            você tem o direito de ter acesso ao seu código fonte.
+          </p>
+
+          <p>
+            Para isso, execute o seguinte comando no seu computador:
+            <pre>git clone http://git.comum.org/lincoln/cdpc.git</pre>
+            Ou visite o endereço do nosso
+            <a href="http://git.comum.org">gitweb</a>.
+          </p>
+        </div><!-- softwareLivre -->
+      </div><!-- footerWrapper -->
+    </div><!-- footer -->
   </body>
 </html>
