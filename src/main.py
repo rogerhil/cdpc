@@ -1,4 +1,4 @@
-# -*- Coding: utf-8; Mode: Python -*-
+# -*- coding: utf-8; Mode: Python -*-
 #
 # Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
 #
