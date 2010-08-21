@@ -1,0 +1,37 @@
+#!/usr/bin/python
+# -*- Coding: utf-8; Mode: Python -*-
+#
+# Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""Usa a função `main.create_app()' para criar uma aplicação flask com
+todos os módulos necessários já registrados e chama o método `run()'
+dela.
+
+Esse programa é útil durante o desenvolvimento, porém, para a
+produção, o mod_wsgi é a indicação.
+"""
+
+from main import create_app
+
+def main():
+    """Chama o método run() da aplicação retornada pela função
+    main.create_app().
+    """
+    app = create_app()
+    app.run(debug=True)
+
+if __name__ == '__main__':
+    main()
