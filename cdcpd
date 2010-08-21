@@ -20,16 +20,30 @@
 todos os módulos necessários já registrados e chama o método `run()'
 dela.
 
+Outra aplicação desse programa é administrar a base de dados. Na
+verdade, a única funcionalidade implementada atualmente sobre o
+assunto é a criação do banco. Para isso, use a opção '-d' na linha de
+comando.
+
 Esse programa é útil durante o desenvolvimento, porém, para a
 produção, o mod_wsgi é a indicação.
 """
 
+import sys
 from cdcp.main import create_app
 
 def main():
     """Chama o método run() da aplicação retornada pela função
     main.create_app().
     """
+    # Cria a base de dados com a uri fornecida pelo arquivo de
+    # configuração config.py.
+    if '-d' in sys.argv:
+        import cdcp.app.models
+        from elixir import create_all
+        create_all()
+        exit(0)
+
     app = create_app()
     app.run(debug=True)
 

@@ -29,3 +29,5 @@ def get_path(*extrapaths):
 TEMPLATE_DIR = get_path('data', 'templates')
 
 STATIC_DIR = get_path('data', 'media')
+
+DATABASE_URI = 'sqlite:///db'
