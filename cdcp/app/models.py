@@ -19,8 +19,8 @@
 """
 
 from datetime import datetime
-from elixir import metadata, setup_all, create_all, Entity, Field, Unicode, \
-     DateTime, Integer, Enum, OneToMany, ManyToMany, ManyToOne
+from elixir import metadata, setup_all, Entity, Field, Unicode, \
+     DateTime, ManyToMany
 from ..config import DATABASE_URI
 
 class Telefone(Entity):
