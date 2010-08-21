@@ -26,4 +26,4 @@ module = Module(__name__)
 def novo():
     """Renderiza o formulário de cadastro de usuários
     """
-    return 'oi'
+    return render_template('usuarios/novo.html')
