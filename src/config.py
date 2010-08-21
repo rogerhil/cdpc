@@ -27,3 +27,5 @@ def get_path(*extrapaths):
     return os.path.join(os.path.dirname(__file__), '..', *extrapaths)
 
 TEMPLATE_DIR = get_path('data', 'templates')
+
+STATIC_DIR = get_path('data', 'media')

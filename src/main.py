@@ -22,15 +22,46 @@ aplicação pode ser usada pelo executável `cdcp', que chama o método
 `.run()' da aplicação ou pelo mod_wsgi no apache.
 """
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from jinja2 import FileSystemLoader
 from app.usuarios import module as usuarios
 import config
+import os
+
+class WebApp(Flask):
+    """Flask extention to retrieve static files from a configurable
+    place
+    """
+
+    def __init__(self, import_name, static_path=None, media_path=None):
+        self.media_path = media_path
+        super(WebApp, self).__init__(import_name, static_path)
+
+    @property
+    def has_static_folder(self):
+        """This is `True` if self.media_path var exists or if the
+        package bound object's container has a folder named
+        ``'static'``.
+        """
+        return os.path.isdir(self.media_path) or \
+            os.path.isdir(os.path.join(self.root_path, 'static'))
+
+    def send_static_file(self, filename):
+        """Function used internally to send static files from the static
+        folder to the browser.
+
+        This method is overriden to be able to customize the
+        filesystem path exposed.
+        """
+        path = os.path.join(self.root_path, 'static')
+        if self.media_path:
+            path = os.path.abspath(self.media_path)
+        return send_from_directory(path, filename)
 
 def create_app():
     """Constroi a aplicação flask e registra outros modulos nela.
     """
-    app = Flask(__name__)
+    app = WebApp(__name__, media_path=config.STATIC_DIR)
     app.jinja_env.loader = FileSystemLoader(config.TEMPLATE_DIR)
     app.register_module(usuarios, url_prefix="/usuarios/")
     return app
