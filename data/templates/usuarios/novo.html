@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+<link
+   rel="stylesheet" type="text/css"
+   href="{{ url_for('.static', filename='css/usuarios.novo.css') }}">
+<script
+   type="text/javascript"
+   src="http://localhost/javascript/jquery/jquery.js"></script>
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/usuario.novo.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <h2>Cadastro de usuários</h2>
 
@@ -7,71 +19,65 @@
   <li>
     <h3>Sobre a sua participação</h3>
     <ol>
-      <li>Você é
-        <ul>
+      <li>
+        <label class="voceEh">Você é</label>
+        <select id="voce-eh" name="voce-eh">
+          <option></option>
+          <option value="participante">
+            Participante da equipe de uma iniciativa cultural
+          </option>
+          <option value="secretaria-municipal">
+            Integrante de Secretaria Municipal
+          </option>
+          <option value="secretaria-estadual">
+            Integrante de Secretaria Estadual
+          </option>
+          <option value="minc">
+            Integrante do Ministério da Cultura
+          </option>
+          <option value="nao-participante">
+            Não faço parte da equipe de nenhuma iniciativa cultural
+          </option>
+        </select>
+
+        <ul id="papelParticipante" class="displayNone">
           <li>
-            <input type="radio" />
             <label>
-              Participante da equipe de uma iniciativa cultural
-            </label>
-
-            <ul>
-              <li>
-                <input type="radio" />
-                <label>
-                  Responsável/Coordenador da iniciativa conveniada
-                  ao Programa Cultura Viva
-                </label>
-              </li>
-
-              <li>
-                <input type="radio" />
-                <label>
-                  Responsável/Coordenador da
-                  iniciativa <strong>não</strong> conveniada ao
-                  Programa Cultura Viva
-                </label>
-              </li>
-
-              <li>
-                <input type="radio" />
-                <label>
-                  Não sou Responsável/Coordenador da
-                  iniciativa. Apenas integro a equipe.
-                </label>
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <input type="radio" />
-            <label>
-              Integrante de Secretaria Municipal
+              <input
+                 type="radio" name="papel"
+                 value="responsavel-conveniada">
+              Responsável/Coordenador da iniciativa conveniada
+              ao Programa Cultura Viva
             </label>
           </li>
 
           <li>
-            <input type="radio" />
             <label>
-              Integrante de Secretaria Estadual
+              <input
+                 type="radio" name="papel"
+                 value="responsavel-nao-conveniada">
+              Responsável/Coordenador da
+              iniciativa <strong>não</strong> conveniada ao
+              Programa Cultura Viva
             </label>
           </li>
 
           <li>
-            <input type="radio" />
             <label>
-              Integrante do Ministério da Cultura
+              <input type="radio" name="papel" value="integrante">
+              Não sou Responsável/Coordenador da
+              iniciativa. Apenas integro a equipe.
             </label>
           </li>
 
           <li>
-            <input type="radio" />
-            <label>
-              Não faço parte da equipe de nenhuma iniciativa
-              cultural
-            </label>
+            <label>Nome da iniciativa</label>
+            <input
+               type="text" name="nome-iniciativa"
+               placeholder="Digite o nome completo da iniciativa">
           </li>
         </ul>
+
       </li><!-- Você é -->
     </ol><!-- Sobre sua participação -->
   </li>
