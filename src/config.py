@@ -15,22 +15,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Integra todos os modulos flask declarados noutros lugares.
-
-Esses `outros' modulos são registrados numa aplicação flask. Essa nova
-aplicação pode ser usada pelo executável `cdcp', que chama o método
-`.run()' da aplicação ou pelo mod_wsgi no apache.
+"""Mantém todas as configurações para da aplicação de cadastro de
+pontos de cultura.
 """
+import os
 
-from flask import Flask
-from jinja2 import FileSystemLoader
-from app.usuarios import module as usuarios
-import config
-
-def create_app():
-    """Constroi a aplicação flask e registra outros modulos nela.
+def get_path(*extrapaths):
+    """Retorna o caminho para alguma coisa que esteja "próxima" ao
+    arquivo de configuração.
     """
-    app = Flask(__name__)
-    app.jinja_env.loader = FileSystemLoader(config.TEMPLATE_DIR)
-    app.register_module(usuarios, url_prefix="/usuarios/")
-    return app
+    return os.path.join(os.path.dirname(__file__), '..', *extrapaths)
+
+TEMPLATE_DIR = get_path('data', 'templates')
