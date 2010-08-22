@@ -61,6 +61,7 @@ class Pessoa(Entity):
     end_cep = Field(Unicode(8))
     end_numero = Field(Unicode(16))
     end_logradouro = Field(Unicode(128))
+    end_complemento = Field(Unicode(128))
     end_uf = Field(Unicode(2))
     end_cidade = Field(Unicode(128))
     end_bairro = Field(Unicode(128))
