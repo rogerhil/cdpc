@@ -26,6 +26,16 @@ function novaEntrada ($ul) {
         .appendTo ($ul);
 }
 
+function cepWebService (cep) {
+    $.getJSON ('../consulta_cep/', {cep: cep}, function (data) {
+        var form = $('#novoUsuario')[0];
+        $(form.end_logradouro).val (data.rua);
+        $(form.end_bairro).val (data.bairro);
+        $(form.end_cidade).val (data.cidade);
+        $(form.end_uf).val (data.uf);
+    });
+}
+
 $(document).ready (function () {
     $('#voce-eh').change(function () {
         if ($(this).val () == 'participante') {

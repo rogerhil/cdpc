@@ -17,7 +17,8 @@
 
 """Contém as visualizações para a gestão de usuários
 """
-
+from urllib import urlopen
+from simplejson import dumps
 from flask import Module, request, render_template
 
 VALORES_UF = (
@@ -25,6 +26,8 @@ VALORES_UF = (
     'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
     'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 )
+
+CONSULTA_CEP = 'http://viavirtual.com.br/webservicecep.php?cep=%s'
 
 module = Module(__name__)
 
@@ -35,3 +38,17 @@ def novo():
     return render_template(
         'usuarios/novo.html',
         vals_uf=VALORES_UF)
+
+@module.route("consulta_cep/")
+def consulta_cep():
+    """Usa um serviço na internet para baixar informações como rua,
+    bairro, cidade e uf a partir do cep.
+
+    Retorna um Json com as informações obtidas.
+    """
+    page = urlopen(CONSULTA_CEP % request.args.get('cep'))
+    content = page.read()
+    rua, bairro, cidade, _, ufraw = content.split('||', 4)
+    return dumps({
+            'rua': rua, 'bairro': bairro, 'cidade': cidade,
+            'uf': ufraw.replace('|', '')})
