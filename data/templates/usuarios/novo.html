@@ -87,12 +87,12 @@
     <ol>
       <li>
         <label>Nome completo</label>
-        <input type="text" />
+        <input type="text" name="nome">
       </li>
 
       <li>
         <label>CPF</label>
-        <input type="text" />
+        <input type="text" name="cpf">
         <em class="helpText">
           <a href="#">Por que pedimos o seu CPF</a>
         </em>
@@ -100,18 +100,18 @@
 
       <li>
         <label>Data de nascimento</label>
-        <input type="text" />
+        <input type="text" name="dataNascimento">
       </li>
 
       <li>
         <label>Sexo</label>
-        <input type="radio" /> Feminino
-        <input type="radio" /> Masculino
+        <input type="radio" name="sexo" value="feminino"> Feminino
+        <input type="radio" name="sexo" value="masculino"> Masculino
       </li>
 
       <li>
         <label>Sua foto</label>
-        <input type="file" />
+        <input type="file" name="avatar">
       </li>
     </ol><!-- Dados pessoais -->
   </li>
@@ -121,7 +121,7 @@
     <ol>
       <li>
         <label>CEP</label>
-        <input type="text" />
+        <input type="text" name="end_cep">
         <em class="helpText">
           <a href="#">Não sabe o seu CEP?</a>
         </em>
@@ -129,44 +129,47 @@
 
       <li>
         <label>Número</label>
-        <input type="text" />
+        <input type="text" name="end_numero">
       </li>
 
       <li>
         <label>Logradouro</label>
-        <input type="text" />
+        <input type="text" name="end_logradouro">
       </li>
 
       <li>
         <label>Complemento</label>
-        <input type="text" />
+        <input type="text" name="end_complemento">
       </li>
 
       <li>
         <label>UF</label>
-        <select>
+        <select name="end_uf">
           <option></option>
+          {% for uf in vals_uf %}
+          <option value="{{ uf }}">{{ uf }}</option>
+          {% endfor %}
         </select>
       </li>
 
       <li>
         <label>Cidade</label>
-        <input type="text" />
+        <input type="text" name="end_cidade">
       </li>
 
       <li>
         <label>Bairro</label>
-        <input type="text" />
+        <input type="text" name="end_bairro">
       </li>
 
       <li>
         <label>Latitude</label>
-        <input type="text" />
+        <input type="text" name="end_latitude">
       </li>
 
       <li>
         <label>Longitude</label>
-        <input type="text" />
+        <input type="text" name="end_longitude">
       </li>
     </ol><!-- Sobre a sua localização geográfica -->
   </li>
@@ -176,45 +179,47 @@
     <ol>
       <li>
         <label>Telefone</label>
-        <input type="text" />
+        <input type="text" name="telefone">
       </li>
 
       <li>
         <label>Email</label>
-        <input type="text" />
+        <input type="text" name="email">
       </li>
 
       <li>
         <label>Website</label>
-        <input type="text" />
+        <input type="text" name="website">
       </li>
 
-      <li>
+      <li class="subForm">
         <h4>Redes sociais</h4>
         <ul>
           <li>
             <label>Nome</label>
-            <input type="text" />
+            <input type="text" name="rs_nome">
           </li>
           <li>
             <label>Endereço</label>
-            <input type="text" />
+            <input type="text" name="rs_link">
           </li>
         </ul><!-- Redes sociais -->
+        <input class="sub" type="button" value="Outra rede">
       </li>
 
-      <li>
+      <li class="subForm">
         <h4>Feeds</h4>
         <ul>
           <li>
             <label>Nome</label>
-            <input type="text" />
+            <input type="text" name="feed_nome">
           </li>
           <li>
             <label>Endereço</label>
-            <input type="text" />
+            <input type="text" name="feed_link">
           </li>
         </ul><!-- Feeds -->
+        <input class="sub" type="button" value="Outro feed">
       </li>
     </ol><!-- Contatos e espaços na rede -->
   </li>
@@ -224,15 +229,15 @@
     <ol>
       <li>
         <label>Login</label>
-        <input type="text" />
+        <input type="text" name="usuario">
       </li>
       <li>
         <label>Senha</label>
-        <input type="text" />
+        <input type="text" name="senha">
       </li>
       <li>
         <label>Confirmar senha</label>
-        <input type="text" />
+        <input type="text" name="confirmar_senha">
       </li>
     </ol>
   </li>

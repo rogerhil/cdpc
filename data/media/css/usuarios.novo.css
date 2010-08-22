@@ -26,3 +26,8 @@ li { margin-bottom:0.3em; }
     margin-top:10px; padding:5px; background:#f7f7f7;
     width:540px; border-radius:3px; -moz-border-radius:3px; }
 #papelParticipante label { display:inline; float:none; }
+
+.subForm {  }
+.subForm h4 { margin-bottom:10px; }
+.subForm .sub, .subForm ul { margin-left:20px; }
+.subForm input[type=text] { min-width:230px; }

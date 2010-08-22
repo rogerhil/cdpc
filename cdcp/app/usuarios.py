@@ -18,7 +18,13 @@
 """Contém as visualizações para a gestão de usuários
 """
 
-from flask import Module, render_template
+from flask import Module, request, render_template
+
+VALORES_UF = (
+    'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+    'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
+    'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
+)
 
 module = Module(__name__)
 
@@ -26,4 +32,6 @@ module = Module(__name__)
 def novo():
     """Renderiza o formulário de cadastro de usuários
     """
-    return render_template('usuarios/novo.html')
+    return render_template(
+        'usuarios/novo.html',
+        vals_uf=VALORES_UF)
