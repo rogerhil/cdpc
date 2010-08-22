@@ -15,6 +15,14 @@
  */
 
 function novaEntrada ($ul) {
+    var $remove = $('<a href="javascript:;">Remover</a>');
+    $remove.click (function (evt) {
+        var $parent = $(this).parent ();
+        $parent.prev ().prev ().remove ();
+        $parent.prev ().remove ();
+        $parent.remove ();
+    });
+
     $('<li>')
         .append ($('<label>Nome</label>'))
         .append ($('<input type="text" name="rs_nome">'))
@@ -22,6 +30,9 @@ function novaEntrada ($ul) {
     $('<li>')
         .append ($('<label>Endereço</label>'))
         .append ($('<input type="text" name="rs_link">'))
+        .appendTo ($ul);
+    $('<li>')
+        .append($remove)
         .addClass ('bottomBorder')
         .appendTo ($ul);
 }
