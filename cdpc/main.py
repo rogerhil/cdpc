@@ -18,7 +18,7 @@
 """Integra todos os modulos flask declarados noutros lugares.
 
 Esses `outros' modulos são registrados numa aplicação flask. Essa nova
-aplicação pode ser usada pelo executável `cdcp', que chama o método
+aplicação pode ser usada pelo executável `cdpc', que chama o método
 `.run()' da aplicação ou pelo mod_wsgi no apache.
 """
 

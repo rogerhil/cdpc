@@ -30,7 +30,7 @@ produção, o mod_wsgi é a indicação.
 """
 
 import sys
-from cdcp.main import create_app
+from cdpc.main import create_app
 
 def main():
     """Chama o método run() da aplicação retornada pela função
@@ -39,7 +39,7 @@ def main():
     # Cria a base de dados com a uri fornecida pelo arquivo de
     # configuração config.py.
     if '-d' in sys.argv:
-        import cdcp.app.models
+        import cdpc.app.models
         from elixir import create_all
         create_all()
         exit(0)
