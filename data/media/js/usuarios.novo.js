@@ -14,6 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function novaEntrada ($ul) {
+    $('<li>')
+        .append ($('<label>Nome</label>'))
+        .append ($('<input type="text" name="rs_nome">'))
+        .appendTo ($ul);
+    $('<li>')
+        .append ($('<label>Endereço</label>'))
+        .append ($('<input type="text" name="rs_link">'))
+        .addClass ('bottomBorder')
+        .appendTo ($ul);
+}
+
 $(document).ready (function () {
     $('#voce-eh').change(function () {
         if ($(this).val () == 'participante') {

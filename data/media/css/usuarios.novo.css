@@ -31,3 +31,7 @@ li { margin-bottom:0.3em; }
 .subForm h4 { margin-bottom:10px; }
 .subForm .sub, .subForm ul { margin-left:20px; }
 .subForm input[type=text] { min-width:230px; }
+
+.bottomBorder {
+    width: 380px; padding-bottom:6px; margin-bottom:6px;
+    border-bottom:dotted 1px #d4d4d4; }

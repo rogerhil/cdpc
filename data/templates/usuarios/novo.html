@@ -194,32 +194,35 @@
 
       <li class="subForm">
         <h4>Redes sociais</h4>
-        <ul>
+        <ul id="redesSociais">
           <li>
             <label>Nome</label>
             <input type="text" name="rs_nome">
           </li>
-          <li>
+          <li class="bottomBorder">
             <label>Endereço</label>
             <input type="text" name="rs_link">
           </li>
         </ul><!-- Redes sociais -->
-        <input class="sub" type="button" value="Outra rede">
+        <input
+           class="sub" type="button" value="Outra rede"
+           onclick="novaEntrada ($('#redesSociais'));">
       </li>
 
       <li class="subForm">
         <h4>Feeds</h4>
-        <ul>
+        <ul id="feeds">
           <li>
             <label>Nome</label>
             <input type="text" name="feed_nome">
           </li>
-          <li>
+          <li class="bottomBorder">
             <label>Endereço</label>
             <input type="text" name="feed_link">
           </li>
         </ul><!-- Feeds -->
-        <input class="sub" type="button" value="Outro feed">
+        <input class="sub" type="button" value="Outro feed"
+           onclick="novaEntrada ($('#feeds'));">
       </li>
     </ol><!-- Contatos e espaços na rede -->
   </li>
