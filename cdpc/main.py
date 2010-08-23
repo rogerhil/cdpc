@@ -22,11 +22,12 @@ aplicação pode ser usada pelo executável `cdpc', que chama o método
 `.run()' da aplicação ou pelo mod_wsgi no apache.
 """
 
+import os
 from flask import Flask, send_from_directory
 from jinja2 import FileSystemLoader
-from .app.usuarios import module as usuarios
 from .config import STATIC_DIR, TEMPLATE_DIR
-import os
+from .app.usuarios import module as usuarios
+from .app.projetos import module as projetos
 
 class WebApp(Flask):
     """Flask extention to retrieve static files from a configurable
@@ -64,4 +65,5 @@ def create_app():
     app = WebApp(__name__, media_path=STATIC_DIR)
     app.jinja_env.loader = FileSystemLoader(TEMPLATE_DIR)
     app.register_module(usuarios, url_prefix="/usuarios/")
+    app.register_module(projetos, url_prefix="/projetos/")
     return app

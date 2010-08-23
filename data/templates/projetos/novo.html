@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link
+   rel="stylesheet" type="text/css"
+   href="{{ url_for('.static', filename='css/usuarios.novo.css') }}">
+<script
+   type="text/javascript"
+   src="http://localhost/javascript/jquery/jquery.js"></script>
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/geral.novo.js') }}"></script>
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/projetos.novo.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h2>Cadastro de projetos</h2>
+
+<form id="novoUsuario" method="post" action=".">
+  <ol class="form">
+    <li>
+      <h3>Dados do projeto</h3>
+      <ol class="section">
+        <li>
+          <label>Seu projeto é</label>
+          <select id="voce-eh" name="voce-eh">
+            <option value="ponto">Ponto</option>
+            <option value="pontao">Pontão</option>
+            <option value="iniciativa-premiada">Iniciativa Premiada</option>
+          </select>
+        </li>
+        <li>
+          <label>Qual tipo de convênio?</label>
+          <select id="voce-eh" name="voce-eh">
+            <option>Internacional</option>
+            <option>Federal</option>
+            <option>Estadual</option>
+            <option>Municipal</option>
+          </select>
+        </li>
+        <li>
+          <label>Número do convênio do projeto</label>
+          <input type="text">
+        </li>
+        <li>
+          <label>Nome completo do projeto</label>
+          <input type="text">
+        </li>
+      </ol>
+    </li>
+
+    <li>
+      <h3>Localização geográfica do projeto</h3>
+      <div class="section">
+        <ul class="enderecos">
+          <li class="subForm">
+            <h4>Endereços</h4>
+
+            <div class="formEndereco">
+              <ul>
+                <li>
+                  <label>Nome do local</label>
+                  <input type="text" name="end_nome">
+                </li>
+                <li>
+                  <label>CEP</label>
+                  <input
+                     type="text" name="end_cep"
+                     onblur="cepWebService (this.value);">
+                  <em class="helpText">
+                    <a href="#">Não sabe o seu CEP?</a>
+                  </em>
+                </li>
+
+                <li>
+                  <label>Número</label>
+                  <input type="text" name="end_numero">
+                </li>
+
+                <li>
+                  <label>Logradouro</label>
+                  <input type="text" name="end_logradouro">
+                </li>
+
+                <li>
+                  <label>Complemento</label>
+                  <input type="text" name="end_complemento">
+
+
+                <li>
+                  <label>UF</label>
+                  <select name="end_uf">
+                    <option></option>
+                    {% for uf in vals_uf %}
+                    <option value="{{ uf }}">{{ uf }}</option>
+                    {% endfor %}
+                  </select>
+                </li>
+
+                <li>
+                  <label>Cidade</label>
+                  <input type="text" name="end_cidade">
+                </li>
+
+                <li>
+                  <label>Bairro</label>
+                  <input type="text" name="end_bairro">
+                </li>
+
+                <li>
+                  <label>Latitude</label>
+                  <input type="text" name="end_latitude">
+                </li>
+
+                <li class="bottomBorder">
+                  <label>Longitude</label>
+                  <input type="text" name="end_longitude">
+                </li>
+              </ul>
+            </div><!-- form de endereço -- Duplicado via javascript -->
+          </li>
+        </ul>
+        <input class="sub" type="button" value="Outro endereço"
+               onclick="novoEndereco ();">
+      </div>
+
+    </li><!-- Localização geográfica do projeto -->
+
+    <li>
+      <h3>Contatos e Espaços na rede</h3>
+      <ol class="section">
+        <li>
+          <label>Telefone</label>
+          <input type="text" name="telefone">
+        </li>
+
+        <li>
+          <label>Email</label>
+          <input type="text" name="email">
+        </li>
+
+        <li>
+          <label>Website</label>
+          <input type="text" name="website">
+        </li>
+
+        <li class="subForm">
+          <h4>Redes sociais</h4>
+          <ul id="redesSociais">
+            <li>
+              <label>Nome</label>
+              <input type="text" name="rs_nome">
+            </li>
+            <li class="bottomBorder">
+              <label>Endereço</label>
+              <input type="text" name="rs_link">
+            </li>
+          </ul><!-- Redes sociais -->
+          <input
+             class="sub" type="button" value="Outra rede"
+             onclick="novaEntrada ($('#redesSociais'));">
+        </li>
+
+        <li class="subForm">
+          <h4>Feeds</h4>
+          <ul id="feeds">
+            <li>
+              <label>Nome</label>
+              <input type="text" name="feed_nome">
+            </li>
+            <li class="bottomBorder">
+              <label>Endereço</label>
+              <input type="text" name="feed_link">
+            </li>
+          </ul><!-- Feeds -->
+          <input class="sub" type="button" value="Outro feed"
+                 onclick="novaEntrada ($('#feeds'));">
+        </li>
+      </ol><!-- Contatos e espaços na rede -->
+    </li>
+
+    <li>
+      <h3>Comunicação e Cultura Digital</h3>
+      <ol class="section">
+        <li>
+          <label>
+            A sede do projeto possue telefone?
+          </label>
+          <input type="radio"> Sim
+          <input type="radio"> Não
+        </li>
+        <li>
+          <label>Qual tipo?</label>
+          <select>
+            <option></option>
+            <option>Fixo</option>
+            <option>Celular</option>
+            <option>Rádio</option>
+            <option>Rural</option>
+            <option>Público</option>
+          </select>
+        </li>
+        <li>
+          <label>Por quê?</label>
+          <ul>
+            <li><input type="radio"> Opção</li>
+            <li>
+              <input type="radio">
+              Não há fornecimentodo serviço na região
+            </li>
+            <li><input type="radio"> Falta de Recursos</li>
+            <li><input type="radio"> Outro</li>
+          </ul>
+        </li>
+      </ol><!-- Comunicação e Cultura Digital -->
+    </li>
+  </ol>
+
+  <div class="botaoEnviar">
+    <input type="submit" value="Efetuar o cadastro">
+  </div>
+
+</form>
+{% endblock %}
