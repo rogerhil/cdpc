@@ -55,6 +55,15 @@
       <h3>Localização geográfica do projeto</h3>
       <div class="section">
         <ul class="enderecos">
+          <li>
+            <label>Onde o seu projeto ocorre?</label>
+            <select name="local_projeto">
+              <option></option>
+              <option value="itinerante">Itinerante</option>
+            </select>
+            <em class="helpText">Cadastre outros endereços abaixo</em>
+          </li>
+
           <li class="subForm">
             <h4>Endereços</h4>
 
@@ -62,7 +71,9 @@
               <ul>
                 <li>
                   <label>Nome do local</label>
-                  <input type="text" name="end_nome">
+                  <input
+                     type="text" name="end_nome"
+                     onblur="javascript:atualizarEnderecos ();">
                 </li>
                 <li>
                   <label>CEP</label>
@@ -125,7 +136,6 @@
         <input class="sub" type="button" value="Outro endereço"
                onclick="novoEndereco ();">
       </div>
-
     </li><!-- Localização geográfica do projeto -->
 
     <li>
