@@ -14,22 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function cepWebService (cep) {
-    $.getJSON ('../consulta_cep/', {cep: cep}, function (data) {
-        var form = $('#novoUsuario')[0];
-        $(form.end_logradouro).val (data.rua);
-        $(form.end_bairro).val (data.bairro);
-        $(form.end_cidade).val (data.cidade);
-        $(form.end_uf).val (data.uf);
+function novaEntrada ($ul) {
+    var $remove = $('<a href="javascript:;">Remover</a>');
+    $remove.click (function (evt) {
+        var $parent = $(this).parent ();
+        $parent.prev ().prev ().remove ();
+        $parent.prev ().remove ();
+        $parent.remove ();
     });
-}
 
-$(document).ready (function () {
-    $('#voce-eh').change(function () {
-        if ($(this).val () == 'participante') {
-            $('#papelParticipante').show ();
-        } else {
-            $('#papelParticipante').hide ();
-        }
-    });
-});
+    $('<li>')
+        .append ($('<label>Nome</label>'))
+        .append ($('<input type="text" name="rs_nome">'))
+        .appendTo ($ul);
+    $('<li>')
+        .append ($('<label>Endereço</label>'))
+        .append ($('<input type="text" name="rs_link">'))
+        .appendTo ($ul);
+    $('<li>')
+        .append($remove)
+        .addClass ('bottomBorder')
+        .appendTo ($ul);
+}
