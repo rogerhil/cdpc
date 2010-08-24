@@ -1,0 +1,66 @@
+Sistema Cadastro de Pontos de Cultura
+=====================================
+
+Apesar do nome, esse projeto pretende servir de interface para o
+mapeamento de qualquer outra iniciativa cultural. Seja ela pertencente
+ao Programa Cultura Viva ou não. Além disso, é de interesse dos que
+trabalham nesse projeto conhecer também as pessoas ao redor das
+iniciativas culturais.
+
+Para saber sobre o processo de levantamento dos requisitos desse
+sistema e da criação de sua documentação, por favor acesse o site
+oficial da iniciativa:
+
+ http://cadastreseupontodecultura.org.br/
+
+Atualmente, existem dois formulários sendo desenvolvidos mais
+ativamente. Os de cadastro de usuários[0] e os de cadastro de
+iniciativas vinculadas à rede Cultura Viva[1].
+
+ [0] http://cadastreseupontodecultura.org.br/?page_id=535
+ [1] http://cadastreseupontodecultura.org.br/?page_id=549
+
+
+Esse sistema está sendo desenvolvido com as seguintes tecnologias:
+
+ * Python (linguagem de programação)
+ * Flask (Framework web)
+ * SQLAlchemy (ORM -- abstração para a conexão e conversa com o banco
+   de dados)
+
+Caso queira contribuir, você pode participar do processo de
+documentação, da divulgação da campanha de cadastramento ou com
+código! Este arquivo tratará específicamente dessa última forma de
+contribuição.
+
+Para trabalhar no projeto você precisará conhecer alguma coisa sobre
+git, um sistema de controle de versão. Pois, você precisa dele para
+ter acesso ao código fonte do sistema. Ai vão os primeiros passos:
+
+ $ git clone http://git.comum.org/lincoln/cdpc.git
+
+Pronto, depois rodar esse comando, você já vai conseguir ver o código
+atual do sistema.
+
+Para executá-lo, faça o seguinte:
+p
+ $ cd cdpc
+ $ ./cdpcd
+
+O Flask irá subir um servidor web para auxiliar no desenvolvimento. As
+únicas urls ligadas até agora são as seguintes:
+
+ * http://127.0.0.1:5000/usuarios/novo/
+ * http://127.0.0.1:5000/projetos/novo/
+
+Pronto! Sinta-se à vontade para mexer no código e enviar suas
+contribuições.
+
+Depois de dar o commit em alguma alteração, sugiro que você use o
+comando git format-patch para formatar um arquivo de contribuição.
+
+Atualmente, não temos um sistema de gestão de tickets (my bad),
+portanto, sinta-se livre para me enviar um email com alguma sugestão
+ou um patch :)
+
+                                                  -- lincoln@comum.org
