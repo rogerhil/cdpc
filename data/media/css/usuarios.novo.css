@@ -22,6 +22,7 @@ h4 { margin-top:4px; }
 /* Tamanho genérico para campos */
 .form input[type=text] { min-width:250px; }
 .form label { display:block; width:240px; float:left; }
+.form .notBlock label { display:inline; width:auto; float:none; }
 
 /* Estilos para sub formulários */
 .subForm {  }
