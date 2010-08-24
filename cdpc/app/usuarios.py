@@ -47,7 +47,7 @@ def consulta_cep():
     Retorna um Json com as informações obtidas.
     """
     page = urlopen(CONSULTA_CEP % request.args.get('cep'))
-    content = page.read()
+    content = page.read().decode('iso-8859-1')
     rua, bairro, cidade, _, ufraw = content.split('||', 4)
     return dumps({
             'rua': rua, 'bairro': bairro, 'cidade': cidade,
