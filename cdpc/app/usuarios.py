@@ -19,6 +19,7 @@
 """
 from urllib import urlopen
 from simplejson import dumps
+from simplejson import loads
 from flask import Module, request, render_template
 
 VALORES_UF = (
@@ -28,6 +29,7 @@ VALORES_UF = (
 )
 
 CONSULTA_CEP = 'http://viavirtual.com.br/webservicecep.php?cep=%s'
+CONSULTA_GEO = 'http://ws.geonames.org/postalCodeLookupJSON?postalcode=%s&country=BR'
 
 module = Module(__name__)
 
@@ -52,3 +54,19 @@ def consulta_cep():
     return dumps({
             'rua': rua, 'bairro': bairro, 'cidade': cidade,
             'uf': ufraw.replace('|', '')})
+
+@module.route("consulta_geo/")
+def consulta_geo():
+    """Usa um serviço na internet para baixar latitude e longitude
+    a partir do cep.
+
+    Retorna um Json com a latitude e a longitude obtidas.
+    """
+    page = urlopen(CONSULTA_GEO % request.args.get('cep')[:5])
+    content = loads(page.read())
+    pcs = content['postalcodes'];
+    if pcs:
+        return dumps({
+                'lat': content['postalcodes'][0]['lat'],
+                'lng': content['postalcodes'][0]['lng']})
+    return dumps({'lat':'', 'lng':''})

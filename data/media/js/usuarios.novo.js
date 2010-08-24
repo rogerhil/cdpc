@@ -22,6 +22,12 @@ function cepWebService (cep) {
         $(form.end_cidade).val (data.cidade);
         $(form.end_uf).val (data.uf);
     });
+
+    $.getJSON ('../consulta_geo/', {cep: cep}, function (data) {
+	var form = $('#novoUsuario')[0];
+	$(form.end_latitude).val (data.lat);
+	$(form.end_longitude).val (data.lng);
+    });
 }
 
 $(document).ready (function () {
