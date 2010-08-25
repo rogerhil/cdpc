@@ -17,10 +17,13 @@
 
 """Contém as visualizações para a gestão de usuários
 """
+from formencode import Invalid
 from urllib import urlopen
-from simplejson import dumps
-from simplejson import loads
+from simplejson import dumps, loads
 from flask import Module, request, render_template
+
+from . import validators
+from . import models
 
 VALORES_UF = (
     'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
@@ -33,10 +36,31 @@ CONSULTA_GEO = 'http://ws.geonames.org/postalCodeLookupJSON?postalcode=%s&countr
 
 module = Module(__name__)
 
-@module.route("novo/")
+@module.route("novo/", methods=('GET', 'POST'))
 def novo():
     """Renderiza o formulário de cadastro de usuários
     """
+    if request.method == 'POST':
+        # instanciando o validador
+        validator = validators.Usuario()
+        validado = {}
+        try:
+            validado = validator.to_python(request.form)
+        except Invalid, e:
+            # Dar um feedback pro usuário usando a instância da
+            # exceção "e".
+            pass
+        else:
+            # Instanciando o modelo e associando os campos validados e
+            # transformados em valores python à instância que será
+            # salva no db.
+            usuario = models.Usuario()
+            usuario.nome = validado['nome']
+            usuario.cpf = validado['cpf']
+            session.commit()
+
+            # FIXME: Avisar ao usuário que tudo deu certo.
+
     return render_template(
         'usuarios/novo.html',
         vals_uf=VALORES_UF)
