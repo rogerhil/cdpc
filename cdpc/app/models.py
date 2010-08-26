@@ -19,8 +19,8 @@
 """
 
 from datetime import datetime
-from elixir import metadata, setup_all, Entity, Field, Unicode, \
-     DateTime, ManyToMany
+from elixir import metadata, setup_all, using_options, Entity, Field, \
+    Unicode, DateTime, ManyToOne, OneToMany, ManyToMany
 from ..config import DATABASE_URI
 
 class Telefone(Entity):
@@ -43,21 +43,9 @@ class Feed(Entity):
     link = Field(Unicode(128))
     pessoas = ManyToMany('Pessoa')
 
-class Pessoa(Entity):
-    """Wrapper para a entidade pessoa no banco de dados
+class Endereco(Entity):
+    """Wrapper para a entidade endereco no banco de dados
     """
-    # -- Meta informação
-    data_cadastro = Field(DateTime, default=datetime.now)
-    ip_addr = Field(Unicode(16))
-
-    # -- Dados pessoais
-    nome = Field(Unicode(256))
-    cpf = Field(Unicode(11))
-    data_nascimento = Field(DateTime)
-    sexo = Field(Unicode(16))
-    avatar = Field(Unicode(128))
-
-    # -- Geolocalização
     end_cep = Field(Unicode(8))
     end_numero = Field(Unicode(16))
     end_logradouro = Field(Unicode(128))
@@ -68,6 +56,20 @@ class Pessoa(Entity):
     end_latitude = Field(Unicode(16))
     end_longitude = Field(Unicode(16))
 
+    cadastrado = ManyToOne('Cadastrado')
+
+class Cadastrado(Entity):
+    """Classe base para Pessoa e Projeto
+    """
+    using_options(inheritance='multi')
+
+    # -- Meta informação
+    data_cadastro = Field(DateTime, default=datetime.now)
+    ip_addr = Field(Unicode(16))
+
+    # -- Geolocalização
+    endereco = OneToMany('Endereco')
+
     # -- Contatos e espaços na rede
     telefones = ManyToMany(Telefone, inverse='pessoas')
     email = Field(Unicode(256), unique=True)
@@ -75,9 +77,31 @@ class Pessoa(Entity):
     redes_sociais = ManyToMany(RedeSocial, inverse='pessoas')
     feeds = ManyToMany(Feed, inverse='pessoas')
 
+class Pessoa(Cadastrado):
+    """Wrapper para a entidade pessoa no banco de dados
+    """
+    using_options(inheritance='multi')
+
+    # -- Dados pessoais
+    nome = Field(Unicode(256))
+    cpf = Field(Unicode(11))
+    data_nascimento = Field(DateTime)
+    sexo = Field(Unicode(16))
+    avatar = Field(Unicode(128))
+
     # -- Dados de acesso
     usuario = Field(Unicode(64))
     senha = Field(Unicode(256))
+
+class Projeto(Entity):
+    """Wrapper para a entidade projeto no banco de dados
+    """
+    using_options(inheritance='multi')
+
+    # -- Dados do projeto
+    numero = Field(Unicode(12))
+    nome = Field(Unicode(256))
+
 
 metadata.bind = DATABASE_URI
 metadata.bind.echo = True

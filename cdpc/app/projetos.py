@@ -17,12 +17,16 @@
 
 from flask import Module, render_template
 
+from cadastrado import VALORES_UF
+
 module = Module(__name__)
 
 @module.route("novo/")
 def novo():
     """
     """
+    
+
     return render_template(
         'projetos/novo.html',
-        )
+        vals_uf=VALORES_UF)
