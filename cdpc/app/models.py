@@ -46,6 +46,7 @@ class Feed(Entity):
 class Endereco(Entity):
     """Wrapper para a entidade endereco no banco de dados
     """
+    nome = Field(Unicode(128))
     cep = Field(Unicode(8))
     numero = Field(Unicode(16))
     logradouro = Field(Unicode(128))
