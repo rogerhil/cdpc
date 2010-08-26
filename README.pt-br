@@ -27,6 +27,9 @@ Esse sistema está sendo desenvolvido com as seguintes tecnologias:
  * Flask (Framework web)
  * SQLAlchemy (ORM -- abstração para a conexão e conversa com o banco
    de dados)
+ * Formencode (biblioteca para validação de formulários)
+ * Elixir (wrapper para SQLAlchemy, que permite o uso de simples
+    classes python para mapear bancos de dados relacionais diretamente)
 
 Caso queira contribuir, você pode participar do processo de
 documentação, da divulgação da campanha de cadastramento ou com
