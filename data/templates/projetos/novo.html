@@ -24,29 +24,34 @@
       <h3>Dados do projeto</h3>
       <ol class="section">
         <li>
-          <label>Seu projeto é</label>
-          <select id="voce-eh" name="voce-eh">
+          <label for="voce_eh">Seu projeto é</label>
+          <select id="voce_eh" name="voce_eh">
+            <option></option>
             <option value="ponto">Ponto</option>
             <option value="pontao">Pontão</option>
-            <option value="iniciativa-premiada">Iniciativa Premiada</option>
+            <option value="iniciativa_premiada">Iniciativa Premiada</option>
           </select>
         </li>
         <li>
-          <label>Qual tipo de convênio?</label>
-          <select id="voce-eh" name="voce-eh">
-            <option>Internacional</option>
-            <option>Federal</option>
-            <option>Estadual</option>
-            <option>Municipal</option>
+          <label for="tipo_convenio">Qual tipo de convênio?</label>
+          <select id="tipo_convenio" name="tipo_convenio">
+            <option></option>
+            <option value="internacional">Internacional</option>
+            <option value="federal">Federal</option>
+            <option value="estadual">Estadual</option>
+            <option value="municipal">Municipal</option>
           </select>
         </li>
         <li>
-          <label>Número do convênio do projeto</label>
-          <input type="text">
+          <label for="numero_convenio">Número do convênio do projeto</label>
+          <input type="text" name="numero_convenio" id="numero_convenio"/>
+          <em class="helpText">
+            <a href="#">Onde eu encontro meu número de convênio?</a>
+          </em>
         </li>
         <li>
-          <label>Nome completo do projeto</label>
-          <input type="text">
+          <label for="nome_proj">Nome completo do projeto</label>
+          <input type="text" name="nome_proj" id="nome_proj"/>
         </li>
       </ol>
     </li>
@@ -55,11 +60,74 @@
       <h3>Localização geográfica do projeto</h3>
       <div class="section">
         <ul class="enderecos">
+          <li class="subForm">
+            <h4>Qual o endereço da SEDE do Projeto?</h4>
+            <div class="formEndereco">
+              <ul>
+                <li>
+                  <label for="end_proj_cep">CEP</label>
+                  <input
+                      type="text" name="end_proj_cep" id="end_proj_cep"
+                      onblur="cepWebService (this.value);"/>
+                  <em class="helpText">
+                    <a href="#">Não sabe o seu CEP?</a>
+                  </em>
+                </li>
+
+                <li>
+                  <label for="end_proj_numero">Número</label>
+                  <input type="text" name="end_proj_numero" id="end_proj_numero"/>
+                </li>
+
+                <li>
+                  <label for="end_proj_logradouro">Logradouro</label>
+                  <input type="text" name="end_proj_logradouro" id="end_proj_logradouro"/>
+                </li>
+
+                <li>
+                  <label for="end_proj_complemento">Complemento</label>
+                  <input type="text" name="end_proj_complemento" id="end_proj_complemento"/>
+                </li>
+
+                <li>
+                  <label for="end_proj_uf">UF</label>
+                  <select name="end_proj_uf" id="end_proj_uf">
+                    <option></option>
+                    {% for uf in vals_uf %}
+                    <option value="{{ uf }}">{{ uf }}</option>
+                    {% endfor %}
+                  </select>
+                </li>
+
+                <li>
+                  <label for="end_proj_cidade">Cidade</label>
+                  <input type="text" name="end_proj_cidade" id="end_proj_cidade"/>
+                </li>
+
+                <li>
+                  <label for="end_proj_bairro">Bairro</label>
+                  <input type="text" name="end_proj_bairro" id="end_proj_bairro"/>
+                </li>
+
+                <li>
+                  <label for="end_proj_latitude">Latitude</label>
+                  <input type="text" name="end_proj_latitude" id="end_proj_latitude"/>
+                </li>
+
+                <li class="bottomBorder">
+                  <label for="end_proj_longitude">Longitude</label>
+                  <input type="text" name="end_proj_longitude" id="end_proj_longitude"/>
+                </li>
+              </ul>
+            </div>
+          </li>
           <li>
-            <label>Onde o seu projeto ocorre?</label>
-            <select name="local_projeto">
+            <label for="local_proj">Onde o seu projeto ocorre?</label>
+            <select name="local_proj" id="local_proj">
               <option></option>
+              <option value="sede">Sede</option>
               <option value="itinerante">Itinerante</option>
+              <option value="outros">Outros locais</option>
             </select>
             <em class="helpText">Cadastre outros endereços abaixo</em>
           </li>
@@ -70,39 +138,39 @@
             <div class="formEndereco">
               <ul>
                 <li>
-                  <label>Nome do local</label>
+                  <label for="end_outro_nome">Nome do local</label>
                   <input
-                     type="text" name="end_nome"
-                     onblur="javascript:atualizarEnderecos ();">
+                      type="text" name="end_outro_nome" id="end_outro_nome"
+                      onblur="javascript:atualizarEnderecos ();"/>
                 </li>
                 <li>
-                  <label>CEP</label>
+                  <label for="end_outro_cep">CEP</label>
                   <input
-                     type="text" name="end_cep"
-                     onblur="cepWebService (this.value);">
+                      type="text" name="end_outro_cep" id="end_outro_cep"
+                      onblur="cepWebService (this.value);"/>
                   <em class="helpText">
                     <a href="#">Não sabe o seu CEP?</a>
                   </em>
                 </li>
 
                 <li>
-                  <label>Número</label>
-                  <input type="text" name="end_numero">
+                  <label for="end_outro_numero">Número</label>
+                  <input type="text" name="end_outro_numero" id="end_outro_numero"/>
                 </li>
 
                 <li>
-                  <label>Logradouro</label>
-                  <input type="text" name="end_logradouro">
+                  <label for="end_outro_logradouro">Logradouro</label>
+                  <input type="text" name="end_outro_logradouro" id="end_outro_logradouro"/>
                 </li>
 
                 <li>
-                  <label>Complemento</label>
-                  <input type="text" name="end_complemento">
+                  <label for="end_outro_complemento">Complemento</label>
+                  <input type="text" name="end_outro_complemento" id="end_outro_complemento"/>
                 </li>
 
                 <li>
                   <label>UF</label>
-                  <select name="end_uf">
+                  <select name="end_outro_uf" id="end_outro_uf">
                     <option></option>
                     {% for uf in vals_uf %}
                     <option value="{{ uf }}">{{ uf }}</option>
@@ -111,30 +179,30 @@
                 </li>
 
                 <li>
-                  <label>Cidade</label>
-                  <input type="text" name="end_cidade">
+                  <label for="end_outro_cidade">Cidade</label>
+                  <input type="text" name="end_outro_cidade" id="end_outro_cidade"/>
                 </li>
 
                 <li>
-                  <label>Bairro</label>
-                  <input type="text" name="end_bairro">
+                  <label for="end_outro_bairro">Bairro</label>
+                  <input type="text" name="end_outro_bairro" id="end_outro_bairro"/>
                 </li>
 
                 <li>
-                  <label>Latitude</label>
-                  <input type="text" name="end_latitude">
+                  <label for="end_outro_latitude">Latitude</label>
+                  <input type="text" name="end_outro_latitude" id="end_outro_latitude"/>
                 </li>
 
                 <li class="bottomBorder">
-                  <label>Longitude</label>
-                  <input type="text" name="end_longitude">
+                  <label for="end_outro_longitude">Longitude</label>
+                  <input type="text" name="end_outro_longitude" id="end_outro_longitude"/>
                 </li>
               </ul>
-            </div><!-- form de endereço -- Duplicado via javascript -->
-          </li>
+            </div>
+          </li><!-- form de endereco Duplicado via javascript -->
         </ul>
         <input class="sub" type="button" value="Outro endereço"
-               onclick="novoEndereco ();">
+               onclick="novoEndereco ();"/>
       </div>
     </li><!-- Localização geográfica do projeto -->
 
@@ -142,51 +210,58 @@
       <h3>Contatos e Espaços na rede</h3>
       <ol class="section">
         <li>
-          <label>Telefone</label>
-          <input type="text" name="telefone">
+          <label for="tel_proj">Telefone</label>
+          <input type="text" name="tel_proj" id="tel_proj"/>
+          <input class="sub" type="button" value="Outro telefone"
+                 onclick="novoTelefone ();"/>
         </li>
 
         <li>
-          <label>Email</label>
-          <input type="text" name="email">
+          <label for="email_proj">Email</label>
+          <input type="text" name="email_proj" id="email_proj"/>
         </li>
 
         <li>
-          <label>Website</label>
-          <input type="text" name="website">
+          <label for="website_proj">Website</label>
+          <input type="text" name="website_proj" id="website_proj"/>
+        </li>
+
+        <li>
+          <label for="frequencia">Frequência de Radio Transmissor</label>
+          <input type="text" name="frequencia" id="frequencia"/>
         </li>
 
         <li class="subForm">
           <h4>Redes sociais</h4>
           <ul id="redesSociais">
             <li>
-              <label>Nome</label>
-              <input type="text" name="rs_nome">
+              <label for="rs_nome">Nome</label>
+              <input type="text" name="rs_nome" id="rs_nome"/>
             </li>
             <li class="bottomBorder">
-              <label>Endereço</label>
-              <input type="text" name="rs_link">
+              <label for="rs_link">Endereço</label>
+              <input type="text" name="rs_link" id="rs_link"/>
             </li>
           </ul><!-- Redes sociais -->
           <input
-             class="sub" type="button" value="Outra rede"
-             onclick="novaEntrada ($('#redesSociais'));">
+              class="sub" type="button" value="Outra rede"
+              onclick="novaEntrada ($('#redesSociais'));"/>
         </li>
 
         <li class="subForm">
           <h4>Feeds</h4>
           <ul id="feeds">
             <li>
-              <label>Nome</label>
-              <input type="text" name="feed_nome">
+              <label for="feed_nome">Nome</label>
+              <input type="text" name="feed_nome" id="feed_nome"/>
             </li>
             <li class="bottomBorder">
-              <label>Endereço</label>
-              <input type="text" name="feed_link">
+              <label for="feed_link">Endereço</label>
+              <input type="text" name="feed_link" id="feed_link"/>
             </li>
           </ul><!-- Feeds -->
           <input class="sub" type="button" value="Outro feed"
-                 onclick="novaEntrada ($('#feeds'));">
+                 onclick="novaEntrada ($('#feeds'));"/>
         </li>
       </ol><!-- Contatos e espaços na rede -->
     </li>
@@ -196,44 +271,1101 @@
       <ol class="section">
         <li>
           <label>
-            A sede do projeto possue telefone?
+            A sede do projeto possui telefone?
           </label>
           <ul class="comCdTelefone">
-            <li><label><input type="radio"> Sim</label></li>
-            <li><label><input type="radio"> Não</label></li>
+            <li>
+              <label><input type="radio" name="tel_sede" value="sim"/> Sim</label>
+            </li>
+            <li>
+              <label><input type="radio" name="tel_sede" value="nao"/> Não</label>
+            </li>
           </ul>
-          <br clear="both">
+          <br clear="both"/>
         </li>
+
         <li>
-          <label>Qual tipo?</label>
-          <select>
+          <label for="tipo_tel_sede">Qual tipo?</label>
+          <select name="tipo_tel_sede" id="tipo_tel_sede">
             <option></option>
-            <option>Fixo</option>
-            <option>Celular</option>
-            <option>Rádio</option>
-            <option>Rural</option>
-            <option>Público</option>
+            <option value="fixo">Fixo</option>
+            <option value="celular">Celular</option>
+            <option value="radio">Rádio</option>
+            <option value="rural">Rural</option>
+            <option value="publico">Público</option>
           </select>
         </li>
         <li>
           <label>Por quê?</label>
           <ul>
-            <li><input type="radio"> Opção</li>
             <li>
-              <input type="radio">
-              Não há fornecimentodo serviço na região
+              <label>
+                <input type="radio" name="pq_sem_tel" value="opcao"/>
+                Opção
+              </label>
             </li>
-            <li><input type="radio"> Falta de Recursos</li>
-            <li><input type="radio"> Outro</li>
+
+            <li>
+              <label>
+                <input type="radio" name="pq_sem_tel" value="fornecimento"/>
+                Não há fornecimento do serviço na região
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="pq_sem_tel" value="recursos"/>
+                Falta de recursos
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="pq_sem_tel" value="Outro"/>
+                Outro.
+              </label>
+              <label for="pq_sem_tel_outro">Qual?</label>
+              <input type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro"/>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <label>A sede do projeto possui acesso à internet?</label>
+          <ul>
+            <li><label><input type="radio"/> Sim</label></li>
+            <li><label><input type="radio"/> Não</label></li>
+          </ul>
+          <br clear="both"/>
+        </li>
+        <li>
+          <label for="tipo_internet">Qual tipo?</label>
+          <select name="tipo_internet" id="tipo_internet">
+            <option></option>
+            <option value="discada">Discada</option>
+            <option value="3g">3G</option>
+            <option value="adsl">ADSL/Cabo (Banda Larga)</option>
+            <option value="radio">Rádio</option>
+            <option value="gesac">Gesac</option>
+            <option value="publica">Internet Pública</option>
+          </select>
+        </li>
+        <li>
+          <label>Por quê?</label>
+          <ul>
+            <li>
+              <label>
+                <input type="radio" name="pq_sem_internet" value="opcao"/>
+                Opção
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="pq_sem_internet" value="fornecimento"/>
+                Não há fornecimento do serviço na região
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="pq_sem_internet" value="recursos"/>
+                Falta de recursos
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="pq_sem_internet" value="outro"/>
+                Outro.
+              </label>
+              <label for="pq_sem_internet_outro">Qual?</label>
+              <input type="text" name="pq_sem_internet_outro" id="pq_sem_internet_outro"/>
+            </li>
           </ul>
         </li>
       </ol><!-- Comunicação e Cultura Digital -->
     </li>
+
+    <li>
+      <h3>Entidade Proponente</h3>
+      <ol class="section">
+        <li>
+          <label for="nome_ent">Nome Completo da Entidade:</label>
+          <input type="text" name="nome_ent" id="nome_ent"/>
+        </li>
+
+        <li>
+          <label>
+            O endereço da <b>Entidade</b> é o mesmo endereço do <b>Projeto</b>?
+          </label>
+          <ul>
+            <li>
+              <label>
+                <input
+                    type="radio" name="endereco_ent_proj" value="sim"/>
+                Sim
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input
+                    type="radio" name="endereco_ent_proj" value="nao"/>
+                Não
+            </label>
+            </li>
+          </ul>
+          <br clear="both"/>
+        </li>
+
+        <li class="subForm">
+          <h4>Endereço da Entidade</h4>
+
+          <div class="formEndereco">
+            <ul>
+              <li>
+                <label for="end_ent_nome">Nome do local</label>
+                <input
+                    type="text" name="end_ent_nome" id="end_ent_nome"
+                    onblur="javascript:atualizarEnderecos ();"/>
+              </li>
+              <li>
+                <label for="end_ent_cep">CEP</label>
+                <input
+                    type="text" name="end_ent_cep" id="end_ent_cep"
+                    onblur="cepWebService (this.value);"/>
+                <em class="helpText">
+                  <a href="#">Não sabe o seu CEP?</a>
+                </em>
+              </li>
+
+              <li>
+                <label for="end_ent_numero">Número</label>
+                <input type="text" name="end_ent_numero" id="end_ent_numero"/>
+              </li>
+
+              <li>
+                <label for="end_ent_logradouro">Logradouro</label>
+                <input type="text" name="end_ent_logradouro" id="end_ent_logradouro"/>
+              </li>
+
+              <li>
+                <label for="end_ent_complemento">Complemento</label>
+                <input type="text" name="end_ent_complemento" id="end_ent_complemento"/>
+              </li>
+
+              <li>
+                <label>UF</label>
+                <select name="end_ent_uf" id="end_ent_uf">
+                  <option></option>
+                  {% for uf in vals_uf %}
+                  <option value="{{ uf }}">{{ uf }}</option>
+                  {% endfor %}
+                </select>
+              </li>
+
+              <li>
+                <label for="end_ent_cidade">Cidade</label>
+                <input type="text" name="end_ent_cidade" id="end_ent_cidade"/>
+              </li>
+
+              <li>
+                <label for="end_ent_bairro">Bairro</label>
+                <input type="text" name="end_ent_bairro" id="end_ent_bairro"/>
+              </li>
+
+              <li>
+                <label for="end_ent_latitude">Latitude</label>
+                <input type="text" name="end_ent_latitude" id="end_ent_latitude"/>
+              </li>
+
+              <li class="bottomBorder">
+                <label for="end_ent_longitude">Longitude</label>
+                <input type="text" name="end_ent_longitude" id="end_ent_longitude"/>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <label for="tel_ent">Telefone</label>
+          <input type="text" name="tel_ent" id="tel_ent"/>
+          <input class="sub" type="button" value="Outro telefone"
+                 onclick="novoTelefone ();"/>
+        </li>
+
+        <li>
+          <label for="email_ent">Email</label>
+          <input type="text" name="email_ent" id="email_ent"/>
+        </li>
+
+        <li>
+          <label for="website_ent">Website</label>
+          <input type="text" name="website_ent" id="website_ent"/>
+        </li>
+
+        <li>
+          <label>
+          A entidade possui outro convênio com o programa Cultura Viva?
+          </label>
+          <ul>
+            <li>
+              <label>
+                <input type="radio" name="convenio_ent" value="sim"/>
+                Sim
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="convenio_ent" value="nao"/>
+                Não
+              </label>
+            </li>
+          </ul>
+          <br clear="both"/>
+        </li>
+
+        <li>
+          <label for="outro_convenio">Qual?</label>
+          <input type="text" name="outro_convenio" id="outro_convenio"/>
+          <input class="sub" type="button" value="Outro convenio"
+                 onclick="novoConvenio ();"/>
+        </li>
+      </ol>
+    </li><!-- Entidade Proponente -->
+
+    <li>
+      <h3>Atividades exercidas pelo projeto</h3>
+      <ol class="section">
+        <li>
+          <label>Qual a área de atuação das atividades do <b>Projeto</b>?</label>
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" name="cultura_popular"/>
+                Cultura Popular
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="direitos_humanos"/>
+                Direitos Humanos
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="economia_solidaria"/>
+                Economia Solidária
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="educacao"/>
+                Educação
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="esportes_e_lazer"/>
+                Esportes e Lazer
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="etnia"/>
+                Etnia
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="genero"/>
+                Gênero
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="habitacao"/>
+                Habitação
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="meio_ambiente"/>
+                Meio ambiente
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="memoria"/>
+                Memória
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="patrimonio_historico_imaterial"/>
+                Patrimônio Histórico Imaterial
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="patrimonio_historico_material"/>
+                Patrimônio Histórico Material
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="pesquisa_e_extensao"/>
+                Pesquisa e Extensão
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="povos_tradicionais"/>
+                Povos e comunidades tradicionais
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="recreacao"/>
+                Recreação
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="religiao"/>
+                Religião
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="saude"/>
+                Saúde
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="sexualidade"/>
+                Sexualidade
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tecnologia"/>
+                Tecnologia
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="trabalho"/>
+                Trabalho
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="outras_atividades"/>
+                Outros.
+              </label>
+              <label for="quais_outras_atividades">Quais?</label>
+              <input
+                  type="text" name="quais_outras_atividades"
+                  id="quais_outras_atividades"/>
+            </li>
+          </ul>
+        </li>
+
+        <li class="subForm">
+          <h4>
+            Com qual <b>Público Alvo</b> o <b>Projeto</b> é desenvolvido?
+          </h4>
+          <ul>
+            <li>
+              <label>Sob aspectos de <b>Faixa Etária</b></label>
+              <ul>
+                <li>
+                  <label>
+                    <input type="checkbox" name="criancas"/>
+                    Crianças
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="adolescentes"/>
+                    Adolescentes
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="adultos"/>
+                    Adultos
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="jovens"/>
+                    Jovens
+                  </label>
+                </li>
+              </ul>
+            </li>
+            <br clear="both"/>
+
+            <li>
+              <label>Sob aspectos das <b>Culturas Tradicionais</b></label>
+              <ul>
+                <li>
+                  <label>
+                    <input type="checkbox" name="quilombola"/>
+                    Quilombola
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="pomerano"/>
+                    Pomerano
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="caicara"/>
+                    Caiçara
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="indigena"/>
+                    Indígena
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="cigana"/>
+                    Cigana
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="povos_da_floresta"/>
+                    Povos da Floresta
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="ribeirinhos"/>
+                    Ribeirinhos
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="outras_culturas"/>
+                    Outras.
+                  </label>
+                  <label for="quais_outras_culturas">Quais?</label>
+                  <input type="text" name="quais_outras_culturas"
+                         id="quais_outras_culturas"/>
+                </li>
+              </ul>
+            </li>
+            <br clear="both"/>
+
+            <li>
+              <label>Sob aspectos de <b>Ocupação do Meio</b></label>
+              <ul>
+                <li>
+                  <label>
+                    <input type="checkbox" name="rural"/>
+                    Rural
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="rural"/>
+                    Urbano
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="rural"/>
+                    Rural
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="outra_ocupacao"/>
+                    Outro.
+                  </label>
+                  <label for="qual_outra_ocupacao">Qual?</label>
+                  <input
+                      type="text" name="qual_outra_ocupacao"
+                      id="qual_outra_ocupacao"/>
+                </li>
+              </ul>
+            </li>
+            <br clear="both"/>
+
+            <li>
+              <label>Sob aspectos de <b>Gênero</b></label>
+              <ul>
+                <li>
+                  <label>
+                    <input type="checkbox" name="mulheres"/>
+                    Mulheres
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="homens"/>
+                    Homens
+                  </label>
+                </li>
+
+                <li>
+                  <label>
+                    <input type="checkbox" name="lgbt"/>
+                    LGBT
+                  </label>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <br clear="both"/>
+
+        <li>
+          <label>Quais são as <b>Manifestações</b> e <b>Linguagens</b> que o <b>Projeto</b> utiliza em suas atividades?</label>
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" name="artes_digitais"/>
+                Artes digitais
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="artes_plasticas"/>
+                Artes plásticas
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="audiovisual"/>
+                Audiovisual
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="circo"/>
+                Circo
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="culinaria"/>
+                Culinária
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="danca"/>
+                Dança
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="fotografia"/>
+                Fotografia
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="grafite"/>
+                Grafite
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="internet"/>
+                Internet
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="jornalismo"/>
+                Jornalismo
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="literatura"/>
+                Literatura
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="musica"/>
+                Música
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="radio"/>
+                Rádio
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="teatro"/>
+                Teatro
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tecnologias_digitais"/>
+                Tecnologias digitais
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tradicao_oral"/>
+                Tradição oral
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="outras_manifestacoes"/>
+                Outras.
+              </label>
+              <label for="quais_outras_manifestacoes">Qual?</label>
+              <input
+                  type="text" name="quais_outras_manifestacoes"
+                  id="quais_outras_manifestacoes"/>
+            </li>
+          </ul>
+        </li>
+        <br clear="both"/>
+
+        <li>
+          <label>O <b>Projeto</b> participa de alguma <b>Ação</b> do <b>Programa Cultura Viva</b></label>
+          <ul>
+            <li>
+              <label>
+                <input type="radio" name="convenio_ent" value="sim"/>
+                Sim
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="convenio_ent" value="nao"/>
+                Não
+              </label>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <label>Qual(is)?</label>
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" name="agente_cultura_viva"/>
+                Agente Cultura Viva
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="cultura_digital"/>
+                Cultura Digital
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="cultura_e_saude"/>
+                Cultura e Saúde
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="economia_viva"/>
+                Economia Viva
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="escola_viva"/>
+                Escola Viva
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="grios"/>
+                Grios
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="interacoes_esteticas"/>
+                Interações Estéticas
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="midias_livres"/>
+                Mídias Livres
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="pontinho_de_cultura"/>
+                Pontinho de Cultura
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="pontos_de_memoria"/>
+                Pontos de memória
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="redes_indigenas"/>
+                Redes Indígenas
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tuxaua"/>
+                Tuxaua
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="tv"/>
+                TV
+              </label>
+            </li>
+          </ul>
+        </li>
+        <br clear="both"/>
+
+        <li>
+          <label for="descricao">
+            <b>Descrição</b> breve sobre as atividades do <b>Projeto</b>
+          </label>
+          <input type="text" name="descricao" id="descricao"/>
+        </li>
+
+        <li>
+          <label for="documentacoes">
+            Upload de <b>Plano de trabalho e documentações do Projeto</b>
+          </label>
+          <input type="file" name="documentacoes" id="documentacoes"/>
+          <input class="sub" type="button" value="Outro arquivo"
+                 onclick="novaDocumentacao ();"/>
+        </li>
+      </ol>
+    </li><!-- Atividades exercidas pelo projeto -->
+
+    <li>
+      <h3>Parcerias do Projeto</h3>
+      <ol class="section">
+        <li>
+          <label>O <b>Projeto</b> estabeleceu <b>Parcerias</b>?</label>
+          <ul>
+            <li>
+              <label>
+                <input type="radio" name="convenio_ent" value="sim"/>
+                Sim
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="radio" name="convenio_ent" value="nao"/>
+                Não
+              </label>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <label>Com qual parceiro?</label>
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" name="parc_biblioteca"/>
+                Biblioteca
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_empresa"/>
+                Empresa
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_equipamento_de_saude"/>
+                Equipamento de Saúde
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_escola"/>
+                Escola
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_igreja"/>
+                Igreja
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_ong"/>
+                ONG
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_poder_publico"/>
+                Poder público
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_pontos_de_memoria"/>
+                Pontos de Memória
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_redes_indigenas"/>
+                Redes Indígenas
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_sistema_s"/>
+                Sistema S (Sesc, Senai, Senac, etc)
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parc_tuxaua"/>
+                Tuxaua
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="outros_parceiros"/>
+                Outros.
+              </label>
+              <label for="quais_outros_parceiros">Quais?</label>
+              <input
+                  type="text" name="quais_outros_parceiros"
+                  id="quais_outros_parceiros"/>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <label for="parc_nome">Nome do Parceiro</label>
+          <input type="text" name="parc_nome" id="parc_nome"/>
+          <input class="sub" type="button" value="Outro parceiro"
+                 onclick="novoParceiro ();"/>
+        </li>
+      </ol>
+    </li>
+
+    <li>
+      <h3>Índice de Acesso à Cultura</h3>
+    </li>
   </ol>
 
   <div class="botaoEnviar">
-    <input type="submit" value="Efetuar o cadastro">
+    <input type="submit" value="Efetuar o cadastro"/>
   </div>
 
 </form>
 {% endblock %}
+
