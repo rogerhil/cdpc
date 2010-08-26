@@ -46,15 +46,15 @@ class Feed(Entity):
 class Endereco(Entity):
     """Wrapper para a entidade endereco no banco de dados
     """
-    end_cep = Field(Unicode(8))
-    end_numero = Field(Unicode(16))
-    end_logradouro = Field(Unicode(128))
-    end_complemento = Field(Unicode(128))
-    end_uf = Field(Unicode(2))
-    end_cidade = Field(Unicode(128))
-    end_bairro = Field(Unicode(128))
-    end_latitude = Field(Unicode(16))
-    end_longitude = Field(Unicode(16))
+    cep = Field(Unicode(8))
+    numero = Field(Unicode(16))
+    logradouro = Field(Unicode(128))
+    complemento = Field(Unicode(128))
+    uf = Field(Unicode(2))
+    cidade = Field(Unicode(128))
+    bairro = Field(Unicode(128))
+    latitude = Field(Unicode(16))
+    longitude = Field(Unicode(16))
 
     cadastrado = ManyToOne('Cadastrado')
 
