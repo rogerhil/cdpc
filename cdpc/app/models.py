@@ -56,7 +56,9 @@ class Endereco(Entity):
     latitude = Field(Unicode(16))
     longitude = Field(Unicode(16))
 
-    cadastrado = ManyToOne('Cadastrado')
+    # -- relacionamentos
+    pessoas = ManyToOne('Pessoa')
+    projetos = ManyToMany('Projeto')
 
 class Cadastrado(Entity):
     """Classe base para Pessoa e Projeto
@@ -66,9 +68,6 @@ class Cadastrado(Entity):
     # -- Meta informação
     data_cadastro = Field(DateTime, default=datetime.now)
     ip_addr = Field(Unicode(16))
-
-    # -- Geolocalização
-    endereco = OneToMany('Endereco')
 
     # -- Contatos e espaços na rede
     telefones = ManyToMany(Telefone, inverse='pessoas')
@@ -89,6 +88,9 @@ class Pessoa(Cadastrado):
     sexo = Field(Unicode(16))
     avatar = Field(Unicode(128))
 
+    # -- Geolocalização
+    endereco = OneToMany('Endereco')
+
     # -- Dados de acesso
     usuario = Field(Unicode(64))
     senha = Field(Unicode(256))
@@ -101,6 +103,9 @@ class Projeto(Entity):
     # -- Dados do projeto
     numero = Field(Unicode(12))
     nome = Field(Unicode(256))
+
+    # -- Geolocalização
+    enderecos = ManyToMany('Endereco')
 
 
 metadata.bind = DATABASE_URI
