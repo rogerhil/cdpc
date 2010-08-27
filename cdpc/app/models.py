@@ -105,6 +105,11 @@ class Pessoa(Cadastrado):
     """
     using_options(inheritance='multi')
 
+    # -- Sobre sua participação
+    voce_eh = Field(Unicode(20))
+    papel = Field(Unicode(26))
+    nome_iniciativa = Field(Unicode(128))
+
     # -- Dados pessoais
     nome = Field(Unicode(256))
     cpf = Field(Unicode(11))
