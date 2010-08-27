@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
 # Copyright (C) 2010  Ministério da Cultura <http://cultura.gov.br>
+# Copyright (C) 2010  Marco Túlio Gontijo e Silva <marcot@marcot.eti.br>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -52,3 +53,11 @@ class CpfValidator(formencode.FancyValidator):
 class Usuario(formencode.Schema):
     nome = validators.String(not_empty=True)
     cpf = CpfValidator(not_empty=True)
+
+class Projeto(formencode.Schema):
+    voce_eh = validators.String(not_empty=True)
+    tipo_convenio = validators.String(not_empty=True)
+    numero_convenio = validators.String(not_empty=True)
+    nome_proj = validators.String(not_empty=True)
+    email = validators.String(not_empty=True)
+    nome_ent = validators.String(not_empty=True)
