@@ -132,6 +132,7 @@ class Projeto(Entity):
 
     # -- Geolocalização
     end_proj = OneToMany('Endereco', inverse='end_proj')
+    local_proj = Field(Unicode(10))
     end_outros = ManyToMany('Endereco')
 
     # -- Comunicação e Cultura Digital
