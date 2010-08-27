@@ -79,3 +79,6 @@ class Projeto(formencode.Schema):
     #   Validar CEPs
     #   Validar Telefones
     #   Validar conjunto de checkbox, onde pelo menos uma deve estar preenchida
+    #   Validar e-mails
+    #   Validar websites
+    #   Validar que os índices são inteiros
