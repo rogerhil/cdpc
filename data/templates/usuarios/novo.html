@@ -24,7 +24,7 @@
     <h3>Sobre a sua participação</h3>
     <ol class="section">
       <li>
-        <label class="voceEh">Você é</label>
+        <label class="voceEh" for="voce_eh">Você é</label>
         <select id="voce_eh" name="voce_eh">
           <option></option>
           <option value="participante">
@@ -75,9 +75,9 @@
           </li>
 
           <li>
-            <label>Nome da iniciativa</label>
+            <label for="nome_iniciativa">Nome da iniciativa</label>
             <input
-               type="text" name="nome_iniciativa"
+               type="text" name="nome_iniciativa" id="nome_iniciativa"
                placeholder="Digite o nome completo da iniciativa">
           </li>
         </ul>
@@ -90,21 +90,21 @@
     <h3>Dados Pessoais</h3>
     <ol class="section">
       <li>
-        <label>Nome completo</label>
-        <input type="text" name="nome">
+        <label for="nome">Nome completo</label>
+        <input type="text" name="nome" id="nome">
       </li>
 
       <li>
-        <label>CPF</label>
-        <input type="text" name="cpf">
+        <label for="cpf">CPF</label>
+        <input type="text" name="cpf" id="cpf">
         <em class="helpText">
           <a href="#">Por que pedimos o seu CPF</a>
         </em>
       </li>
 
       <li>
-        <label>Data de nascimento</label>
-        <input type="text" name="dataNascimento">
+        <label for="dataNascimento">Data de nascimento</label>
+        <input type="text" name="dataNascimento" id="dataNascimento">
       </li>
 
       <li>
@@ -121,8 +121,8 @@
       </li>
 
       <li>
-        <label>Sua foto</label>
-        <input type="file" name="avatar">
+        <label for="avatar">Sua foto</label>
+        <input type="file" name="avatar" id="avatar">
       </li>
     </ol><!-- Dados pessoais -->
   </li>
@@ -131,9 +131,9 @@
     <h3>Sobre a sua localização geográfica</h3>
     <ol class="section">
       <li>
-        <label>CEP</label>
+        <label for="end_cep">CEP</label>
         <input
-           type="text" name="end_cep"
+           type="text" name="end_cep" id="end_cep">
            onblur="cepWebService (this.value);">
         <em class="helpText">
           <a href="#">Não sabe o seu CEP?</a>
@@ -141,23 +141,23 @@
       </li>
 
       <li>
-        <label>Número</label>
-        <input type="text" name="end_numero">
+        <label for="end_numero">Número</label>
+        <input type="text" name="end_numero" id="end_numero">
       </li>
 
       <li>
-        <label>Logradouro</label>
-        <input type="text" name="end_logradouro">
+        <label for="end_logradouro">Logradouro</label>
+        <input type="text" name="end_logradouro" id="end_logradouro">
       </li>
 
       <li>
-        <label>Complemento</label>
-        <input type="text" name="end_complemento">
+        <label for="end_complemento">Complemento</label>
+        <input type="text" name="end_complemento" id="end_complemento">
       </li>
 
       <li>
-        <label>UF</label>
-        <select name="end_uf">
+        <label for="end_uf">UF</label>
+        <select name="end_uf" id="end_uf">
           <option></option>
           {% for uf in vals_uf %}
           <option value="{{ uf }}">{{ uf }}</option>
@@ -166,23 +166,23 @@
       </li>
 
       <li>
-        <label>Cidade</label>
-        <input type="text" name="end_cidade">
+        <label for="end_cidade">Cidade</label>
+        <input type="text" name="end_cidade" id="end_cidade">
       </li>
 
       <li>
-        <label>Bairro</label>
-        <input type="text" name="end_bairro">
+        <label for="end_bairro">Bairro</label>
+        <input type="text" name="end_bairro" id="end_bairro">
       </li>
 
       <li>
-        <label>Latitude</label>
-        <input type="text" name="end_latitude">
+        <label for="end_latitude">Latitude</label>
+        <input type="text" name="end_latitude" id="end_latitude">
       </li>
 
       <li>
-        <label>Longitude</label>
-        <input type="text" name="end_longitude">
+        <label for="end_longitude">Longitude</label>
+        <input type="text" name="end_longitude" id="end_longitude">
       </li>
     </ol><!-- Sobre a sua localização geográfica -->
   </li>
@@ -192,33 +192,33 @@
     <ol class="section">
       <li>
         <div>
-          <label>Telefone</label>
-          <input type="text" name="telefone">
+          <label for="telefone">Telefone</label>
+          <input type="text" name="telefone" id="telefone">
         </div>
         <input class="sub" type="button" value="Outro telefone"
                onclick="novoTelefone ();"/>
       </li>
 
       <li>
-        <label>Email</label>
-        <input type="text" name="email">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email">
       </li>
 
       <li>
-        <label>Website</label>
-        <input type="text" name="website">
+        <label for="website">Website</label>
+        <input type="text" name="website" id="website">
       </li>
 
       <li class="subForm">
         <h4>Redes sociais</h4>
         <ul id="redesSociais">
           <li>
-            <label>Nome</label>
-            <input type="text" name="rs_nome">
+            <label for="rs_nome">Nome</label>
+            <input type="text" name="rs_nome" id="rs_nome">
           </li>
           <li class="bottomBorder">
-            <label>Endereço</label>
-            <input type="text" name="rs_link">
+            <label for="rs_link">Endereço</label>
+            <input type="text" name="rs_link" id="rs_link">
           </li>
         </ul><!-- Redes sociais -->
         <input
@@ -230,12 +230,12 @@
         <h4>Feeds</h4>
         <ul id="feeds">
           <li>
-            <label>Nome</label>
-            <input type="text" name="feed_nome">
+            <label for="feed_nome">Nome</label>
+            <input type="text" name="feed_nome" id="feed_nome">
           </li>
           <li class="bottomBorder">
-            <label>Endereço</label>
-            <input type="text" name="feed_link">
+            <label for="feed_link">Endereço</label>
+            <input type="text" name="feed_link" id="feed_link">
           </li>
         </ul><!-- Feeds -->
         <input class="sub" type="button" value="Outro feed"
@@ -248,16 +248,16 @@
     <h3>Dados de acesso</h3>
     <ol class="section">
       <li>
-        <label>Login</label>
-        <input type="text" name="usuario">
+        <label for="usuario">Login</label>
+        <input type="text" name="usuario" id="usuario">
       </li>
       <li>
-        <label>Senha</label>
-        <input type="text" name="senha">
+        <label for="senha">Senha</label>
+        <input type="text" name="senha" id="senha">
       </li>
       <li>
-        <label>Confirmar senha</label>
-        <input type="text" name="confirmar_senha">
+        <label for="confirmar_senha">Confirmar senha</label>
+        <input type="text" name="confirmar_senha" id="confirmar_senha">
       </li>
     </ol>
   </li>
