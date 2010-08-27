@@ -59,5 +59,23 @@ class Projeto(formencode.Schema):
     tipo_convenio = validators.String(not_empty=True)
     numero_convenio = validators.String(not_empty=True)
     nome_proj = validators.String(not_empty=True)
+    end_proj_cep = validators.String(not_empty=True)
+    end_proj_numero = validators.String(not_empty=True)
+    end_proj_uf = validators.String(not_empty=True)
+    end_proj_cidade = validators.String(not_empty=True)
+    end_proj_bairro = validators.String(not_empty=True)
+    local_proj = validators.String(not_empty=True)
+    tel_proj = validators.String(not_empty=True)
     email = validators.String(not_empty=True)
+    sede_possui_tel = validators.String(not_empty=True)
+    sede_possui_net = validators.String(not_empty=True)
     nome_ent = validators.String(not_empty=True)
+    endereco_ent_proj = validators.String(not_empty=True)
+    participa_cultura_viva = validators.String(not_empty=True)
+    parcerias = validators.String(not_empty=True)
+
+    # TODO:
+    #   Validar endereços adicionados em Outros Locais e Entidade
+    #   Validar CEPs
+    #   Validar Telefones
+    #   Validar conjunto de checkbox, onde pelo menos uma deve estar preenchida
