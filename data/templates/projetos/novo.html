@@ -129,80 +129,92 @@
               <option value="itinerante">Itinerante</option>
               <option value="outros">Outros locais</option>
             </select>
-            <em class="helpText">Cadastre outros endereços abaixo</em>
+            <!-- <em class="helpText">Cadastre outros endereços abaixo</em> -->
           </li>
 
-          <li class="subForm">
-            <h4>Endereços</h4>
+          <div class="displayNone">
+            <li class="subForm">
+              <h4>Endereços</h4>
 
-            <div class="formEndereco">
-              <ul>
-                <li>
-                  <label for="end_outro_nome">Nome do local</label>
-                  <input
-                      type="text" name="end_outro_nome" id="end_outro_nome"
-                      onblur="javascript:atualizarEnderecos ();"/>
-                </li>
-                <li>
-                  <label for="end_outro_cep">CEP</label>
-                  <input
-                      type="text" name="end_outro_cep" id="end_outro_cep"
-                      onblur="cepWebService (this.value);"/>
-                  <em class="helpText">
-                    <a href="#">Não sabe o seu CEP?</a>
-                  </em>
-                </li>
+              <div class="formEndereco">
+                <ul>
+                  <li>
+                    <label for="end_outro_nome">Nome do local</label>
+                    <input
+                       type="text" name="end_outro_nome" id="end_outro_nome"
+                       onblur="javascript:atualizarEnderecos ();"/>
+                  </li>
+                  <li>
+                    <label for="end_outro_cep">CEP</label>
+                    <input
+                       type="text" name="end_outro_cep" id="end_outro_cep"
+                       onblur="cepWebService (this.value);"/>
+                    <em class="helpText">
+                      <a href="#">Não sabe o seu CEP?</a>
+                    </em>
+                  </li>
 
-                <li>
-                  <label for="end_outro_numero">Número</label>
-                  <input type="text" name="end_outro_numero" id="end_outro_numero"/>
-                </li>
+                  <li>
+                    <label for="end_outro_numero">Número</label>
+                    <input type="text" name="end_outro_numero"
+                           id="end_outro_numero"/>
+                  </li>
 
-                <li>
-                  <label for="end_outro_logradouro">Logradouro</label>
-                  <input type="text" name="end_outro_logradouro" id="end_outro_logradouro"/>
-                </li>
+                  <li>
+                    <label for="end_outro_logradouro">Logradouro</label>
+                    <input type="text" name="end_outro_logradouro"
+                           id="end_outro_logradouro"/>
+                  </li>
 
-                <li>
-                  <label for="end_outro_complemento">Complemento</label>
-                  <input type="text" name="end_outro_complemento" id="end_outro_complemento"/>
-                </li>
+                  <li>
+                    <label for="end_outro_complemento">Complemento</label>
+                    <input type="text" name="end_outro_complemento"
+                           id="end_outro_complemento"/>
+                  </li>
 
-                <li>
-                  <label>UF</label>
-                  <select name="end_outro_uf" id="end_outro_uf">
-                    <option></option>
-                    {% for uf in vals_uf %}
-                    <option value="{{ uf }}">{{ uf }}</option>
-                    {% endfor %}
-                  </select>
-                </li>
+                  <li>
+                    <label>UF</label>
+                    <select name="end_outro_uf" id="end_outro_uf">
+                      <option></option>
+                      {% for uf in vals_uf %}
+                      <option value="{{ uf }}">{{ uf }}</option>
+                      {% endfor %}
+                    </select>
+                  </li>
 
-                <li>
-                  <label for="end_outro_cidade">Cidade</label>
-                  <input type="text" name="end_outro_cidade" id="end_outro_cidade"/>
-                </li>
+                  <li>
+                    <label for="end_outro_cidade">Cidade</label>
+                    <input type="text" name="end_outro_cidade"
+                           id="end_outro_cidade"/>
+                  </li>
 
-                <li>
-                  <label for="end_outro_bairro">Bairro</label>
-                  <input type="text" name="end_outro_bairro" id="end_outro_bairro"/>
-                </li>
+                  <li>
+                    <label for="end_outro_bairro">Bairro</label>
+                    <input
+                        type="text" name="end_outro_bairro"
+                        id="end_outro_bairro"/>
+                  </li>
 
-                <li>
-                  <label for="end_outro_latitude">Latitude</label>
-                  <input type="text" name="end_outro_latitude" id="end_outro_latitude"/>
-                </li>
+                  <li>
+                    <label for="end_outro_latitude">Latitude</label>
+                    <input
+                        type="text" name="end_outro_latitude"
+                        id="end_outro_latitude"/>
+                  </li>
 
-                <li class="bottomBorder">
-                  <label for="end_outro_longitude">Longitude</label>
-                  <input type="text" name="end_outro_longitude" id="end_outro_longitude"/>
-                </li>
-              </ul>
-            </div>
-          </li><!-- form de endereco Duplicado via javascript -->
+                  <li class="bottomBorder">
+                    <label for="end_outro_longitude">Longitude</label>
+                    <input
+                        type="text" name="end_outro_longitude"
+                        id="end_outro_longitude"/>
+                  </li>
+                </ul>
+              </div><!-- form de endereco Duplicado via javascript -->
+              <input class="sub" type="button" value="Outro endereço"
+                     onclick="novoEndereco ();"/>
+            </li>
+          </div>
         </ul>
-        <input class="sub" type="button" value="Outro endereço"
-               onclick="novoEndereco ();"/>
       </div>
     </li><!-- Localização geográfica do projeto -->
 
@@ -284,7 +296,7 @@
           <br clear="both"/>
         </li>
 
-        <li>
+        <li class="displayNone">
           <label for="tipo_tel_sede">Qual tipo?</label>
           <select name="tipo_tel_sede" id="tipo_tel_sede">
             <option></option>
@@ -295,7 +307,8 @@
             <option value="publico">Público</option>
           </select>
         </li>
-        <li>
+
+        <li class="displayNone">
           <label>Por quê?</label>
           <ul>
             <li>
@@ -350,7 +363,8 @@
           </ul>
           <br clear="both"/>
         </li>
-        <li>
+
+        <li class="displayNone">
           <label for="tipo_internet">Qual tipo?</label>
           <select name="tipo_internet" id="tipo_internet">
             <option></option>
@@ -362,7 +376,8 @@
             <option value="publica">Internet Pública</option>
           </select>
         </li>
-        <li>
+
+        <li class="displayNone">
           <label>Por quê?</label>
           <ul>
             <li>
@@ -431,74 +446,77 @@
           <br clear="both"/>
         </li>
 
-        <li class="subForm">
-          <h4>Endereço da Entidade</h4>
+        <div class="displayNone">
+          <li class="subForm">
+            <h4>Endereço da Entidade</h4>
 
-          <div class="formEndereco">
-            <ul>
-              <li>
-                <label for="end_ent_nome">Nome do local</label>
-                <input
-                    type="text" name="end_ent_nome" id="end_ent_nome"
-                    onblur="javascript:atualizarEnderecos ();"/>
-              </li>
-              <li>
-                <label for="end_ent_cep">CEP</label>
-                <input
-                    type="text" name="end_ent_cep" id="end_ent_cep"
-                    onblur="cepWebService (this.value);"/>
-                <em class="helpText">
-                  <a href="#">Não sabe o seu CEP?</a>
-                </em>
-              </li>
+            <div class="formEndereco">
+              <ul>
+                <li>
+                  <label for="end_ent_nome">Nome do local</label>
+                  <input
+                      type="text" name="end_ent_nome" id="end_ent_nome"
+                      onblur="javascript:atualizarEnderecos ();"/>
+                </li>
+                <li>
+                  <label for="end_ent_cep">CEP</label>
+                  <input
+                      type="text" name="end_ent_cep" id="end_ent_cep"
+                      onblur="cepWebService (this.value);"/>
+                  <em class="helpText">
+                    <a href="#">Não sabe o seu CEP?</a>
+                  </em>
+                </li>
 
-              <li>
-                <label for="end_ent_numero">Número</label>
-                <input type="text" name="end_ent_numero" id="end_ent_numero"/>
-              </li>
+                <li>
+                  <label for="end_ent_numero">Número</label>
+                  <input type="text" name="end_ent_numero" id="end_ent_numero"/>
+                </li>
 
-              <li>
-                <label for="end_ent_logradouro">Logradouro</label>
-                <input type="text" name="end_ent_logradouro" id="end_ent_logradouro"/>
-              </li>
+                <li>
+                  <label for="end_ent_logradouro">Logradouro</label>
+                  <input type="text" name="end_ent_logradouro" id="end_ent_logradouro"/>
+                </li>
 
-              <li>
-                <label for="end_ent_complemento">Complemento</label>
-                <input type="text" name="end_ent_complemento" id="end_ent_complemento"/>
-              </li>
+                <li>
+                  <label for="end_ent_complemento">Complemento</label>
+                  <input type="text" name="end_ent_complemento" id="end_ent_complemento"/>
+                </li>
 
-              <li>
-                <label>UF</label>
-                <select name="end_ent_uf" id="end_ent_uf">
-                  <option></option>
-                  {% for uf in vals_uf %}
-                  <option value="{{ uf }}">{{ uf }}</option>
-                  {% endfor %}
-                </select>
-              </li>
+                <li>
+                  <label>UF</label>
+                  <select name="end_ent_uf" id="end_ent_uf">
+                    <option></option>
+                    {% for uf in vals_uf %}
+                    <option value="{{ uf }}">{{ uf }}</option>
+                    {% endfor %}
+                  </select>
+                </li>
 
-              <li>
-                <label for="end_ent_cidade">Cidade</label>
-                <input type="text" name="end_ent_cidade" id="end_ent_cidade"/>
-              </li>
+                <li>
+                  <label for="end_ent_cidade">Cidade</label>
+                  <input type="text" name="end_ent_cidade" id="end_ent_cidade"/>
+                </li>
 
-              <li>
-                <label for="end_ent_bairro">Bairro</label>
-                <input type="text" name="end_ent_bairro" id="end_ent_bairro"/>
-              </li>
+                <li>
+                  <label for="end_ent_bairro">Bairro</label>
+                  <input type="text" name="end_ent_bairro" id="end_ent_bairro"/>
+                </li>
 
-              <li>
-                <label for="end_ent_latitude">Latitude</label>
-                <input type="text" name="end_ent_latitude" id="end_ent_latitude"/>
-              </li>
+                <li>
+                  <label for="end_ent_latitude">Latitude</label>
+                  <input type="text" name="end_ent_latitude" id="end_ent_latitude"/>
+                </li>
 
-              <li class="bottomBorder">
-                <label for="end_ent_longitude">Longitude</label>
-                <input type="text" name="end_ent_longitude" id="end_ent_longitude"/>
-              </li>
-            </ul>
-          </div>
-        </li>
+                <li class="bottomBorder">
+                  <label for="end_ent_longitude">Longitude</label>
+                  <input type="text" name="end_ent_longitude" id="end_ent_longitude"/>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </div>
+
         <li>
           <label for="tel_ent">Telefone</label>
           <input type="text" name="tel_ent" id="tel_ent"/>
@@ -538,7 +556,7 @@
           <br clear="both"/>
         </li>
 
-        <li>
+        <li class="displayNone">
           <label for="outro_convenio">Qual?</label>
           <input type="text" name="outro_convenio" id="outro_convenio"/>
           <input class="sub" type="button" value="Outro convenio"
@@ -1025,7 +1043,7 @@
           </ul>
         </li>
 
-        <li>
+        <li class="displayNone">
           <label>Qual(is)?</label>
           <ul>
             <li>
@@ -1154,106 +1172,109 @@
             </li>
           </ul>
         </li>
+        <br clear="both"/>
 
-        <li>
-          <label>Com qual parceiro?</label>
-          <ul>
-            <li>
-              <label>
-                <input type="checkbox" name="parc_biblioteca"/>
-                Biblioteca
-              </label>
-            </li>
+        <div class="displayNone">
+          <li>
+            <label>Com qual parceiro?</label>
+            <ul>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_biblioteca"/>
+                  Biblioteca
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_empresa"/>
-                Empresa
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_empresa"/>
+                  Empresa
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_equipamento_de_saude"/>
-                Equipamento de Saúde
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_equipamento_de_saude"/>
+                  Equipamento de Saúde
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_escola"/>
-                Escola
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_escola"/>
+                  Escola
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_igreja"/>
-                Igreja
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_igreja"/>
+                  Igreja
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_ong"/>
-                ONG
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_ong"/>
+                  ONG
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_poder_publico"/>
-                Poder público
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_poder_publico"/>
+                  Poder público
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_pontos_de_memoria"/>
-                Pontos de Memória
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_pontos_de_memoria"/>
+                  Pontos de Memória
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_redes_indigenas"/>
-                Redes Indígenas
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_redes_indigenas"/>
+                  Redes Indígenas
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_sistema_s"/>
-                Sistema S (Sesc, Senai, Senac, etc)
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_sistema_s"/>
+                  Sistema S (Sesc, Senai, Senac, etc)
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="parc_tuxaua"/>
-                Tuxaua
-              </label>
-            </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="parc_tuxaua"/>
+                  Tuxaua
+                </label>
+              </li>
 
-            <li>
-              <label>
-                <input type="checkbox" name="outros_parceiros"/>
-                Outros.
-              </label>
-              <label for="quais_outros_parceiros">Quais?</label>
-              <input
-                  type="text" name="quais_outros_parceiros"
-                  id="quais_outros_parceiros"/>
-            </li>
-          </ul>
-        </li>
+              <li>
+                <label>
+                  <input type="checkbox" name="outros_parceiros"/>
+                  Outros.
+                </label>
+                <label for="quais_outros_parceiros">Quais?</label>
+                <input
+                    type="text" name="quais_outros_parceiros"
+                    id="quais_outros_parceiros"/>
+              </li>
+            </ul>
+          </li>
 
-        <li>
-          <label for="parc_nome">Nome do Parceiro</label>
-          <input type="text" name="parc_nome" id="parc_nome"/>
-          <input class="sub" type="button" value="Outro parceiro"
-                 onclick="novoParceiro ();"/>
-        </li>
+          <li>
+            <label for="parc_nome">Nome do Parceiro</label>
+            <input type="text" name="parc_nome" id="parc_nome"/>
+            <input class="sub" type="button" value="Outro parceiro"
+                   onclick="novoParceiro ();"/>
+          </li>
+        </div>
       </ol>
     </li>
 
