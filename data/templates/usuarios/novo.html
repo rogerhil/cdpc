@@ -191,12 +191,16 @@
     <h3>Contatos e Espaços na rede</h3>
     <ol class="section">
       <li>
-        <div>
-          <label for="telefone">Telefone</label>
-          <input type="text" name="telefone" id="telefone">
-        </div>
+        <ul class="telefones subForm">
+          <li class="bottomBorder">
+            <label>
+              <span>Telefone</span>
+              <input type="text" name="telefone">
+            </label>
+          </li>
+        </ul>
         <input class="sub" type="button" value="Outro telefone"
-               onclick="novoTelefone ();"/>
+               onclick="novoTelefone ($('.telefones', $(this).parent()));">
       </li>
 
       <li>

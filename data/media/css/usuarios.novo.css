@@ -46,3 +46,7 @@ h4 { margin-top:4px; }
     margin-top:10px; padding:5px; background:#f7f7f7;
     width:540px; border-radius:3px; -moz-border-radius:3px; }
 #papelParticipante label { display:inline; float:none; }
+
+.telefones label { display:inline; width:auto; float:none; }
+.telefones label span { display:block; width:240px; float:left; }
+.telefones input[type=text] { min-width:230px; }

@@ -36,3 +36,20 @@ function novaEntrada ($ul) {
         .addClass ('bottomBorder')
         .appendTo ($ul);
 }
+
+function novoTelefone ($parent) {
+    var $remove = $('<a href="javascript:;">Remover</a>');
+    $remove.click (function (evt) {
+        $(this).parent().remove()
+    });
+
+    var $label = $('<label>' +
+        '<span>Telefone</span>' +
+        '<input type="text" name="telefone">' +
+        '</label>');
+    $('<li>')
+        .append ($label)
+        .append ($remove)
+        .addClass ('bottomBorder')
+        .appendTo ($parent);
+}
