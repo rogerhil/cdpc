@@ -37,7 +37,6 @@ def novo():
         # instanciando o validador
         validator = validators.Usuario()
         validado = {}
-        import pdb; pdb.set_trace()
         try:
             validado = validator.to_python(request.form)
             clean_list = lambda x: [i for i in x if i.strip()];
