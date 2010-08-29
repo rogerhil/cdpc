@@ -61,7 +61,7 @@ class Usuario(formencode.Schema):
     end_uf = validators.String(not_empty=True)
     end_cidade = validators.String(not_empty=True)
     end_bairro = validators.String(not_empty=True)
-    telefone = validatores.String(not_empty=True)
+    telefone = validators.String(not_empty=True)
     email = validators.String(not_empty=True)
     usuario = validators.String(not_empty=True)
     senha = validators.String(not_empty=True)
