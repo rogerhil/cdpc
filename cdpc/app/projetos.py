@@ -52,6 +52,17 @@ def novo():
             projeto.nome_proj = validado['nome_proj']
 
             # -- Localização geográfica do projeto
+            projeto.end_proj = [Endereco(
+                    cep=validado['end_proj_cep'],
+                    numero=validado['end_proj_numero'],
+                    logradouro=validado['end_proj_logradouro'],
+                    complemento=validado['end_proj_complemento'],
+                    uf=validado['end_proj_uf'],
+                    cidade=validado['end_proj_cidade'],
+                    bairro=validado['end_proj_bairro'],
+                    latitude=validado['end_proj_latitude'],
+                    longitude=validado['end_proj_longitude']
+                    )]
             projeto.local_proj = validado['local_proj']
             if(projeto.local_proj == 'outros'):
                 projeto.end_outros = [Endereco(
