@@ -27,6 +27,7 @@ from ..config import DATABASE_URI
 class Telefone(Entity):
     """Wrapper para a entidade telefone no banco de dados
     """
+    using_options(shortnames=True)
     numero = Field(Unicode(32))
     cadastrado = ManyToMany('Cadastrado')
     tel_proj = ManyToMany('Projeto')
@@ -35,6 +36,7 @@ class Telefone(Entity):
 class RedeSocial(Entity):
     """Wrapper para a entidade redesocial no banco de dados
     """
+    using_options(shortnames=True)
     nome = Field(Unicode(128))
     link = Field(Unicode(128))
     cadastrado = ManyToMany('Cadastrado')
@@ -42,6 +44,7 @@ class RedeSocial(Entity):
 class Feed(Entity):
     """Wrapper para a entidade feed no banco de dados
     """
+    using_options(shortnames=True)
     nome = Field(Unicode(128))
     link = Field(Unicode(128))
     cadastrado = ManyToMany('Cadastrado')
@@ -49,24 +52,28 @@ class Feed(Entity):
 class Convenio(Entity):
     """Wrapper para a entidade convenio no banco de dados
     """
+    using_options(shortnames=True)
     nome = Field(Unicode(128))
     outro_convenio = ManyToMany('Projeto')
 
 class Documentacao(Entity):
     """Wrapper para a entidade documentacao no banco de dados
     """
+    using_options(shortnames=True)
     doc = Field(Unicode(128)) # Caminho para o arquivo
     documentacoes = ManyToMany('Projeto')
 
 class Parceiro(Entity):
     """Wrapper para a entidade parceiro no banco de dados
     """
+    using_options(shortnames=True)
     nome = Field(Unicode(128))
     parc_nome = ManyToMany('Projeto')
 
 class Endereco(Entity):
     """Wrapper para a entidade endereco no banco de dados
     """
+    using_options(shortnames=True)
     nome = Field(Unicode(128), default=u"")
     cep = Field(Unicode(8))
     numero = Field(Unicode(16))
@@ -87,7 +94,7 @@ class Endereco(Entity):
 class Cadastrado(Entity):
     """Classe base para Pessoa e Projeto
     """
-    using_options(inheritance='multi')
+    using_options(inheritance='multi', shortnames=True)
 
     # -- Meta informação
     data_cadastro = Field(DateTime, default=datetime.now)
@@ -103,7 +110,7 @@ class Cadastrado(Entity):
 class Pessoa(Cadastrado):
     """Wrapper para a entidade pessoa no banco de dados
     """
-    using_options(inheritance='multi')
+    using_options(inheritance='multi', shortnames=True)
 
     # -- Sobre sua participação
     voce_eh = Field(Unicode(20))
@@ -127,7 +134,7 @@ class Pessoa(Cadastrado):
 class Projeto(Entity):
     """Wrapper para a entidade projeto no banco de dados
     """
-    using_options(inheritance='multi')
+    using_options(inheritance='multi', shortnames=True)
 
     # -- Dados do projeto
     voce_eh = Field(Unicode(19))
