@@ -31,7 +31,7 @@ function cepWebService (cep) {
 }
 
 $(document).ready (function () {
-    $('#voce-eh').change(function () {
+    $('#voce_eh').change(function () {
         if ($(this).val () == 'participante') {
             $('#papelParticipante').show ();
         } else {
