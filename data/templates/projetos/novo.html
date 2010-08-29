@@ -222,8 +222,10 @@
       <h3>Contatos e Espaços na rede</h3>
       <ol class="section">
         <li>
-          <label for="tel_proj">Telefone</label>
-          <input type="text" name="tel_proj" id="tel_proj"/>
+          <div>
+            <label for="tel_proj">Telefone</label>
+            <input type="text" name="tel_proj" id="tel_proj"/>
+          </div>
           <input class="sub" type="button" value="Outro telefone"
                  onclick="novoTelefone ();"/>
         </li>
@@ -518,8 +520,10 @@
         </div>
 
         <li>
-          <label for="tel_ent">Telefone</label>
-          <input type="text" name="tel_ent" id="tel_ent"/>
+          <div>
+            <label for="tel_ent">Telefone</label>
+            <input type="text" name="tel_ent" id="tel_ent"/>
+          </div>
           <input class="sub" type="button" value="Outro telefone"
                  onclick="novoTelefone ();"/>
         </li>
@@ -557,8 +561,10 @@
         </li>
 
         <li class="displayNone">
-          <label for="outro_convenio">Qual?</label>
-          <input type="text" name="outro_convenio" id="outro_convenio"/>
+          <div>
+            <label for="outro_convenio">Qual?</label>
+            <input type="text" name="outro_convenio" id="outro_convenio"/>
+          </div>
           <input class="sub" type="button" value="Outro convenio"
                  onclick="novoConvenio ();"/>
         </li>
@@ -1141,10 +1147,12 @@
         </li>
 
         <li>
-          <label for="documentacoes">
-            Upload de <b>Plano de trabalho e documentações do Projeto</b>
-          </label>
-          <input type="file" name="documentacoes" id="documentacoes"/>
+          <div>
+            <label for="documentacoes">
+              Upload de <b>Plano de trabalho e documentações do Projeto</b>
+            </label>
+            <input type="file" name="documentacoes" id="documentacoes"/>
+          </div>
           <input class="sub" type="button" value="Outro arquivo"
                  onclick="novaDocumentacao ();"/>
         </li>
@@ -1269,8 +1277,10 @@
           </li>
 
           <li>
-            <label for="parc_nome">Nome do Parceiro</label>
-            <input type="text" name="parc_nome" id="parc_nome"/>
+            <div>
+              <label for="parc_nome">Nome do Parceiro</label>
+              <input type="text" name="parc_nome" id="parc_nome"/>
+            </div>
             <input class="sub" type="button" value="Outro parceiro"
                    onclick="novoParceiro ();"/>
           </li>
