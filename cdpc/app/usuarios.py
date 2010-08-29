@@ -69,6 +69,19 @@ def novo():
             usuario.data_nascimento = validado['data_nascimento']
             usuario.sexo = validado['sexo']
 
+            # -- Sobre a sua localização geográfica
+            endereco = models.Endereco()
+            endereco.cep = validado['end_cep']
+            endereco.uf = validado['end_uf']
+            endereco.cidade = validado['end_cidade']
+            endereco.bairro = validado['end_bairro']
+            endereco.logradouro = validado['end_logradouro']
+            endereco.numero = validado['end_numero']
+            endereco.complemento = validado['end_complemento']
+            endereco.latitude = validado['end_latitude']
+            endereco.longitude = validado['end_longitude']
+            usuario.endereco.append(endereco)
+
             # -- Contatos e espaços na rede
             usuario.email = validado['email']
             usuario.website = validado['website']
