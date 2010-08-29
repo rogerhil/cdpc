@@ -24,7 +24,7 @@ from flask import Module, request, render_template
 
 from . import validators
 from . import models
-from cadastrado import VALORES_UF
+from .cadastro import VALORES_UF
 
 module = Module(__name__)
 
