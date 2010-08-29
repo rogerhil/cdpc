@@ -18,9 +18,16 @@ function cepWebService (cep) {
     $.getJSON ('../../cadastro/consulta_cep/', {cep: cep}, function (data) {
         var form = $('#novoUsuario')[0];
         $(form.end_logradouro).val (data.rua);
+        $(form.end_logradouro).focusout ();
+
         $(form.end_bairro).val (data.bairro);
+        $(form.end_bairro).focusout ();
+
         $(form.end_cidade).val (data.cidade);
+        $(form.end_cidade).focusout ();
+
         $(form.end_uf).val (data.uf);
+        $(form.end_uf).focusout ();
     });
 
     $.getJSON ('../../cadastro/consulta_geo/', {cep: cep}, function (data) {
