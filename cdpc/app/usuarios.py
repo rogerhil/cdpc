@@ -62,6 +62,7 @@ def novo():
             # salva no db.
 
             usuario = models.Pessoa()
+            usuario.ip_addr = request.remote_addr
 
             # -- Dados pessoais
             usuario.nome = validado['nome']
