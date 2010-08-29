@@ -24,7 +24,7 @@
       <h3>Dados do projeto</h3>
       <ol class="section">
         <li>
-          <label for="voce_eh">Seu projeto é</label>
+          <label for="voce_eh">Seu projeto é*</label>
           <select id="voce_eh" name="voce_eh">
             <option></option>
             <option value="ponto">Ponto</option>
@@ -33,7 +33,7 @@
           </select>
         </li>
         <li>
-          <label for="tipo_convenio">Qual tipo de convênio?</label>
+          <label for="tipo_convenio">Qual tipo de convênio?*</label>
           <select id="tipo_convenio" name="tipo_convenio">
             <option></option>
             <option value="internacional">Internacional</option>
@@ -43,7 +43,7 @@
           </select>
         </li>
         <li>
-          <label for="numero_convenio">Número do convênio do projeto</label>
+          <label for="numero_convenio">Número do convênio do projeto*</label>
           <input type="text" name="numero_convenio" id="numero_convenio"/>
           <em class="helpText">
             <a href="#">Onde eu encontro meu número de convênio?</a>
@@ -65,7 +65,7 @@
             <div class="formEndereco">
               <ul>
                 <li>
-                  <label for="end_proj_cep">CEP</label>
+                  <label for="end_proj_cep">CEP*</label>
                   <input
                       type="text" name="end_proj_cep" id="end_proj_cep"
                       onblur="cepWebService (this.value);"/>
@@ -75,12 +75,12 @@
                 </li>
 
                 <li>
-                  <label for="end_proj_numero">Número</label>
+                  <label for="end_proj_numero">Número*</label>
                   <input type="text" name="end_proj_numero" id="end_proj_numero"/>
                 </li>
 
                 <li>
-                  <label for="end_proj_logradouro">Logradouro</label>
+                  <label for="end_proj_logradouro">Logradouro*</label>
                   <input type="text" name="end_proj_logradouro" id="end_proj_logradouro"/>
                 </li>
 
@@ -90,7 +90,7 @@
                 </li>
 
                 <li>
-                  <label for="end_proj_uf">UF</label>
+                  <label for="end_proj_uf">UF*</label>
                   <select name="end_proj_uf" id="end_proj_uf">
                     <option></option>
                     {% for uf in vals_uf %}
@@ -100,29 +100,29 @@
                 </li>
 
                 <li>
-                  <label for="end_proj_cidade">Cidade</label>
+                  <label for="end_proj_cidade">Cidade*</label>
                   <input type="text" name="end_proj_cidade" id="end_proj_cidade"/>
                 </li>
 
                 <li>
-                  <label for="end_proj_bairro">Bairro</label>
+                  <label for="end_proj_bairro">Bairro*</label>
                   <input type="text" name="end_proj_bairro" id="end_proj_bairro"/>
                 </li>
 
                 <li>
-                  <label for="end_proj_latitude">Latitude</label>
                   <input type="text" name="end_proj_latitude" id="end_proj_latitude"/>
+                  <label for="end_proj_latitude">Latitude*</label>
                 </li>
 
                 <li class="bottomBorder">
-                  <label for="end_proj_longitude">Longitude</label>
+                  <label for="end_proj_longitude">Longitude*</label>
                   <input type="text" name="end_proj_longitude" id="end_proj_longitude"/>
                 </li>
               </ul>
             </div>
           </li>
           <li>
-            <label for="local_proj">Onde o seu projeto ocorre?</label>
+            <label for="local_proj">Onde o seu projeto ocorre?*</label>
             <select name="local_proj" id="local_proj">
               <option></option>
               <option value="sede">Sede</option>
@@ -145,7 +145,7 @@
                        onblur="javascript:atualizarEnderecos ();"/>
                   </li>
                   <li>
-                    <label for="end_outro_cep">CEP</label>
+                    <label for="end_outro_cep">CEP*</label>
                     <input
                        type="text" name="end_outro_cep" id="end_outro_cep"
                        onblur="cepWebService (this.value);"/>
@@ -155,13 +155,13 @@
                   </li>
 
                   <li>
-                    <label for="end_outro_numero">Número</label>
+                    <label for="end_outro_numero">Número*</label>
                     <input type="text" name="end_outro_numero"
                            id="end_outro_numero"/>
                   </li>
 
                   <li>
-                    <label for="end_outro_logradouro">Logradouro</label>
+                    <label for="end_outro_logradouro">Logradouro*</label>
                     <input type="text" name="end_outro_logradouro"
                            id="end_outro_logradouro"/>
                   </li>
@@ -173,7 +173,7 @@
                   </li>
 
                   <li>
-                    <label>UF</label>
+                    <label>UF*</label>
                     <select name="end_outro_uf" id="end_outro_uf">
                       <option></option>
                       {% for uf in vals_uf %}
@@ -183,27 +183,27 @@
                   </li>
 
                   <li>
-                    <label for="end_outro_cidade">Cidade</label>
+                    <label for="end_outro_cidade">Cidade*</label>
                     <input type="text" name="end_outro_cidade"
                            id="end_outro_cidade"/>
                   </li>
 
                   <li>
-                    <label for="end_outro_bairro">Bairro</label>
+                    <label for="end_outro_bairro">Bairro*</label>
                     <input
                         type="text" name="end_outro_bairro"
                         id="end_outro_bairro"/>
                   </li>
 
                   <li>
-                    <label for="end_outro_latitude">Latitude</label>
+                    <label for="end_outro_latitude">Latitude*</label>
                     <input
                         type="text" name="end_outro_latitude"
                         id="end_outro_latitude"/>
                   </li>
 
                   <li class="bottomBorder">
-                    <label for="end_outro_longitude">Longitude</label>
+                    <label for="end_outro_longitude">Longitude*</label>
                     <input
                         type="text" name="end_outro_longitude"
                         id="end_outro_longitude"/>
@@ -223,7 +223,7 @@
       <ol class="section">
         <li>
           <div>
-            <label for="tel_proj">Telefone</label>
+            <label for="tel_proj">Telefone*</label>
             <input type="text" name="tel_proj" id="tel_proj"/>
           </div>
           <input class="sub" type="button" value="Outro telefone"
@@ -231,7 +231,7 @@
         </li>
 
         <li>
-          <label for="email_proj">Email</label>
+          <label for="email_proj">Email*</label>
           <input type="text" name="email_proj" id="email_proj"/>
         </li>
 
@@ -285,7 +285,7 @@
       <ol class="section">
         <li>
           <label>
-            A sede do projeto possui telefone?
+            A sede do projeto possui telefone?*
           </label>
           <ul class="comCdTelefone">
             <li>
@@ -347,7 +347,7 @@
         </li>
 
         <li>
-          <label>A sede do projeto possui acesso à internet?</label>
+          <label>A sede do projeto possui acesso à internet?*</label>
           <ul>
             <li>
               <label>
@@ -420,13 +420,14 @@
       <h3>Entidade Proponente</h3>
       <ol class="section">
         <li>
-          <label for="nome_ent">Nome Completo da Entidade:</label>
+          <label for="nome_ent">Nome Completo da Entidade*</label>
           <input type="text" name="nome_ent" id="nome_ent"/>
         </li>
 
         <li>
           <label>
-            O endereço da <b>Entidade</b> é o mesmo endereço do <b>Projeto</b>?
+            O endereço da <b>Entidade</b> é o mesmo endereço do
+            <b>Projeto</b>?*
           </label>
           <ul>
             <li>
@@ -461,7 +462,7 @@
                       onblur="javascript:atualizarEnderecos ();"/>
                 </li>
                 <li>
-                  <label for="end_ent_cep">CEP</label>
+                  <label for="end_ent_cep">CEP*</label>
                   <input
                       type="text" name="end_ent_cep" id="end_ent_cep"
                       onblur="cepWebService (this.value);"/>
@@ -471,12 +472,12 @@
                 </li>
 
                 <li>
-                  <label for="end_ent_numero">Número</label>
+                  <label for="end_ent_numero">Número*</label>
                   <input type="text" name="end_ent_numero" id="end_ent_numero"/>
                 </li>
 
                 <li>
-                  <label for="end_ent_logradouro">Logradouro</label>
+                  <label for="end_ent_logradouro">Logradouro*</label>
                   <input type="text" name="end_ent_logradouro" id="end_ent_logradouro"/>
                 </li>
 
@@ -486,7 +487,7 @@
                 </li>
 
                 <li>
-                  <label>UF</label>
+                  <label>UF*</label>
                   <select name="end_ent_uf" id="end_ent_uf">
                     <option></option>
                     {% for uf in vals_uf %}
@@ -496,22 +497,22 @@
                 </li>
 
                 <li>
-                  <label for="end_ent_cidade">Cidade</label>
+                  <label for="end_ent_cidade">Cidade*</label>
                   <input type="text" name="end_ent_cidade" id="end_ent_cidade"/>
                 </li>
 
                 <li>
-                  <label for="end_ent_bairro">Bairro</label>
+                  <label for="end_ent_bairro">Bairro*</label>
                   <input type="text" name="end_ent_bairro" id="end_ent_bairro"/>
                 </li>
 
                 <li>
-                  <label for="end_ent_latitude">Latitude</label>
+                  <label for="end_ent_latitude">Latitude*</label>
                   <input type="text" name="end_ent_latitude" id="end_ent_latitude"/>
                 </li>
 
                 <li class="bottomBorder">
-                  <label for="end_ent_longitude">Longitude</label>
+                  <label for="end_ent_longitude">Longitude*</label>
                   <input type="text" name="end_ent_longitude" id="end_ent_longitude"/>
                 </li>
               </ul>
@@ -575,7 +576,9 @@
       <h3>Atividades exercidas pelo projeto</h3>
       <ol class="section">
         <li>
-          <label>Qual a área de atuação das atividades do <b>Projeto</b>?</label>
+          <label>
+            Qual a área de atuação das atividades do <b>Projeto</b>?*
+          </label>
           <ul>
             <li>
               <label>
@@ -732,7 +735,7 @@
 
         <li class="subForm">
           <h4>
-            Com qual <b>Público Alvo</b> o <b>Projeto</b> é desenvolvido?
+            Com qual <b>Público Alvo</b> o <b>Projeto</b> é desenvolvido?*
           </h4>
           <ul>
             <li>
@@ -1031,7 +1034,10 @@
         <br clear="both"/>
 
         <li>
-          <label>O <b>Projeto</b> participa de alguma <b>Ação</b> do <b>Programa Cultura Viva?</b></label>
+          <label>
+            O <b>Projeto</b> participa de alguma <b>Ação</b> do <b>Programa
+            Cultura Viva?</b>*
+          </label>
           <ul>
             <li>
               <label>
@@ -1163,7 +1169,7 @@
       <h3>Parcerias do Projeto</h3>
       <ol class="section">
         <li>
-          <label>O <b>Projeto</b> estabeleceu <b>Parcerias</b>?</label>
+          <label>O <b>Projeto</b> estabeleceu <b>Parcerias</b>?*</label>
           <ul>
             <li>
               <label>
