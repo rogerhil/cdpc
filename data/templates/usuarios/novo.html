@@ -24,7 +24,7 @@
     <h3>Sobre a sua participação</h3>
     <ol class="section">
       <li>
-        <label class="voceEh" for="voce_eh">Você é</label>
+        <label class="voceEh" for="voce_eh">Você é*</label>
         <select id="voce_eh" name="voce_eh">
           <option></option>
           <option value="participante">
@@ -90,12 +90,12 @@
     <h3>Dados Pessoais</h3>
     <ol class="section">
       <li>
-        <label for="nome">Nome completo</label>
+        <label for="nome">Nome completo*</label>
         <input type="text" name="nome" id="nome">
       </li>
 
       <li>
-        <label for="cpf">CPF</label>
+        <label for="cpf">CPF*</label>
         <input type="text" name="cpf" id="cpf">
         <em class="helpText">
           <a href="#">Por que pedimos o seu CPF</a>
@@ -103,12 +103,12 @@
       </li>
 
       <li>
-        <label for="data_nascimento">Data de nascimento</label>
+        <label for="data_nascimento">Data de nascimento*</label>
         <input type="text" name="data_nascimento" id="data_nascimento">
       </li>
 
       <li>
-        <label>Sexo</label>
+        <label>Sexo*</label>
         <label>
           <input type="radio" name="sexo" value="feminino">
           Feminino
@@ -131,7 +131,7 @@
     <h3>Sobre a sua localização geográfica</h3>
     <ol class="section">
       <li>
-        <label for="end_cep">CEP</label>
+        <label for="end_cep">CEP*</label>
         <input
            type="text" name="end_cep" id="end_cep"
            onblur="cepWebService (this.value);">
@@ -141,12 +141,12 @@
       </li>
 
       <li>
-        <label for="end_numero">Número</label>
+        <label for="end_numero">Número*</label>
         <input type="text" name="end_numero" id="end_numero">
       </li>
 
       <li>
-        <label for="end_logradouro">Logradouro</label>
+        <label for="end_logradouro">Logradouro*</label>
         <input type="text" name="end_logradouro" id="end_logradouro">
       </li>
 
@@ -156,7 +156,7 @@
       </li>
 
       <li>
-        <label for="end_uf">UF</label>
+        <label for="end_uf">UF*</label>
         <select name="end_uf" id="end_uf">
           <option></option>
           {% for uf in vals_uf %}
@@ -166,12 +166,12 @@
       </li>
 
       <li>
-        <label for="end_cidade">Cidade</label>
+        <label for="end_cidade">Cidade*</label>
         <input type="text" name="end_cidade" id="end_cidade">
       </li>
 
       <li>
-        <label for="end_bairro">Bairro</label>
+        <label for="end_bairro">Bairro*</label>
         <input type="text" name="end_bairro" id="end_bairro">
       </li>
 
@@ -194,7 +194,7 @@
         <ul class="telefones subForm">
           <li class="bottomBorder">
             <label>
-              <span>Telefone</span>
+              <span>Telefone*</span>
               <input type="text" name="telefone">
             </label>
           </li>
@@ -204,7 +204,7 @@
       </li>
 
       <li>
-        <label for="email">Email</label>
+        <label for="email">Email*</label>
         <input type="text" name="email" id="email">
       </li>
 
@@ -252,15 +252,15 @@
     <h3>Dados de acesso</h3>
     <ol class="section">
       <li>
-        <label for="usuario">Login</label>
+        <label for="usuario">Login*</label>
         <input type="text" name="usuario" id="usuario">
       </li>
       <li>
-        <label for="senha">Senha</label>
+        <label for="senha">Senha*</label>
         <input type="text" name="senha" id="senha">
       </li>
       <li>
-        <label for="confirmar_senha">Confirmar senha</label>
+        <label for="confirmar_senha">Confirmar senha*</label>
         <input type="text" name="confirmar_senha" id="confirmar_senha">
       </li>
     </ol>
