@@ -254,7 +254,7 @@ class Projeto(formencode.Schema):
 
     descricao = validators.String()
 
-    # TODO: Tratar upload de documentacoes
+    documentacoes = validators.FieldStorageUploadConverter()
 
     # -- Parcerias do Projeto
     parcerias = validators.String(not_empty=True)
@@ -277,6 +277,8 @@ class Projeto(formencode.Schema):
     ind_oficinas = validators.Int()
     ind_expectadores = validators.Int()
     ind_populacao = validators.Int()
+
+    avatar = validators.FieldStorageUploadConverter()
 
     # TODO:
     #   Validar endereços adicionados em Outros Locais e Entidade
