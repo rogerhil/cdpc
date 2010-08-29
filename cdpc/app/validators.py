@@ -274,9 +274,9 @@ class Projeto(formencode.Schema):
     parc_nome = validators.String()
 
     # -- Índice de acesso à cultura
-    ind_oficinas = validators.String()
-    ind_expectadores = validators.String()
-    ind_populacao = validators.String()
+    ind_oficinas = validators.Int()
+    ind_expectadores = validators.Int()
+    ind_populacao = validators.Int()
 
     # TODO:
     #   Validar endereços adicionados em Outros Locais e Entidade

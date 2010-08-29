@@ -251,9 +251,9 @@ def novo():
             projeto.parc_nome = [Parceiro(nome=validado['parc_nome'])]
 
             # -- Índice de acesso à cultura
-            projeto.ind_oficinas = int(validado['ind_oficinas'])
-            ind_expectadores = int(validado['ind_expectadores'])
-            ind_populacao = int(validado['ind_populacao'])
+            projeto.ind_oficinas = validado['ind_oficinas']
+            ind_expectadores = validado['ind_expectadores']
+            ind_populacao = validado['ind_populacao']
 
             # -- Avatar
             # TODO: Tratar upload de avatar
