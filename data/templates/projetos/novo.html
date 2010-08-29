@@ -245,15 +245,16 @@
       <h3>Contatos e Espaços na rede</h3>
       <ol class="section">
         <li>
-          <div>
-            <label for="tel_proj">Telefone*</label>
-            <input
-                type="text" name="tel_proj" id="tel_proj"
-                placeholder="DDD + Fone"/>
-
-          </div>
+          <ul class="telefones subForm">
+            <li class="bottomBorder">
+              <label>
+                <span>Telefone</span>
+                <input type="text" name="tel_proj" placeholder="DDD + Fone">
+              </label>
+            </li>
+          </ul>
           <input class="sub" type="button" value="Outro telefone"
-                 onclick="novoTelefone ();"/>
+                 onclick="novoTelefone ($('.telefones', $(this).parent()));">
         </li>
 
         <li>
@@ -585,14 +586,16 @@
         </div>
 
         <li>
-          <div>
-            <label for="tel_ent">Telefone</label>
-            <input
-                type="text" name="tel_ent" id="tel_ent"
-                placeholder="DDD + Fone"/>
-          </div>
+          <ul class="telefones subForm">
+            <li class="bottomBorder">
+              <label>
+                <span>Telefone</span>
+                <input type="text" name="tel_ent" placeholder="DDD + Fone">
+              </label>
+            </li>
+          </ul>
           <input class="sub" type="button" value="Outro telefone"
-                 onclick="novoTelefone ();"/>
+                 onclick="novoTelefone ($('.telefones', $(this).parent()));">
         </li>
 
         <li>
