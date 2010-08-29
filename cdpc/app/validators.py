@@ -51,18 +51,39 @@ class CpfValidator(formencode.FancyValidator):
         return value
 
 class Usuario(formencode.Schema):
+    # -- Sobre a sua participação
     voce_eh = validators.String(not_empty=True)
+    nome_iniciativa = validators.String()
+    papel = validators.String()
+
+    # -- Dados pessoais
     nome = validators.String(not_empty=True)
     cpf = CpfValidator(not_empty=True)
     data_nascimento = validators.String(not_empty=True)
     sexo = validators.String(not_empty=True)
+    avatar = validators.FieldStorageUploadConverter()
+
+    # -- Sobre a sua geolocalização
     end_cep = validators.String(not_empty=True)
     end_numero = validators.String(not_empty=True)
     end_uf = validators.String(not_empty=True)
     end_cidade = validators.String(not_empty=True)
     end_bairro = validators.String(not_empty=True)
+    end_logradouro = validators.String(not_empty=True)
+    end_complemento = validators.String(not_empty=True)
+    end_longitude = validators.String()
+    end_latitude = validators.String()
+
+    # -- Contatos e Espaços na rede
     telefone = validators.String(not_empty=True)
     email = validators.String(not_empty=True)
+    website = validators.URL()
+    rs_nome = validators.String()
+    rs_link = validators.String()
+    feed_nome = validators.String()
+    feed_link = validators.String()
+
+    # -- Dados de acesso
     usuario = validators.String(not_empty=True)
     senha = validators.String(not_empty=True)
     confirmar_senha = validators.String(not_empty=True)
