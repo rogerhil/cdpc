@@ -59,7 +59,7 @@ class Usuario(formencode.Schema):
     # -- Dados pessoais
     nome = validators.String(not_empty=True)
     cpf = CpfValidator(not_empty=True)
-    data_nascimento = validators.String(not_empty=True)
+    data_nascimento = validators.DateConverter(month_style='dd/mm/yyyy')
     sexo = validators.String(not_empty=True)
     avatar = validators.FieldStorageUploadConverter()
 
