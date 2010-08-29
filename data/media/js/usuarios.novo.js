@@ -22,4 +22,16 @@ $(document).ready (function () {
             $('#papelParticipante').hide ();
         }
     });
+
+    $('#novoUsuario').validate({
+        debug: true,
+        invalidHandler: function (form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                alert (errors);
+                return false;
+            }
+        }
+    });
 });
+

@@ -6,7 +6,11 @@
    href="{{ url_for('.static', filename='css/usuarios.novo.css') }}">
 <script
    type="text/javascript"
-   src="{{ url_for('.static', filename='js/jquery.js') }}"></script>
+   src="{{ url_for('.static', filename='js/inc/jquery.js') }}"></script>
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/inc/jquery.validate.js') }}">
+</script>
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/geral.novo.js') }}"></script>
@@ -25,7 +29,7 @@
     <ol class="section">
       <li>
         <label class="voceEh" for="voce_eh">Você é*</label>
-        <select id="voce_eh" name="voce_eh">
+        <select id="voce_eh" name="voce_eh" class="required">
           <option></option>
           <option value="participante">
             Participante da equipe de uma iniciativa cultural
@@ -92,14 +96,14 @@
       <li>
         <label for="nome">Nome completo*</label>
         <input
-           type="text" name="nome" id="nome"
+           type="text" name="nome" id="nome" class="required"
            placeholder="Digite o seu nome completo. Ex.: José da Silva Oliveira Santos">
       </li>
 
       <li>
         <label for="cpf">CPF*</label>
         <input
-           type="text" name="cpf" id="cpf"
+           type="text" name="cpf" id="cpf" class="required"
            placeholder="Só números. Ex.: 32857345610">
         <em class="helpText">
           <a href="#">Por que pedimos o seu CPF</a>
@@ -108,7 +112,8 @@
 
       <li>
         <label for="data_nascimento">Data de nascimento*</label>
-        <input type="text" name="data_nascimento" id="data_nascimento">
+        <input type="text" name="data_nascimento" id="data_nascimento"
+               class="required">
       </li>
 
       <li>
@@ -137,7 +142,7 @@
       <li>
         <label for="end_cep">CEP*</label>
         <input
-           type="text" name="end_cep" id="end_cep"
+           type="text" name="end_cep" id="end_cep" class="required"
            onblur="cepWebService (this.value);">
         <em class="helpText">
           <a href="#">Não sabe o seu CEP?</a>
@@ -147,7 +152,7 @@
       <li>
         <label for="end_numero">Número*</label>
         <input
-           type="text" name="end_numero" id="end_numero"
+           type="text" name="end_numero" id="end_numero" class="required"
            placeholder="Ex.: 202">
       </li>
 
@@ -155,6 +160,7 @@
         <label for="end_logradouro">Logradouro*</label>
         <input
            type="text" name="end_logradouro" id="end_logradouro"
+           class="required"
            placeholder="Digite o nome de sua rua, Al., Av., Viela, etc. Ex.: Rua Lírios">
       </li>
 
@@ -167,7 +173,7 @@
 
       <li>
         <label for="end_uf">UF*</label>
-        <select name="end_uf" id="end_uf">
+        <select name="end_uf" id="end_uf" class="required">
           <option></option>
           {% for uf in vals_uf %}
           <option value="{{ uf }}">{{ uf }}</option>
@@ -178,14 +184,14 @@
       <li>
         <label for="end_cidade">Cidade*</label>
         <input
-           type="text" name="end_cidade" id="end_cidade"
+           type="text" name="end_cidade" id="end_cidade" class="required"
            placeholder="Ex.: Salvador">
       </li>
 
       <li>
         <label for="end_bairro">Bairro*</label>
         <input
-           type="text" name="end_bairro" id="end_bairro"
+           type="text" name="end_bairro" id="end_bairro" class="required"
            placeholder="Vila das Flores">
       </li>
 
@@ -213,18 +219,19 @@
           <li class="bottomBorder">
             <label>
               <span>Telefone*</span>
-              <input type="text" name="telefone" placeholder="DDD + Fone">
+              <input type="text" name="telefone" placeholder="DDD + Fone"
+                     class="required">
             </label>
           </li>
         </ul>
-        <input class="sub" type="button" value="Outro telefone"
+        <input class="sub" type="button" value="Outro telefone" name="nt"
                onclick="novoTelefone ($('.telefones', $(this).parent()));">
       </li>
 
       <li>
         <label for="email">Email*</label>
         <input
-           type="text" name="email" id="email"
+           type="text" name="email" id="email" class="required"
            placeholder="Digite o seu endereço de e-mail.  Ex.: josedasilvaoliveirasantos@cultura.org.br">
       </li>
 
@@ -250,7 +257,7 @@
           </li>
         </ul><!-- Redes sociais -->
         <input
-           class="sub" type="button" value="Outra rede"
+           class="sub" type="button" value="Outra rede" name="nt"
            onclick="novaEntrada ($('#redesSociais'));">
       </li>
 
@@ -270,7 +277,7 @@
                placeholder="http://culturadigital.br/simposioacervosdigitais/feed/"/>
           </li>
         </ul><!-- Feeds -->
-        <input class="sub" type="button" value="Outro feed"
+        <input class="sub" type="button" value="Outro feed" name="nt"
            onclick="novaEntrada ($('#feeds'));">
       </li>
     </ol><!-- Contatos e espaços na rede -->
@@ -281,15 +288,16 @@
     <ol class="section">
       <li>
         <label for="usuario">Login*</label>
-        <input type="text" name="usuario" id="usuario">
+        <input type="text" name="usuario" id="usuario" class="required">
       </li>
       <li>
         <label for="senha">Senha*</label>
-        <input type="text" name="senha" id="senha">
+        <input type="text" name="senha" id="senha" class="required">
       </li>
       <li>
         <label for="confirmar_senha">Confirmar senha*</label>
-        <input type="text" name="confirmar_senha" id="confirmar_senha">
+        <input type="text" name="confirmar_senha" id="confirmar_senha"
+               class="required">
       </li>
     </ol>
   </li>

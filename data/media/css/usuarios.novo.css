@@ -18,6 +18,9 @@ ul, ol { list-style:none none; padding:0; }
 li { margin-bottom:0.3em; }
 h4 { margin-top:4px; }
 .section { padding-left:20px; }
+label.error, .form label.error { display:none !important; }
+
+.error { border:solid 1px red; background:#fce5b9; }
 
 /* Tamanho genérico para campos */
 .form input[type=text] { min-width:250px; }
