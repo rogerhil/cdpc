@@ -125,6 +125,7 @@ class Projeto(formencode.Schema):
     tel_proj = validators.String()
     email_proj = validators.String(not_empty=True)
     website_proj = validators.URL()
+    frequencia = validators.String()
     rs_nome = validators.String()
     rs_link = validators.String()
     feed_nome = validators.String()
@@ -156,7 +157,7 @@ class Projeto(formencode.Schema):
     email_ent = validators.String()
     website_ent = validators.URL()
     convenio_ent = validators.String()
-    outro_ent = validators.String()
+    outro_convenio = validators.String()
 
     # -- Atividades exercidas pelo projeto
     # -- Qual a área de atuação das atividades do projeto

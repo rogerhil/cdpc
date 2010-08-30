@@ -33,13 +33,17 @@ def novo():
         # instanciando o validador
         validator = validators.Projeto()
         validado = {}
+        print 'POST'
         try:
             validado = validator.to_python(request.form)
         except Invalid, e:
             # Dar um feedback pro usuário usando a instância da
             # exceção "e".
+            print 'Exceção'
+            print e
             pass
         else:
+            print 'ELSE'
             # Instanciando o modelo e associando os campos validados e
             # transformados em valores python à instância que será
             # salva no db.
@@ -52,7 +56,7 @@ def novo():
             projeto.nome_proj = validado['nome_proj']
 
             # -- Localização geográfica do projeto
-            projeto.end_proj = [Endereco(
+            projeto.end_proj = [models.Endereco(
                     cep=validado['end_proj_cep'],
                     numero=validado['end_proj_numero'],
                     logradouro=validado['end_proj_logradouro'],
@@ -65,7 +69,7 @@ def novo():
                     )]
             projeto.local_proj = validado['local_proj']
             if(projeto.local_proj == 'outros'):
-                projeto.end_outros = [Endereco(
+                projeto.end_outros = [models.Endereco(
                         nome=validado['end_outro_nome'],
                         cep=validado['end_outro_cep'],
                         numero=validado['end_outro_numero'],
@@ -79,13 +83,23 @@ def novo():
                         )]
 
             # -- Contatos e espaços na rede
-            projeto.telefones = [Telefone(numero=validado['tel_proj'])]
             projeto.email = validado['email_proj']
             projeto.website = validado['website_proj']
-            projeto.redes_sociais = [
-                RedeSocial(nome=validado['rs_nome'], link=validado['rs_link'])]
-            projeto.feeds = [
-                Feed(nome=validado['feed_nome'], link=validado['feed_link'])]
+            projeto.frequencia = validado['frequencia']
+            for i in request.form.getlist('telefone'):
+                tel = models.Telefone()
+                tel.numero = i
+                projeto.telefones.append(tel)
+            for i in range(len(rs_nomes)):
+                rsocial = models.RedeSocial()
+                rsocial.nome = rs_nomes[i]
+                rsocial.link = rs_links[i]
+                projeto.redes_sociais.append(rsocial)
+            for i in range(len(feed_nomes)):
+                feed = models.Feed()
+                feed.nome = feed_nomes[i]
+                feed.link = feed_links[i]
+                projeto.feeds.append(feed)
 
             # -- Comunicação e Cultura Digital
             projeto.sede_possui_tel = validado['sede_possui_tel'] == 'sim'
@@ -108,7 +122,7 @@ def novo():
             projeto.nome_ent = validado['nome_ent']
             projeto.endereco_ent_proj = validado['endereco_ent_proj'] == 'sim'
             if(not projeto.endereco_ent_proj):
-                projeto.end_ent= [Endereco(
+                projeto.end_ent= [models.Endereco(
                         cep=validado['end_ent_cep'],
                         numero=validado['end_ent_numero'],
                         logradouro=validado['end_ent_logradouro'],
@@ -119,7 +133,7 @@ def novo():
                         latitude=validado['end_ent_latitude'],
                         longitude=validado['end_ent_longitude']
                         )]
-            projeto.tel_ent = [Telefone(numero=validado['tel_ent'])]
+            projeto.tel_ent = [models.Telefone(numero=validado['tel_ent'])]
             projeto.email_ent = validado['email_ent']
             projeto.website_ent = validado['website_ent']
             projeto.convenio_ent = validado['convenio_ent'] == 'sim'
