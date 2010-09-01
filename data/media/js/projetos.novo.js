@@ -14,6 +14,72 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$(document).ready (function () {
+    $('#local_proj').change(function () {
+        if ($(this).val () == 'outros') {
+            $('#local_proj_outros').show ();
+        } else {
+            $('#local_proj_outros').hide ();
+        }
+    });
+
+    $("input[name=sede_possui_tel]").change(function () {
+        if ($(this).val () == 'sim') {
+            $('#sede_possui_tel_sim').show ();
+            $('#sede_possui_tel_nao').hide ();
+        }
+        else if (
+            $(this).val () == 'nao') {
+            $('#sede_possui_tel_nao').show ();
+            $('#sede_possui_tel_sim').hide ();
+        }
+        else {
+            $('#sede_possui_tel_sim').hide ();
+            $('#sede_possui_tel_nao').hide ();
+        }
+    });
+
+    $("input[name=sede_possui_net]").change(function () {
+        if ($(this).val () == 'sim') {
+            $('#sede_possui_net_sim').show ();
+            $('#sede_possui_net_nao').hide ();
+        }
+        else if (
+            $(this).val () == 'nao') {
+            $('#sede_possui_net_nao').show ();
+            $('#sede_possui_net_sim').hide ();
+        }
+        else {
+            $('#sede_possui_net_sim').hide ();
+            $('#sede_possui_net_nao').hide ();
+        }
+    });
+
+    $("input[name=endereco_ent_proj]").change(function () {
+        if ($(this).val () == 'sim') {
+            $('#endereco_ent_proj_sim').show ();
+        } else {
+            $('#endereco_ent_proj_sim').hide ();
+        }
+    });
+
+    $("input[name=convenio_ent]").change(function () {
+        if ($(this).val () == 'sim') {
+            $('#convenio_ent_sim').show ();
+        } else {
+            $('#convenio_ent_sim').hide ();
+        }
+    });
+
+    $("input[name=participa_cultura_viva]").change(function () {
+        if ($(this).val () == 'sim') {
+            $('#participa_cultura_viva_sim').show ();
+        } else {
+            $('#participa_cultura_viva_sim').hide ();
+        }
+    });
+});
+
 function novoEndereco () {
     var $newElement = $($('div.formEndereco')[0].cloneNode (true));
     $('input, select', $newElement).val ('');

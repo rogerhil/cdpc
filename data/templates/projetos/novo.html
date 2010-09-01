@@ -155,7 +155,7 @@
             <!-- <em class="helpText">Cadastre outros endereços abaixo</em> -->
           </li>
 
-          <div class="displayNone">
+          <div id="local_proj_outros" class="displayNone">
             <li class="subForm">
               <h4>Endereços</h4>
 
@@ -347,7 +347,7 @@
           <br clear="both"/>
         </li>
 
-        <li class="displayNone">
+        <div id="sede_possui_tel_sim" class="displayNone"><li>
           <label for="tipo_tel_sede">Qual tipo?</label>
           <select name="tipo_tel_sede" id="tipo_tel_sede">
             <option></option>
@@ -357,9 +357,9 @@
             <option value="rural">Rural</option>
             <option value="publico">Público</option>
           </select>
-        </li>
+        </li></div>
 
-        <li class="displayNone">
+        <div id="sede_possui_tel_nao" class="displayNone"><li>
           <label>Por quê?</label>
           <ul>
             <li>
@@ -393,21 +393,21 @@
                  type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro"/>
             </li>
           </ul>
-        </li>
+        </li></div>
 
         <li>
           <label>A sede do projeto possui acesso à internet?*</label>
           <ul>
             <li>
               <label>
-                <input type="radio" name="sede_possui_net"/>
+                <input type="radio" name="sede_possui_net" value="sim"/>
                 Sim
               </label>
             </li>
 
             <li>
               <label>
-                <input type="radio" name="sede_possui_net"/>
+                <input type="radio" name="sede_possui_net" value="nao"/>
                 Não
               </label>
             </li>
@@ -415,7 +415,7 @@
           <br clear="both"/>
         </li>
 
-        <li class="displayNone">
+        <li id="sede_possui_net_sim" class="displayNone">
           <label for="tipo_internet">Qual tipo?</label>
           <select name="tipo_internet" id="tipo_internet">
             <option></option>
@@ -428,7 +428,7 @@
           </select>
         </li>
 
-        <li class="displayNone">
+        <li id="sede_possui_net_nao" class="displayNone">
           <label>Por quê?</label>
           <ul>
             <li>
@@ -503,7 +503,7 @@
           <br clear="both"/>
         </li>
 
-        <div class="displayNone">
+        <div id="endereco_ent_proj_sim" class="displayNone">
           <li class="subForm">
             <h4>Endereço da Entidade</h4>
 
@@ -632,7 +632,7 @@
           <br clear="both"/>
         </li>
 
-        <li class="displayNone">
+        <li id="convenio_ent_sim" class="displayNone">
           <div>
             <label for="outro_convenio">Qual?</label>
             <input
@@ -1134,7 +1134,7 @@
           </ul>
         </li>
 
-        <li class="displayNone">
+        <li id= "participa_cultura_viva_sim" class="displayNone">
           <label>
             Qual(is)?
             <em class="helpText">Responda mais de uma se necessário!</em>
