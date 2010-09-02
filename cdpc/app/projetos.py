@@ -99,11 +99,13 @@ def novo():
                 tel = models.Telefone()
                 tel.numero = i
                 projeto.telefones.append(tel)
+
             for i in range(len(rs_nomes)):
                 rsocial = models.RedeSocial()
                 rsocial.nome = rs_nomes[i]
                 rsocial.link = rs_links[i]
                 projeto.redes_sociais.append(rsocial)
+
             for i in range(len(feed_nomes)):
                 feed = models.Feed()
                 feed.nome = feed_nomes[i]
@@ -146,6 +148,7 @@ def novo():
             projeto.email_ent = validado['email_ent']
             projeto.website_ent = validado['website_ent']
             projeto.convenio_ent = validado['convenio_ent'] == 'sim'
+
             if(projeto.convenio_ent):
                 projeto.outro_convenio = \
                     [Convenio(nome=validado['outro_convenio'])]
