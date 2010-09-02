@@ -174,3 +174,37 @@ function atualizarEnderecos () {
         }
     });
 }
+
+function novaDocumentacao ($parent) {
+    var $remove = $('<a href="javascript:;">Remover</a>');
+    $remove.click (function (evt) {
+        $(this).parent().remove();
+    });
+
+    var $label = $('<label>' +
+        'Upload de <b>Plano de trabalho e documentações do Projeto</b>' +
+        '<input type="file" name="documentacoes"/>' +
+        '</label>');
+    $('<li>')
+        .append ($label)
+        .append ($remove)
+        .addClass ('bottomBorder')
+        .appendTo ($parent);
+}
+
+function novoConvenio ($parent) {
+    var $remove = $('<a href="javascript:;">Remover</a>');
+    $remove.click (function (evt) {
+        $(this).parent().remove();
+    });
+
+    var $label = $('<label>' +
+        'Qual?' +
+        '<input type="text" name="outro_convenio" placeholder="Ex.: Pontão Vila Pangéia"/>' +
+        '</label>');
+    $('<li>')
+        .append ($label)
+        .append ($remove)
+        .addClass ('bottomBorder')
+        .appendTo ($parent);
+}

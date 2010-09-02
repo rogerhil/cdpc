@@ -601,14 +601,18 @@
         </li>
 
         <li id="convenio_ent_sim" class="displayNone">
-          <div>
-            <label for="outro_convenio">Qual?</label>
-            <input
-               type="text" name="outro_convenio" id="outro_convenio"
-               placeholder="Ex.: Pontão Vila Pangéia"/>
-          </div>
+          <ul class="telefones subForm">
+            <li class="bottomBorder">
+              <label>
+              Qual?
+              <input
+                  type="text" name="outro_convenio"
+                  placeholder="Ex.: Pontão Vila Pangéia"/>
+              </label>
+            </li>
+          </ul>
           <input class="sub" type="button" value="Outro convenio"
-                 onclick="novoConvenio ();"/>
+                 onclick="novoConvenio ($('.telefones', $(this).parent()));"/>
         </li>
       </ol>
     </li><!-- Entidade Proponente -->
@@ -1220,14 +1224,16 @@
         </li>
 
         <li>
-          <div>
-            <label for="documentacoes">
-              Upload de <b>Plano de trabalho e documentações do Projeto</b>
-            </label>
-            <input type="file" name="documentacoes" id="documentacoes"/>
-          </div>
+          <ul class="telefones subForm">
+            <li class="bottomBorder">
+              <label>
+                Upload de <b>Plano de trabalho e documentações do Projeto</b>
+                <input type="file" name="documentacoes"/>
+              </label>
+            </li>
+          </ul>
           <input class="sub" type="button" value="Outro arquivo"
-                 onclick="novaDocumentacao ();"/>
+                 onclick="novaDocumentacao ($('.telefones', $(this).parent()));"/>
         </li>
       </ol>
     </li><!-- Atividades exercidas pelo projeto -->
