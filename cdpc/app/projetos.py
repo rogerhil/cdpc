@@ -36,6 +36,15 @@ def novo():
         print 'POST'
         try:
             validado = validator.to_python(request.form)
+
+            rs_nomes = clean_list(request.form.getlist('rs_nome'))
+            rs_links = clean_list(request.form.getlist('rs_link'))
+            assert len(rs_nomes) == len(rs_links)
+
+            feed_nomes = clean_list(request.form.getlist('feed_nome'))
+            feed_links = clean_list(request.form.getlist('feed_link'))
+            assert len(feed_nomes) == len(feed_links)
+
         except Invalid, e:
             # Dar um feedback pro usuário usando a instância da
             # exceção "e".
