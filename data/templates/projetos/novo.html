@@ -1356,14 +1356,18 @@
           </li>
 
           <li>
-            <div>
-              <label for="parc_nome">Nome do Parceiro</label>
-              <input
-                  type="text" name="parc_nome" id="parc_nome"
-                  placeholder="Ex.: Sesc São Carlos"/>
-            </div>
+            <ul class="telefones subForm">
+              <li class="bottomBorder">
+                <label>
+                  Nome do Parceiro
+                  <input
+                      type="text" name="parc_nome" id="parc_nome"
+                      placeholder="Ex.: Sesc São Carlos"/>
+                </label>
+              </li>
+            </ul>
             <input class="sub" type="button" value="Outro parceiro"
-                   onclick="novoParceiro ();"/>
+                   onclick="novoParceiro ($('.telefones', $(this).parent()));"/>
           </li>
         </div>
       </ol>

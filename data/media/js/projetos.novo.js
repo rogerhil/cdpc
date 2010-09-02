@@ -216,3 +216,20 @@ function novoConvenio ($parent) {
         .addClass ('bottomBorder')
         .appendTo ($parent);
 }
+
+function novoParceiro ($parent) {
+    var $remove = $('<a href="javascript:;">Remover</a>');
+    $remove.click (function (evt) {
+        $(this).parent().remove();
+    });
+
+    var $label = $('<label>' +
+        'Nome do Parceiro' +
+        '<input type="text" name="parc_nome" placeholder="Ex.: Sesc São Carlos"/>' +
+        '</label>');
+    $('<li>')
+        .append ($label)
+        .append ($remove)
+        .addClass ('bottomBorder')
+        .appendTo ($parent);
+}

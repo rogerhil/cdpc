@@ -276,7 +276,11 @@ def novo():
             projeto.outros_parceiros = validado['outros_parceiros']
             if(projeto.outros_parceiros):
                 projeto.quais_outros_parceiros = validado['quais_outros_parceiros']
-            projeto.parc_nome = [Parceiro(nome=validado['parc_nome'])]
+
+            for i in request.form.getlist('parc_nome'):
+                parc = models.Parceiro()
+                parc.nome = i
+                projeto.outro_convenio.append(parc)
 
             # -- Índice de acesso à cultura
             projeto.ind_oficinas = validado['ind_oficinas']
