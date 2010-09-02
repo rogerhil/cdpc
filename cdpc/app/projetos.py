@@ -95,7 +95,7 @@ def novo():
             projeto.email = validado['email_proj']
             projeto.website = validado['website_proj']
             projeto.frequencia = validado['frequencia']
-            for i in request.form.getlist('telefone'):
+            for i in request.form.getlist('tel_proj'):
                 tel = models.Telefone()
                 tel.numero = i
                 projeto.telefones.append(tel)
