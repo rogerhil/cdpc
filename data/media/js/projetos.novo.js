@@ -56,10 +56,10 @@ $(document).ready (function () {
     });
 
     $("input[name=endereco_ent_proj]").change(function () {
-        if ($(this).val () == 'sim') {
-            $('#endereco_ent_proj_sim').show ();
+        if ($(this).val () == 'nao') {
+            $('#endereco_ent_proj_nao').show ();
         } else {
-            $('#endereco_ent_proj_sim').hide ();
+            $('#endereco_ent_proj_nao').hide ();
         }
     });
 
