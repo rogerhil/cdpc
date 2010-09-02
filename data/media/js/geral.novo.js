@@ -63,7 +63,7 @@ function novaEntrada ($ul) {
 function novoTelefone ($parent) {
     var $remove = $('<a href="javascript:;">Remover</a>');
     $remove.click (function (evt) {
-        $(this).parent().remove()
+        $(this).parent().remove();
     });
 
     var $label = $('<label>' +
