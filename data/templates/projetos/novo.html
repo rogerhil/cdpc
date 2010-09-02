@@ -347,7 +347,7 @@
           <br clear="both"/>
         </li>
 
-        <div id="sede_possui_tel_sim" class="displayNone"><li>
+        <li id="sede_possui_tel_sim" class="displayNone">
           <label for="tipo_tel_sede">Qual tipo?</label>
           <select name="tipo_tel_sede" id="tipo_tel_sede">
             <option></option>
@@ -357,43 +357,26 @@
             <option value="rural">Rural</option>
             <option value="publico">Público</option>
           </select>
-        </li></div>
+        </li>
 
-        <div id="sede_possui_tel_nao" class="displayNone"><li>
-          <label>Por quê?</label>
-          <ul>
-            <li>
-              <label>
-                <input type="radio" name="pq_sem_tel" value="opcao"/>
-                Opção
-              </label>
-            </li>
+        <li id="sede_possui_tel_nao" class="displayNone">
+          <label for="pq_sem_tel">Por quê?</label>
+          <select name="pq_sem_tel" id="pq_sem_tel">
+            <option></option>
+            <option value="opcao">Opção</option>
+            <option value="fornecimento">
+              Não há fornecimento do serviço na região
+            </option>
+            <option value="recursos">Falta de recursos</option>
+            <option value="outro">Outro</option>
+          </select>
+        </li>
 
-            <li>
-              <label>
-                <input type="radio" name="pq_sem_tel" value="fornecimento"/>
-                Não há fornecimento do serviço na região
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="radio" name="pq_sem_tel" value="recursos"/>
-                Falta de recursos
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="radio" name="pq_sem_tel" value="outro"/>
-                Outro.
-              </label>
-              <label for="pq_sem_tel_outro">Qual?</label>
-              <input
-                 type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro"/>
-            </li>
-          </ul>
-        </li></div>
+        <li id="pq_sem_tel_outro_escolhido" class="displayNone">
+          <label for="pq_sem_tel_outro">Qual?</label>
+          <input
+              type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro"/>
+        </li>
 
         <li>
           <label>A sede do projeto possui acesso à internet?*</label>
@@ -429,41 +412,23 @@
         </li>
 
         <li id="sede_possui_net_nao" class="displayNone">
-          <label>Por quê?</label>
-          <ul>
-            <li>
-              <label>
-                <input type="radio" name="pq_sem_internet" value="opcao"/>
-                Opção
-              </label>
-            </li>
+          <label for="pq_sem_internet">Por quê?</label>
+          <select name="pq_sem_internet" id="pq_sem_internet">
+            <option></option>
+            <option value="opcao">Opção</option>
+            <option value="fornecimento">
+              Não há fornecimento do serviço na região
+            </option>
+            <option value="recursos">Falta de recursos</option>
+            <option value="outro">Outro</option>
+          </select>
+        </li>
 
-            <li>
-              <label>
-                <input
-                    type="radio" name="pq_sem_internet" value="fornecimento"/>
-                Não há fornecimento do serviço na região
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="radio" name="pq_sem_internet" value="recursos"/>
-                Falta de recursos
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="radio" name="pq_sem_internet" value="outro"/>
-                Outro.
-              </label>
-              <label for="pq_sem_internet_outro">Qual?</label>
-              <input
-                  type="text" name="pq_sem_internet_outro"
-                  id="pq_sem_internet_outro"/>
-            </li>
-          </ul>
+        <li id="pq_sem_internet_outro_escolhido" class="displayNone">
+          <label for="pq_sem_internet_outro">Qual?</label>
+          <input
+              type="text" name="pq_sem_internet_outro"
+              id="pq_sem_internet_outro"/>
         </li>
       </ol><!-- Comunicação e Cultura Digital -->
     </li>
@@ -797,14 +762,19 @@
             <li>
               <label>
                 <input type="checkbox" name="outras_atividades"/>
-                Outros.
+                Outros
               </label>
-              <label for="quais_outras_atividades">Quais?</label>
-              <input
-                  type="text" name="quais_outras_atividades"
-                  id="quais_outras_atividades"/>
             </li>
-          </ul>
+
+            </ul>
+        </li>
+        <br clear="both"/>
+
+        <li id="outras_atividades_escolhido" class="displayNone">
+          <label for="quais_outras_atividades">Quais?</label>
+          <input
+              type="text" name="quais_outras_atividades"
+              id="quais_outras_atividades"/>
         </li>
 
         <li class="subForm">
@@ -901,16 +871,19 @@
                 <li>
                   <label>
                     <input type="checkbox" name="outras_culturas"/>
-                    Outras.
+                    Outras
                   </label>
-                  <label for="quais_outras_culturas">Quais?</label>
-                  <input type="text" name="quais_outras_culturas"
-                         id="quais_outras_culturas"
-                         placeholder="Ex.: Comunidade Judaica"/>
                 </li>
               </ul>
             </li>
             <br clear="both"/>
+
+            <li id="outras_culturas_escolhido" class="displayNone">
+              <label for="quais_outras_culturas">Quais?</label>
+              <input type="text" name="quais_outras_culturas"
+                     id="quais_outras_culturas"
+                     placeholder="Ex.: Comunidade Judaica"/>
+            </li>
 
             <li>
               <label>Sob aspectos de <b>Ocupação do Meio</b></label>
@@ -932,16 +905,19 @@
                 <li>
                   <label>
                     <input type="checkbox" name="outra_ocupacao"/>
-                    Outro.
+                    Outro
                   </label>
-                  <label for="qual_outra_ocupacao">Qual?</label>
-                  <input
-                      type="text" name="qual_outra_ocupacao"
-                      id="qual_outra_ocupacao"/>
                 </li>
               </ul>
             </li>
             <br clear="both"/>
+
+            <li id="outra_ocupacao_escolhido" class="displayNone">
+              <label for="qual_outra_ocupacao">Qual?</label>
+              <input
+                  type="text" name="qual_outra_ocupacao"
+                  id="qual_outra_ocupacao"/>
+            </li>
 
             <li>
               <label>Sob aspectos de <b>Gênero</b></label>
@@ -1101,16 +1077,20 @@
             <li>
               <label>
                 <input type="checkbox" name="outras_manifestacoes"/>
-                Outras.
+                Outras
               </label>
-              <label for="quais_outras_manifestacoes">Qual?</label>
-              <input
-                  type="text" name="quais_outras_manifestacoes"
-                  id="quais_outras_manifestacoes"/>
             </li>
           </ul>
         </li>
         <br clear="both"/>
+
+        <li id="outras_manifestacoes_escolhido" class="displayNone">
+          <label for="quais_outras_manifestacoes">Quais?</label>
+          <input
+              type="text" name="quais_outras_manifestacoes"
+              id="quais_outras_manifestacoes"/>
+        </li>
+
 
         <li>
           <label>
@@ -1272,7 +1252,7 @@
         </li>
         <br clear="both"/>
 
-        <div class="displayNone">
+        <div id="parcerias_sim" class="displayNone">
           <li>
             <label>Com qual parceiro?</label>
             <ul>

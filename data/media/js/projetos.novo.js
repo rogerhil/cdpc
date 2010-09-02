@@ -78,6 +78,54 @@ $(document).ready (function () {
             $('#participa_cultura_viva_sim').hide ();
         }
     });
+
+    $("input[name=parcerias]").change(function () {
+        if ($(this).val () == 'sim') {
+            $('#parcerias_sim').show ();
+        } else {
+            $('#parcerias_sim').hide ();
+        }
+    });
+
+    $('#pq_sem_tel').change(function () {
+        if ($(this).val () == 'outro') {
+            $('#pq_sem_tel_outro_escolhido').show ();
+        } else {
+            $('#pq_sem_tel_outro_escolhido').hide ();
+        }
+    });
+
+    $('input[name=outras_atividades]').change(function () {
+        if ($(this).is (':checked')) {
+            $('#outras_atividades_escolhido').show ();
+        } else {
+            $('#outras_atividades_escolhido').hide ();
+        }
+    });
+
+    $('input[name=outras_culturas]').change(function () {
+        if ($(this).is (':checked')) {
+            $('#outras_culturas_escolhido').show ();
+        } else {
+            $('#outras_culturas_escolhido').hide ();
+        }
+    });
+
+    $('input[name=outra_ocupacao]').change(function () {
+        if ($(this).is (':checked')) {
+            $('#outra_ocupacao_escolhido').show ();
+        } else {
+            $('#outra_ocupacao_escolhido').hide ();
+        }
+    });
+
+    $('input[name=outras_manifestacoes]').change(function () {
+        if ($(this).is (':checked')) {
+            $('#outras_manifestacoes_escolhido').show ();
+        } else {
+            $('#outras_manifestacoes_escolhido').hide ();
+        }
+    });
 });
 
 function novoEndereco () {
