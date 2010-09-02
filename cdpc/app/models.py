@@ -131,7 +131,7 @@ class Pessoa(Cadastrado):
     usuario = Field(Unicode(64))
     senha = Field(Unicode(256))
 
-class Projeto(Entity):
+class Projeto(Cadastrado):
     """Wrapper para a entidade projeto no banco de dados
     """
     using_options(inheritance='multi', shortnames=True)
