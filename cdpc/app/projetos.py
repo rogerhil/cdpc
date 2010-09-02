@@ -282,7 +282,7 @@ def novo():
             for i in request.form.getlist('parc_nome'):
                 parc = models.Parceiro()
                 parc.nome = i
-                projeto.outro_convenio.append(parc)
+                projeto.parc_nome.append(parc)
 
             # -- Índice de acesso à cultura
             projeto.ind_oficinas = validado['ind_oficinas']
