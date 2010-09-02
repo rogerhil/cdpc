@@ -95,6 +95,14 @@ $(document).ready (function () {
         }
     });
 
+    $('#pq_sem_internet').change(function () {
+        if ($(this).val () == 'outro') {
+            $('#pq_sem_internet_outro_escolhido').show ();
+        } else {
+            $('#pq_sem_internet_outro_escolhido').hide ();
+        }
+    });
+
     $('input[name=outras_atividades]').change(function () {
         if ($(this).is (':checked')) {
             $('#outras_atividades_escolhido').show ();
