@@ -300,7 +300,11 @@ def novo():
             # -- Avatar
             # TODO: Tratar upload de avatar
 
-            session.commit()
+            try:
+                session.commit()
+            except Exception, e:
+                session.rollback()
+                raise e
 
             # FIXME: Avisar ao usuário que tudo deu certo.
 

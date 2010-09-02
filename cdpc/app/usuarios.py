@@ -103,7 +103,11 @@ def novo():
                 feed.link = feed_links[i]
                 usuario.feeds.append(feed)
 
-            session.commit()
+            try:
+                session.commit()
+            except Exception, e:
+                session.rollback()
+                raise e
 
             # FIXME: Avisar ao usuário que tudo deu certo.
 
