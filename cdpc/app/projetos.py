@@ -150,8 +150,10 @@ def novo():
             projeto.convenio_ent = validado['convenio_ent'] == 'sim'
 
             if(projeto.convenio_ent):
-                projeto.outro_convenio = \
-                    [Convenio(nome=validado['outro_convenio'])]
+                for i in request.form.getlist('outro_convenio'):
+                    conv = models.Convenio()
+                    tel.nome = i
+                    projeto.outro_convenio.append(conv)
 
             # -- Atividades exercidas pelo projeto
             # --- Qual a área de atuação das atividades do Projeto?
