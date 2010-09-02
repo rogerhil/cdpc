@@ -37,6 +37,7 @@ def novo():
         print 'POST'
         try:
             validado = validator.to_python(request.form)
+            clean_list = lambda x: [i for i in x if i.strip()];
 
             rs_nomes = clean_list(request.form.getlist('rs_nome'))
             rs_links = clean_list(request.form.getlist('rs_link'))
