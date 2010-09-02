@@ -18,6 +18,7 @@
 
 from formencode import Invalid
 from flask import Module, render_template, request
+from elixir import session
 
 from . import validators
 from . import models
