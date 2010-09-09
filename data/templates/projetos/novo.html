@@ -450,8 +450,7 @@
 
         <li>
           <label>
-            O endereço da <b>Entidade</b> é o mesmo endereço do
-            <b>Projeto</b>?*
+            O endereço da Entidade é o mesmo endereço do Projeto?*
           </label>
           <ul>
             <li>
@@ -953,8 +952,8 @@
 
         <li class="subForm">
           <p>
-            Quais são as <b>Manifestações</b> e <b>Linguagens</b> que o
-            <b>Projeto</b> utiliza em suas atividades?
+            Quais são as Manifestações> e Linguagens que o Projeto utiliza em
+            suas atividades?
             <em class="helpText">Responda mais de uma se necessário!</em>
           </p>
           <ul>
@@ -1209,7 +1208,9 @@
         </li>
 
         <li class="subFormDesc">
-          <p>Descrição breve sobre as atividades do Projeto</p>
+          <label for="descricao" class="ldescricao">
+            Descrição breve sobre as atividades do Projeto
+          </label>
           <textarea
              name="descricao" id="descricao"
              placeholder="Descreve aspectos relevantes do Projeto que gostaria de ressaltar..."></textarea>
@@ -1224,8 +1225,9 @@
               </label>
             </li>
           </ul>
-          <input class="sub" type="button" value="Outro arquivo"
-                 onclick="novaDocumentacao ($('.telefones', $(this).parent()));"/>
+          <input
+             type="button" value="Outro arquivo"
+             onclick="novaDocumentacao ($('.telefones', $(this).parent()));"/>
         </li>
       </ol>
     </li><!-- Atividades exercidas pelo projeto -->
@@ -1234,17 +1236,17 @@
       <h3>Parcerias do Projeto</h3>
       <ol class="section">
         <li>
-          <p>O Projeto> estabeleceu Parcerias?*</p>
+          <label>O Projeto estabeleceu Parcerias?*</label>
           <ul>
             <li>
-              <label>
+              <label class="radio">
                 <input type="radio" name="parcerias" value="sim"/>
                 Sim
               </label>
             </li>
 
             <li>
-              <label>
+              <label class="radio">
                 <input type="radio" name="parcerias" value="nao"/>
                 Não
               </label>
@@ -1253,8 +1255,8 @@
         </li>
 
         <div id="parcerias_sim" class="displayNone">
-          <li class="subForm">
-            <p>Com qual(quais) parceiro(s)?</p>
+          <li class="subForm formCinza">
+            Com qual(quais) parceiro(s)?
             <ul>
               <li>
                 <label>
@@ -1350,14 +1352,14 @@
             <ul class="telefones subForm">
               <li class="bottomBorder">
                 <label>
-                  Nome do Parceiro
+                  <span>Nome do Parceiro</span>
                   <input
                       type="text" name="parc_nome" id="parc_nome"
                       placeholder="Ex.: Sesc São Carlos"/>
                 </label>
               </li>
             </ul>
-            <input class="sub" type="button" value="Outro parceiro"
+            <input type="button" value="Outro parceiro"
                    onclick="novoParceiro ($('.telefones', $(this).parent()));"/>
           </li>
         </div>
@@ -1368,45 +1370,41 @@
       <h3>Índice de Acesso à Cultura</h3>
       <ol class="section">
         <li class="subForm">
-          <h4>
-            Sobre o Índice
-          </h4>
-          <ul>
-            <li>
-              <label for="ind_oficinas">Oficinas</label>
-              <input type="text" name="ind_oficinas" id="ind_oficinas"/>
-            </li>
-
-            <li>
-              <label for="ind_expectadores">Número de expectadores</label>
-              <input
-                  type="text" name="ind_expectadores" id="ind_expectadores"/>
-            </li>
-
-            <li>
-              <label for="ind_populacao">
-                População atendida pelo Projeto
-              </label>
-              <input type="text" name="ind_populacao" id="ind_populacao"/>
-            </li>
-
-            <li>
-              Índice Cultura = X
-            </li>
-
-          </ul>
+        <li>
+          <label for="ind_oficinas">Oficinas</label>
+          <input type="text" name="ind_oficinas" id="ind_oficinas"/>
         </li>
 
         <li>
-          <h3>Avatar</h3>
-          <ol class="section">
-            <li>
-              <label for="avatar">Escolha uma imagem</label>
-              <input type="file" name="avatar" id="avatar"/>
-            </li>
-          </ol>
+          <label for="ind_expectadores">Número de expectadores</label>
+          <input
+             type="text" name="ind_expectadores" id="ind_expectadores"/>
+        </li>
+
+        <li>
+          <label for="ind_populacao">
+            População atendida pelo Projeto
+          </label>
+          <input type="text" name="ind_populacao" id="ind_populacao"/>
+        </li>
+
+        <li>
+          Índice Cultura = X
+        </li>
+
+      </ol>
+    </li>
+
+    <li>
+      <h3>Avatar</h3>
+      <ol class="section">
+        <li>
+          <label for="avatar">Escolha uma imagem</label>
+          <input type="file" name="avatar" id="avatar"/>
         </li>
       </ol>
+    </li>
+
     </li>
   </ol>
 

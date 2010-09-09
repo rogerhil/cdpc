@@ -208,7 +208,8 @@ function novoConvenio ($parent) {
 
     var $label = $('<label>' +
         'Qual?' +
-        '<input type="text" name="outro_convenio" placeholder="Ex.: Pontão Vila Pangéia"/>' +
+        '<input type="text" name="outro_convenio" ' +
+        '       placeholder="Ex.: Pontão Vila Pangéia"/>' +
         '</label>');
     $('<li>')
         .append ($label)
@@ -224,7 +225,7 @@ function novoParceiro ($parent) {
     });
 
     var $label = $('<label>' +
-        'Nome do Parceiro' +
+        '<span>Nome do Parceiro</span>' +
         '<input type="text" name="parc_nome" placeholder="Ex.: Sesc São Carlos"/>' +
         '</label>');
     $('<li>')

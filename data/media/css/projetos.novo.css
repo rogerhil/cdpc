@@ -14,7 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-h3 { clear:both; }
-.formCinza { width:520px; margin-left:10px; padding:2px; background:#f7f7f7; }
+h3, h4, .subForm p { display:block; float:none; clear:both; padding-top:10px; }
 .radio { width:70px; }
 .subFormDesc textarea { margin-left:20px; width:400px; height:80px; }
+.formCinza {
+    width:540px; padding:4px; background:#f7f7f7;
+    clear:both; border-radius:3px; -moz-border-radius:3px; }
+.telefones { margin-top:10px; }
+form label.ldescricao { width:auto; clear:both; float:none; margin-bottom:10px; }
