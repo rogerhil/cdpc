@@ -4,6 +4,9 @@
 <link
    rel="stylesheet" type="text/css"
    href="{{ url_for('.static', filename='css/usuarios.novo.css') }}">
+<link
+   rel="stylesheet" type="text/css"
+   href="{{ url_for('.static', filename='css/projetos.novo.css') }}">
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/inc/jquery.js') }}"></script>
@@ -335,22 +338,22 @@
           </label>
           <ul class="comCdTelefone">
             <li>
-              <label>
+              <label class="radio">
                 <input type="radio" name="sede_possui_tel" value="sim"/>
                 Sim
               </label>
             </li>
             <li>
-              <label>
+              <label class="radio">
                 <input type="radio" name="sede_possui_tel" value="nao"/>
                 Não
               </label>
             </li>
           </ul>
-          <br clear="both"/>
+          <br clear="both">
         </li>
 
-        <li id="sede_possui_tel_sim" class="displayNone">
+        <li id="sede_possui_tel_sim" class="displayNone formCinza">
           <label for="tipo_tel_sede">Qual tipo?</label>
           <select name="tipo_tel_sede" id="tipo_tel_sede">
             <option></option>
@@ -362,7 +365,7 @@
           </select>
         </li>
 
-        <li id="sede_possui_tel_nao" class="displayNone">
+        <li id="sede_possui_tel_nao" class="displayNone formCinza">
           <label for="pq_sem_tel">Por quê?</label>
           <select name="pq_sem_tel" id="pq_sem_tel">
             <option></option>
@@ -375,7 +378,7 @@
           </select>
         </li>
 
-        <li id="pq_sem_tel_outro_escolhido" class="displayNone">
+        <li id="pq_sem_tel_outro_escolhido" class="displayNone formCinza">
           <label for="pq_sem_tel_outro">Qual?</label>
           <input
               type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro"/>
@@ -385,23 +388,22 @@
           <label>A sede do projeto possui acesso à internet?*</label>
           <ul>
             <li>
-              <label>
+              <label class="radio">
                 <input type="radio" name="sede_possui_net" value="sim"/>
                 Sim
               </label>
             </li>
 
             <li>
-              <label>
+              <label class="radio">
                 <input type="radio" name="sede_possui_net" value="nao"/>
                 Não
               </label>
             </li>
           </ul>
-          <br clear="both"/>
         </li>
 
-        <li id="sede_possui_net_sim" class="displayNone">
+        <li id="sede_possui_net_sim" class="displayNone formCinza">
           <label for="tipo_internet">Qual tipo?</label>
           <select name="tipo_internet" id="tipo_internet">
             <option></option>
@@ -414,7 +416,7 @@
           </select>
         </li>
 
-        <li id="sede_possui_net_nao" class="displayNone">
+        <li id="sede_possui_net_nao" class="displayNone formCinza">
           <label for="pq_sem_internet">Por quê?</label>
           <select name="pq_sem_internet" id="pq_sem_internet">
             <option></option>
@@ -427,7 +429,7 @@
           </select>
         </li>
 
-        <li id="pq_sem_internet_outro_escolhido" class="displayNone">
+        <li id="pq_sem_internet_outro_escolhido" class="displayNone formCinza">
           <label for="pq_sem_internet_outro">Qual?</label>
           <input
               type="text" name="pq_sem_internet_outro"
@@ -468,7 +470,6 @@
             </label>
             </li>
           </ul>
-          <br clear="both"/>
         </li>
 
         <div id="endereco_ent_proj_nao" class="displayNone">
@@ -597,7 +598,6 @@
               </label>
             </li>
           </ul>
-          <br clear="both"/>
         </li>
 
         <li id="convenio_ent_sim" class="displayNone">
@@ -620,11 +620,11 @@
     <li>
       <h3>Atividades exercidas pelo projeto</h3>
       <ol class="section">
-        <li>
-          <label>
+        <li class="subForm">
+          <p>
             Qual a área de atuação das atividades do <b>Projeto</b>?*
             <em class="helpText">Responda mais de uma se necessário!</em>
-          </label>
+          </p>
           <ul>
             <li>
               <label>
@@ -775,7 +775,6 @@
 
             </ul>
         </li>
-        <br clear="both"/>
 
         <li id="outras_atividades_escolhido" class="displayNone">
           <label for="quais_outras_atividades">Quais?</label>
@@ -784,13 +783,14 @@
               id="quais_outras_atividades"/>
         </li>
 
-        <li class="subForm">
+        <li>
           <h4>
-            Com qual <b>Público Alvo</b> o <b>Projeto</b> é desenvolvido?*
+            Com qual <strong>Público Alvo</strong> o <strong>Projeto</strong> é
+            desenvolvido?*
           </h4>
           <ul>
-            <li>
-              <label>Sob aspectos de <b>Faixa Etária</b></label>
+            <li class="subForm">
+              <p>Sob aspectos de <strong>Faixa Etária</strong></p>
               <ul>
                 <li>
                   <label>
@@ -821,10 +821,9 @@
                 </li>
               </ul>
             </li>
-            <br clear="both"/>
 
-            <li>
-              <label>Sob aspectos das <b>Culturas Tradicionais</b></label>
+            <li class="subForm">
+              <p>Sob aspectos das <strong>Culturas Tradicionais</strong></p>
               <ul>
                 <li>
                   <label>
@@ -883,17 +882,16 @@
                 </li>
               </ul>
             </li>
-            <br clear="both"/>
 
-            <li id="outras_culturas_escolhido" class="displayNone">
+            <li id="outras_culturas_escolhido" class="displayNone subForm">
               <label for="quais_outras_culturas">Quais?</label>
               <input type="text" name="quais_outras_culturas"
                      id="quais_outras_culturas"
                      placeholder="Ex.: Comunidade Judaica"/>
             </li>
 
-            <li>
-              <label>Sob aspectos de <b>Ocupação do Meio</b></label>
+            <li class="subForm">
+              <p>Sob aspectos de <strong>Ocupação do Meio</strong></p>
               <ul>
                 <li>
                   <label>
@@ -917,7 +915,6 @@
                 </li>
               </ul>
             </li>
-            <br clear="both"/>
 
             <li id="outra_ocupacao_escolhido" class="displayNone">
               <label for="qual_outra_ocupacao">Qual?</label>
@@ -926,8 +923,8 @@
                   id="qual_outra_ocupacao"/>
             </li>
 
-            <li>
-              <label>Sob aspectos de <b>Gênero</b></label>
+            <li class="subForm">
+              <p>Sob aspectos de <strong>Gênero</strong></p>
               <ul>
                 <li>
                   <label>
@@ -953,14 +950,13 @@
             </li>
           </ul>
         </li>
-        <br clear="both"/>
 
-        <li>
-          <label>
+        <li class="subForm">
+          <p>
             Quais são as <b>Manifestações</b> e <b>Linguagens</b> que o
             <b>Projeto</b> utiliza em suas atividades?
             <em class="helpText">Responda mais de uma se necessário!</em>
-          </label>
+          </p>
           <ul>
             <li>
               <label>
@@ -1089,7 +1085,6 @@
             </li>
           </ul>
         </li>
-        <br clear="both"/>
 
         <li id="outras_manifestacoes_escolhido" class="displayNone">
           <label for="quais_outras_manifestacoes">Quais?</label>
@@ -1099,11 +1094,11 @@
         </li>
 
 
-        <li>
-          <label>
-            O <b>Projeto</b> participa de alguma <b>Ação</b> do <b>Programa
-            Cultura Viva?</b>*
-          </label>
+        <li class="subForm">
+          <p>
+            O <strong>Projeto</strong> participa de alguma <strong>Ação</strong>
+            do <strong>Programa Cultura Viva?</strong>*
+          </p>
           <ul>
             <li>
               <label>
@@ -1212,22 +1207,19 @@
             </li>
           </ul>
         </li>
-        <br clear="both"/>
 
-        <li>
-          <label for="descricao">
-            <b>Descrição</b> breve sobre as atividades do <b>Projeto</b>
-          </label>
+        <li class="subFormDesc">
+          <p>Descrição breve sobre as atividades do Projeto</p>
           <textarea
-              name="descricao" id="descricao"
-              placeholder="Descreve aspectos relevantes do Projeto que gostaria de ressaltar..."></textarea>
+             name="descricao" id="descricao"
+             placeholder="Descreve aspectos relevantes do Projeto que gostaria de ressaltar..."></textarea>
         </li>
 
         <li>
           <ul class="telefones subForm">
             <li class="bottomBorder">
               <label>
-                Upload de <b>Plano de trabalho e documentações do Projeto</b>
+                Upload de Plano de trabalho e documentações do Projeto
                 <input type="file" name="documentacoes"/>
               </label>
             </li>
@@ -1242,7 +1234,7 @@
       <h3>Parcerias do Projeto</h3>
       <ol class="section">
         <li>
-          <label>O <b>Projeto</b> estabeleceu <b>Parcerias</b>?*</label>
+          <p>O Projeto> estabeleceu Parcerias?*</p>
           <ul>
             <li>
               <label>
@@ -1259,11 +1251,10 @@
             </li>
           </ul>
         </li>
-        <br clear="both"/>
 
         <div id="parcerias_sim" class="displayNone">
-          <li>
-            <label>Com qual parceiro?</label>
+          <li class="subForm">
+            <p>Com qual(quais) parceiro(s)?</p>
             <ul>
               <li>
                 <label>

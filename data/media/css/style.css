@@ -47,7 +47,7 @@ h1.logo a { text-decoration:none; color:#000; }
 
 /* Generic Headers */
 h2 { color:#e47f00; margin:10px 0; }
-h3 { color:#5dad14; margin:10px 0; }
+h3 { color:#5dad14; margin:10px 0; clear:both; }
 
 /* forms */
 input, select, textarea {

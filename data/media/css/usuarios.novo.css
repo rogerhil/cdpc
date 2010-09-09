@@ -24,7 +24,7 @@ label.error, .form label.error { display:none !important; }
 
 /* Tamanho genérico para campos */
 .form input[type=text] { min-width:250px; }
-.form label { display:block; width:240px; float:left; }
+.form label { display:block; width:260px; float:left; }
 .form .notBlock label { display:inline; width:auto; float:none; }
 
 /* Estilos para sub formulários */
@@ -32,9 +32,10 @@ label.error, .form label.error { display:none !important; }
 .subForm h4 { margin-bottom:10px; }
 .subForm .sub, .subForm ul, .section .sub { margin-left:20px; }
 .subForm input[type=text] { min-width:230px; }
+.form label.radio { width:90px; }
 
 .bottomBorder {
-    width: 480px; padding-bottom:6px; margin-bottom:6px;
+    width: 500px; padding-bottom:6px; margin-bottom:6px;
     border-bottom:dotted 1px #d4d4d4; }
 .bottomBorder a {
     display:block; color:red; text-decoration: none; font-size:10px;
@@ -51,5 +52,6 @@ label.error, .form label.error { display:none !important; }
 #papelParticipante label { display:inline; float:none; }
 
 .telefones label { display:inline; width:auto; float:none; }
-.telefones label span { display:block; width:240px; float:left; }
-.telefones input[type=text] { min-width:230px; }
+.telefones label span { display:block; width:260px; float:left; }
+.telefones input[type=text] { min-width:250px; }
+.telefones .bottomBorder { width: 520px; }
