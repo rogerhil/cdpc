@@ -21,7 +21,8 @@
 
 from datetime import datetime
 from elixir import metadata, setup_all, using_options, Entity, Field, \
-    Unicode, DateTime, ManyToOne, OneToMany, ManyToMany, Boolean, Integer
+    Unicode, DateTime, ManyToOne, OneToMany, ManyToMany, Boolean, Integer, \
+    Enum
 from ..config import DATABASE_URI
 
 class Telefone(Entity):
@@ -68,7 +69,7 @@ class Parceiro(Entity):
     """
     using_options(shortnames=True)
     nome = Field(Unicode(128))
-    parc_nome = ManyToMany('Projeto')
+    projeto = ManyToMany('Projeto')
 
 class Endereco(Entity):
     """Wrapper para a entidade endereco no banco de dados
@@ -131,6 +132,41 @@ class Pessoa(Cadastrado):
     usuario = Field(Unicode(64))
     senha = Field(Unicode(256))
 
+class Atividade(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    projetos = ManyToMany('Projeto')
+
+class PublicoAlvo(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    projetos = ManyToMany('Projeto')
+
+class CulturaTradicional(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    projetos = ManyToMany('Projeto')
+
+class OcupacaoDoMeio(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    projetos = ManyToMany('Projeto')
+
+class Genero(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    projetos = ManyToMany('Projeto')
+
+class ManifestacaoLinguagem(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    projetos = ManyToMany('Projeto')
+
+class AcaoCulturaViva(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    projetos = ManyToMany('Projeto')
+
 class Projeto(Cadastrado):
     """Wrapper para a entidade projeto no banco de dados
     """
@@ -169,115 +205,33 @@ class Projeto(Cadastrado):
 
     # -- Atividades exercidas pelo projeto
     # --- Qual a área de atuação das atividades do Projeto?
-    cultura_popular = Field(Boolean)
-    direitos_humanos = Field(Boolean)
-    economia_solidaria = Field(Boolean)
-    educacao = Field(Boolean)
-    esportes_e_lazer = Field(Boolean)
-    etnia = Field(Boolean)
-    genero = Field(Boolean)
-    habitacao = Field(Boolean)
-    meio_ambiente = Field(Boolean)
-    memoria = Field(Boolean)
-    patrimonio_historico_imaterial = Field(Boolean)
-    patrimonio_historico_material = Field(Boolean)
-    pesquisa_e_extensao = Field(Boolean)
-    povos_tradicionais = Field(Boolean)
-    recreacao = Field(Boolean)
-    religiao = Field(Boolean)
-    saude = Field(Boolean)
-    sexualidade = Field(Boolean)
-    tecnologia = Field(Boolean)
-    trabalho = Field(Boolean)
-    outras_atividades = Field(Boolean)
-    quais_outras_atividades = Field(Unicode(128))
+    atividades = ManyToMany('Atividade')
 
     # ---  Com qual Público Alvo o Projeto é desenvolvido?
     # ---- Sob aspectos de Faixa Etária
-    criancas = Field(Boolean)
-    adolescentes = Field(Boolean)
-    adultos = Field(Boolean)
-    jovens = Field(Boolean)
+    publico_alvo = ManyToMany('PublicoAlvo')
 
     # ---- Sob aspectos das Culturas Tradicionais
-    quilombola = Field(Boolean)
-    pomerano = Field(Boolean)
-    caicara = Field(Boolean)
-    indigena = Field(Boolean)
-    cigana = Field(Boolean)
-    povos_da_floresta = Field(Boolean)
-    ribeirinhos = Field(Boolean)
-    outras_culturas = Field(Boolean)
-    quais_outras_culturas = Field(Unicode(128))
+    culturas_tradicionais = ManyToMany('CulturaTradicional')
 
     # ---- Sob aspectos de Ocupação do Meio
-    rural = Field(Boolean)
-    urbano = Field(Boolean)
-    outro = Field(Boolean)
-    outra_ocupacao = Field(Boolean)
-    qual_outra_ocupacao = Field(Unicode(128))
+    ocupacao_do_meio = ManyToMany('OcupacaoDoMeio')
 
     # ---- Sob aspectos de Gênero
-    mulheres = Field(Boolean)
-    homens = Field(Boolean)
-    lgbt = Field(Boolean)
+    genero = ManyToMany('Genero')
 
-    # --- Quais são as Manifestações e Linguagens que o Projeto utiliza em suas
-    # atividades?
-    artes_digitais = Field(Boolean)
-    artes_plasticas = Field(Boolean)
-    audiovisual = Field(Boolean)
-    circo = Field(Boolean)
-    culinaria = Field(Boolean)
-    danca = Field(Boolean)
-    fotografia = Field(Boolean)
-    grafite = Field(Boolean)
-    internet = Field(Boolean)
-    jornalismo = Field(Boolean)
-    literatura = Field(Boolean)
-    musica = Field(Boolean)
-    radio = Field(Boolean)
-    teatro = Field(Boolean)
-    tecnologias_digitais = Field(Boolean)
-    tradicao_oral = Field(Boolean)
-    tv = Field(Boolean)
-    outras_manifestacoes = Field(Boolean)
-    quais_outras_manifestacoes = Field(Unicode(128))
+    # --- Quais são as Manifestações e Linguagens que o Projeto utiliza
+    # em suas atividades?
+    manifestacoes_linguagens = ManyToMany('ManifestacaoLinguagem')
 
     # --- O Projeto participa de alguma Ação do Programa Cultura Viva?
-    participa_cultura_viva = Field(Boolean)
-    agente_cultura_viva = Field(Boolean)
-    cultura_digital = Field(Boolean)
-    cultura_e_saude = Field(Boolean)
-    economia_viva = Field(Boolean)
-    escola_viva = Field(Boolean)
-    grios = Field(Boolean)
-    interacoes_esteticas = Field(Boolean)
-    midias_livres = Field(Boolean)
-    pontinho_de_cultura = Field(Boolean)
-    pontos_de_memoria = Field(Boolean)
-    redes_indigenas = Field(Boolean)
-    tuxaua = Field(Boolean)
+    acao_cultura_viva = ManyToMany('AcaoCulturaViva')
 
     descricao = Field(Unicode(1024))
     documentacoes = ManyToMany('Documentacao')
 
     # -- Parcerias do Projeto
-    parcerias = Field(Boolean)
-    parc_biblioteca = Field(Boolean)
-    parc_empresa = Field(Boolean)
-    parc_equipamento_de_saude = Field(Boolean)
-    parc_escola = Field(Boolean)
-    parc_igreja = Field(Boolean)
-    parc_ong = Field(Boolean)
-    parc_poder_publico = Field(Boolean)
-    parc_pontos_de_memoria = Field(Boolean)
-    parc_redes_indigenas = Field(Boolean)
-    parc_sistema_s = Field(Boolean)
-    parc_tuxaua = Field(Boolean)
-    outros_parceiros = Field(Boolean)
-    quais_outros_parceiros = Field(Unicode(128))
-    parc_nome = ManyToMany('Parceiro')
+    parcerias = ManyToMany('Parceiro')
 
     # -- Índice de acesso à cultura
     ind_oficinas = Field(Integer)

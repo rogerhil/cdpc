@@ -30,4 +30,4 @@ TEMPLATE_DIR = get_path('data', 'templates')
 
 STATIC_DIR = get_path('data', 'media')
 
-DATABASE_URI = 'sqlite:///db'
+DATABASE_URI = 'mysql://cdpc:cdpc@localhost/cdpc'

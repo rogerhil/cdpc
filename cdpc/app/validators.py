@@ -158,121 +158,41 @@ class Projeto(formencode.Schema):
     website_ent = validators.URL()
     convenio_ent = validators.String()
     outro_convenio = validators.String()
+    participa_cultura_viva = validators.Bool()
+    estabeleceu_parcerias = validators.Bool()
 
     # -- Atividades exercidas pelo projeto
     # -- Qual a área de atuação das atividades do projeto
-    cultura_popular = validators.Bool()
-    direitos_humanos = validators.Bool()
-    economia_solidaria = validators.Bool()
-    educacao = validators.Bool()
-    esportes_e_lazer = validators.Bool()
-    etnia = validators.Bool()
-    genero = validators.Bool()
-    habitacao = validators.Bool()
-    meio_ambiente = validators.Bool()
-    memoria = validators.Bool()
-    patrimonio_historico_imaterial = \
-        validators.Bool()
-    patrimonio_historico_material = \
-        validators.Bool()
-    pesquisa_e_extensao = validators.Bool()
-    povos_tradicionais = validators.Bool()
-    recreacao = validators.Bool()
-    religiao = validators.Bool()
-    saude = validators.Bool()
-    sexualidade = validators.Bool()
-    tecnologia = validators.Bool()
-    trabalho = validators.Bool()
-    outras_atividades = validators.Bool()
-    quais_outras_atividades = validators.String()
+    atividade = formencode.ForEach(validators.String(not_empty=True))
 
     # ---  Com qual Público Alvo o Projeto é desenvolvido?
     # ---- Sob aspectos de Faixa Etária
-    criancas = validators.Bool()
-    adolescentes = validators.Bool()
-    adultos = validators.Bool()
-    jovens = validators.Bool()
+    publico_alvo = formencode.ForEach(validators.String(not_empty=True))
 
     # ---- Sob aspectos das Culturas Tradicionais
-    quilombola = validators.Bool()
-    pomerano = validators.Bool()
-    caicara = validators.Bool()
-    indigena = validators.Bool()
-    cigana = validators.Bool()
-    povos_da_floresta = validators.Bool()
-    ribeirinhos = validators.Bool()
-    outras_culturas = validators.Bool()
-    quais_outras_culturas = validators.String()
+    culturas_tradicionais = formencode.ForEach(
+        validators.String(not_empty=True))
 
     # ---- Sob aspectos de Ocupação do Meio
-    rural = validators.Bool()
-    urbano = validators.Bool()
-    outro = validators.Bool()
-    outra_ocupacao = validators.Bool()
-    qual_outra_ocupacao = validators.String()
+    ocupacao_do_meio = formencode.ForEach(validators.String(not_empty=True))
 
     # ---- Sob aspectos de Gênero
-    mulheres = validators.Bool()
-    homens = validators.Bool()
-    lgbt = validators.Bool()
+    genero = formencode.ForEach(validators.String(not_empty=True))
 
     # --- Quais são as Manifestações e Linguagens que o Projeto utiliza
     # em suas atividades?
-    artes_digitais = validators.Bool()
-    artes_plasticas = validators.Bool()
-    audiovisual = validators.Bool()
-    circo = validators.Bool()
-    culinaria = validators.Bool()
-    danca = validators.Bool()
-    fotografia = validators.Bool()
-    grafite = validators.Bool()
-    internet = validators.Bool()
-    jornalismo = validators.Bool()
-    literatura = validators.Bool()
-    musica = validators.Bool()
-    radio = validators.Bool()
-    teatro = validators.Bool()
-    tecnologias_digitais = validators.Bool()
-    tradicao_oral = validators.Bool()
-    tv = validators.Bool()
-    outras_manifestacoes = validators.Bool()
-    quais_outras_manifestacoes = validators.String()
+    manifestacoes_linguagens = formencode.ForEach(
+        validators.String(not_empty=True))
 
     # --- O Projeto participa de alguma Ação do Programa Cultura Viva?
-    participa_cultura_viva = validators.String(not_empty=True)
-    agente_cultura_viva = validators.Bool()
-    cultura_digital = validators.Bool()
-    cultura_e_saude = validators.Bool()
-    economia_viva = validators.Bool()
-    escola_viva = validators.Bool()
-    grios = validators.Bool()
-    interacoes_esteticas = validators.Bool()
-    midias_livres = validators.Bool()
-    pontinho_de_cultura = validators.Bool()
-    pontos_de_memoria = validators.Bool()
-    redes_indigenas = validators.Bool()
-    tuxaua = validators.Bool()
+    acao_cultura_viva = formencode.ForEach(validators.String(not_empty=True))
 
     descricao = validators.String()
 
     documentacoes = validators.FieldStorageUploadConverter()
 
     # -- Parcerias do Projeto
-    parcerias = validators.String(not_empty=True)
-    parc_biblioteca = validators.Bool()
-    parc_empresa = validators.Bool()
-    parc_equipamento_de_saude = validators.Bool()
-    parc_escola = validators.Bool()
-    parc_igreja = validators.Bool()
-    parc_ong = validators.Bool()
-    parc_poder_publico = validators.Bool()
-    parc_pontos_de_memoria = validators.Bool()
-    parc_redes_indigenas = validators.Bool()
-    parc_sistema_s = validators.Bool()
-    parc_tuxaua = validators.Bool()
-    outros_parceiros = validators.Bool()
-    quais_outros_parceiros = validators.String()
-    parc_nome = validators.String()
+    parcerias = formencode.ForEach(validators.String(not_empty=True))
 
     # -- Índice de acesso à cultura
     ind_oficinas = validators.Int()

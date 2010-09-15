@@ -167,130 +167,58 @@ def novo():
 
             # -- Atividades exercidas pelo projeto
             # --- Qual a área de atuação das atividades do Projeto?
-            projeto.cultura_popular = validado['cultura_popular']
-            projeto.direitos_humanos = validado['direitos_humanos']
-            projeto.economia_solidaria = validado['economia_solidaria']
-            projeto.educacao = validado['educacao']
-            projeto.esportes_e_lazer = validado['esportes_e_lazer']
-            projeto.etnia = validado['etnia']
-            projeto.genero = validado['genero']
-            projeto.habitacao = validado['habitacao']
-            projeto.meio_ambiente = validado['meio_ambiente']
-            projeto.memoria = validado['memoria']
-            projeto.patrimonio_historico_imaterial = \
-                validado['patrimonio_historico_imaterial']
-            projeto.patrimonio_historico_material = \
-                validado['patrimonio_historico_material']
-            projeto.pesquisa_e_extensao = validado['pesquisa_e_extensao']
-            projeto.povos_tradicionais = validado['povos_tradicionais']
-            projeto.recreacao = validado['recreacao']
-            projeto.religiao = validado['religiao']
-            projeto.saude = validado['saude']
-            projeto.sexualidade = validado['sexualidade']
-            projeto.tecnologia = validado['tecnologia']
-            projeto.trabalho = validado['trabalho']
-            projeto.outras_atividades = validado['outras_atividades']
-            if(projeto.outras_atividades):
-                projeto.quais_outras_atividades = \
-                    validado['quais_outras_atividades']
+            for i in request.form.getlist('obj'):
+                obj = models.Atividade()
+                obj.nome = i
+                projeto.objs.append(obj)
 
             # ---  Com qual Público Alvo o Projeto é desenvolvido?
             # ---- Sob aspectos de Faixa Etária
-            projeto.criancas = validado['criancas']
-            projeto.adolescentes = validado['adolescentes']
-            projeto.adultos = validado['adultos']
-            projeto.jovens = validado['jovens']
+            for i in request.form.getlist('publico_alvo'):
+                obj = models.PublicoAlvo()
+                obj.nome = i
+                projeto.publico_alvo.append(obj)
 
             # ---- Sob aspectos das Culturas Tradicionais
-            projeto.quilombola = validado['quilombola']
-            projeto.pomerano = validado['pomerano']
-            projeto.caicara = validado['caicara']
-            projeto.indigena = validado['indigena']
-            projeto.cigana = validado['cigana']
-            projeto.povos_da_floresta = validado['povos_da_floresta']
-            projeto.ribeirinhos = validado['ribeirinhos']
-            projeto.outras_culturas = validado['outras_culturas']
-            if(projeto.outras_culturas):
-                projeto.quais_outras_culturas = \
-                    validado['quais_outras_culturas']
+            for i in request.form.getlist('culturas_tradicionais'):
+                obj = models.CulturaTradicional()
+                obj.nome = i
+                projeto.culturas_tradicionais.append(obj)
 
             # ---- Sob aspectos de Ocupação do Meio
-            projeto.rural = validado['rural']
-            projeto.urbano = validado['urbano']
-            projeto.outro = validado['outro']
-            projeto.outra_ocupacao = validado['outra_ocupacao']
-            if(projeto.outra_ocupacao):
-                projeto.qual_outra_ocupacao = validado['qual_outra_ocupacao']
+            for i in request.form.getlist('ocupacao_do_meio'):
+                obj = models.OcupacaoDoMeio()
+                obj.nome = i
+                projeto.ocupacao_do_meio.append(obj)
 
             # ---- Sob aspectos de Gênero
-            projeto.mulheres = validado['mulheres']
-            projeto.homens = validado['homens']
-            projeto.lgbt = validado['lgbt']
+            for i in request.form.getlist('genero'):
+                obj = models.Genero()
+                obj.nome = i
+                projeto.genero.append(obj)
 
             # --- Quais são as Manifestações e Linguagens que o Projeto utiliza
             # em suas atividades?
-            projeto.artes_digitais = validado['artes_digitais']
-            projeto.artes_plasticas = validado['artes_plasticas']
-            projeto.audiovisual = validado['audiovisual']
-            projeto.circo = validado['circo']
-            projeto.culinaria = validado['culinaria']
-            projeto.danca = validado['danca']
-            projeto.fotografia = validado['fotografia']
-            projeto.grafite = validado['grafite']
-            projeto.internet = validado['internet']
-            projeto.jornalismo = validado['jornalismo']
-            projeto.literatura = validado['literatura']
-            projeto.musica = validado['musica']
-            projeto.radio = validado['radio']
-            projeto.teatro = validado['teatro']
-            projeto.tecnologias_digitais = validado['tecnologias_digitais']
-            projeto.tradicao_oral = validado['tradicao_oral']
-            projeto.tv = validado['tv']
-            projeto.outras_manifestacoes = validado['outras_manifestacoes']
-            if(projeto.outras_manifestacoes):
-                projeto.quais_outras_manifestacoes = \
-                    validado['quais_outras_manifestacoes']
+            for i in request.form.getlist('manifestacoes_linguagens'):
+                obj = models.ManifestacaoLinguagem()
+                obj.nome = i
+                projeto.manifestacoes_linguagens.append(obj)
 
             # --- O Projeto participa de alguma Ação do Programa Cultura Viva?
-            projeto.participa_cultura_viva = validado['participa_cultura_viva']
-            projeto.agente_cultura_viva = validado['agente_cultura_viva']
-            projeto.cultura_digital = validado['cultura_digital']
-            projeto.cultura_e_saude = validado['cultura_e_saude']
-            projeto.economia_viva = validado['economia_viva']
-            projeto.escola_viva = validado['escola_viva']
-            projeto.grios = validado['grios']
-            projeto.interacoes_esteticas = validado['interacoes_esteticas']
-            projeto.midias_livres = validado['midias_livres']
-            projeto.pontinho_de_cultura = validado['pontinho_de_cultura']
-            projeto.pontos_de_memoria = validado['pontos_de_memoria']
-            projeto.redes_indigenas = validado['redes_indigenas']
-            projeto.tuxaua = validado['tuxaua']
+            for i in request.form.getlist('acao_cultura_viva'):
+                obj = models.AcaoCulturaViva()
+                obj.nome = i
+                projeto.acao_cultura_viva.append(obj)
 
             descricao = validado['descricao']
 
             # TODO: Tratar upload de documentacoes
 
             # -- Parcerias do Projeto
-            projeto.parcerias = validado['parcerias']
-            projeto.parc_biblioteca = validado['parc_biblioteca']
-            projeto.parc_empresa = validado['parc_empresa']
-            projeto.parc_equipamento_de_saude = validado['parc_equipamento_de_saude']
-            projeto.parc_escola = validado['parc_escola']
-            projeto.parc_igreja = validado['parc_igreja']
-            projeto.parc_ong = validado['parc_ong']
-            projeto.parc_poder_publico = validado['parc_poder_publico']
-            projeto.parc_pontos_de_memoria = validado['parc_pontos_de_memoria']
-            projeto.parc_redes_indigenas = validado['parc_redes_indigenas']
-            projeto.parc_sistema_s = validado['parc_sistema_s']
-            projeto.parc_tuxaua = validado['parc_tuxaua']
-            projeto.outros_parceiros = validado['outros_parceiros']
-            if(projeto.outros_parceiros):
-                projeto.quais_outros_parceiros = validado['quais_outros_parceiros']
-
-            for i in request.form.getlist('parc_nome'):
-                parc = models.Parceiro()
-                parc.nome = i
-                projeto.parc_nome.append(parc)
+            for i in request.form.getlist('parcerias'):
+                obj = models.Parceiro()
+                obj.nome = i
+                projeto.parcerias.append(obj)
 
             # -- Índice de acesso à cultura
             projeto.ind_oficinas = validado['ind_oficinas']

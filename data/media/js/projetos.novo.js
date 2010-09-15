@@ -79,7 +79,7 @@ $(document).ready (function () {
         }
     });
 
-    $("input[name=parcerias]").change(function () {
+    $("input[name=estabeleceu_parcerias]").change(function () {
         if ($(this).val () == 'sim') {
             $('#parcerias_sim').show ();
         } else {
