@@ -22,17 +22,32 @@
 from datetime import datetime
 from elixir import metadata, setup_all, using_options, Entity, Field, \
     Unicode, DateTime, ManyToOne, OneToMany, ManyToMany, Boolean, Integer, \
-    Enum
+    Enum, session
 from ..config import DATABASE_URI
+
+def get_or_create(model, **kwargs):
+    """Helper function to search for an object or create it otherwise,
+    based on the Django's Model.get_or_create() method.
+    """
+    instance = model.query.filter_by(**kwargs).first()
+    if instance:
+        return instance, False
+    else:
+        params = {}
+        for k, v in kwargs.iteritems():
+            params[k] = v
+        instance = model(**params)
+        session.add(instance)
+        session.commit()
+        return instance, True
 
 class Telefone(Entity):
     """Wrapper para a entidade telefone no banco de dados
     """
     using_options(shortnames=True)
-    numero = Field(Unicode(32))
+    numero = Field(Unicode(32), unique=True)
     cadastrado = ManyToMany('Cadastrado')
-    tel_proj = ManyToMany('Projeto')
-    tel_ent = ManyToMany('Telefone')
+    entidades = ManyToMany('Entidade')
 
 class RedeSocial(Entity):
     """Wrapper para a entidade redesocial no banco de dados
@@ -87,10 +102,9 @@ class Endereco(Entity):
     longitude = Field(Unicode(16))
 
     # -- relacionamentos
-    pessoas = ManyToOne('Pessoa')
-    end_proj = ManyToOne('Projeto')
-    end_outros = ManyToMany('Projeto')
-    end_ent = ManyToOne('Projeto')
+    pessoas = ManyToMany('Pessoa')
+    projetos = ManyToMany('Projeto')
+    entidades = ManyToMany('Entidade')
 
 class Cadastrado(Entity):
     """Classe base para Pessoa e Projeto
@@ -103,7 +117,7 @@ class Cadastrado(Entity):
 
     # -- Contatos e espaços na rede
     telefones = ManyToMany(Telefone, inverse='cadastrado')
-    email = Field(Unicode(256), unique=True)
+    email = Field(Unicode(256))
     website = Field(Unicode(256))
     redes_sociais = ManyToMany(RedeSocial, inverse='cadastrado')
     feeds = ManyToMany(Feed, inverse='cadastrado')
@@ -113,8 +127,11 @@ class Pessoa(Cadastrado):
     """
     using_options(inheritance='multi', shortnames=True)
 
+    responsavel_por = ManyToMany('Projeto', inverse='responsavel')
+    projetos = ManyToMany('Projeto')
+
     # -- Sobre sua participação
-    voce_eh = Field(Unicode(20))
+    participacao = Field(Unicode(20))
     papel = Field(Unicode(26))
     nome_iniciativa = Field(Unicode(128))
 
@@ -124,13 +141,25 @@ class Pessoa(Cadastrado):
     data_nascimento = Field(DateTime)
     sexo = Field(Unicode(16))
     avatar = Field(Unicode(128))
+    email = Field(Unicode(256))
+    site = Field(Unicode(256))
 
     # -- Geolocalização
-    endereco = OneToMany('Endereco')
+    endereco = ManyToMany('Endereco')
 
     # -- Dados de acesso
     usuario = Field(Unicode(64))
     senha = Field(Unicode(256))
+
+class Entidade(Entity):
+    using_options(shortnames=True)
+    nome = Field(Unicode(256))
+    convenios = ManyToMany('Convenio')
+    enderecos = ManyToMany('Endereco')
+    telefones = ManyToMany('Telefone')
+    email = Field(Unicode(256))
+    site = Field(Unicode(256))
+    projetos = OneToMany('Projeto')
 
 class Atividade(Entity):
     using_options(shortnames=True)
@@ -172,6 +201,10 @@ class Projeto(Cadastrado):
     """
     using_options(inheritance='multi', shortnames=True)
 
+    # -- Responsável pelo projeto
+    responsavel = ManyToMany('Pessoa', inverse='responsavel_por')
+    participantes = ManyToMany('Pessoa')
+
     # -- Dados do projeto
     nome = Field(Unicode(256))
     tipo = Field(Unicode(32))
@@ -179,29 +212,21 @@ class Projeto(Cadastrado):
     numero_convenio = Field(Unicode(32))
 
     # -- Geolocalização
-    end_proj = OneToMany('Endereco', inverse='end_proj')
-    end_outros = ManyToMany('Endereco')
-    local_proj = Field(Unicode(16))
+    enderecos = ManyToMany('Endereco')
+    local = Field(Unicode(16))
 
     # -- Comunicação e Cultura Digital
+    email = Field(Unicode(256))
+    site = Field(Unicode(256))
     sede_possui_tel = Field(Boolean)
     tipo_tel_sede = Field(Unicode(7))
-    pq_sem_tel = Field(Unicode(12))
-    pq_sem_tel_outro = Field(Unicode(256))
+    pq_sem_tel = Field(Unicode(256))
     sede_possui_net = Field(Boolean)
-    tipo_internet = Field(Unicode(7))
-    pq_sem_internet = Field(Unicode(12))
-    pq_sem_internet_outro = Field(Unicode(256))
+    tipo_internet = Field(Unicode(16))
+    pq_sem_internet = Field(Unicode(256))
 
     # -- Entidade Proponente
-    nome_ent = Field(Unicode(256))
-    endereco_ent_proj = Field(Boolean)
-    end_ent = OneToMany('Endereco', inverse='end_ent')
-    tel_ent = ManyToMany('Telefone')
-    email_ent = Field(Unicode(256), unique=True)
-    website_ent = Field(Unicode(256))
-    convenio_ent = Field(Boolean)
-    outro_convenio = ManyToMany('Convenio')
+    entidade = ManyToOne('Entidade')
 
     # -- Atividades exercidas pelo projeto
     # --- Qual a área de atuação das atividades do Projeto?
