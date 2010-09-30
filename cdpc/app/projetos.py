@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from math import ceil
 from formencode import Invalid
 from flask import Module, render_template, request
 from elixir import session
@@ -25,6 +26,24 @@ from . import models
 from cadastro import VALORES_UF
 
 module = Module(__name__)
+
+projetos = models.Projeto.query.order_by('data_cadastro').all()
+
+@module.route('/')
+def listing():
+    count = models.Projeto.query.count()
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 20))
+
+    pages = ceil(count / limit)
+    index = limit*(page-1)
+    lista = projetos[index:index+limit]
+    pagination = dict(count=count, limit=limit, pages=pages,
+                      page=page)
+    return render_template('projetos/listing.html',
+                           projetos=lista,
+                           pagination=pagination,
+                           vals_uf=VALORES_UF)
 
 @module.route("novo/", methods=('GET', 'POST'))
 def novo():

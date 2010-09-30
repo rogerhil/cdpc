@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<link
+   rel="stylesheet" type="text/css"
+   href="{{ url_for('.static', filename='css/projetos.listing.css') }}">
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/projetos.listing.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h2>Projetos</h2>
+
+{% if projetos %}
+
+<form id="busca">
+  <div class="campoBusca">
+    <label>UF</label>
+    <select name="uf">
+      <option disabled="disabled">Selecione</option>
+      {% for uf in vals_uf %}
+      <option value="{{ uf }}">{{ uf }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="campoBusca">
+    <label>Cidade</label>
+    <select name="cidade">
+      <option disabled="disabled">Selecione uma UF</option>
+    </select>
+  </div>
+
+  <div class="resumo">
+    <div class="button">+</div>
+  </div>
+</form>
+
+<ul id="sumarioProjetos">
+  <li>
+    Exibindo <strong>{{ pagination.limit }}</strong> de um total de
+    <strong>{{ pagination.count }}</strong> projetos.
+  </li>
+  <li>
+    {% for i in range(1, pagination['pages']) %}
+    <a href="?page={{ i }}"
+       {% if i == pagination['page'] %}
+       class="selected"
+       {% endif %}>{{ i }}</a>
+    {% endfor %}
+  </li>
+</ul>
+
+<table id="projetos">
+  <thead>
+    <th>Nome</th>
+    <th>Cidade</th>
+    <th>UF</th>
+  </thead>
+  <tbody>
+    {% for projeto in projetos %}
+    <tr>
+      <td>
+        <a href="javascript:showProject({{ projeto.id }})">
+          {{ projeto.nome }}
+        </a>
+      </td>
+      <td>{{ projeto.enderecos.0.cidade }}</td>
+      <td>{{ projeto.enderecos.0.uf }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<p>Nenhum projeto cadastrado no momento.</p>
+{% endif %}
+
+{% endblock %}

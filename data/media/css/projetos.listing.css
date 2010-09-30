@@ -1,0 +1,45 @@
+/* Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+a { text-decoration:none; color:#666; }
+
+form#busca { background:#fff9ed; margin-bottom:6px;
+             border-left:solid 3px #f6b434; }
+
+form#busca label { font-weight:bold; color:#7c5813; display:block;
+                   width:60px; float:left; }
+
+form#busca .campoBusca { text-align:left; padding:5px; margin:5px; }
+
+form#busca .resumo { background:#fdf3c7; padding:6px; }
+
+form#busca .resumo .button {
+    background:#f6b434; color:#816021; font-size:30px; font-weight:bold;
+    padding:0 6px; width:24px; border-right:solid 2px #c8922a;
+    border-bottom:solid 2px #c8922a; }
+
+#sumarioProjetos { padding:10px 0; }
+
+#sumarioProjetos .selected { font-weight:bold; }
+
+#projetos { width:100%; }
+
+#projetos th {
+    text-align:left; padding:4px; background:#f2f2f0; color:#1855ad;
+    border-top:solid 1px #d3d3d0; border-left:solid 2px #d3d3d0;
+    border-right:solid 5px #d3d3d0; border-bottom:solid 2px #d3d3d0; }
+
+#projetos td { padding:4px; border-bottom:solid 1px #d3d3d0; }
