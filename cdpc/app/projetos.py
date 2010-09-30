@@ -67,7 +67,8 @@ def novo():
             projeto.numero_convenio = validado['numero_convenio']
 
             # -- Localização geográfica do projeto
-            endereco = models.Endereco(
+            projeto.enderecos.append(
+                models.Endereco(
                     cep=validado['end_proj_cep'],
                     numero=validado['end_proj_numero'],
                     logradouro=validado['end_proj_logradouro'],
@@ -78,12 +79,13 @@ def novo():
                     latitude=validado['end_proj_latitude'],
                     longitude=validado['end_proj_longitude']
                     )
-            projeto.end_proj = [endereco]
+                )
 
-            projeto.local_proj = validado['local_proj']
+            projeto.local = validado['local_proj']
 
-            if(projeto.local_proj == 'outros'):
-                endereco = models.Endereco(
+            if projeto.local == 'outros':
+                projeto.enderecos.append(
+                    models.Endereco(
                         nome=validado['end_outro_nome'],
                         cep=validado['end_outro_cep'],
                         numero=validado['end_outro_numero'],
@@ -95,7 +97,7 @@ def novo():
                         latitude=validado['end_outro_latitude'],
                         longitude=validado['end_outro_longitude']
                         )
-                projeto.end_outros = [endereco]
+                    )
 
             # -- Contatos e espaços na rede
             projeto.email = validado['email_proj']
@@ -136,11 +138,15 @@ def novo():
                         validado['pq_sem_internet_outro']
 
             # -- Entidade Proponente
-            projeto.nome_ent = validado['nome_ent']
-            projeto.endereco_ent_proj = validado['endereco_ent_proj'] == 'sim'
+            projeto.entidade = models.Entidade(
+                nome=validado['nome_ent'],
+                )
 
-            if(not projeto.endereco_ent_proj):
-                endereco = models.Endereco(
+            if request.args.get('endereco_ent_proj') == 'sim':
+                projeto.entidade.enderecos.append(projeto.enderecos[0])
+            else:
+                projeto.entidade.enderecos.append(
+                    models.Endereco(
                         cep=validado['end_ent_cep'],
                         numero=validado['end_ent_numero'],
                         logradouro=validado['end_ent_logradouro'],
@@ -151,7 +157,7 @@ def novo():
                         latitude=validado['end_ent_latitude'],
                         longitude=validado['end_ent_longitude']
                         )
-                projeto.end_ent= [endereco]
+                    )
 
             telefone = models.Telefone(numero=validado['tel_ent'])
             projeto.tel_ent = [telefone]
