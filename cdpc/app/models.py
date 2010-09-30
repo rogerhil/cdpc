@@ -173,15 +173,15 @@ class Projeto(Cadastrado):
     using_options(inheritance='multi', shortnames=True)
 
     # -- Dados do projeto
-    voce_eh = Field(Unicode(19))
-    tipo_convenio = Field(Unicode(13))
-    numero_convenio = Field(Unicode(12))
-    nome_proj = Field(Unicode(256))
+    nome = Field(Unicode(256))
+    tipo = Field(Unicode(32))
+    tipo_convenio = Field(Unicode(64))
+    numero_convenio = Field(Unicode(32))
 
     # -- Geolocalização
     end_proj = OneToMany('Endereco', inverse='end_proj')
-    local_proj = Field(Unicode(10))
     end_outros = ManyToMany('Endereco')
+    local_proj = Field(Unicode(16))
 
     # -- Comunicação e Cultura Digital
     sede_possui_tel = Field(Boolean)

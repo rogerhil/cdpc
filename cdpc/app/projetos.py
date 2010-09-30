@@ -61,10 +61,10 @@ def novo():
             projeto = models.Projeto()
 
             # -- Dados do projeto
-            projeto.voce_eh = validado['voce_eh']
+            projeto.nome = validado['nome']
+            projeto.tipo = validado['tipo']
             projeto.tipo_convenio = validado['tipo_convenio']
             projeto.numero_convenio = validado['numero_convenio']
-            projeto.nome_proj = validado['nome_proj']
 
             # -- Localização geográfica do projeto
             endereco = models.Endereco(

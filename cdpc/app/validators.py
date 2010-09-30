@@ -94,10 +94,10 @@ class Usuario(formencode.Schema):
 
 class Projeto(formencode.Schema):
     # -- Dados do projeto
-    voce_eh = validators.String(not_empty=True)
+    nome = validators.String(not_empty=True)
+    tipo = validators.String(not_empty=True)
     tipo_convenio = validators.String(not_empty=True)
     numero_convenio = validators.String(not_empty=True)
-    nome_proj = validators.String(not_empty=True)
 
     # -- Localização geográfica do projeto
     end_proj_cep = validators.String(not_empty=True)
