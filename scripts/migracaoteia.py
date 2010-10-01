@@ -53,6 +53,8 @@ sys.path.insert(0, '..')
 from cdpc.app.models import *
 from elixir import session
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+from time import strptime
 
 def add_tel(tel_list, ddd, tel):
     ddd = ddd.strip()
@@ -135,6 +137,19 @@ def main():
             ))
         add_tel(projeto.telefones, p_ddd1, p_tel1)
         add_tel(projeto.telefones, p_ddd2, p_tel2)
+
+        data_cadastro = data_cadastro.strip()
+        hora_cadastro = hora_cadastro.strip()
+        data = ''
+        if data_cadastro:
+            data = data_cadastro
+            formato = '%Y-%m-%d'
+        if data_cadastro and hora_cadastro:
+            data += ' %s' % hora_cadastro
+            formato += ' %H:%M:%S'
+        if data:
+            time_st = strptime(data, formato)
+            projeto.data_cadastro = datetime(*tuple(time_st)[:6])
 
         session.commit()
 
