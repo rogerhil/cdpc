@@ -57,6 +57,7 @@
     <th>Nome</th>
     <th>Cidade</th>
     <th>UF</th>
+    <th>Data do cadastro</th>
   </thead>
   <tbody>
     {% for projeto in projetos %}
@@ -68,6 +69,7 @@
       </td>
       <td>{{ projeto.enderecos.0.cidade }}</td>
       <td>{{ projeto.enderecos.0.uf }}</td>
+      <td>{{ projeto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
     </tr>
     {% endfor %}
   </tbody>
