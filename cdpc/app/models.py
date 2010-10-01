@@ -22,7 +22,7 @@
 from datetime import datetime
 from elixir import metadata, setup_all, using_options, Entity, Field, \
     Unicode, DateTime, ManyToOne, OneToMany, ManyToMany, Boolean, Integer, \
-    Enum, session
+    session
 from ..config import DATABASE_URI
 
 def get_or_create(model, **kwargs):
