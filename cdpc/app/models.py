@@ -38,7 +38,6 @@ def get_or_create(model, **kwargs):
             params[k] = v
         instance = model(**params)
         session.add(instance)
-        session.commit()
         return instance, True
 
 class Telefone(Entity):
