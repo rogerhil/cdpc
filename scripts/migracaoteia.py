@@ -60,8 +60,10 @@ def add_tel(tel_list, ddd, tel):
     if ddd and tel:
         tel = '(%s) %s' % (ddd, tel)
         inst, _ = get_or_create(Telefone, numero=tel)
+        session.commit()
         if not inst in tel_list:
             tel_list.append(inst)
+        session.commit()
 
 def main():
     # Iterando sobre as entradas no arquivo csv gerado à partir do dump
