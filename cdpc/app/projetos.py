@@ -27,8 +27,6 @@ from cadastro import VALORES_UF
 
 module = Module(__name__)
 
-projetos = models.Projeto.query.order_by('data_cadastro').all()
-
 @module.route('/')
 def listing():
     count = models.Projeto.query.count()
@@ -37,7 +35,8 @@ def listing():
 
     pages = ceil(count / limit)
     index = limit*(page-1)
-    lista = projetos[index:index+limit]
+
+    lista = models.Projeto.query.order_by('data_cadastro')[index:index+limit]
     pagination = dict(count=count, limit=limit, pages=pages,
                       page=page)
     return render_template('projetos/listing.html',
