@@ -6,6 +6,9 @@
    href="{{ url_for('.static', filename='css/projetos.listing.css') }}">
 <script
    type="text/javascript"
+   src="{{ url_for('.static', filename='js/inc/jquery.js') }}"></script>
+<script
+   type="text/javascript"
    src="{{ url_for('.static', filename='js/projetos.listing.js') }}"></script>
 {% endblock %}
 
@@ -54,22 +57,44 @@
 
 <table id="projetos">
   <thead>
-    <th>Nome</th>
-    <th>Cidade</th>
-    <th>UF</th>
-    <th>Data do cadastro</th>
+    <tr>
+      <th>Nome</th>
+      <th>Cidade</th>
+      <th>UF</th>
+      <th>Data do cadastro</th>
+    </tr>
   </thead>
   <tbody>
     {% for projeto in projetos %}
-    <tr>
+    <tr onclick="showProject({{ projeto.id }}, this)">
       <td>
-        <a href="javascript:showProject({{ projeto.id }})">
+        <a>
           {{ projeto.nome }}
         </a>
       </td>
       <td>{{ projeto.enderecos.0.cidade }}</td>
       <td>{{ projeto.enderecos.0.uf }}</td>
       <td>{{ projeto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
+    </tr>
+    <tr class="detalhesProjeto">
+      <td colspan="4">
+        <fieldset class="endereco">
+          <legend>Endereço</legend>
+          <ul>
+            <li><a class="logradouro"></a></li>
+            <li><a class="bairro"></a></li>
+            <li><a class="cidade"></a> - <a class="uf"></a></li>
+          </ul>
+        </fieldset>
+
+        <fieldset class="contatos">
+          <legend>Contatos</legend>
+          <strong>Telefones</strong>
+          <ul class="telefones">
+            <li><a class="logradouro"></a></li>
+          </ul>
+        </fieldset>
+      </td>
     </tr>
     {% endfor %}
   </tbody>

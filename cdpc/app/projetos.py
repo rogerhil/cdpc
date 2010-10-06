@@ -20,6 +20,7 @@ from math import ceil
 from formencode import Invalid
 from flask import Module, render_template, request
 from elixir import session
+from simplejson import dumps
 
 from . import validators
 from . import models
@@ -43,6 +44,45 @@ def listing():
                            projetos=lista,
                            pagination=pagination,
                            vals_uf=VALORES_UF)
+
+@module.route('<int:pid>.json')
+def projeto_json(pid):
+    projeto = models.Projeto.query.filter_by(id=pid).first()
+    if projeto is None:
+        return '{}'
+
+    # Levantando dados do projeto
+    responsavel = ''
+    if projeto.responsavel:
+        responsavel = projeto.responsavel[0].nome
+
+    # Montando o json que vai ser retornado pra interface
+    ctx = {
+        'id': projeto.id,
+        'nome': projeto.nome,
+        'tipo': projeto.tipo,
+        'endereco': {
+            'nome': projeto.enderecos[0].nome,
+            'logradouro': projeto.enderecos[0].logradouro,
+            'bairro': projeto.enderecos[0].bairro,
+            'cidade': projeto.enderecos[0].cidade,
+            'uf': projeto.enderecos[0].uf,
+        },
+    }
+
+    ctx['telefones'] = []
+    for i in projeto.telefones:
+        ctx['telefones'].append(i.numero)
+
+    if projeto.responsavel:
+        resp = projeto.responsavel[0]
+        ctx['responsavel'] = {
+            'nome': resp.nome,
+            'email': resp.email,
+            'website': resp.website,
+        }
+
+    return dumps(ctx)
 
 @module.route("novo/", methods=('GET', 'POST'))
 def novo():
