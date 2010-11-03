@@ -22,12 +22,30 @@ from urllib import urlopen
 from simplejson import dumps, loads
 from flask import Module, request, render_template
 from elixir import session
+from math import ceil
 
 from . import validators
 from . import models
 from .cadastro import VALORES_UF
 
 module = Module(__name__)
+
+@module.route('/')
+def listing():
+    count = models.Projeto.query.count()
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 20))
+
+    pages = ceil(count / limit)
+    index = limit*(page-1)
+
+    lista = models.Pessoa.query.all()[index:index+limit]
+    pagination = dict(count=count, limit=limit, pages=pages,
+                      page=page)
+    return render_template('usuarios/listing.html',
+                           lista=lista,
+                           pagination=pagination,
+                           vals_uf=VALORES_UF)
 
 @module.route("novo/", methods=('GET', 'POST'))
 def novo():
