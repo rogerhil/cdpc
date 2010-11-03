@@ -46,7 +46,7 @@ Pronto, depois rodar esse comando, você já vai conseguir ver o código
 atual do sistema.
 
 Para executá-lo, faça o seguinte:
-p
+
  $ cd cdpc
  $ ./cdpcd
 
