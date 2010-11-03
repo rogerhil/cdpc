@@ -11,16 +11,20 @@
   <body>
     <div id="top">
       <h1 class="logo definedWidth">
-        <a href="#">Cadastre seu ponto de cultura</a>
+        <a href="{{ url_for('index.index') }}">
+          Cadastre seu ponto de cultura
+        </a>
       </h1>
       <div id="mainNavWraper">
         <div id="mainNav" class="definedWidth">
           <ul>
-            <li class="selected"><a href="#">pessoas</a></li>
-            <li><a href="#">projetos</a></li>
-            <li><a href="#">estatísticas</a></li>
+            <li {% if selected == "pessoas" %} class="selected"{% endif %}>
+              <a href="{{ url_for('usuarios.listing') }}">pessoas</a></li>
+            <li {% if selected == "projetos" %} class="selected"{% endif %}>
+              <a href="{{ url_for('projetos.listing') }}">projetos</a></li>
+            <li {% if selected == "estats" %} class="selected"{% endif %}>
+              <a href="#">estatísticas</a></li>
           </ul>
-
           <form id="search">
             <input type="text" placeholder="procurar">
           </form>
