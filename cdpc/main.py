@@ -29,6 +29,7 @@ from .config import STATIC_DIR, TEMPLATE_DIR
 from .app.usuarios import module as usuarios
 from .app.projetos import module as projetos
 from .app.cadastro import module as cadastro
+from .app.index import module as index
 
 class WebApp(Flask):
     """Flask extention to retrieve static files from a configurable
@@ -65,6 +66,7 @@ def create_app():
     """
     app = WebApp(__name__, media_path=STATIC_DIR)
     app.jinja_env.loader = FileSystemLoader(TEMPLATE_DIR)
+    app.register_module(index, url_prefix="/")
     app.register_module(usuarios, url_prefix="/usuarios/")
     app.register_module(projetos, url_prefix="/projetos/")
     app.register_module(cadastro, url_prefix="/cadastro/")

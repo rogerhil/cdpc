@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block content %}
+
+<h2>Projetos</h2>
+<ol>
+  <li>
+    <a href="{{ url_for('projetos.listing') }}">
+      Acessar a lista de pontos cadastrados
+    </a>
+  </li>
+  <li>
+    <a href="{{ url_for('projetos.novo') }}">
+      Cadastrar um novo ponto
+    </a>
+  </li>
+</ol>
+
+<h2>Acesso</h2>
+<form id="login">
+  <ol>
+    <li>
+      <label>Email</label> <input type="text" name="email">
+    </li>
+    <li>
+      <label>Senha</label> <input type="password" name="senha">
+    </li>
+    <li>
+      <input type="submit" value="Entrar">
+    </li>
+  </ol>
+</form>
+{% endblock %}
