@@ -25,10 +25,41 @@ function showProject(pid, line) {
         /* Formatando a linha que tem os detalhes */
         if ($('.logradouro', $tr).html() == '') {
             $.getJSON(pid + '.json', function (data) {
+                /* Endereço */
                 $('.logradouro', $tr).html(data.endereco.logradouro);
                 $('.bairro', $tr).html(data.endereco.bairro);
                 $('.cidade', $tr).html(data.endereco.cidade);
                 $('.uf', $tr).html(data.endereco.uf);
+
+                /* Telefones */
+                $('.telefones').html('');
+                if (data.telefones.length > 0) {
+                    for (var i = 0; i < data.telefones.length; i++) {
+                        $('<li>')
+                            .append($('<a>').html(data.telefones[i]))
+                            .appendTo($('.telefones ul'));
+                    }
+                } else {
+                    $('.telefones').hide();
+                }
+
+                /* Email e site */
+                if (data.email) {
+                    $('.email a', $tr)
+                        .html(data.email)
+                        .attr('href', 'mailto:' + data.email);
+                } else {
+                    $('.email').hide();
+                }
+
+                if (data.site) {
+                    $('.site a', $tr)
+                        .attr('href', data.site)
+                        .html(data.site);
+                } else {
+                    $('.site').hide();
+                }
+
                 $tr.fadeIn('slow');
             });
         } else {

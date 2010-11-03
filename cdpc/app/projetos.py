@@ -68,6 +68,9 @@ def projeto_json(pid):
             'cidade': projeto.enderecos[0].cidade,
             'uf': projeto.enderecos[0].uf,
         },
+        'email': projeto.email,
+        'site': projeto.website,
+        'telefones': [x.numero for x in projeto.telefones],
     }
 
     ctx['telefones'] = []

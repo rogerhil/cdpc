@@ -1,3 +1,4 @@
+{% set selected = "projetos" %}
 {% extends 'base.html' %}
 
 {% block extra_head %}
@@ -89,10 +90,17 @@
 
         <fieldset class="contatos">
           <legend>Contatos</legend>
-          <strong>Telefones</strong>
-          <ul class="telefones">
-            <li><a class="logradouro"></a></li>
-          </ul>
+          <div class="email">
+            <label>Email</label> <a href=""></a>
+          </div>
+          <div class="site">
+            <label>Site</label>
+            <a href=""></a>
+          </div>
+          <div class="telefones">
+            <strong>Telefones</strong>
+            <ul></ul>
+          </div>
         </fieldset>
       </td>
     </tr>
