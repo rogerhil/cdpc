@@ -31,6 +31,17 @@
           <br class="clear">
         </div>
       </div><!-- mainNavWraper -->
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="flashes definedWidth">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+
     </div><!-- top -->
 
     <div id="content" class="definedWidth">
