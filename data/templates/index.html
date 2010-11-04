@@ -19,11 +19,15 @@
   </li>
 </ol>
 
+{% if not is_logged_in() %}
 <h2>Acesso</h2>
-<form id="login">
+{% if request.args.get('erro') %}
+<div class="erro">Usuário ou senha incorretos</div>
+{% endif %}
+<form id="login" method="post" action="{{ url_for('login') }}">
   <ol>
     <li>
-      <label>Email</label> <input type="text" name="email">
+      <label>Nome de usuário</label> <input type="text" name="usuario">
     </li>
     <li>
       <label>Senha</label> <input type="password" name="senha">
@@ -33,4 +37,6 @@
     </li>
   </ol>
 </form>
+{% endif %}
+
 {% endblock %}

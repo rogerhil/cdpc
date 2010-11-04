@@ -17,7 +17,11 @@
 
 """Controllers da index
 """
-from flask import Module, request, render_template
+from hashlib import sha1
+from sqlalchemy.orm.exc import NoResultFound
+from flask import Module, request, render_template, session, \
+    g, url_for, redirect
+from .models import Pessoa
 
 module = Module(__name__)
 
@@ -26,3 +30,32 @@ def index():
     """Renderiza o template da index
     """
     return render_template("index.html")
+
+@module.route('login', methods=('POST',))
+def login():
+    """Autentica o usuário se ele existir na tabeloa de pessoas
+    """
+    usuario = request.form.get('usuario')
+    senha = sha1(request.form.get('senha')).hexdigest()
+    proxima = request.form.get('proxima_pagina', request.referrer)
+    try:
+        g.usuario = Pessoa.query.filter_by(usuario=usuario, senha=senha).one()
+        session['usuario'] = usuario
+        return redirect(proxima)
+    except NoResultFound:
+        proxima += '?erro=1'
+        return redirect(proxima)
+
+@module.route('logout')
+def logout():
+    """Apaga o nome do usuário da sessão
+    """
+    if 'usuario' in session:
+        session.pop('usuario')
+    return redirect(url_for('index.index'))
+
+def is_logged_in():
+    """Retorna verdadeiro se o usuário estiver autenticado ou falso caso
+    contrário.
+    """
+    return 'usuario' in session

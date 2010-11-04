@@ -28,6 +28,9 @@
           <form id="search">
             <input type="text" placeholder="procurar">
           </form>
+          {% if is_logged_in() %}
+          <a href="{{ url_for('index.logout') }}">Sair</a>
+          {% endif %}
           <br class="clear">
         </div>
       </div><!-- mainNavWraper -->
