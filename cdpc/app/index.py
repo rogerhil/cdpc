@@ -20,7 +20,7 @@
 from hashlib import sha1
 from sqlalchemy.orm.exc import NoResultFound
 from flask import Module, request, render_template, session, \
-    g, url_for, redirect
+    g, url_for, redirect, abort
 from .models import Pessoa
 
 module = Module(__name__)
@@ -37,7 +37,7 @@ def login():
     """
     usuario = request.form.get('usuario')
     senha = sha1(request.form.get('senha')).hexdigest()
-    proxima = request.form.get('proxima_pagina', request.referrer)
+    proxima = request.form.get('proxima', request.referrer)
     try:
         g.usuario = Pessoa.query.filter_by(usuario=usuario, senha=senha).one()
         session['usuario'] = usuario
@@ -45,6 +45,17 @@ def login():
     except NoResultFound:
         proxima += '?erro=1'
         return redirect(proxima)
+
+@module.route('login_form')
+def login_form():
+    """Exibe o form de login
+    """
+    proxima = request.args.get('proxima', request.referrer)
+    if proxima == url_for('index.login_form'):
+        proxima = url_for('index.index')
+    if is_logged_in():
+        return redirect(proxima)
+    return render_template('login.html', proxima=proxima)
 
 @module.route('logout')
 def logout():
@@ -59,3 +70,21 @@ def is_logged_in():
     contrário.
     """
     return 'usuario' in session
+
+def get_authenticated_user():
+    """Retorna o usuário que está autenticado na sessão atual ou None.
+    """
+    usuario = getattr(g, 'usuario', None)
+    if usuario is None and 'usuario' in session:
+        g.usuario = Pessoa.query.filter_by(usuario=session['usuario']).one()
+        return g.usuario
+    return None
+
+def get_user_or_login():
+    """Retorna o usuário autenticado ou redireciona para a página de login
+    """
+    user = get_authenticated_user()
+    if user is None:
+        url = '%s?proxima=%s' % (url_for('index.login_form'), request.url)
+        abort(redirect(url))
+    return user

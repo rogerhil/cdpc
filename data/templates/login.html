@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if request.args.get('erro') %}
+<div class="erro">Usuário ou senha incorretos</div>
+{% endif %}
+<form id="login" method="post" action="{{ url_for('login') }}">
+  <input type="hidden" name="proxima" value="{{ proxima }}">
+  <ol>
+    <li>
+      <label>Nome de usuário</label> <input type="text" name="usuario">
+    </li>
+    <li>
+      <label>Senha</label> <input type="password" name="senha">
+    </li>
+    <li>
+      <input type="submit" value="Entrar">
+    </li>
+  </ol>
+</form>
+{% endblock %}

@@ -18,12 +18,13 @@
 
 from math import ceil
 from formencode import Invalid
-from flask import Module, render_template, request
+from flask import Module, render_template, request, abort
 from elixir import session
 from simplejson import dumps
 
 from . import validators
 from . import models
+from .index import get_user_or_login
 from cadastro import VALORES_UF
 
 module = Module(__name__)
@@ -89,8 +90,15 @@ def projeto_json(pid):
 
 @module.route("novo/", methods=('GET', 'POST'))
 def novo():
+    """Formulário de cadastro de projetos.
+
+    O Usuário precisa estar autenticado para usar esse form.
     """
-    """
+    # Tenta pegar o usuário na sessão ou redireciona para o form de
+    # login.
+    user = get_user_or_login()
+
+    # Validação de dados já enviados pelo usuário
     if request.method == 'POST':
         # instanciando o validador
         validator = validators.Projeto()
