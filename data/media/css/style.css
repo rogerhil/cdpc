@@ -39,12 +39,6 @@ h1.logo a { text-decoration:none; color:#000; }
 #mainNav li { display:inline; padding-right:10px; }
 #mainNav li.selected { font-size:16px; font-weight:bold; }
 
-/* Search form */
-#search { float:right; }
-#search input {
-    border:none; margin-top:1px; padding-left:2px;
-    border-radius:3px; -moz-border-radius:3px; }
-
 /* Generic Headers */
 h2 { color:#e47f00; margin:10px 0; }
 h3 { color:#5dad14; margin:10px 0; clear:both; }

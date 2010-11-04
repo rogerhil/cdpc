@@ -25,9 +25,6 @@
             <li {% if selected == "estats" %} class="selected"{% endif %}>
               <a href="#">estatísticas</a></li>
           </ul>
-          <form id="search">
-            <input type="text" placeholder="procurar">
-          </form>
           {% if is_logged_in() %}
           <a href="{{ url_for('index.logout') }}">Sair</a>
           {% endif %}
