@@ -35,11 +35,11 @@ def index():
 def login():
     """Autentica o usuário se ele existir na tabeloa de pessoas
     """
-    usuario = request.form.get('usuario')
+    usuario = request.form.get('email')
     senha = sha1(request.form.get('senha')).hexdigest()
     proxima = request.form.get('proxima', request.referrer)
     try:
-        g.usuario = Pessoa.query.filter_by(usuario=usuario, senha=senha).one()
+        g.usuario = Pessoa.query.filter_by(email=usuario, senha=senha).one()
         session['usuario'] = usuario
         return redirect(proxima)
     except NoResultFound:
@@ -76,7 +76,7 @@ def get_authenticated_user():
     """
     usuario = getattr(g, 'usuario', None)
     if usuario is None and 'usuario' in session:
-        g.usuario = Pessoa.query.filter_by(usuario=session['usuario']).one()
+        g.usuario = Pessoa.query.filter_by(email=session['usuario']).one()
         return g.usuario
     return None
 
