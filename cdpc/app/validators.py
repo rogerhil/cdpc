@@ -51,16 +51,18 @@ class CpfValidator(formencode.FancyValidator):
         return value
 
 class Usuario(formencode.Schema):
-    # -- Sobre a sua participação
-    voce_eh = validators.String(not_empty=True)
-    nome_iniciativa = validators.String()
-    papel = validators.String()
+    # -- Dados de acesso
+    senha = validators.String(not_empty=True)
+    confirmar_senha = validators.String(not_empty=True)
+    email = validators.String(not_empty=True)
+    # TODO: Comparar senha original e confimada
 
     # -- Dados pessoais
     nome = validators.String(not_empty=True)
     cpf = CpfValidator(not_empty=True)
     data_nascimento = validators.DateConverter(month_style='dd/mm/yyyy')
     sexo = validators.String(not_empty=True)
+    telefone = validators.String(not_empty=True)
     avatar = validators.FieldStorageUploadConverter()
 
     # -- Sobre a sua geolocalização
@@ -70,27 +72,16 @@ class Usuario(formencode.Schema):
     end_cidade = validators.String(not_empty=True)
     end_bairro = validators.String(not_empty=True)
     end_logradouro = validators.String(not_empty=True)
-    end_complemento = validators.String(not_empty=True)
+    end_complemento = validators.String()
     end_longitude = validators.String()
     end_latitude = validators.String()
 
     # -- Contatos e Espaços na rede
-    telefone = validators.String(not_empty=True)
-    email = validators.String(not_empty=True)
     website = validators.URL()
     rs_nome = validators.String()
     rs_link = validators.String()
     feed_nome = validators.String()
     feed_link = validators.String()
-
-    # -- Dados de acesso
-    usuario = validators.String(not_empty=True)
-    senha = validators.String(not_empty=True)
-    confirmar_senha = validators.String(not_empty=True)
-
-    # TODO:
-    #   Comparar senha original e confimada
-    #   Checar dados condicionais
 
 class Projeto(formencode.Schema):
     # -- Dados do projeto
