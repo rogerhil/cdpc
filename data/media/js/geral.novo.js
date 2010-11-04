@@ -66,13 +66,11 @@ function novoTelefone ($parent) {
         $(this).parent().remove();
     });
 
-    var $label = $('<label>' +
-        '<span>Telefone</span>' +
-        '<input type="text" name="telefone">' +
-        '</label>');
+    var $label = $('<input type="text" name="telefone">');
     $('<li>')
         .append ($label)
         .append ($remove)
         .addClass ('bottomBorder')
+        .addClass ('extra')
         .appendTo ($parent);
 }

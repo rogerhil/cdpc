@@ -22,102 +22,57 @@
 {% block content %}
 <h2>Cadastro de usuários</h2>
 
-<form id="novoUsuario" method="post" action=".">
-<ol class="form">
+<form id="novoUsuario" method="post" action="{{ url_for('usuarios.novo') }}">
+<ol class="form col1">
   <li>
-    <h3>Sobre a sua participação</h3>
-    <ol class="section">
-      <li>
-        <label class="voceEh" for="voce_eh">Você é*</label>
-        <select id="voce_eh" name="voce_eh" class="required">
-          <option></option>
-          <option value="participante">
-            Participante da equipe de uma iniciativa cultural
-          </option>
-          <option value="secretaria_municipal">
-            Integrante de Secretaria Municipal
-          </option>
-          <option value="secretaria_estadual">
-            Integrante de Secretaria Estadual
-          </option>
-          <option value="minc">
-            Integrante do Ministério da Cultura
-          </option>
-          <option value="nao_participante">
-            Não faço parte da equipe de nenhuma iniciativa cultural
-          </option>
-        </select>
-
-        <ul id="papelParticipante" class="displayNone">
-          <li>
-            <label>
-              <input
-                 type="radio" name="papel"
-                 value="responsavel_conveniada">
-              Responsável/Coordenador da iniciativa conveniada
-              ao Programa Cultura Viva
-            </label>
-          </li>
-
-          <li>
-            <label>
-              <input
-                 type="radio" name="papel"
-                 value="responsavel_nao_conveniada">
-              Responsável/Coordenador da
-              iniciativa <strong>não</strong> conveniada ao
-              Programa Cultura Viva
-            </label>
-          </li>
-
-          <li>
-            <label>
-              <input type="radio" name="papel" value="integrante">
-              Não sou Responsável/Coordenador da
-              iniciativa. Apenas integro a equipe.
-            </label>
-          </li>
-
-          <li>
-            <label for="nome_iniciativa">Nome da iniciativa</label>
-            <input
-               type="text" name="nome_iniciativa" id="nome_iniciativa"
-               placeholder="Digite o nome completo da iniciativa">
-          </li>
-        </ul>
-
-      </li><!-- Você é -->
-    </ol><!-- Sobre sua participação -->
+    <h3>Dados de acesso</h3>
+    <p class="helpText">
+      Você precisa informar um email válido e escolher uma senha para
+      ter acesso ao sistema.
+    </p>
+    <ol class="section acesso">
+      <li class="required">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" class="require">
+      </li>
+      <li class="required">
+        <label for="senha">Senha</label>
+        <input type="password" name="senha" id="senha" class="required">
+      </li>
+      <li class="required">
+        <label for="confirmar_senha">Confirmar senha</label>
+        <input type="password" name="confirmar_senha" id="confirmar_senha"
+               class="required">
+      </li>
+    </ol>
   </li>
 
   <li>
     <h3>Dados Pessoais</h3>
-    <ol class="section">
-      <li>
-        <label for="nome">Nome completo*</label>
+    <ol class="section pessoal">
+      <li class="required">
+        <label for="nome">Nome completo</label>
         <input
-           type="text" name="nome" id="nome" class="required"
-           placeholder="Digite o seu nome completo. Ex.: José da Silva Oliveira Santos">
+           type="text" name="nome" id="nome" class="required">
       </li>
 
-      <li>
-        <label for="cpf">CPF*</label>
+      <li class="required">
+        <label for="cpf">CPF</label>
         <input
-           type="text" name="cpf" id="cpf" class="required"
-           placeholder="Só números. Ex.: 32857345610">
+           type="text" name="cpf" id="cpf" class="required">
         <em class="helpText">
           <a href="#">Por que pedimos o seu CPF</a>
         </em>
       </li>
 
-      <li>
-        <label for="data_nascimento">Data de nascimento*</label>
+      <li class="required">
+        <label for="data_nascimento">Data de nascimento</label>
         <input type="text" name="data_nascimento" id="data_nascimento"
                class="required">
       </li>
 
-      <li>
-        <label>Sexo*</label>
+      <li class="required">
+        <label>Sexo</label>
         <label class="radio">
           <input type="radio" name="sexo" value="feminino">
           Feminino
@@ -126,7 +81,17 @@
           <input type="radio" name="sexo" value="masculino">
           Masculino
         </label>
-        <br class="clear">
+      </li>
+
+      <li>
+        <ul class="telefones">
+          <li class="bottomBorder">
+            <label class="required">Telefones</label>
+            <input type="text" name="telefone" class="required">
+          </li>
+        </ul>
+        <input class="sub" type="button" value="Outro telefone" name="nt"
+               onclick="novoTelefone ($('.telefones', $(this).parent()));">
       </li>
 
       <li>
@@ -136,11 +101,14 @@
     </ol><!-- Dados pessoais -->
   </li>
 
+</ol>
+<ol class="form col2">
+
   <li>
-    <h3>Sobre a sua localização geográfica</h3>
-    <ol class="section">
-      <li>
-        <label for="end_cep">CEP*</label>
+    <h3>Sua localização geográfica</h3>
+    <ol class="section localizacao">
+      <li class="required">
+        <label for="end_cep">CEP</label>
         <input
            type="text" name="end_cep" id="end_cep" class="required"
            onblur="cepWebService (this.value);">
@@ -149,30 +117,27 @@
         </em>
       </li>
 
-      <li>
-        <label for="end_numero">Número*</label>
+      <li class="required">
+        <label for="end_numero">Número</label>
         <input
-           type="text" name="end_numero" id="end_numero" class="required"
-           placeholder="Ex.: 202">
+           type="text" name="end_numero" id="end_numero" class="required">
       </li>
 
-      <li>
-        <label for="end_logradouro">Logradouro*</label>
+      <li class="required">
+        <label for="end_logradouro">Logradouro</label>
         <input
            type="text" name="end_logradouro" id="end_logradouro"
-           class="required"
-           placeholder="Digite o nome de sua rua, Al., Av., Viela, etc. Ex.: Rua Lírios">
+           class="required">
       </li>
 
       <li>
         <label for="end_complemento">Complemento</label>
         <input
-           type="text" name="end_complemento" id="end_complemento"
-           placeholder="Ex.: B">
+           type="text" name="end_complemento" id="end_complemento">
       </li>
 
-      <li>
-        <label for="end_uf">UF*</label>
+      <li class="required">
+        <label for="end_uf">UF</label>
         <select name="end_uf" id="end_uf" class="required">
           <option></option>
           {% for uf in vals_uf %}
@@ -181,65 +146,40 @@
         </select>
       </li>
 
-      <li>
-        <label for="end_cidade">Cidade*</label>
+      <li class="required">
+        <label for="end_cidade">Cidade</label>
         <input
-           type="text" name="end_cidade" id="end_cidade" class="required"
-           placeholder="Ex.: Salvador">
+           type="text" name="end_cidade" id="end_cidade" class="required">
       </li>
 
-      <li>
-        <label for="end_bairro">Bairro*</label>
+      <li class="required">
+        <label for="end_bairro">Bairro</label>
         <input
-           type="text" name="end_bairro" id="end_bairro" class="required"
-           placeholder="Vila das Flores">
+           type="text" name="end_bairro" id="end_bairro" class="required">
       </li>
 
       <li>
         <label for="end_latitude">Latitude</label>
         <input
-           type="text" name="end_latitude" id="end_latitude"
-           placeholder="+ 23146940000">
+           type="text" name="end_latitude" id="end_latitude">
       </li>
 
       <li>
         <label for="end_longitude">Longitude</label>
         <input
-           type="text" name="end_longitude" id="end_longitude"
-           placeholder="- 234559898332">
+           type="text" name="end_longitude" id="end_longitude">
       </li>
     </ol><!-- Sobre a sua localização geográfica -->
   </li>
 
   <li>
-    <h3>Contatos e Espaços na rede</h3>
+    <h3>Espaços na rede</h3>
     <ol class="section">
-      <li>
-        <ul class="telefones subForm">
-          <li class="bottomBorder">
-            <label>
-              <span>Telefone*</span>
-              <input type="text" name="telefone" placeholder="DDD + Fone"
-                     class="required">
-            </label>
-          </li>
-        </ul>
-        <input class="sub" type="button" value="Outro telefone" name="nt"
-               onclick="novoTelefone ($('.telefones', $(this).parent()));">
-      </li>
-
-      <li>
-        <label for="email">Email*</label>
-        <input
-           type="text" name="email" id="email" class="required"
-           placeholder="Digite o seu endereço de e-mail.  Ex.: josedasilvaoliveirasantos@cultura.org.br">
-      </li>
 
       <li>
         <label for="website">Website</label>
         <input
-           type="text" name="website" id="website"
-           placeholder="Digite o endereço do seu site. Ex.: www.josedasilva.com.br">
+           type="text" name="website" id="website">
       </li>
 
       <li class="subForm">
@@ -247,13 +187,12 @@
         <ul id="redesSociais">
           <li>
             <label for="rs_nome">Nome</label>
-            <input type="text" name="rs_nome" id="rs_nome" placeholder="Twitter">
+            <input type="text" name="rs_nome" id="rs_nome">
           </li>
           <li class="bottomBorder">
             <label for="rs_link">Endereço</label>
             <input
-               type="text" name="rs_link" id="rs_link"
-               placeholder="Ex.: http://twitter.com/josedasilva">
+               type="text" name="rs_link" id="rs_link">
           </li>
         </ul><!-- Redes sociais -->
         <input
@@ -267,39 +206,18 @@
           <li>
             <label for="feed_nome">Nome</label>
             <input
-               type="text" name="feed_nome" id="feed_nome"
-               placeholder="Blog do Simp. Internacional de Políticas Públicas de Acervos Digitais"/>
+               type="text" name="feed_nome" id="feed_nome">
           </li>
           <li class="bottomBorder">
             <label for="feed_link">Endereço</label>
             <input
-               type="text" name="feed_link" id="feed_link"
-               placeholder="http://culturadigital.br/simposioacervosdigitais/feed/"/>
+               type="text" name="feed_link" id="feed_link">
           </li>
         </ul><!-- Feeds -->
         <input class="sub" type="button" value="Outro feed" name="nt"
            onclick="novaEntrada ($('#feeds'));">
       </li>
     </ol><!-- Contatos e espaços na rede -->
-  </li>
-
-  <li>
-    <h3>Dados de acesso</h3>
-    <ol class="section">
-      <li>
-        <label for="usuario">Login*</label>
-        <input type="text" name="usuario" id="usuario" class="required">
-      </li>
-      <li>
-        <label for="senha">Senha*</label>
-        <input type="text" name="senha" id="senha" class="required">
-      </li>
-      <li>
-        <label for="confirmar_senha">Confirmar senha*</label>
-        <input type="text" name="confirmar_senha" id="confirmar_senha"
-               class="required">
-      </li>
-    </ol>
   </li>
 </ol>
 

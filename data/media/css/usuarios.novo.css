@@ -17,41 +17,34 @@
 ul, ol { list-style:none none; padding:0; }
 li { margin-bottom:0.3em; }
 h4 { margin-top:4px; }
-.section { padding-left:20px; }
 label.error, .form label.error { display:none !important; }
 
 .error { border:solid 1px red; background:#fce5b9; }
 
-/* Tamanho genérico para campos */
-.form input[type=text] { min-width:250px; }
-.form label { display:block; width:260px; float:left; }
-.form .notBlock label { display:inline; width:auto; float:none; }
+form#novoUsuario { width:960px; }
+.col1 { width:450px; margin-right:50px; }
+.col2 { width:450px; }
+.form { float:left; }
+.form label { display:block; margin-bottom:2px; font-weight:bold; }
+.form li { margin-bottom:10px; }
 
-/* Estilos para sub formulários */
-.subForm {  }
-.subForm h4 { margin-bottom:10px; }
-.subForm .sub, .subForm ul, .section .sub { margin-left:20px; }
-.subForm input[type=text] { min-width:230px; }
-.form label.radio { width:90px; }
+ol.acesso { background:#eee; padding:10px; }
+ol.pessoal { background:#eee; padding:10px; }
 
-.bottomBorder {
-    width: 500px; padding-bottom:6px; margin-bottom:6px;
-    border-bottom:dotted 1px #d4d4d4; }
+
+.col2 label { float:left; width:100px; }
+.col2 .section { padding-left:20px; }
+
+.subForm label { padding-left:20px; }
+.subForm input { width:160px; }
+.subForm .sub { margin-left:20px; width:auto; }
+.subForm .bottomBorder a { margin-left:20px; }
+
+.bottomBorder.extra input { float:left; margin-right:10px; }
 .bottomBorder a {
     display:block; color:red; text-decoration: none; font-size:10px;
-    text-align:right; margin-right:10px; }
+    padding-top:3px; }
 
 /* Botão de confirmação */
-.botaoEnviar { margin-top:30px; padding:20px; border-top:dotted 1px gray; }
+.botaoEnviar { padding-top:20px; clear:both; }
 .botaoEnviar input { padding:2px 12px; }
-
-/* Estilos para campos específicos do form */
-#papelParticipante {
-    margin-top:10px; padding:5px; background:#f7f7f7;
-    width:540px; border-radius:3px; -moz-border-radius:3px; }
-#papelParticipante label { display:inline; float:none; }
-
-.telefones label { display:inline; width:auto; float:none; }
-.telefones label span { display:block; width:260px; float:left; }
-.telefones input[type=text] { min-width:250px; }
-.telefones .bottomBorder { width: 520px; }
