@@ -31,7 +31,6 @@ produção, o mod_wsgi é a indicação.
 
 import sys
 from cdpc.main import create_app
-from cdpc.app.index import is_logged_in
 
 def main():
     """Chama o método run() da aplicação retornada pela função
@@ -46,7 +45,6 @@ def main():
         exit(0)
 
     app = create_app()
-    app.jinja_env.globals['is_logged_in'] = is_logged_in
     app.run(debug=True)
 
 if __name__ == '__main__':

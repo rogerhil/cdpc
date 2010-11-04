@@ -28,6 +28,7 @@ from random import choice
 from flask import Flask, send_from_directory
 from jinja2 import FileSystemLoader
 from .config import STATIC_DIR, TEMPLATE_DIR
+from .app.index import is_logged_in
 from .app.usuarios import module as usuarios
 from .app.projetos import module as projetos
 from .app.cadastro import module as cadastro
@@ -72,5 +73,7 @@ def create_app():
     app.register_module(usuarios, url_prefix="/usuarios/")
     app.register_module(projetos, url_prefix="/projetos/")
     app.register_module(cadastro, url_prefix="/cadastro/")
+
+    app.jinja_env.globals['is_logged_in'] = is_logged_in
     app.secret_key = ''.join(choice(printable) for x in range(50))
     return app
