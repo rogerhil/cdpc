@@ -32,14 +32,17 @@ module = Module(__name__)
 
 @module.route('/')
 def listing():
-    count = models.Projeto.query.count()
+    count = models.Pessoa.query.count()
     page = int(request.args.get('page', 1))
     limit = int(request.args.get('limit', 20))
 
     pages = ceil(count / limit)
     index = limit*(page-1)
 
-    lista = models.Pessoa.query.all()[index:index+limit]
+    query = models.Pessoa.query.slice(index, index+limit)
+    lista = query.all()
+    limit = min(limit, query.count())
+
     pagination = dict(count=count, limit=limit, pages=pages,
                       page=page)
     return render_template('usuarios/listing.html',

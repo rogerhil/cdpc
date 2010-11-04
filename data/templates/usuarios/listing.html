@@ -66,16 +66,16 @@
     </tr>
   </thead>
   <tbody>
-    {% for projeto in projetos %}
-    <tr onclick="showProject({{ projeto.id }}, this)">
+    {% for linha in lista %}
+    <tr onclick="showProject({{ linha.id }}, this)">
       <td>
         <a>
-          {{ projeto.nome }}
+          {{ linha.nome }}
         </a>
       </td>
-      <td>{{ projeto.enderecos.0.cidade }}</td>
-      <td>{{ projeto.enderecos.0.uf }}</td>
-      <td>{{ projeto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
+      <td>{{ linha.endereco.0.cidade }}</td>
+      <td>{{ linha.endereco.0.uf }}</td>
+      <td>{{ linha.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
     </tr>
     <tr class="detalhesProjeto">
       <td colspan="4">
@@ -109,7 +109,7 @@
 </table>
 
 {% else %}
-<p>Nenhum projeto cadastrado no momento.</p>
+<p>Nenhum usuário cadastrado no momento.</p>
 {% endif %}
 
 {% endblock %}
