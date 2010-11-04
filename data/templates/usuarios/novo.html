@@ -33,7 +33,7 @@
     <ol class="section acesso">
       <li class="required">
         <label for="email">Email</label>
-        <input type="text" name="email" id="email" class="require">
+        <input type="text" name="email" id="email" class="required email">
       </li>
       <li class="required">
         <label for="senha">Senha</label>
@@ -192,7 +192,7 @@
           <li class="bottomBorder">
             <label for="rs_link">Endereço</label>
             <input
-               type="text" name="rs_link" id="rs_link">
+               type="text" name="rs_link" id="rs_link" class="url">
           </li>
         </ul><!-- Redes sociais -->
         <input
@@ -211,7 +211,8 @@
           <li class="bottomBorder">
             <label for="feed_link">Endereço</label>
             <input
-               type="text" name="feed_link" id="feed_link">
+               type="text" name="feed_link" id="feed_link"
+               class="url">
           </li>
         </ul><!-- Feeds -->
         <input class="sub" type="button" value="Outro feed" name="nt"
@@ -222,7 +223,7 @@
 </ol>
 
 <div class="botaoEnviar">
-  <input type="submit" value="Efetuar o cadastro">
+  <input type="submit" class="submit" value="Cadastrar">
 </div>
 </form>
 

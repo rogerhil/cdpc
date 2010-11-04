@@ -15,23 +15,6 @@
  */
 
 $(document).ready (function () {
-    $('#voce_eh').change(function () {
-        if ($(this).val () == 'participante') {
-            $('#papelParticipante').show ();
-        } else {
-            $('#papelParticipante').hide ();
-        }
-    });
-
-    $('#novoUsuario').validate({
-        debug: true,
-        invalidHandler: function (form, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                alert (errors);
-                return false;
-            }
-        }
-    });
+    $('#novoUsuario').validate();
 });
 
