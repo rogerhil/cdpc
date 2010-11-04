@@ -17,6 +17,11 @@
       Cadastrar um novo ponto
     </a>
   </li>
+  <li>
+    <a href="{{ url_for('usuarios.listing') }}">
+      Acessar a lista de pessoas cadastradas
+    </a>
+  </li>
 </ol>
 
 {% if not is_logged_in() %}
