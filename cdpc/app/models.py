@@ -147,7 +147,7 @@ class Pessoa(Cadastrado):
     endereco = ManyToMany('Endereco')
 
     # -- Dados de acesso
-    usuario = Field(Unicode(64))
+    # O email será usado como login.
     senha = Field(Unicode(256))
 
 class Entidade(Entity):

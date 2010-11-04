@@ -17,12 +17,12 @@
 
 """Contém as visualizações para a gestão de usuários
 """
-from formencode import Invalid
-from urllib import urlopen
-from simplejson import dumps, loads
-from flask import Module, request, render_template
-from elixir import session
+from hashlib import sha1
 from math import ceil
+from formencode import Invalid
+from simplejson import dumps, loads
+from flask import Module, request, render_template, flash
+from elixir import session
 
 from . import validators
 from . import models
@@ -70,10 +70,12 @@ def novo():
         except Invalid, e:
             # Dar um feedback pro usuário usando a instância da
             # exceção "e".
-            pass
+            raise e
+
         except AssertionError, e:
             # Feedback sobre erros nos campos de lista
-            pass
+            raise e
+
         else:
             # Instanciando o modelo e associando os campos validados e
             # transformados em valores python à instância que será
@@ -81,6 +83,10 @@ def novo():
 
             usuario = models.Pessoa()
             usuario.ip_addr = request.remote_addr
+
+            # -- Dados de acesso
+            usuario.email = validado['email']
+            usuario.senha = sha1(validado['senha']).hexdigest()
 
             # -- Dados pessoais
             usuario.nome = validado['nome']
@@ -102,7 +108,6 @@ def novo():
             usuario.endereco.append(endereco)
 
             # -- Contatos e espaços na rede
-            usuario.email = validado['email']
             usuario.website = validado['website']
             for i in request.form.getlist('telefone'):
                 tel = models.Telefone()
@@ -127,7 +132,7 @@ def novo():
                 session.rollback()
                 raise e
 
-            # FIXME: Avisar ao usuário que tudo deu certo.
+            flash(u'Usuário cadastrado com sucesso')
 
     return render_template(
         'usuarios/novo.html',
