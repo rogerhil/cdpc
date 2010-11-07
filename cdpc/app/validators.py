@@ -17,8 +17,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import formencode
+import formencode, re
 from formencode import validators
+from formencode.validators import _, Invalid
 
 class CpfValidator(formencode.FancyValidator):
     def _to_python(self, value, state):
@@ -49,6 +50,65 @@ class CpfValidator(formencode.FancyValidator):
         if newval != cpf:
             raise formencode.Invalid(u'Cpf inválido', value, state)
         return value
+
+class BrazilPhoneNumber(formencode.FancyValidator):
+
+    """
+    Validates, and converts phone numbers to ##-########
+    Adapted from formencode.validators.national.InternationPhoneNumber
+
+    ::
+
+        >>> valid = BrazilPhoneNumber()
+        >>> valid.to_python("(31) 12345678")
+        '31-'
+        >>> valid.to_python("(31) 1234 5678")
+        '31-12345678'
+        >>> valid.to_python("(31) 1234-5678")
+        '31-12345678'
+        >>> valid.to_python("(31) 1234.5678")
+        '31-12345678'
+        >>> valid.to_python("(31)-1234.5678")
+        '31-12345678'
+        >>> valid.to_python("(31).1234.5678")
+        '31-12345678'
+        >>> valid.to_python(" ( 31 ) . 1234 . 5678 ")
+        '31-12345678'
+        >>> valid.to_python(" 31  - 1234 . 5678 ")
+        '31-12345678'
+        >>> valid.to_python("3112345678")
+        '31-12345678'
+        >>> valid.to_python("31-1234.5678a")
+            ...
+        formencode.api.Invalid: Please enter a number, with area code, in the form (##)########.
+        >>> valid.to_python("31-12349.5678")
+            ...
+        formencode.api.Invalid: Please enter a number, with area code, in the form (##)########.
+
+    """
+
+    strip = True
+    _br_phone_re = [re.compile(r"^\s*\(\s*(\d{2})\s*\)[\s\.\-/_|]*(\d{4})[\s\.\-/_|]*(\d{4})\s*$"),
+                   re.compile(r"^\s*(\d{2})[\s\.\-/_|]*(\d{4})[\s\.\-/_|]*(\d{4})\s*$")]
+    _store_format = "%s-%s%s"
+    messages = {
+        'phoneFormat': _('Please enter a number, with area code, in the form (##)########.'),
+        }
+
+
+    def _to_python(self, value, state):
+        self.assert_string(value, state)
+        try:
+            value = value.encode('ascii', 'replace')
+        except:
+            raise Invalid(self.message('phoneFormat', state), value, state)
+        clean_value = value.strip().replace(' ', '')
+        for regexp in self._br_phone_re:
+            match = regexp.match(clean_value)
+            if match:
+                return self._store_format % match.groups()
+        raise Invalid(self.message('phoneFormat', state), value, state)
+
 
 class Usuario(formencode.Schema):
     # -- Dados de acesso
@@ -113,9 +173,9 @@ class Projeto(formencode.Schema):
     end_outro_longitude = validators.String()
 
     # -- Contatos e espaços na rede
-    tel_proj = validators.String()
+    tel_proj = formencode.ForEach(BrazilPhoneNumber())
     email_proj = validators.String(not_empty=True)
-    website_proj = validators.URL()
+    website_proj = validators.URL(not_empty=True)
     frequencia = validators.String()
     rs_nome = validators.String()
     rs_link = validators.String()
@@ -144,7 +204,7 @@ class Projeto(formencode.Schema):
     end_ent_bairro = validators.String()
     end_ent_latitude = validators.String()
     end_ent_longitude = validators.String()
-    tel_ent = validators.String()
+    tel_ent = BrazilPhoneNumber()
     email_ent = validators.String()
     website_ent = validators.URL()
     convenio_ent = validators.String()

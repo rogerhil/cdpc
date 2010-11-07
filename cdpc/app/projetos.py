@@ -18,9 +18,10 @@
 
 from math import ceil
 from formencode import Invalid
-from flask import Module, render_template, request, abort
+from flask import Module, render_template, request, abort, make_response
 from elixir import session
 from simplejson import dumps
+from formencode import htmlfill
 
 from . import validators
 from . import models
@@ -105,7 +106,8 @@ def novo():
         validado = {}
         print 'POST'
         try:
-            validado = validator.to_python(request.form)
+            data = dict([(i, j[0] if len(j) == 1 else j) for i,j in request.form.lists()])
+            validado = validator.to_python(data)
             clean_list = lambda x: [i for i in x if i.strip()];
 
             rs_nomes = clean_list(request.form.getlist('rs_nome'))
@@ -121,7 +123,14 @@ def novo():
             # exceção "e".
             print 'Exceção'
             print e
-            pass
+            rendered = render_template(
+                        'projetos/novo.html',
+                        vals_uf=VALORES_UF,
+                        errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
+                        values=[i for i  in request.form.lists() if len(i) > 1])
+            errors = e.error_dict
+            filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False)
+            return make_response(filled)
         else:
             print 'ELSE'
             # Instanciando o modelo e associando os campos validados e
@@ -313,4 +322,6 @@ def novo():
 
     return render_template(
         'projetos/novo.html',
-        vals_uf=VALORES_UF)
+        vals_uf=VALORES_UF,
+        errors={})
+
