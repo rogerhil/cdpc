@@ -173,7 +173,7 @@ class Projeto(formencode.Schema):
     end_outro_longitude = validators.String()
 
     # -- Contatos e espaços na rede
-    tel_proj = formencode.ForEach(BrazilPhoneNumber())
+    proj_tel = formencode.ForEach(BrazilPhoneNumber())
     email_proj = validators.String(not_empty=True)
     website_proj = validators.URL(not_empty=True)
     frequencia = validators.String()
@@ -204,7 +204,7 @@ class Projeto(formencode.Schema):
     end_ent_bairro = validators.String()
     end_ent_latitude = validators.String()
     end_ent_longitude = validators.String()
-    tel_ent = BrazilPhoneNumber()
+    ent_tel = formencode.ForEach(BrazilPhoneNumber())
     email_ent = validators.String()
     website_ent = validators.URL()
     convenio_ent = validators.String()

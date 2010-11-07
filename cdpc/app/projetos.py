@@ -123,11 +123,12 @@ def novo():
             # exceção "e".
             print 'Exceção'
             print e
+            #import pdb; pdb.set_trace()
             rendered = render_template(
                         'projetos/novo.html',
                         vals_uf=VALORES_UF,
                         errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
-                        values=[i for i  in request.form.lists() if len(i) > 1])
+                        values=[i for i  in request.form.lists() if len(i[1]) > 1])
             errors = e.error_dict
             filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False)
             return make_response(filled)
@@ -181,7 +182,7 @@ def novo():
             projeto.email = validado['email_proj']
             projeto.website = validado['website_proj']
             projeto.frequencia = validado['frequencia']
-            for i in request.form.getlist('tel_proj'):
+            for i in request.form.getlist('proj_tel'):
                 tel = models.Telefone()
                 tel.numero = i
                 projeto.telefones.append(tel)
@@ -237,7 +238,7 @@ def novo():
                         )
                     )
 
-            telefone = models.Telefone(numero=validado['tel_ent'])
+            telefone = models.Telefone(numero=validado['ent_tel'])
             projeto.tel_ent = [telefone]
             projeto.email_ent = validado['email_ent']
             projeto.website_ent = validado['website_ent']
