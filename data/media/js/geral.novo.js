@@ -37,7 +37,7 @@ function cepWebService (cep) {
     });
 }
 
-function novaEntrada ($ul) {
+function novaEntrada ($ul, prefix) {
     var $remove = $('<a href="javascript:;">Remover</a>');
     $remove.click (function (evt) {
         var $parent = $(this).parent ();
@@ -48,11 +48,11 @@ function novaEntrada ($ul) {
 
     $('<li>')
         .append ($('<label>Nome</label>'))
-        .append ($('<input type="text" name="rs_nome">'))
+        .append ($('<input type="text" name="' + prefix + '_nome" />'))
         .appendTo ($ul);
     $('<li>')
-        .append ($('<label>Endereço</label>'))
-        .append ($('<input type="text" name="rs_link">'))
+        .append ($('<label>Endereço </label>'))
+        .append ($('<input type="text" name="' + prefix + '_link" />'))
         .appendTo ($ul);
     $('<li>')
         .append($remove)
@@ -60,12 +60,15 @@ function novaEntrada ($ul) {
         .appendTo ($ul);
 }
 
-function novoTelefone ($parent) {
+function novoTelefone ($parent, value) {
     var $remove = $('<a href="javascript:;">Remover</a>');
     $remove.click (function (evt) {
         $(this).parent().remove();
     });
-
+    var attrValue = '';
+    if (value) {
+        attrValue = ' value="' + value + '"';
+    }
     var $label = $('<input type="text" name="telefone">');
     $('<li>')
         .append ($label)

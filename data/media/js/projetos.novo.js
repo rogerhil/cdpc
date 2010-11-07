@@ -15,6 +15,19 @@
  */
 
 $(document).ready (function () {
+    /*
+    $('#novoProjeto').validate({
+        debug: true,
+        invalidHandler: function (form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                alert (errors);
+                return false;
+            }
+        }
+    });
+    */
+
     $('#local_proj').change(function () {
         if ($(this).val () == 'outros') {
             $('#local_proj_outros').show ();

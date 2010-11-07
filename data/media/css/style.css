@@ -53,6 +53,16 @@ ul.flashes {
     margin-top:10px; padding:10px; color:yellow; background:#E47F00;
     font-size:12pt; font-weight:bold; }
 
+.helpText {
+    display: block;
+    margin-left: 260px;
+}
+
+.helpText a {
+    color: gray;
+
+}
+
 /* footer */
 #footer { background:#adadad; margin-top:30px; padding:10px 0; }
 #footer h2 { color:#000; }
