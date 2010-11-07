@@ -60,7 +60,7 @@ function novaEntrada ($ul, prefix) {
         .appendTo ($ul);
 }
 
-function novoTelefone ($parent, value) {
+function novoTelefone ($parent, prefix, value) {
     var $remove = $('<a href="javascript:;">Remover</a>');
     $remove.click (function (evt) {
         $(this).parent().remove();
@@ -69,7 +69,7 @@ function novoTelefone ($parent, value) {
     if (value) {
         attrValue = ' value="' + value + '"';
     }
-    var $label = $('<input type="text" name="telefone">');
+    var $label = $('<input type="text" name="' + prefix + '_tel">');
     $('<li>')
         .append ($label)
         .append ($remove)

@@ -256,18 +256,16 @@
       <h3>Contatos e Espaços na rede</h3>
       <ol class="section">
         <li>
-          <ul class="telefones subForm" id="tel_proj">
+          <ul class="telefones subForm" id="proj_tel">
             <li class="bottomBorder">
-              <label>
-                <span>Telefone</span>
-                <input type="text" name="tel_proj" placeholder="DDD + Fone"/>
-              </label>
-              <span style="display: none;"> <form:error name="tel_proj" format="escapenl"></span>
+              <label>Telefone</label>
+              <input type="text" name="proj_tel" placeholder="DDD + Fone"/>
+              <span style="display: none;"> <form:error name="proj_tel" format="escapenl"></span>
             </li>
           </ul>
           <input
              type="button" value="Outro telefone"
-             onclick="novoTelefone ($('.telefones', $(this).parent()));"/>
+             onclick="novoTelefone ($('.telefones', $(this).parent()), 'proj');"/>
         </li>
 
         <li>
@@ -555,17 +553,16 @@
         </div>
 
         <li>
-          <ul class="telefones subForm">
+          <ul class="telefones subForm"  id="ent_tel">
             <li class="bottomBorder">
-              <label>
-                <span>Telefone</span>
-                <input type="text" name="tel_ent" placeholder="DDD + Fone"/>
-              </label>
+              <label>Telefone</label>
+              <input type="text" name="ent_tel" placeholder="DDD + Fone"/>
             </li>
           </ul>
           <input
              type="button" value="Outro telefone"
-             onclick="novoTelefone ($('.telefones', $(this).parent()));"/>
+             onclick="novoTelefone ($('.telefones', $(this).parent()), 'ent');"/>
+          <span style="display: none;"> <form:error name="ent_tel" format="escapenl"></span>
         </li>
 
         <li>
@@ -1440,10 +1437,12 @@
 
 var funcs = {'rs_nome': novaEntrada,
              'feed_nome': novaEntrada,
-             'tel_proj': novoTelefone}
+             'proj_tel': novoTelefone,
+             'ent_tel': novoTelefone};
 var blocksSet = {'rs_nome': $('#redesSociais'),
                  'feed_nome': $('#feeds'),
-                 'tel_proj': $('#tel_proj')}
+                 'proj_tel': $('#proj_tel'),
+                 'ent_tel': $('#ent_tel')};
 var ev = [];
 var valuesDict ={};
 var errors = [];
@@ -1482,11 +1481,12 @@ for (var key in valuesDict) {
 
 for (var key in errorsDict) {
     var thee;
+
     $('input[name=' + key + ']').each(function () {
         thee = errorsDict[key].splice(0,1);
         if (thee != 'None') {
             $(this).addClass("error");
-            $('<div class="error-message">' + thee + '</div>').insertBefore($(this).prev());
+            $('<div class="error-message">' + thee + '</div>').insertAfter($(this));
         }
     });
 }
