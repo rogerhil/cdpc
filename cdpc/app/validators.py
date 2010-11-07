@@ -175,7 +175,7 @@ class Projeto(formencode.Schema):
     # -- Contatos e espaços na rede
     proj_tel = formencode.ForEach(BrazilPhoneNumber())
     email_proj = validators.String(not_empty=True)
-    website_proj = validators.URL(not_empty=True)
+    website_proj = validators.URL()
     frequencia = validators.String()
     rs_nome = validators.String()
     rs_link = validators.String()
