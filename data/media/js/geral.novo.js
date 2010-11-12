@@ -28,6 +28,10 @@ function cepWebService (cep) {
 
         $(form.end_uf).val (data.uf);
         $(form.end_uf).focusout ();
+
+        if (data.uf != "") {
+            $('#end_numero').focus();
+        }
     });
 
     $.getJSON ('../../cadastro/consulta_geo/', {cep: cep}, function (data) {
