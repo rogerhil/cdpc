@@ -26,6 +26,12 @@
 
 {% if not is_logged_in() %}
 <h2>Acesso</h2>
+
+<p>
+  Se você ainda não tem acesso ao sistema,
+  <a href="{{ url_for('usuarios.novo') }}">cadastre-se</a> agora.
+</p>
+
 {% if request.args.get('erro') %}
 <div class="erro">Usuário ou senha incorretos</div>
 {% endif %}
