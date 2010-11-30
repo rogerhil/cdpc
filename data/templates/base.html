@@ -45,6 +45,15 @@
     </div><!-- top -->
 
     <div id="content" class="definedWidth">
+    {% if site_messages %}
+      {% for message in site_messages %}
+        <div class="site-message {{ message.status }}">
+          {{ message.text }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+
       {% block content %}{% endblock %}
     </div>
 

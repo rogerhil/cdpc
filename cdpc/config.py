@@ -30,4 +30,5 @@ TEMPLATE_DIR = get_path('data', 'templates')
 
 STATIC_DIR = get_path('data', 'media')
 
-DATABASE_URI = 'mysql://cdpc:cdpc@localhost/cdpc'
+#DATABASE_URI = 'mysql://cdpc:cdpc@localhost/cdpc'
+DATABASE_URI = 'mysql://root@localhost/cdpc'

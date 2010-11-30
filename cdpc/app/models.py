@@ -38,7 +38,7 @@ def get_or_create(model, **kwargs):
             params[k] = v
         instance = model(**params)
         session.add(instance)
-        return instance, True
+        return instance, True    
 
 class Telefone(Entity):
     """Wrapper para a entidade telefone no banco de dados
@@ -265,6 +265,40 @@ class Projeto(Cadastrado):
     # -- Avatar
     avatar = Field(Unicode(128)) # Caminho para o arquivo
 
+
+class SiteMessage(Entity):
+    text = Field(Unicode(1024))
+    status =  Field(Unicode(64))
+    data = Field(DateTime, default=datetime.now)
+    usuario = ManyToOne('Pessoa')
+    
+    _possible_status = ['info', 'success', 'warning', 'error']
+    
+    @staticmethod
+    def create(text, user, status='info'):
+        if not status in SiteMessage._possible_status:
+            raise Exception("%s is not a possible status. Expected: " \
+                            % (status, ", ".join(SiteMessage._possible_status)))
+        from elixir import session
+        msg = SiteMessage(text=text, usuario=user, status=status)
+        try:
+            session.commit()
+        except Exception, e:
+            session.rollback()
+            raise e
+        return msg
+
+    @staticmethod
+    def get_list(user):
+        dict_list = [msg.__dict__.copy() for msg in SiteMessage.query.filter_by(usuario=user)]
+        SiteMessage.query.filter_by(usuario=user).delete()
+        try:
+            session.commit()
+        except Exception, e:
+            session.rollback()
+            raise e
+        return dict_list
+    
 metadata.bind = DATABASE_URI
 metadata.bind.echo = True
 setup_all()

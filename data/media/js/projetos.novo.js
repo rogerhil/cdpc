@@ -14,20 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$(document).ready (function () {
-    /*
-    $('#novoProjeto').validate({
-        debug: true,
-        invalidHandler: function (form, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                alert (errors);
-                return false;
-            }
-        }
-    });
-    */
 
+String.prototype.capitalize = function(){
+    return this.replace(/(^|\s)([a-z])/g,
+                        function(m,p1,p2){return p1+p2.toUpperCase();});
+};
+
+var load = function () {
+    if (this.checked || this.selected) $(this).change();
+};
+
+function loadLocalizacaoGeoProjeto() {
     $('#local_proj').change(function () {
         if ($(this).val () == 'outros') {
             $('#local_proj_outros').show ();
@@ -35,18 +32,24 @@ $(document).ready (function () {
             $('#local_proj_outros').hide ();
         }
     });
+    $('#local_proj').change();
+}
 
+function loadComunicacaoCulturaDigital() {
     $("input[name=sede_possui_tel]").change(function () {
         if ($(this).val () == 'sim') {
+   
             $('#sede_possui_tel_sim').show ();
+
             $('#sede_possui_tel_nao').hide ();
         }
-        else if (
-            $(this).val () == 'nao') {
+        else if ($(this).val () == 'nao') {
+
             $('#sede_possui_tel_nao').show ();
             $('#sede_possui_tel_sim').hide ();
         }
         else {
+
             $('#sede_possui_tel_sim').hide ();
             $('#sede_possui_tel_nao').hide ();
         }
@@ -67,7 +70,40 @@ $(document).ready (function () {
             $('#sede_possui_net_nao').hide ();
         }
     });
+    $('#pq_sem_tel').change(function () {
+        if ($(this).val () == 'outro') {
+            $('#pq_sem_tel_outro_escolhido').show ();
+        } else {
+            $('#pq_sem_tel_outro_escolhido').hide ();
+        }
+    });
 
+    $('#pq_sem_internet').change(function () {
+        
+        if ($(this).val () == 'outro') {
+            $('#pq_sem_internet_outro_escolhido').show ();
+        } else {
+            $('#pq_sem_internet_outro_escolhido').hide ();
+        }
+    });
+
+    $("input[name=sede_possui_tel]").each(load);
+    $("input[name=sede_possui_net]").each(load);
+    
+    var change = function (id) {
+        if ($('#'+id).val () == 'outro') {
+            $('#' + id + '_outro_escolhido').show ();
+        } else {
+            $('#' + id + '_outro_escolhido').hide ();
+        }
+    
+    }
+    change('pq_sem_tel');
+    change('pq_sem_internet');
+
+}
+
+function loadEntidadeProponente() {
     $("input[name=endereco_ent_proj]").change(function () {
         if ($(this).val () == 'nao') {
             $('#endereco_ent_proj_nao').show ();
@@ -84,14 +120,12 @@ $(document).ready (function () {
         }
     });
 
-    $("input[name=participa_cultura_viva]").change(function () {
-        if ($(this).val () == 'sim') {
-            $('#participa_cultura_viva_sim').show ();
-        } else {
-            $('#participa_cultura_viva_sim').hide ();
-        }
-    });
+    $("input[name=endereco_ent_proj]").each(load);
+    $("input[name=convenio_ent]").each(load);
 
+}
+
+function loadParceriasProjeto() {
     $("input[name=estabeleceu_parcerias]").change(function () {
         if ($(this).val () == 'sim') {
             $('#parcerias_sim').show ();
@@ -99,22 +133,39 @@ $(document).ready (function () {
             $('#parcerias_sim').hide ();
         }
     });
+    $("input[name=estabeleceu_parcerias]").each(load);
+}
 
-    $('#pq_sem_tel').change(function () {
-        if ($(this).val () == 'outro') {
-            $('#pq_sem_tel_outro_escolhido').show ();
+function loadAtividadesExercidasProjeto() {
+    $("input[name=participa_cultura_viva]").change(function () {
+        if ($(this).val () == 'sim') {
+            $('#participa_cultura_viva_sim').show ();
         } else {
-            $('#pq_sem_tel_outro_escolhido').hide ();
+            $('#participa_cultura_viva_sim').hide ();
         }
     });
+    $("input[name=participa_cultura_viva]").each(load);
+}
 
-    $('#pq_sem_internet').change(function () {
-        if ($(this).val () == 'outro') {
-            $('#pq_sem_internet_outro_escolhido').show ();
-        } else {
-            $('#pq_sem_internet_outro_escolhido').hide ();
+$(document).ready (function () {
+    /*
+    $('#novoProjeto').validate({
+        debug: true,
+        invalidHandler: function (form, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                alert (errors);
+                return false;
+            }
         }
     });
+    */
+
+    loadLocalizacaoGeoProjeto();
+    loadComunicacaoCulturaDigital();
+    loadEntidadeProponente();
+    loadParceriasProjeto();
+    loadAtividadesExercidasProjeto();
 
     $('input[name=outras_atividades]').change(function () {
         if ($(this).is (':checked')) {
@@ -150,8 +201,10 @@ $(document).ready (function () {
 });
 
 function novoEndereco () {
-    var $newElement = $($('div.formEndereco')[0].cloneNode (true));
+    var $newElement = $($('div.formEndereco')[1].cloneNode (true));
     $('input, select', $newElement).val ('');
+    $('.error-message', $newElement).remove();
+    $('.error', $newElement).removeClass('error');
 
     var $remove = $('<a href="javascript:;">Remover</a>');
     $remove.click (function (evt) {
@@ -186,10 +239,10 @@ function atualizarEnderecos () {
         var nome = $('input[name=end_nome]', $div).val ();
         if (nome != '') {
             var $opt = $('<option>')
-                .val(nome)
-                .html(nome)
-                .attr('value', nome)
                 .appendTo($select);
+            $opt.val(nome);
+            $opt.attr('value', nome)
+            $opt.html(nome)
             if (nome == selected)
                 $opt.attr('selected', 'selected');
         }
@@ -239,11 +292,123 @@ function novoParceiro ($parent) {
 
     var $label = $('<label>' +
         '<span>Nome do Parceiro</span>' +
-        '<input type="text" name="parc_nome" placeholder="Ex.: Sesc São Carlos"/>' +
+        '<input type="text" name="parcerias" placeholder="Ex.: Sesc São Carlos"/>' +
         '</label>');
     $('<li>')
         .append ($label)
         .append ($remove)
         .addClass ('bottomBorder')
         .appendTo ($parent);
+}
+
+function preencherCamposLista(values, errors) {
+    var thee, thev;
+
+    for (var key in values) {
+        thev = values[key];
+        $('input[name=' + key + ']').each(function () {
+            $(this).val(thev.splice(0,1));
+        });
+    }
+
+    for (var key in errors) {
+        $('input[name=' + key + ']').each(function () {
+            thee = errors[key].splice(0,1);
+            if (thee != '') {
+                $(this).addClass("error");
+                $('<div class="error-message">' + thee + '</div>').insertAfter($(this));
+            }
+        });
+    }
+}
+
+function novosCamposLista(values) {
+    var funcs = {'rs_nome': novaEntrada,
+                 'feed_nome': novaEntrada,
+                 'proj_tel': novoTelefone,
+                 'ent_tel': novoTelefone,
+                 'end_outro_bairro': novoEndereco};
+    var blocksSet = {'rs_nome': $('#redesSociais'),
+                     'feed_nome': $('#feeds'),
+                     'proj_tel': $('#proj_tel'),
+                     'ent_tel': $('#ent_tel'),
+                     'end_proj_complemento': $('#localizacaoGeoProjetoSection')};
+    var items;
+    for (var id in values) {
+        items = values[id];
+        for (var k = 0; k < items.length; k++) {
+            if (k < 1) continue;
+            if (funcs[id]) {
+                funcs[id](blocksSet[id], id.split('_')[0]);
+            }
+        }
+    }
+}
+
+function proximo() {
+    var current = $("#"+currentTab);
+    var next = current.next();
+    var children = current.children();
+    var theForm = $("<form></form>").append(children);
+    var success = function (data) {
+
+        if (data.error) {
+             current.html($(data.html).children());
+            try {
+                eval("load" + currentTab.capitalize() + "()");
+            } catch (e) {
+            
+            }
+            novosCamposLista(data.values_list);
+            preencherCamposLista(data.values_list, data.errors_list);
+        } else {
+            current.append(children);
+            try {
+                eval("load" + currentTab.capitalize() + "()");
+            } catch (e) {
+            
+            }
+            $('.error-message', current).remove();
+            $('.error', current).removeClass('error');
+            currentTab = next[0].id;
+            current.css("display", "none");
+            next.css("display", "block");
+            $("#botaoAnterior").css("display", "inline");
+            if (currentTab == fim) {
+                $("#botaoProximo").css("display", "none");
+                $("#submitButton").css("display", "inline");
+            }
+        }
+    }
+    var options = {
+        success: success,
+        url: "/projetos/validar/",
+        type: 'post',
+        data: {'step_name': current[0].id},
+        dataType:  'json'
+        //target:        '#output1',   // target element(s) to be updated with server response
+        //beforeSubmit:  showRequest,  // pre-submit callback
+        //clearForm: true        // clear all form fields after successful submit
+        //resetForm: true        // reset the form after successful submit
+        // $.ajax options can be used here too, for example:
+        //timeout:   3000
+    };
+
+    theForm.find("input[type=file]").each( function () {
+        this.type = 'text';
+    });
+    theForm.ajaxSubmit(options);
+}
+
+function anterior() {
+    var current = $("#"+currentTab);
+    var previous = current.prev();
+    current.css("display", "none");
+    $("#submitButton").css("display", "none");
+    currentTab = previous[0].id;
+    previous.css("display", "block");
+    $("#botaoProximo").css("display", "inline");
+    if (currentTab == inicio) {
+        $("#botaoAnterior").css("display", "none");
+    }
 }

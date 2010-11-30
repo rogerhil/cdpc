@@ -24,7 +24,7 @@ from simplejson import dumps, loads
 from flask import Module, request, render_template, flash
 from elixir import session
 
-from . import validators
+from . import schemas
 from . import models
 from .cadastro import VALORES_UF
 
@@ -56,7 +56,7 @@ def novo():
     """
     if request.method == 'POST':
         # instanciando o validador
-        validator = validators.Usuario()
+        validator = schemas.Usuario()
         validado = {}
         try:
             validado = validator.to_python(request.form)

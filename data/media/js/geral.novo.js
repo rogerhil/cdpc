@@ -14,30 +14,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function cepWebService (cep) {
+function cepWebService (cep, form, prefix) {
     $.getJSON ('../../cadastro/consulta_cep/', {cep: cep}, function (data) {
-        var form = $('#novoUsuario')[0];
-        $(form.end_logradouro).val (data.rua);
-        $(form.end_logradouro).focusout ();
+        $(form[prefix+'_logradouro']).val (data.rua);
+        $(form[prefix+'_logradouro']).focusout ();
 
-        $(form.end_bairro).val (data.bairro);
-        $(form.end_bairro).focusout ();
+        $(form[prefix+'_bairro']).val (data.bairro);
+        $(form[prefix+'_bairro']).focusout ();
 
-        $(form.end_cidade).val (data.cidade);
-        $(form.end_cidade).focusout ();
+        $(form[prefix+'_cidade']).val (data.cidade);
+        $(form[prefix+'_cidade']).focusout ();
 
-        $(form.end_uf).val (data.uf);
-        $(form.end_uf).focusout ();
+        $(form[prefix+'_uf']).val (data.uf);
+        $(form[prefix+'_uf']).focusout ();
 
         if (data.uf != "") {
-            $('#end_numero').focus();
+            $('#'+prefix+'_numero').focus();
         }
     });
 
     $.getJSON ('../../cadastro/consulta_geo/', {cep: cep}, function (data) {
-	var form = $('#novoUsuario')[0];
-	$(form.end_latitude).val (data.lat);
-	$(form.end_longitude).val (data.lng);
+	    $(form[prefix+'_latitude']).val (data.lat);
+	    $(form[prefix+'_longitude']).val (data.lng);
     });
 }
 

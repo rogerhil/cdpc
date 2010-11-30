@@ -70,3 +70,12 @@ ul.flashes {
 #footer pre {
     display:block; padding:2px; margin:2px 0; border:dotted 1px gray;
     background:#ccc; }
+    
+/* Generic */
+
+.site-message { padding: 5px; border: 1px solid; margin-top: 5px;}
+.info { background-color: #C7D6EC; color: #003B91; border-color: #003B91; }
+.success { background-color: #C7FBAF; color: #2C6A11; border-color: #2C6A11; }
+.warning { background-color: #F1F19D; color: #828200; border-color: #828200; }
+.error { background-color: #FFBBA3; color: #FF0003; border-color: #FF0003; }
+

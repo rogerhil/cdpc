@@ -28,7 +28,7 @@ from random import choice
 from flask import Flask, send_from_directory
 from jinja2 import FileSystemLoader
 from .config import STATIC_DIR, TEMPLATE_DIR
-from .app.index import is_logged_in
+from .app.index import is_logged_in, get_authenticated_user
 from .app.usuarios import module as usuarios
 from .app.projetos import module as projetos
 from .app.cadastro import module as cadastro
@@ -67,13 +67,28 @@ class WebApp(Flask):
 def create_app():
     """Constroi a aplicação flask e registra outros modulos nela.
     """
+
     app = WebApp(__name__, media_path=STATIC_DIR)
     app.jinja_env.loader = FileSystemLoader(TEMPLATE_DIR)
+    
+    @app.context_processor
+    def site_messages():
+        from .cdpc.app.models import SiteMessage
+        from .cdpc.app.index import get_authenticated_user
+        return dict(site_messages=SiteMessage.get_list(get_authenticated_user()))
+    
     app.register_module(index, url_prefix="/")
     app.register_module(usuarios, url_prefix="/usuarios/")
     app.register_module(projetos, url_prefix="/projetos/")
     app.register_module(cadastro, url_prefix="/cadastro/")
-
-    app.jinja_env.globals['is_logged_in'] = is_logged_in
+    app.jinja_env.globals['is_logged_in'] = is_logged_in    
     app.secret_key = ''.join(choice(printable) for x in range(50))
     return app
+    
+
+#@flask.app.context_processor
+#def cont():
+#    from .cdpc.app.models import SiteMessage
+#    from .cdpc.app.index import get_authenticated_user
+#    return dict(messages=SiteMessage.get_list(get_authenticated_user()))
+    
