@@ -1,0 +1,108 @@
+<li id="comunicacaoCulturaDigital" style="display: none;">
+  <h3>Comunicação e Cultura Digital</h3>
+  <ol class="section">
+    <li>
+      <label>
+        A sede do projeto possui telefone?*
+      </label>
+      <ul class="comCdTelefone">
+        <li>
+          <label class="radio">
+            <input type="radio" name="sede_possui_tel" value="sim"/>
+            Sim
+          </label>
+        </li>
+        <li>
+          <label class="radio">
+            <input type="radio" name="sede_possui_tel" value="nao"/>
+            Não
+          </label>
+        </li>
+      </ul>
+      <br clear="both">
+    </li>
+
+    <li id="sede_possui_tel_sim" class="displayNone formCinza">
+      <label for="tipo_tel_sede">Qual tipo?</label>
+      <select name="tipo_tel_sede" id="tipo_tel_sede">
+        <option></option>
+        <option value="fixo">Fixo</option>
+        <option value="celular">Celular</option>
+        <option value="radio">Rádio</option>
+        <option value="rural">Rural</option>
+        <option value="publico">Público</option>
+      </select>
+    </li>
+
+    <li id="sede_possui_tel_nao" class="displayNone formCinza">
+      <label for="pq_sem_tel">Por quê?</label>
+      <select name="pq_sem_tel" id="pq_sem_tel">
+        <option></option>
+        <option value="opcao">Opção</option>
+        <option value="fornecimento">
+          Não há fornecimento do serviço na região
+        </option>
+        <option value="recursos">Falta de recursos</option>
+        <option value="outro">Outro</option>
+      </select>
+    </li>
+
+    <li id="pq_sem_tel_outro_escolhido" class="displayNone formCinza">
+      <label for="pq_sem_tel_outro">Qual?</label>
+      <input
+          type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro"/>
+    </li>
+
+    <li>
+      <label>A sede do projeto possui acesso à internet?*</label>
+      <ul>
+        <li>
+          <label class="radio">
+            <input type="radio" name="sede_possui_net" value="sim"/>
+            Sim
+          </label>
+        </li>
+
+        <li>
+          <label class="radio">
+            <input type="radio" name="sede_possui_net" value="nao"/>
+            Não
+          </label>
+        </li>
+      </ul>
+    </li>
+
+    <li id="sede_possui_net_sim" class="displayNone formCinza">
+      <label for="tipo_internet">Qual tipo?</label>
+      <select name="tipo_internet" id="tipo_internet">
+        <option></option>
+        <option value="discada">Discada</option>
+        <option value="3g">3G</option>
+        <option value="adsl">ADSL/Cabo (Banda Larga)</option>
+        <option value="radio">Rádio</option>
+        <option value="gesac">Gesac</option>
+        <option value="publica">Internet Pública</option>
+      </select>
+    </li>
+
+    <li id="sede_possui_net_nao" class="displayNone formCinza">
+      <label for="pq_sem_internet">Por quê?</label>
+      <select name="pq_sem_internet" id="pq_sem_internet">
+        <option></option>
+        <option value="opcao">Opção</option>
+        <option value="fornecimento">
+          Não há fornecimento do serviço na região
+        </option>
+        <option value="recursos">Falta de recursos</option>
+        <option value="outro">Outro</option>
+      </select>
+    </li>
+
+    <li id="pq_sem_internet_outro_escolhido" class="displayNone formCinza">
+      <label for="pq_sem_internet_outro">Qual?</label>
+      <input
+          type="text" name="pq_sem_internet_outro"
+          id="pq_sem_internet_outro"/>
+    </li>
+  </ol><!-- Comunicação e Cultura Digital -->
+</li>

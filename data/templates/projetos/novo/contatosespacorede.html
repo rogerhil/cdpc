@@ -1,0 +1,77 @@
+<li id="contatosEspacoRede" style="display: none;">
+  <h3>Contatos e Espaços na rede</h3>
+  <ol class="section">
+    <li>
+      <ul class="telefones subForm" id="proj_tel">
+        <li class="bottomBorder">
+          <label>Telefone</label>
+          <input type="text" name="proj_tel" placeholder="DDD + Fone"/>
+          <span style="display: none;"> <form:error name="proj_tel" format="escapenl"></span>
+        </li>
+      </ul>
+      <input
+         type="button" value="Outro telefone"
+         onclick="novoTelefone ($('.telefones', $(this).parent()), 'proj');"/>
+    </li>
+
+    <li>
+      <label for="email_proj">Email*</label>
+      <input
+         type="text" name="email_proj" id="email_proj" class="required"
+         placeholder="Digite o endereço de e-mail do Projeto. Ex.: pcvilapangeia@cultura.org.br"/>
+    </li>
+
+    <li>
+      <label for="website_proj">Website</label>
+      <input
+         type="text" name="website_proj" id="website_proj"
+         placeholder="Digite o endereço do site do Projeto. Ex.: www.pcvilapangeia.com.br"/>
+    </li>
+
+    <li>
+      <label for="frequencia">Frequência de Radio Transmissor</label>
+      <input type="text" name="frequencia" id="frequencia"/>
+    </li>
+
+    <li class="subForm">
+      <h4>Redes sociais</h4>
+      <ul id="redesSociais">
+        <li>
+          <label for="rs_nome">Nome</label>
+          <input
+             type="text" name="rs_nome" id="rs_nome"
+             placeholder="Twitter"/>
+        </li>
+        <li class="bottomBorder">
+          <label for="rs_link">Endereço</label>
+          <input
+             type="text" name="rs_link" id="rs_link"
+             placeholder="Ex.: http://twitter.com/vilapangeia"/>
+        </li>
+      </ul><!-- Redes sociais -->
+      <input
+          class="sub" type="button" value="Outra rede"
+          onclick="novaEntrada ($('#redesSociais'), 'rs');"/>
+    </li>
+
+    <li class="subForm">
+      <h4>Feeds</h4>
+      <ul id="feeds">
+        <li>
+          <label for="feed_nome">Nome</label>
+          <input
+             type="text" name="feed_nome" id="feed_nome"
+             placeholder="Blog do Simp. Internacional de Políticas Públicas de Acervos Digitais"/>
+        </li>
+        <li class="bottomBorder">
+          <label for="feed_link">Endereço</label>
+          <input
+             type="text" name="feed_link" id="feed_link"
+             placeholder="http://culturadigital.br/simposioacervosdigitais/feed/"/>
+        </li>
+      </ul><!-- Feeds -->
+      <input class="sub" type="button" value="Outro feed"
+             onclick="novaEntrada ($('#feeds'), 'feed');"/>
+    </li>
+  </ol><!-- Contatos e espaços na rede -->
+</li>
