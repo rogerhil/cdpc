@@ -341,7 +341,7 @@ def novo():
 
             for i in validado['ent_tel']:
                 tel = models.Telefone(numero=i)
-                projeto.tel_ent.append(tel)
+                projeto.entidade.telefones.append(tel)
 
             projeto.email_ent = validado['email_ent']
             projeto.website_ent = validado['website_ent']
