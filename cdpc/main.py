@@ -73,8 +73,8 @@ def create_app():
     
     @app.context_processor
     def site_messages():
-        from .cdpc.app.models import SiteMessage
-        from .cdpc.app.index import get_authenticated_user
+        from .app.models import SiteMessage
+        from .app.index import get_authenticated_user
         return dict(site_messages=SiteMessage.get_list(get_authenticated_user()))
     
     app.register_module(index, url_prefix="/")
