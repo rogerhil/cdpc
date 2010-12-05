@@ -1,0 +1,277 @@
+/* Copyright (C) 2010  Marcos Lopes <marcosmlopes01@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#content{
+  padding:40px 0;
+}
+
+#content h2{
+  background:url("../img/bg/bg_sidebar.png") bottom right no-repeat;
+  color:#5699cb;
+  font-size:22px;
+  font-weight:normal;
+  margin-bottom:33px;
+  padding-bottom:7px;
+  width:297px;
+}
+
+/* Cadastro de Projetos
+________________________*/
+ul.steps{
+  border-bottom:3px solid #d7d7d7;
+  margin-bottom:28px;
+  overflow:hidden;
+}
+
+ul.steps li{
+  color:#5d5d5d;
+  float:left;
+  font-size:14px;
+  font-weight:bold;
+  list-style:none;
+  margin-right:32px;
+  padding-bottom:10px;
+  text-transform:uppercase;
+}
+
+ul.steps li.active{
+  border-bottom:2px solid #d7d7d7;
+  color:#629fcd;
+}
+
+ul.steps li.last{
+  margin-right:0;
+}
+
+div.main li{
+  list-style:none;
+  margin-bottom:24px;
+  overflow:hidden;
+}
+
+div.main label{
+  display:block;
+  color:#424242;
+  font:normal 14px/100% Trebuchet MS, sans-serif;
+  margin-bottom:7px;
+}
+
+div.main label.radio{
+  display:inline;
+  margin-right:7px;
+}
+
+div.main .large{
+  width:577px;
+}
+
+div.main select{
+  font-size:12px;
+  padding:6px 10px;
+  width:268px;
+}
+
+div.main li a{
+  color:#629fcd;
+  margin-left:10px;
+  text-decoration:none;
+}
+
+div.main li .add{
+  background:url("../img/bg/bg_bt_add.png") left center no-repeat;
+  padding-left:17px;
+}
+
+div.main li a:hover{
+  text-decoration:underline;
+}
+
+div.main li div.column{
+  float:left;
+  margin-right:17px;
+}
+
+div.main li div.last{
+  margin:0;
+}
+
+div.main li input.complement{
+  width:439px;
+}
+
+div.main li input.number{
+  width:100px;
+}
+
+div.main li input.district{
+  width:208px;
+}
+
+div.main li select.city{
+  width:228px;
+}
+
+div.main li select.state{
+  width:108px;
+}
+
+div.step{
+  overflow:hidden;
+  position:relative;
+}
+
+div#project_comunication div.sidebar div.tip{
+  position:absolute;
+  right:0;
+  top:196px;
+  width:270px;
+}
+
+div.main div.social_network{
+  border-top:1px solid #d0d0d0;
+  padding-top:20px;
+}
+
+div.main div.social_network h3{
+  color:#629fcd;
+  font-size:15px;
+  font-weight:normal;
+  line-height:100%;
+  margin-bottom:25px;
+}
+
+div.main div.social_network li a{
+  float:right;
+}
+
+div.main div.buttons .next
+, div.main div.buttons .previous
+, div.main div.buttons button{
+  overflow:hidden;
+  text-indent:-999em;
+}
+
+div.main div.buttons .next:hover
+, div.main div.buttons .previous:hover
+, div.main div.buttons button:hover{
+  opacity:0.7;
+}
+
+div.main div.buttons .previous{
+  background:url("../img/bt/bt_prev.png") no-repeat;
+  float:left;
+  height:33px;
+  width:99px;
+}
+
+div.main div.buttons .next{
+  background:url("../img/bt/bt_next.png") no-repeat;
+  float:right;
+  height:33px;
+  width:127px;
+}
+
+div.main div.buttons button{
+  background:url("../img/bt/bt_register.png") no-repeat;
+  border:none transparent;
+  cursor:pointer;
+  float:right;
+  height:33px;
+  width:106px;
+}
+
+div.sidebar div.tip{
+  background:#fcfcfc;
+  border:1px solid #e7e6e6;
+  color:#5c5c5c;
+  padding:15px 15px 0;
+}
+
+div.sidebar div.tip p
+, div.sidebar div.tip h3{
+  font-size:13px;
+  line-height:130%;
+}
+
+div.sidebar div.tip h3{
+  margin:10px 0 5px;
+}
+
+div.sidebar div.tip p{
+  margin-bottom:15px;
+}
+
+div.sidebar div.tip a{
+  color:#629fcd;
+  text-decoration:none
+}
+
+div.sidebar div.tip a:hover{
+  text-decoration:underline;
+}
+
+.loading{
+    background:url('../img/bg/ajax-loader.gif') no-repeat right center;
+    padding-right:20px;
+}
+
+input.error, textarea.error {
+    border-color: red !important;
+    background-color: #F9F2E4 !important;
+}
+
+label.error{
+    color:red !important;
+    display:block;
+    margin-top:5px !important;
+}
+
+
+li.subbody, li.subhead, li.subfooter {
+    border: 2px inset #D7D7D7;    
+    padding: 15px;
+}
+
+li.subbody {
+    border-top: none;
+    border-bottom: none;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+li.subhead {
+    border-bottom: none;
+    margin: 0px !important;
+    padding-bottom: 0px;
+}
+
+li.subfooter {
+    border-top: none;
+}
+
+li.subfooter input[type=button] {
+    padding: 8px;   
+}
+
+div.subadded {
+   border: 2px dotted #56A9E6;
+   margin: 5px -5px 0px -5px !important;
+   padding: 0px 5px 0px 5px !important;
+}
+
+div.subadded a {
+   margin: 0px !important;
+}

@@ -1,0 +1,258 @@
+/* Copyright (C) 2010  Marcos Lopes <marcosmlopes01@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+/* Crossbrowser Reset
+______________________*/
+* {
+    margin:0;
+    padding:0;
+}
+
+
+/* Typography
+______________________*/
+body{
+    font:normal 12px/130% Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family:Trebuchet MS, sans-serif;
+    line-height:130%;
+}
+
+
+/* Header
+______________________*/
+#header{
+    background:url("../img/bg/bg_header.png") left bottom repeat-x;
+    border-top:5px solid #fff;
+    overflow:hidden;
+}
+
+#header div.bg{
+    background:url("../img/bg/bg_cloud.png") repeat-x;
+    overflow:hidden;
+}
+
+#header div.centralize{
+    height:97px;
+    padding-top:36px;
+    position:relative;
+}
+
+#header h1{
+    height:70px;
+    line-height:100%;
+    margin-top:-35px;
+    position:absolute;
+    top:50%;
+}
+
+#header h1 a{
+    color:#fff;
+    font-size:42px;
+    font-weight:normal;
+    letter-spacing:-1px;
+    text-decoration:none;
+    text-shadow:2px 2px 0 #619ecc;
+    text-transform:uppercase;
+}
+
+#header h1 a span{
+    display:block;
+    font-size:22px;
+    letter-spacing:0;
+    margin-bottom:15px;
+    text-transform:none;
+}
+
+#header ul.nav{
+    height:28px;
+    margin-top:-14px;
+    position:absolute;
+    right:0;
+    top:50%;
+}
+
+#header ul.nav li{
+    float:left;
+    list-style:none;
+    margin-right:4px;
+}
+
+#header ul.nav a{
+    color:#fff;
+    display:block;
+    font-size:15px;
+    font-weight:bold;
+    line-height:100%;
+    padding:6px 11px;
+    text-decoration:none;
+    text-shadow:1px 1px 0 #5a94bf;
+}
+
+#header ul.nav .active
+, #header ul.nav a:hover{
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    background:#fff url("../img/bg/bg_nav_active.png") bottom left repeat-x;
+    border-radius:5px;
+    color:#3f88c0;
+    cursor:pointer;
+    text-shadow:none;
+}
+
+#header ul.nav .active:hover{
+    text-decoration:none;
+}
+
+
+/* Content
+______________________*/
+#content{
+    background:url("../img/bg/bg_content.png") repeat-x;
+    overflow:hidden;
+    padding:60px 0;
+}
+
+#content div.main{
+    float:left;
+    width:600px;
+}
+
+#content div.sidebar{
+    float:right;
+    width:300px;
+}
+
+#content label{
+  cursor:pointer;
+}
+
+#content .textarea{
+    background:#fbfbfb;
+    border:2px solid #e1e1e1;
+    border-right:none;
+    border-bottom:none;
+    color:#afafaf;
+    font-size:12px;
+    padding:6px 10px;
+}
+
+
+/* Footer
+______________________*/
+#footer div.nav-footer{
+    background:#1f252f;
+    border-top:4px solid #7eaed0;
+    border-bottom:4px solid #7eaed0;
+    color:#fff;
+    overflow:hidden;
+    padding:23px 0;
+}
+
+#footer div.nav-footer div.column{
+    float:left;
+    margin-right:63px;
+    width:321px;
+}
+
+#footer div.nav-footer div.about{
+    margin-right:0;
+}
+
+#footer div.nav-footer div.links{
+    width:186px;
+}
+
+#footer div.nav-footer h4{
+    background:url("../img/bg/bg_nav_footer.png") bottom right no-repeat;
+    font-size:12px;
+    font-weight:normal;
+    font-style:italic;
+    margin-bottom:9px;
+    padding-bottom:5px;
+}
+
+#footer div.nav-footer div.source-code div{
+    background:#3b444e;
+    font-size:11px;
+    margin:10px 0;
+    overflow:hidden;
+}
+
+#footer div.nav-footer div.source-code div code{
+    display:block;
+    margin:6px;
+    width:400px;
+}
+
+#footer div.nav-footer a{
+    color:#fff;
+}
+
+#footer div.nav-footer a:hover{
+    text-decoration:none;
+}
+
+#footer div.nav-footer li{
+    list-style:none;
+}
+
+#footer div.footer{
+    overflow:hidden;
+    padding:20px 0;
+    position:relative;
+}
+
+#footer div.footer div.author{
+    float:left;
+}
+
+#footer div.footer div.license{
+    float:right;
+    width:185px;
+}
+
+#footer div.footer p{
+    font-size:11px;
+    left:50%;
+    margin-left:-110px;
+    position:absolute;
+    top:25px;
+    width:220px;
+}
+
+#footer div.footer img{
+    border:none;
+}
+
+#footer div.footer a:hover img{
+    opacity:0.7;
+}
+
+#footer div.footer div.author .first{
+    margin-right:28px;
+}
+
+
+/* Classes
+_____________________*/
+.centralize{
+    margin:0 auto;
+    width:955px;
+}
