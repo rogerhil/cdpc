@@ -50,6 +50,8 @@ function carregar () {
     $('ul.steps li.active').removeClass('active');
     $('ul.steps li.' + CURRENT_STEP).addClass('active');
 
+    $('div#' + CURRENT_STEP + "Tip").removeClass('hidden');
+
     $('div.step div.buttons .next').click(next);
     $('div.step div.buttons .previous').click(previous);
 }
@@ -80,13 +82,15 @@ function validateStep() {
 function next(e) {
     var next_step = $('div#' + CURRENT_STEP).next().attr('id');
     var valid = validateStep();
-    alert(VALIDATOR.numberOfInvalids());
+    //alert(VALIDATOR.numberOfInvalids());
     if (valid) {
         $('div#' + CURRENT_STEP).fadeOut('fast', function() {
             $('div#' + next_step).fadeIn('fast');
             $('ul.steps li.active').removeClass('active');
             $('ul.steps li.' + next_step).addClass('active');
             $('input[name=step]').val(next_step);
+            $('div#' + CURRENT_STEP + "Tip").addClass('hidden');
+            $('div#' + next_step + "Tip").removeClass('hidden');
             CURRENT_STEP = next_step;
             clicked = 0;
         });
@@ -129,13 +133,14 @@ function loadLocalizacaoGeoProjeto() {
     $('#local_proj').change(function () {
         var li = $(this).parents("li")[0];
         if ($(this).val () == 'outros') {
-            $('#local_proj_outros').show ();
-            $('#local_proj_outros_novo').show ();
             $(li).addClass("subhead");
+            toogleSingle(true, $('#local_proj_outros'));
+            toogleSingle(true, $('#local_proj_outros_novo'));
+
         } else {
-            $('#local_proj_outros').hide ();
-            $('#local_proj_outros_novo').hide ();
             $(li).removeClass("subhead");
+            toogleSingle(false, $('#local_proj_outros'));
+            toogleSingle(false, $('#local_proj_outros_novo'));
         }
     });
     $('#local_proj').change();
@@ -152,18 +157,18 @@ function loadComunicacaoCulturaDigital() {
     
     $('#pq_sem_tel').change(function () {
         if ($(this).val () == 'outro') {
-            $('#pq_sem_tel_outro_escolhido').show ();
+            toogleSingle(true, $('#pq_sem_tel_outro_escolhido'));
         } else {
-            $('#pq_sem_tel_outro_escolhido').hide ();
+            toogleSingle(false, $('#pq_sem_tel_outro_escolhido'));
         }
     });
 
     $('#pq_sem_internet').change(function () {
         
         if ($(this).val () == 'outro') {
-            $('#pq_sem_internet_outro_escolhido').show ();
+            toogleSingle(true, $('#pq_sem_internet_outro_escolhido'));
         } else {
-            $('#pq_sem_internet_outro_escolhido').hide ();
+            toogleSingle(false, $('#pq_sem_internet_outro_escolhido'));
         }
     });
 
@@ -174,9 +179,9 @@ function loadComunicacaoCulturaDigital() {
     
     var change = function (id) {
         if ($('#' + id).val () == 'outro') {
-            $('#' + id + '_outro_escolhido').show ();
+            toogleSingle(true, $('#' + id + '_outro_escolhido'));
         } else {
-            $('#' + id + '_outro_escolhido').hide ();
+            toogleSingle(false, $('#' + id + '_outro_escolhido'));
         }
     
     }
@@ -255,31 +260,37 @@ function novoEndereco () {
     $('.error-message', $newElement).remove();
     $('.error', $newElement).removeClass('error');
 
-    var $remove = $('<a href="javascript:;">Remover endereço</a>');
+    function remClick (evt) {
+        function rem() {
+            $newElement.parent().remove();
+        }
+        toogleSingle(false, $newElement.parent(), rem);
+    }
+
+    var $remove = removeButton(remClick);
     var title = $('<a>Outro endereço</a>');
     title.css('padding', '0px');
     title.css('margin', '0px');
     $newElement.css('margin', '20px 0px 0px 0px');
-    $remove.click (function (evt) {
-        $newElement.parent().remove ();
-    });
+
 
     $newElement.removeClass ('subbody');
     $newElement.removeAttr('id');
-    $('<div class="subadded">')
-        .append (title)
-        .append ($newElement)
-        .appendTo ($('#local_proj_outros'));
+    var $end = $('<div class="subadded">')
+                .append (title)
+                .append ($newElement);
+    animatedAppendTo($end, $('#local_proj_outros'));
     $('<div style="text-align: right;">')
         .append($remove)
         .appendTo ($newElement.parent());
-    atualizarEnderecos ();
+    //atualizarEnderecos ();
 }
 
 function atualizarEnderecos () {
     var $select = $('select[name=local_projeto]');
     var selected = $select.val ();
     $('option', $select).each (function () {
+        alert($(this).val());
         if ($(this).val () != '' &&
             $(this).val () != 'itinerante') {
             $(this).remove();
@@ -301,52 +312,31 @@ function atualizarEnderecos () {
 }
 
 function novaDocumentacao ($parent) {
-    var $remove = $('<a href="javascript:;">Remover</a>');
-    $remove.click (function (evt) {
-        $(this).parent().remove();
-    });
-
-    var $label = $('<label>' +
-        'Upload de <b>Plano de trabalho e documentações do Projeto</b>' +
-        '<input type="file" name="documentacoes"/>' +
-        '</label>');
-    $('<li>')
-        .append ($label)
-        .append ($remove)
-        .addClass ('bottomBorder')
-        .appendTo ($parent);
+    var $remove = removeButton();
+    var $input = $('<input type="file" name="documentacoes"/>');
+    var $doc = $('<li>')
+                .append ($input)
+                .append ($remove)
+   animatedAppendTo($doc, $parent);
 }
 
 function novoConvenio ($parent) {
-    var $remove = $('<a href="javascript:;">Remover</a>');
-    $remove.click (function (evt) {
-        $(this).parent().remove();
-    });
-
-    var $label = $('<input type="text" name="outro_convenio" ' + 
+    var $remove = removeButton();
+    var $input = $('<input type="text" name="outro_convenio" ' + 
                    'class="textarea" />');
-
-    $('<li class="extra">')
-        .append ($label)
-        .append ($remove)
-        .appendTo ($parent);
-    
+    var $conv = $('<li>')
+                 .append ($input)
+                 .append ($remove)
+    animatedAppendTo($conv, $parent);    
 }
 
 function novoParceiro ($parent) {
-    var $remove = $('<a href="javascript:;" style="float: right;">Remover</a>');
-    $remove.click (function (evt) {
-        $(this).parent().remove();
-    });
-
-    var $label = $('<label>' +
-        '<input type="text" name="parcerias" class="required textarea large" />' +
-        '</label>');
-    $('<li>')
-        .append ($label)
-        .append ($remove)
-        .addClass ('bottomBorder')
-        .appendTo ($parent);
+    var $remove =  removeButton();
+    var $input = $('<input type="text" name="parcerias" class="required textarea" />');
+    var $parc = $('<li>')
+                 .append($input)
+                 .append($remove);
+    animatedAppendTo($parc, $parent);
 }
 
 function preencherCamposLista(values, errors) {
@@ -464,46 +454,47 @@ function anterior() {
 ////////////////////////////////////////////////////////////////////////////////
 
 function loadRadioSingleExtra(o, v, id1, id2) {
-    if ($(o).val()) {
+    $('#' + id1).hide();
+    $('#' + id2).hide();
+    if ($(o).length && $(o).val()) {
         if ($(o).val () == v) {
-            $('#' + id1).show();
             if (id2) {
-                $('#' + id2).hide();
+                toogle($('#' + id1), $('#' + id2));
+            } else {
+                toogleSingle(true, $('#' + id1));
             }
         } else {
-            $('#' + id1).hide();
             if (id2) {
-                $('#' + id2).show();
+                toogle($('#' + id2), $('#' + id1));
+            } else {
+                toogleSingle(false, $('#' + id1));
             }
         }
-    } else {
-        $('#' + id1).hide();
-        $('#' + id2).hide();
-        
     }
 
 }
 
 function loadRadioMultipleExtra(o, v, id1, id2) {
     var li = $(o).parents("li")[0];
-    if ($(o).val()) {
+    $('#' + id1).hide();
+    $('#' + id2).hide();
+    if ($(o).length && $(o).val()) {
         if ($(o).val () == v) {
             $(li).addClass("subhead");
-            $('#' + id1).show ();
             if (id2) {
-                $('#' + id2).hide();
+                toogle($('#' + id1), $('#' + id2));
+            } else {
+                toogleSingle(true, $('#' + id1));
             }
         } else {
             $(li).removeClass("subhead");
-            $('#' + id1).hide ();
             if (id2) {
-                $('#' + id2).hide();
+                toogle($('#' + id2), $('#' + id1));
+            } else {
+                toogleSingle(false, $('#' + id1));
             }
         }
-    } else {
-        $(li).removeClass("subhead");
-        $('#' + id1).hide();
-        $('#' + id2).hide();
-        
     }
+    $(li).removeClass("subhead");
 }
+

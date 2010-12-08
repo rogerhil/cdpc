@@ -3,11 +3,11 @@
     <h3>Com qual Público Alvo o Projeto é desenvolvido? *</h3>
     <ul>
       <li>
-        <p>Sob aspectos de <strong>Faixa Etária</strong></p>
+        <h4>Sob aspectos de <strong>Faixa Etária</strong></h4>
         <div>
           <input type="checkbox" name="publico_alvo" value="" style="display: none;" />
         </div>
-        <div class="column">
+        <div class="column fourcolumn">
           <ul>
             <li>
              <label>
@@ -17,7 +17,7 @@
             </li>
           </ul>
         </div>
-        <div  class="column">
+        <div  class="column fourcolumn">
           <ul>
             <li>
              <label>
@@ -27,7 +27,7 @@
             </li>
           </ul>
         </div>
-        <div  class="column">
+        <div  class="column fourcolumn">
           <ul>
             <li>
              <label>
@@ -37,7 +37,7 @@
             </li>
           </ul>
         </div>
-        <div  class="column last">
+        <div  class="column last fourcolumn">
           <ul>
             <li>
              <label>
@@ -50,8 +50,8 @@
       </li>
 
       <li>
-        <p>Sob aspectos das <strong>Culturas Tradicionais</strong></p>
-        <div class="column">
+        <h4>Sob aspectos das <strong>Culturas Tradicionais</strong></h4>
+        <div class="column  fourcolumn">
           <ul>
             <li>
              <label>
@@ -68,7 +68,7 @@
             </li>
           </ul>
         </div>
-        <div class="column">
+        <div class="column fourcolumn">
           <ul>
             <li>
              <label>
@@ -85,7 +85,7 @@
             </li>
           </ul>
         </div>
-        <div class="column">
+        <div class="column fourcolumn">
           <ul>
             <li>
              <label>
@@ -103,7 +103,7 @@
 
           </ul>
         </div>
-        <div class="column last">
+        <div class="column last fourcolumn">
           <ul>
             <li>
              <label>
@@ -116,9 +116,9 @@
       </li>
 
 
-      <li class="subForm">
-        <p>Sob aspectos de <strong>Ocupação do Meio</strong></p>
-        <div class="column">
+      <li>
+        <h4>Sob aspectos de <strong>Ocupação do Meio</strong></h4>
+        <div class="column twocolumn">
           <ul>
             <li>
              <label>
@@ -128,7 +128,7 @@
             </li>
           </ul>
         </div>
-        <div class="column last">
+        <div class="column last twocolumn">
           <ul>
             <li>
              <label>
@@ -141,9 +141,9 @@
       </li>
 
 
-      <li class="subForm">
-        <p>Sob aspectos de <strong>Gênero</strong></p>
-        <div class="column">
+      <li>
+        <h4>Sob aspectos de <strong>Gênero</strong></h4>
+        <div class="column threecolumn">
           <ul>
             <li>
               <label>
@@ -153,7 +153,7 @@
             </li>
           </ul>
         </div>
-        <div class="column">
+        <div class="column threecolumn">
           <ul>
             <li>
               <label>
@@ -163,7 +163,7 @@
             </li>
           </ul>
         </div>
-        <div class="column last">
+        <div class="column last threecolumn">
           <ul>
             <li>
               <label>
@@ -175,13 +175,12 @@
         </div>
       </li>
 
-      <li class="subForm">
-       <p>
+      <li class="bordertop">
+       <h3>
          Quais são as Manifestações e Linguagens que o Projeto utiliza em
-         suas atividades?
-         <em class="helpText">Responda mais de uma se necessário!</em>
-       </p>
-       <div class="column">
+         suas atividades? <em class="helptext">Responda mais de uma se necessário!</em>
+       </h3>
+       <div class="column threecolumn">
          <ul>
           <li>
            <label>
@@ -226,7 +225,7 @@
           </li>
         </ul>
       </div>
-      <div class="column">
+      <div class="column threecolumn">
         <ul>
            <li>
              <label>
@@ -271,7 +270,7 @@
            </li>
         </ul>
       </div>
-      <div class="column last">
+      <div class="column last threecolumn">
         <ul>
            <li>
              <label>
@@ -319,17 +318,14 @@
      </li>
 
      <li>
-       <ul class="telefones subForm">
-         <li class="bottomBorder">
+       <ul id="upload_doc">
+         <li>
            <label>
              Upload de Plano de trabalho e documentações do Projeto
-             <input type="file" name="documentacoes" />
            </label>
+           <input type="file" name="documentacoes" />        <a href="javascript: novaDocumentacao ($('#upload_doc'));" class="add">Outro arquivo</a>
          </li>
        </ul>
-       <input
-          type="button" value="Outro arquivo"
-          onclick="novaDocumentacao ($('.telefones', $(this).parent()));"/>
      </li>
     </ul>
   </div>

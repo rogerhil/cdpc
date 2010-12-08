@@ -46,12 +46,13 @@ function cepWebService (cep, form, prefix) {
 }
 
 function novaEntrada ($container, prefix) {
-    var $remove = $('<a href="javascript:;" class="remove">Remover</a>');
+    var $remove = $('<a href="javascript:;" class="remove" style="float: right">Remover</a>');
     $remove.click (function (evt) {
         var $parent = $(this).parent().parent().parent();
-        //$parent.prev ().prev ().remove ();
-        //$parent.prev ().remove ();
-        $parent.remove ();
+        function rem() {
+            $parent.remove();
+        }
+        toogleSingle(false, $parent, rem);
     });
     var $div = $('<div class="subadded">');
     var $ul = $('<ul>');
@@ -59,33 +60,83 @@ function novaEntrada ($container, prefix) {
         .append ($('<label>Nome</label>'))
         .append ($('<input type="text" name="' + prefix + '_nome" class="textarea large required" />'))
         .appendTo ($ul);
-    $('<li>')
+    $('<li style="margin: 0px;">')
         .append ($('<label>Endereço </label>'))
         .append ($('<input type="text" name="' + prefix + '_link" class="textarea large required" />'))
         .appendTo ($ul);
-    $('<li>')
+    $('<li style="border-bottom: 1px dashed #FFCEB1">')
         .append($remove)
-        .addClass ('bottomBorder')
         .appendTo ($ul);
     
     $ul.appendTo($div);
-    $div.appendTo($container);
+    animatedAppendTo($div, $container);
 }
 
 function novoTelefone ($parent, prefix, value) {
     var $remove = $('<a href="javascript:;">Remover</a>');
-    $remove.click (function (evt) {
-        $(this).parent().remove();
-    });
+    $remove.click (animatedRemove);
     var attrValue = '';
     if (value) {
         attrValue = ' value="' + value + '"';
     }
     var $label = $('<input type="text" name="' + prefix + '_tel"' +
                    'class="textarea phone" placeholder="(00) 0000-0000">');
-    $('<li class="extra">')
-        .append ($label)
-        .append ($remove)
-        .appendTo ($parent);
+    var $tel = $('<li class="extra">')
+                .append ($label)
+                .append ($remove)
+    animatedAppendTo($tel, $parent);
     configFields();
+}
+
+function toogleSingle(show, $o, callBack) {
+    var duration = 300;
+    if (show && $o.is(":hidden")) {
+        $o.animate({opacity: '+=1', height: 'toggle'}, duration, callBack);
+    } else {
+        if (!show && !$o.is(":hidden")) {
+            $o.animate({opacity: '-=1', height: 'toggle'}, duration, callBack);
+        }
+    }
+}
+
+function toogle($o1, $o2) {
+    var duration = 300;
+    var $he, $ve;
+    function callBack() {
+        if (!$he.is(":hidden")) return;    
+        $he.animate({opacity: '+=1', height: 'toggle'}, duration);
+    }
+    if ($o1.is(":hidden")) {
+        $he = $o1;
+        $ve = $o2;
+    } else {
+        $he = $o2;
+        $ve = $o1;        
+    }
+    if (!$ve.is(":hidden")) {
+        $ve.animate({opacity: '-=1', height: 'toggle'}, duration, callBack);
+    } else {
+        callBack();
+    }
+}
+
+function animatedRemove(evt) {
+    $parent = $(this).parent();
+    function rem() {
+        $parent.remove();
+    }
+    toogleSingle(false, $parent, rem);    
+}
+
+function animatedAppendTo($o, $to) {
+    $o.hide();
+    $o.appendTo($to);
+    toogleSingle(true, $o);    
+}
+
+function removeButton(remClick) {
+    var $remove = $('<a href="javascript:;" class="remove">Remover</a>');
+    if (!remClick) remClick = animatedRemove;
+    $remove.click(remClick);
+    return $remove;
 }

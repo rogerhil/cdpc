@@ -42,7 +42,7 @@
       </li>
 
       <li id="sede_possui_tel_nao">
-        <label for="pq_sem_tel">Por quê?</label>
+        <label for="pq_sem_tel">Por quê? *</label>
         <select name="pq_sem_tel" id="pq_sem_tel" class="required">
           <option></option>
           <option value="opcao">Opção</option>
@@ -55,7 +55,7 @@
       </li>
 
       <li id="pq_sem_tel_outro_escolhido">
-        <label for="pq_sem_tel_outro">Qual?</label>
+        <label for="pq_sem_tel_outro">Qual? *</label>
         <input type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro" 
                class="textarea large required" />
       </li>
@@ -88,7 +88,7 @@
       </li>
 
       <li id="sede_possui_net_nao">
-        <label for="pq_sem_internet">Por quê?</label>
+        <label for="pq_sem_internet">Por quê? *</label>
         <select name="pq_sem_internet" id="pq_sem_internet" class="required">
           <option></option>
           <option value="opcao">Opção</option>
@@ -101,59 +101,67 @@
       </li>
 
       <li id="pq_sem_internet_outro_escolhido">
-        <label for="pq_sem_internet_outro">Qual?</label>
+        <label for="pq_sem_internet_outro">Qual? *</label>
         <input type="text" name="pq_sem_internet_outro"
                id="pq_sem_internet_outro" class="textarea large required" />
       </li>
     </ul>
     
-    <div class="social_network">
+    <div class="bordertop">
       <h3>Espaços na Rede</h3>
       <ul>
         <li>
-          <h4 style="margin-bottom: 10px; display: inline;">Redes sociais</h4>
-          <a href="javascript: novaEntrada ($('#redesSociais'), 'rs');" class="add">Outra rede</a>
+          <h4>Redes sociais</h4>
           <ul>
-            <li class="subbodyfooter" id="redesSociais">
+            <li>
               <ul>
-                <li>
-                  <label for="rs_nome">Nome</label>
-                  <input
-                     type="text" name="rs_nome" id="rs_nome"  class="textarea large"
-                     placeholder="ex. orkut, twitter, facebook"/>
+                <li id="redesSociais" style="margin-bottom: 0px;">
+                  <ul>
+                    <li>
+                      <label for="rs_nome">Nome</label>
+                      <input
+                         type="text" name="rs_nome" id="rs_nome"  class="textarea large"
+                         placeholder="ex. orkut, twitter, facebook"/>
+                    </li>
+                    <li class="bottomBorder">
+                      <label for="rs_link">Endereço</label>
+                      <input
+                         type="text" name="rs_link" id="rs_link" class="textarea large"
+                         placeholder="http://"/>
+                    </li>
+                  </ul>
                 </li>
-                <li class="bottomBorder">
-                  <label for="rs_link">Endereço</label>
-                  <input
-                     type="text" name="rs_link" id="rs_link" class="textarea large"
-                     placeholder="http://"/>
-                </li>
-              </ul>
+              </ul><!-- Redes sociais -->
+              <a href="javascript: novaEntrada ($('#redesSociais'), 'rs');" class="add">Outra rede</a>
             </li>
-          </ul><!-- Redes sociais -->
+          </ul>
         </li>
 
         <li>
-          <h4 style="margin-bottom: 10px; display: inline;">Feeds</h4>
-          <a href="javascript: novaEntrada ($('#feeds'), 'rs');" class="add">Outro feed</a>
+          <h4>Feeds</h4>
           <ul>
-            <li class="subbodyfooter" id="feeds">
+            <li>
               <ul>
-                <li>
-                  <label for="feed_nome">Nome</label>
-                  <input
-                     type="text" name="feed_nome" id="feed_nome" class="textarea large"
-                     placeholder="Blog do Simp. Internacional de Políticas Públicas de Acervos Digitais"/>
+                <li id="feeds">
+                  <ul>
+                    <li>
+                      <label for="feed_nome">Nome</label>
+                      <input
+                         type="text" name="feed_nome" id="feed_nome" class="textarea large"
+                         placeholder="Blog do Simp. Internacional de Políticas Públicas de Acervos Digitais"/>
+                    </li>
+                    <li class="bottomBorder">
+                      <label for="feed_link">Endereço</label>
+                      <input
+                         type="text" name="feed_link" id="feed_link" class="textarea large"
+                         placeholder="http://culturadigital.br/simposioacervosdigitais/feed/"/>
+                    </li>
+                  </ul>
                 </li>
-                <li class="bottomBorder">
-                  <label for="feed_link">Endereço</label>
-                  <input
-                     type="text" name="feed_link" id="feed_link" class="textarea large"
-                     placeholder="http://culturadigital.br/simposioacervosdigitais/feed/"/>
-                </li>
-              </ul>
+              </ul><!-- Feeds -->
+              <a href="javascript: novaEntrada ($('#feeds'), 'rs');" class="add">Outro feed</a>
             </li>
-          </ul><!-- Feeds -->
+          </ul>
         </li>
       </ul>
     </div>    

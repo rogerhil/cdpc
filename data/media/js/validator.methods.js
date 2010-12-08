@@ -17,6 +17,7 @@
 $.extend($.validator.messages, {
     required: "Campo obrigatório",
     email: "Formato de e-mail inválido",
+    number: "Número inválido",
     cep: "Formato de CEP inválido",
     atLeastOne: "Favor marcar ao menos uma opcão"
 });

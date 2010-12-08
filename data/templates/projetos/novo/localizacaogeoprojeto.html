@@ -16,6 +16,12 @@
 
       <li>
         <div class="column">
+          <label for="end_proj_numero">Número: *</label>
+          <input
+              type="text" name="end_proj_numero" id="end_proj_numero"
+              class="required textarea number" />
+        </div>        
+        <div class="column">
           <label for="end_proj_complemento">Complemento: </label>
           <input
               type="text" name="end_proj_complemento"
@@ -23,27 +29,17 @@
 
         </div>
         <div class="column last">
-
-          <label for="end_proj_numero">Número: *</label>
-          <input
-              type="text" name="end_proj_numero" id="end_proj_numero"
-              class="required textarea number" />
-        </div>        
-      </li>
-
-
-
-      <li>
-        <div class="column">
           <label for="end_proj_bairro">Bairro: *</label>
           <input
               type="text" name="end_proj_bairro" id="end_proj_bairro" class="required textarea district" />
         </div>
+      </li>
+
+
+      <li>
         <div class="column">
           <label for="end_proj_cidade">Cidade: *</label>
-          <input
-              type="text" name="end_proj_cidade" id="end_proj_cidade" class="required textarea city" />
-          
+          <input type="text" name="end_proj_cidade" id="end_proj_cidade" class="required textarea city" />
         </div>
         <div class="column last">
           <label for="end_proj_uf">UF: *</label>
@@ -58,20 +54,20 @@
 
       <li>
         <div class="column">
-          <label for="end_proj_latitude">Latitude: *</label>
+          <label for="end_proj_latitude">Latitude:</label>
           <input
               type="text" name="end_proj_latitude"
               id="end_proj_latitude" class="textarea" />
         </div>
         <div class="column last">
-          <label for="end_proj_longitude">Longitude: *</label>
+          <label for="end_proj_longitude">Longitude:</label>
           <input
               type="text" name="end_proj_longitude"
               id="end_proj_longitude" class="textarea" />
         <div>
       </li>
       <li>
-        <label for="local_proj">Onde o seu projeto ocorre?*</label>
+        <label for="local_proj">Onde o seu projeto ocorre? *</label>
         <select name="local_proj" id="local_proj" class="required">
           <option></option>
           <option value="sede">Sede</option>

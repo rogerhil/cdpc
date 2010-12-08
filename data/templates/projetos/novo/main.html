@@ -93,14 +93,38 @@ $("#"+currentTab).css("display", "block");
 {% endblock %}
 
 {% block sidebar %}
-  <div class="tip">
-    <p>Fale um pouco sobre seu projeto na descrição,
-    é importante.</p>
-    <h3>Onde eu encontro meu número de convênio?</h3>
-    <p>There are many variantions of passages of lorem ipsum
-    available, but the majority have suffered alteration in some
-    form, by injected humour, or randomised words wich don't look
-    even slightly believable.</p>
+  <div class="hidden" id="dadosProjetoTip">
+    <div class="tip" >
+      <p>Fale um pouco sobre seu projeto na descrição,
+      é importante.</p>
+      <h3>Onde eu encontro meu número de convênio?</h3>
+      <p>There are many variantions of passages of lorem ipsum
+      available, but the majority have suffered alteration in some
+      form, by injected humour, or randomised words wich don't look
+      even slightly believable.</p>
+    </div>
   </div>
+
+  <div class="hidden" id="localizacaoGeoProjetoTip">  
+    <div class="tip" id="localizacaoGeoProjetoTip">
+      <p>Digite seu cep e clique em "verificar CEP" e o sistema
+      completará o seu endereço automaticamente.</p>
+      <p>Não sabe seu CEP? <a href="#">Descubra aqui.</a></p>
+    </div>
+  </div>
+
+  <div class="hidden" id="comunicacaoCulturaDigitalTip">
+    <div class="tip">
+      <p>O espaço na rede são redes sociais, o seu site, blogs
+      que você participa.</p>
+      <p>Dados opcionais.</p>
+      <p>Digite o nome do site, Ex. Meu perfil no orkut ou Minha
+      conta no Twitter.</p>
+      <p>Cole a URL (endereço do seu perfil ou site)</p>
+    </div>
+  </div>
+
+
+  
 {% endblock %}
 

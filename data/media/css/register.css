@@ -117,12 +117,24 @@ div.main li div.column{
   margin-right:17px;
 }
 
+div.main li div.twocolumn{
+  width: 291px;
+}
+
+div.main li div.threecolumn{
+  width: 188px;
+}
+
+div.main li div.fourcolumn{
+  width: 137px;
+}
+
 div.main li div.last{
   margin:0;
 }
 
 div.main li input.complement{
-  width:439px;
+  width:100px;
 }
 
 div.main li input.number{
@@ -130,15 +142,15 @@ div.main li input.number{
 }
 
 div.main li input.district{
-  width:208px;
+  width:300px;
 }
 
-div.main li select.city{
-  width:228px;
+div.main li input.city{
+  width:460px;
 }
 
 div.main li select.state{
-  width:108px;
+  width:100px;
 }
 
 div.step{
@@ -153,21 +165,32 @@ div#project_comunication div.sidebar div.tip{
   width:270px;
 }
 
-div.main div.social_network{
-  border-top:1px solid #d0d0d0;
-  padding-top:20px;
-}
-
-div.main div.social_network h3{
+div.main h3{
   color:#629fcd;
-  font-size:15px;
+  font-size:16px;
   font-weight:normal;
   line-height:100%;
   margin-bottom:25px;
 }
 
-div.main div.social_network li a{
-  float:right;
+div.main h4{
+  color:#629fcd;
+  font-size:13px;
+  font-weight:normal;
+  line-height:100%;
+  margin-bottom:15px;
+}
+
+div.main .helptext{
+  color: gray;
+  font-size:12px;
+  font-weight:normal;
+  line-height:100%;
+}
+
+div.main .bordertop{
+  border-top:1px solid #d0d0d0;
+  padding-top:20px;
 }
 
 div.main div.buttons .next
@@ -263,11 +286,10 @@ li.subbody, li.subfooter, li.subbodyfooter {
 }
 
 li.subbodyfooter {
-    /*border-top: none;*/
+
 }
 
 li.subbody {
-    /*border-top: none;*/
     border-bottom: none;
     margin-bottom: 0px !important;
     padding-bottom: 0px !important;
