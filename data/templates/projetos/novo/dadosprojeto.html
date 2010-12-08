@@ -1,39 +1,292 @@
-<li id="dadosProjeto"  style="display: none;">
-  <h3>Dados do projeto</h3>
-  <ol class="section">
-    <li>
-      <label for="nome">Nome completo do projeto*</label>
-      <input
-         type="text" name="nome" id="nome" class="required"
-         placeholder="Nome completo do Projeto:"/>
-    </li>
-    <li>
-      <label for="tipo">Seu projeto é*</label>
-      <select id="tipo" name="tipo"  class="required">
-        <option></option>
-        <option value="ponto">Ponto</option>
-        <option value="pontao">Pontão</option>
-        <option value="iniciativa_premiada">Iniciativa Premiada</option>
-      </select>
-    </li>
-    <li>
-      <label for="tipo_convenio">Qual tipo de convênio?*</label>
-      <select id="tipo_convenio" name="tipo_convenio" class="required">
-        <option></option>
-        <option value="internacional">Internacional</option>
-        <option value="federal">Federal</option>
-        <option value="estadual">Estadual</option>
-        <option value="municipal">Municipal</option>
-      </select>
-    </li>
-    <li>
-      <label for="numero_convenio">Número do convênio do projeto*</label>
-      <input
-         type="text" name="numero_convenio" id="numero_convenio" class="required"
-         placeholder="Ex.: 329000139567"/>
-      <em class="helpText">
-        <a href="#">Onde eu encontro meu número de convênio?</a>
-      </em>
-    </li>
-  </ol>
-</li>
+<div class="step" id="dadosProjeto">
+  <div class="main">
+    <ul>
+      <li>
+        <label for="nome">Nome completo do projeto: *</label>
+        <input
+           type="text" name="nome" id="nome" class="textarea large required"
+           maxlength="100" />
+      </li>
+
+      <li>
+        <label for="descricao">Descrição breve sobre as
+        atividades do Projeto: *</label>
+        <textarea rows="8" cols="80" id="descricao" name="descricao"
+        class="required textarea large"></textarea>
+      </li>
+
+      <li>
+        <label for="project_logo">Marca ou imagem: 
+        <span>(opcional)</span></label>
+        <input type="file" id="project_logo" name="">
+      </li>
+
+      <li>
+        <label for="tipo">Seu projeto é: *</label>
+        <select id="tipo" name="tipo"  class="required">
+          <option></option>
+          <option value="ponto">Ponto</option>
+          <option value="pontao">Pontão</option>
+          <option value="iniciativa_premiada">Iniciativa Premiada</option>
+        </select>
+      </li>
+      <li>
+        <label for="tipo_convenio">Qual tipo de convênio? *</label>
+        <select id="tipo_convenio" name="tipo_convenio" class="required">
+          <option></option>
+          <option value="internacional">Internacional</option>
+          <option value="federal">Federal</option>
+          <option value="estadual">Estadual</option>
+          <option value="municipal">Municipal</option>
+        </select>
+      </li>
+      <li>
+        <label for="numero_convenio">Número de convênio do projeto: *</label>
+        <input
+           type="text" name="numero_convenio" id="numero_convenio"
+           class="required textarea" size="45" />
+      </li>
+
+      <li class="subForm">
+        <label for="partnership">
+          O Projeto participa de alguma Ação do Programa Cultura Viva? *
+        </label>
+        <input type="radio" name="participa_cultura_viva" value="" class="required" style="display: none;" />
+        <label class="radio required">
+         <input type="radio" name="participa_cultura_viva" value="sim" />
+         Sim
+         </label>
+        </label>
+        <label class="radio">
+         <input type="radio" name="participa_cultura_viva" value="nao"/>
+         Não
+        </label>
+      </li>
+
+      <li class="subbodyfooter" id="participa_cultura_viva_sim">
+        <div>
+          <input type="checkbox" name="acao_cultura_viva" value="" style="display: none;" />
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label>
+            Qual(is)?
+            <em class="helpText">Responda mais de uma se necessário!</em>
+          </label>
+        </div>
+        <div class="column">
+          <ul>
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Agente cultura viva"/>
+               Agente Cultura Viva
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Cultura digital"/>
+               Cultura Digital
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Cultura e saúde"/>
+               Cultura e Saúde
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Economia viva"/>
+               Economia Viva
+             </label>
+            </li>
+          </ul>
+        </div>
+        <div class="column">
+          <ul>
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Escola viva"/>
+               Escola Viva
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Grios"/>
+               Grios
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Interacoes estéticas"/>
+               Interações Estéticas
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Mídias livres"/>
+               Mídias Livres
+             </label>
+            </li>
+           </ul>
+        </div>
+        <div class="column last">
+          <ul>
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Pontinho de cultura"/>
+               Pontinho de Cultura
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Pontos de memoria"/>
+               Pontos de memória
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Redes indígenas"/>
+               Redes Indígenas
+             </label>
+            </li>
+
+            <li>
+             <label>
+               <input type="checkbox" name="acao_cultura_viva" value="Tuxaua"/>
+               Tuxaua
+             </label>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <label>O Projeto estabeleceu Parcerias?*</label>
+        <input type="radio" name="estabeleceu_parcerias" value="" class="required" style="display: none;" />
+        <label class="radio">
+          <input type="radio" name="estabeleceu_parcerias" value="sim"/>
+          Sim
+        </label>
+        <label class="radio">
+          <input type="radio" name="estabeleceu_parcerias" value="nao"/>
+          Não
+        </label>
+      </li>
+
+
+      <li class="subbodyfooter" id="parcerias_sim">
+        <div>
+          <input type="checkbox" name="parcerias" value="" style="display: none;" />
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label>Com qual(quais) parceiro(s)?</label>
+        </div>
+        <div class="column">
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Biblioteca"/>
+                Biblioteca
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Empresa"/>
+                Empresa
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Equipamento de saúde"/>
+                Equipamento de Saúde
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Escola"/>
+                Escola
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="column">
+          <ul>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Igreja"/>
+                Igreja
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="ONG"/>
+                ONG
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Poder público"/>
+                Poder público
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Pontos de memória"/>
+                Pontos de Memória
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="column last">
+          <ul>
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Redes indígenas"/>
+                Redes Indígenas
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Sistema S"/>
+                Sistema S (Sesc, Senai, etc)
+              </label>
+            </li>
+
+            <li>
+              <label>
+                <input type="checkbox" name="parcerias" value="Tuxaua"/>
+                Tuxaua
+              </label>
+            </li>
+          </ul>
+        </div>
+        <div class="clear"></div>
+        <div>
+          <label>
+            Outros parceiros:
+            <a href="javascript: novoParceiro($('.novosparceiros', $('#parcerias_sim')));" class="add">Adicionar novo Parceiro</a>          
+          </label>
+          <ul class="novosparceiros">
+
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+

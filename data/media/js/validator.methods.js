@@ -17,7 +17,8 @@
 $.extend($.validator.messages, {
     required: "Campo obrigatório",
     email: "Formato de e-mail inválido",
-    cep: "Formato de CEP inválido"
+    cep: "Formato de CEP inválido",
+    atLeastOne: "Favor marcar ao menos uma opcão"
 });
 
 function cepMethod(value, element) {
@@ -29,7 +30,12 @@ function cepMethod(value, element) {
     return false;
 }
 
+function atLeastOneMethod(value, element) {
+    return $.validator.methods.required.call(this, value, element);
+}
+
 $.validator.addMethod("cep", cepMethod);
+$.validator.addMethod("atLeastOne", atLeastOneMethod);
 
 
     

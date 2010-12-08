@@ -1,108 +1,161 @@
-<li id="comunicacaoCulturaDigital" style="display: none;">
-  <h3>Comunicação e Cultura Digital</h3>
-  <ol class="section">
-    <li>
-      <label>
-        A sede do projeto possui telefone?*
-      </label>
-      <ul class="comCdTelefone">
-        <li>
-          <label class="radio">
-            <input type="radio" name="sede_possui_tel" value="sim"/>
-            Sim
-          </label>
-        </li>
-        <li>
-          <label class="radio">
-            <input type="radio" name="sede_possui_tel" value="nao"/>
-            Não
-          </label>
-        </li>
-      </ul>
-      <br clear="both">
-    </li>
+<div class="step" id="comunicacaoCulturaDigital">
+  <div class="main">
+    <ul>
+      <li>
+        <label>A sede do projeto possui telefone? *</label>
+        <input type="radio" name="sede_possui_tel" value=""
+               style="display: none;" class="required" />       
+        <label class="radio">
+          <input type="radio" name="sede_possui_tel" value="sim" />
+          Sim
+        </label>
+        <label class="radio">
+          <input type="radio" name="sede_possui_tel" value="nao"/>
+          Não
+        </label>
+      </li>
 
-    <li id="sede_possui_tel_sim" class="displayNone formCinza">
-      <label for="tipo_tel_sede">Qual tipo?</label>
-      <select name="tipo_tel_sede" id="tipo_tel_sede">
-        <option></option>
-        <option value="fixo">Fixo</option>
-        <option value="celular">Celular</option>
-        <option value="radio">Rádio</option>
-        <option value="rural">Rural</option>
-        <option value="publico">Público</option>
-      </select>
-    </li>
+      <li id="sede_possui_tel_sim" class="subbodyfooter">
+        <ul>
+          <li>
+            <label for="tipo_tel_sede">Qual tipo?</label>
+            <select name="tipo_tel_sede" id="tipo_tel_sede" class="required">
+              <option></option>
+              <option value="fixo">Fixo</option>
+              <option value="celular">Celular</option>
+              <option value="radio">Rádio</option>
+              <option value="rural">Rural</option>
+              <option value="publico">Público</option>
+            </select>
+          </li>
+          <li style="margin-bottom: 0px;">
+            <ul class="telefones">
+              <li>
+                <label>Telefone:</label>
+                <input type="text" name="sede_tel" class="textarea phone required" placeholder="(00) 0000-0000" />
+                <a href="javascript: novoTelefone ($('.telefones', '#sede_possui_tel_sim'), 'sede');" class="add">Adicionar outro número</a>
+              </li>
+            </ul>
+            <span style="display: none;"> <form:error name="sede_tel" format="escapenl"></span>
+          </li>
+        </ul>
+      </li>
 
-    <li id="sede_possui_tel_nao" class="displayNone formCinza">
-      <label for="pq_sem_tel">Por quê?</label>
-      <select name="pq_sem_tel" id="pq_sem_tel">
-        <option></option>
-        <option value="opcao">Opção</option>
-        <option value="fornecimento">
-          Não há fornecimento do serviço na região
-        </option>
-        <option value="recursos">Falta de recursos</option>
-        <option value="outro">Outro</option>
-      </select>
-    </li>
+      <li id="sede_possui_tel_nao">
+        <label for="pq_sem_tel">Por quê?</label>
+        <select name="pq_sem_tel" id="pq_sem_tel" class="required">
+          <option></option>
+          <option value="opcao">Opção</option>
+          <option value="fornecimento">
+            Não há fornecimento do serviço na região
+          </option>
+          <option value="recursos">Falta de recursos</option>
+          <option value="outro">Outro</option>
+        </select>
+      </li>
 
-    <li id="pq_sem_tel_outro_escolhido" class="displayNone formCinza">
-      <label for="pq_sem_tel_outro">Qual?</label>
-      <input
-          type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro"/>
-    </li>
+      <li id="pq_sem_tel_outro_escolhido">
+        <label for="pq_sem_tel_outro">Qual?</label>
+        <input type="text" name="pq_sem_tel_outro" id="pq_sem_tel_outro" 
+               class="textarea large required" />
+      </li>
 
-    <li>
-      <label>A sede do projeto possui acesso à internet?*</label>
+      <li>
+        <label>A sede do projeto possui acesso à internet?*</label>
+        <input type="radio" name="sede_possui_net" value="sim" 
+               style="display: none;" class="required" />
+        <label class="radio">
+          <input type="radio" name="sede_possui_net" value="sim"/>
+          Sim
+        </label>
+        <label class="radio">
+          <input type="radio" name="sede_possui_net" value="nao"/>
+          Não
+        </label>
+      </li>
+
+      <li id="sede_possui_net_sim">
+        <label for="tipo_internet">Qual tipo?</label>
+        <select name="tipo_internet" id="tipo_internet" class="required">
+          <option></option>
+          <option value="discada">Discada</option>
+          <option value="3g">3G</option>
+          <option value="adsl">ADSL/Cabo (Banda Larga)</option>
+          <option value="radio">Rádio</option>
+          <option value="gesac">Gesac</option>
+          <option value="publica">Internet Pública</option>
+        </select>
+      </li>
+
+      <li id="sede_possui_net_nao">
+        <label for="pq_sem_internet">Por quê?</label>
+        <select name="pq_sem_internet" id="pq_sem_internet" class="required">
+          <option></option>
+          <option value="opcao">Opção</option>
+          <option value="fornecimento">
+            Não há fornecimento do serviço na região
+          </option>
+          <option value="recursos">Falta de recursos</option>
+          <option value="outro">Outro</option>
+        </select>
+      </li>
+
+      <li id="pq_sem_internet_outro_escolhido">
+        <label for="pq_sem_internet_outro">Qual?</label>
+        <input type="text" name="pq_sem_internet_outro"
+               id="pq_sem_internet_outro" class="textarea large required" />
+      </li>
+    </ul>
+    
+    <div class="social_network">
+      <h3>Espaços na Rede</h3>
       <ul>
         <li>
-          <label class="radio">
-            <input type="radio" name="sede_possui_net" value="sim"/>
-            Sim
-          </label>
+          <h4 style="margin-bottom: 10px; display: inline;">Redes sociais</h4>
+          <a href="javascript: novaEntrada ($('#redesSociais'), 'rs');" class="add">Outra rede</a>
+          <ul>
+            <li class="subbodyfooter" id="redesSociais">
+              <ul>
+                <li>
+                  <label for="rs_nome">Nome</label>
+                  <input
+                     type="text" name="rs_nome" id="rs_nome"  class="textarea large"
+                     placeholder="ex. orkut, twitter, facebook"/>
+                </li>
+                <li class="bottomBorder">
+                  <label for="rs_link">Endereço</label>
+                  <input
+                     type="text" name="rs_link" id="rs_link" class="textarea large"
+                     placeholder="http://"/>
+                </li>
+              </ul>
+            </li>
+          </ul><!-- Redes sociais -->
         </li>
 
         <li>
-          <label class="radio">
-            <input type="radio" name="sede_possui_net" value="nao"/>
-            Não
-          </label>
+          <h4 style="margin-bottom: 10px; display: inline;">Feeds</h4>
+          <a href="javascript: novaEntrada ($('#feeds'), 'rs');" class="add">Outro feed</a>
+          <ul>
+            <li class="subbodyfooter" id="feeds">
+              <ul>
+                <li>
+                  <label for="feed_nome">Nome</label>
+                  <input
+                     type="text" name="feed_nome" id="feed_nome" class="textarea large"
+                     placeholder="Blog do Simp. Internacional de Políticas Públicas de Acervos Digitais"/>
+                </li>
+                <li class="bottomBorder">
+                  <label for="feed_link">Endereço</label>
+                  <input
+                     type="text" name="feed_link" id="feed_link" class="textarea large"
+                     placeholder="http://culturadigital.br/simposioacervosdigitais/feed/"/>
+                </li>
+              </ul>
+            </li>
+          </ul><!-- Feeds -->
         </li>
       </ul>
-    </li>
-
-    <li id="sede_possui_net_sim" class="displayNone formCinza">
-      <label for="tipo_internet">Qual tipo?</label>
-      <select name="tipo_internet" id="tipo_internet">
-        <option></option>
-        <option value="discada">Discada</option>
-        <option value="3g">3G</option>
-        <option value="adsl">ADSL/Cabo (Banda Larga)</option>
-        <option value="radio">Rádio</option>
-        <option value="gesac">Gesac</option>
-        <option value="publica">Internet Pública</option>
-      </select>
-    </li>
-
-    <li id="sede_possui_net_nao" class="displayNone formCinza">
-      <label for="pq_sem_internet">Por quê?</label>
-      <select name="pq_sem_internet" id="pq_sem_internet">
-        <option></option>
-        <option value="opcao">Opção</option>
-        <option value="fornecimento">
-          Não há fornecimento do serviço na região
-        </option>
-        <option value="recursos">Falta de recursos</option>
-        <option value="outro">Outro</option>
-      </select>
-    </li>
-
-    <li id="pq_sem_internet_outro_escolhido" class="displayNone formCinza">
-      <label for="pq_sem_internet_outro">Qual?</label>
-      <input
-          type="text" name="pq_sem_internet_outro"
-          id="pq_sem_internet_outro"/>
-    </li>
-  </ol><!-- Comunicação e Cultura Digital -->
-</li>
+    </div>    
+  </div>
+</div>

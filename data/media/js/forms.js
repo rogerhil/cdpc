@@ -15,27 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$(function() {
-    if(!supports_placeholder()) {
-        $('*[placeholder]').each(function() {
-            var placeholder = $(this).attr('placeholder');
-            if($(this).val() == '') $(this).val(placeholder);
-        });
-        $('*[placeholder]').resetDefaultValue();
-        $('*[placeholder]').parents('form').bind('submit', function() {
-            $('*[placeholder]', $(this)).each(function() {
-                if($(this).val() == $(this).attr('placeholder')) {
-                    $(this).val('');
-                }
-            });
-        });
-    }
-});
-
-function supports_placeholder() {
+function supportsPlaceholder() {
     var input = document.createElement('input');
-    if('placeholder' in input) return true;
-    return false;
+    if ('placeholder' in input) return;    
+    $('*[placeholder]').each(function() {
+        var placeholder = $(this).attr('placeholder');
+        if($(this).val() == '') $(this).val(placeholder);
+    });
+    $('*[placeholder]').resetDefaultValue();
+    $('*[placeholder]').parents('form').bind('submit', function() {
+        $('*[placeholder]', $(this)).each(function() {
+            if($(this).val() == $(this).attr('placeholder')) {
+                $(this).val('');
+            }
+        });
+    });
 }
 
 /**

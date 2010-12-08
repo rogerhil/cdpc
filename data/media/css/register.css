@@ -90,8 +90,21 @@ div.main li a{
   text-decoration:none;
 }
 
+div.main li span.add{
+  color:#629fcd;
+  margin-left:10px;
+  text-decoration:none;
+  cursor:pointer;
+}
+
 div.main li .add{
   background:url("../img/bg/bg_bt_add.png") left center no-repeat;
+  padding-left:17px;
+}
+
+div.main li .remove{
+  color: red !important;
+  background:url("../img/bg/bg_bt_remove.png") left center no-repeat;
   padding-left:17px;
 }
 
@@ -233,6 +246,10 @@ input.error, textarea.error {
     background-color: #F9F2E4 !important;
 }
 
+li.extra {
+    margin-top: -15px;
+}
+
 label.error{
     color:red !important;
     display:block;
@@ -240,22 +257,26 @@ label.error{
 }
 
 
-li.subbody, li.subhead, li.subfooter {
-    border: 2px inset #D7D7D7;    
-    padding: 15px;
+li.subbody, li.subfooter, li.subbodyfooter {
+   border: 1px dashed #56A9E6;
+   padding: 5px;
+}
+
+li.subbodyfooter {
+    /*border-top: none;*/
 }
 
 li.subbody {
-    border-top: none;
+    /*border-top: none;*/
     border-bottom: none;
     margin-bottom: 0px !important;
     padding-bottom: 0px !important;
 }
 
 li.subhead {
-    border-bottom: none;
+    /*border-bottom: none;
     margin: 0px !important;
-    padding-bottom: 0px;
+    padding-bottom: 0px;*/
 }
 
 li.subfooter {
@@ -267,9 +288,13 @@ li.subfooter input[type=button] {
 }
 
 div.subadded {
-   border: 2px dotted #56A9E6;
-   margin: 5px -5px 0px -5px !important;
-   padding: 0px 5px 0px 5px !important;
+   border: 1px dashed #56A9E6;
+   border-left: none;
+   border-right: none;
+   border-bottom: none;
+   margin-top: 20px !important;
+   /*margin: 0px -5px 0px -5px !important;
+   padding: 0px 5px 0px 5px !important;*/
 }
 
 div.subadded a {

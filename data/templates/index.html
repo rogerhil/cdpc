@@ -1,53 +1,61 @@
 {% extends 'base.html' %}
 
 {% block extra_head %}
+
+<link
+   rel="stylesheet" type="text/css" media="all"
+   href="{{ url_for('.static', filename='css/home.css') }}">
+
 {% endblock %}
 
 {% block content %}
 
-<h2>Projetos</h2>
 <ol>
   <li>
-    <a href="{{ url_for('projetos.listing') }}">
-      Acessar a lista de pontos cadastrados
-    </a>
+    <span>1</span>
+    <h2>
+      <a href="{{ url_for('projetos.listing') }}">
+        Acessar a lista de pontos cadastrados;
+      </a>
+    </h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipscing elit.
+    Curabitur auctor velit vitae nisi tristique adipiscing.
+    Vivamus lacinia sem.</p>
   </li>
   <li>
-    <a href="{{ url_for('projetos.novo') }}">
-      Cadastrar um novo ponto
-    </a>
+    <span>2</span>
+    <h2>
+      <a href="{{ url_for('projetos.novo') }}">
+        Cadastrar um novo ponto;
+      </a>
+    </h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipscing elit.
+    Curabitur auctor velit vitae nisi tristique adipiscing.
+    Vivamus lacinia sem.</p>
   </li>
-  <li>
-    <a href="{{ url_for('usuarios.listing') }}">
-      Acessar a lista de pessoas cadastradas
-    </a>
+  <li class="last">
+    <span>3</span>
+    <h2>
+      <a href="{{ url_for('usuarios.listing') }}">
+        Acessar a lista de pessoas cadastradas.
+      </a>
+    </h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipscing elit.
+    Curabitur auctor velit vitae nisi tristique adipiscing.
+    Vivamus lacinia sem.</p>
   </li>
 </ol>
 
+{% endblock %}
+
+{% block sidebar %}
+
 {% if not is_logged_in() %}
-<h2>Acesso</h2>
 
-<p>
-  Se você ainda não tem acesso ao sistema,
-  <a href="{{ url_for('usuarios.novo') }}">cadastre-se</a> agora.
-</p>
+  <h3>Entrar</h3>
+  {% include "portlets/login.html" %}
 
-{% if request.args.get('erro') %}
-<div class="erro">Usuário ou senha incorretos</div>
-{% endif %}
-<form id="login" method="post" action="{{ url_for('login') }}">
-  <ol>
-    <li>
-      <label>Email</label> <input type="text" name="email">
-    </li>
-    <li>
-      <label>Senha</label> <input type="password" name="senha">
-    </li>
-    <li>
-      <input type="submit" value="Entrar">
-    </li>
-  </ol>
-</form>
 {% endif %}
 
 {% endblock %}
+

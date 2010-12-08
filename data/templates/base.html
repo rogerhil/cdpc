@@ -1,36 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
+  
     <meta charset="UTF-8">
-    <title>Cadastre seu ponto de cultura</title>
-    <link
-       rel="stylesheet" type="text/css"
-       href="{{ url_for('.static', filename='css/style.css') }}">
+    <title>Pontos De Cultura</title>
+    <link rel="stylesheet" media="all"
+          href="{{ url_for('.static', filename='css/base.css') }}">
+    <!-- Front-end author: Marcos Maia <marcosmlopes01@gmail.com> -->
     {% block extra_head %}{% endblock %}
   </head>
-  <body>
-    <div id="top">
-      <h1 class="logo definedWidth">
-        <a href="{{ url_for('index.index') }}">
-          Cadastre seu ponto de cultura
+  <body class="{% block bodyclass %}{% endblock %}">
+
+    <ul style="display:none;">
+      <li>
+        <a href="#nav" tabindex="1" accesskey="1"
+           title="Pular para o menu de navegação [accesskey 1]">
+          Ir para o menu de navegação [<kbd>accesskey 1</kbd>]
         </a>
-      </h1>
-      <div id="mainNavWraper">
-        <div id="mainNav" class="definedWidth">
-          <ul>
-            <li {% if selected == "pessoas" %} class="selected"{% endif %}>
-              <a href="{{ url_for('usuarios.listing') }}">pessoas</a></li>
-            <li {% if selected == "projetos" %} class="selected"{% endif %}>
-              <a href="{{ url_for('projetos.listing') }}">projetos</a></li>
-            <li {% if selected == "estats" %} class="selected"{% endif %}>
-              <a href="#">estatísticas</a></li>
-          </ul>
-          {% if is_logged_in() %}
-          <a href="{{ url_for('index.logout') }}">Sair</a>
-          {% endif %}
-          <br class="clear">
-        </div>
-      </div><!-- mainNavWraper -->
+      </li>
+      <li>
+        <a href="#content" tabindex="3" accesskey="0"
+           title="Pular para o conteúdo [accesskey 0]">
+           Pular para o conteúdo [<kbd>accesskey 0</kbd>]
+        </a>
+      </li>
+      <li>
+        <a href="#login" tabindex="4" accesskey="2"
+           title="Pular para o  formulário de login [accesskey 2]">
+          Pular para o formulário de login [<kbd>accesskey 2</kbd>]
+        </a>
+      </li>
+      <li>
+        <a href="#footer" tabindex="5" accesskey="3"
+           title="Pular para o rodapé [accesskey 3]">
+          Pular para o rodapé  [<kbd>accesskey 3</kbd>]
+        </a>
+      </li>
+    </ul>
+    
+    <div id="general">
+      <div id="header">
+        <div class="bg">
+          <div class="centralize">
+            <h1>
+              <a href="">
+                <span>Cadastramento dos</span> Pontos de Cultura
+              </a>
+            </h1>
+            <ul id="nav" class="nav">
+              <li {% if selected == "inicio" %} class="selected"{% endif %}>
+                <a href="{{ url_for('index.index') }}" class="active">Início</a>
+              </li>
+              <li {% if selected == "pessoas" %} class="selected"{% endif %}>
+                <a href="{{ url_for('usuarios.listing') }}">Pessoas</a>
+              </li>
+              <li {% if selected == "projetos" %} class="selected"{% endif %}>
+                <a href="{{ url_for('projetos.listing') }}">Projetos</a>
+              </li>
+              <li {% if selected == "estats" %} class="selected"{% endif %}>
+                <a href="">Estatísticas</a>
+              </li>
+            </ul>
+            <div style="margin-top: 70px;">
+              {% if is_logged_in() %}
+                <a href="{{ url_for('index.logout') }}">Sair</a>
+              {% endif %}
+            </div>
+          </div><!-- .centralize -->
+        </div><!-- .bg -->
+      </div><!-- #header -->
 
       {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -42,36 +80,105 @@
       {% endif %}
       {% endwith %}
 
-    </div><!-- top -->
+      {% if site_messages %}
+        {% for message in site_messages %}
+          <div class="site-message {{ message.status }}">
+            {{ message.text }}
+          </div>
+        {% endfor %}
+      {% endif %}
 
-    <div id="content" class="definedWidth">
-    {% if site_messages %}
-      {% for message in site_messages %}
-        <div class="site-message {{ message.status }}">
-          {{ message.text }}
+
+      <div id="content">
+        <div class="centralize">
+          {% block contenthead %}
+          {% endblock %}
+          {% block container %}
+          <div class="main">
+            {% block content %}{% endblock %}
+          </div>
+          <div class="sidebar">
+            {% block sidebar %}{% endblock %}
+          </div><!-- .sidebar -->
+          {% endblock %}
         </div>
-      {% endfor %}
-    {% endif %}
+      </div>
 
+      <div id="footer">
+        <div class="nav-footer">
+          <div class="centralize">
+            <div class="column source-code">
+              <h4>Código do Site</h4>
+              <p>O Código desse site está lisenciado sob a Affero GPL v3+
+              e você tem o direito de ter acesso ao seu código fonte.
+              Para isso, execute o seguinte comando no seu computador:</p>
+              <div>
+                <code>git clone	http://git.comum.org/lincoln/cdpc.git</code>
+              </div>
+              <p>Ou visite o endereço do nosso <a href="">gitweb</a>.</p>
+            </div><!-- .column -->
+      
+            <div class="column links">
+              <h4>Parceiros</h4>
+              <ul>
+                <li><a href="">Ministério da Cultura</a></li>
+                <li><a href="">Funarte</a></li>
+                <li><a href="">Lorem</a></li>
+                <li><a href="">Ipsum</a></li>
+              </ul>
+            </div><!-- .column -->
+      
+            <div class="column about">
+              <h4>Sobre</h4>
+              <p>É um facto estabelecido de que um leitor é distrído pelo
+              contúdo legível de uma página quando analisa a sua mancha
+              gráfica. Logo, o seu lorem Ipsum leva a uma distribuição mais
+              ou menos normal de letras, ao contrário do uso de "Contúdo
+              aqui, contúdo aqui", tornando-o texto legivel. Muitas
+              ferramentas de publicação...</p>
+            </div><!-- .column -->
+          </div><!-- .centralize -->
+        </div><!-- .nav-footer -->
 
-      {% block content %}{% endblock %}
-    </div>
+        <div class="footer">
+          <div class="centralize">
+            <div class="author">
+              <a href="http://www.cultura.gov.br/" class="first">
+                <img src="{{ url_for('.static', 
+                             filename='img/graph/ministerio_cultura.png') }}"
+                     alt="Logotipo do Ministério da Cultura" />
+              </a>
+              <a href="http://www.culturadigital.br/">
+                <img src="{{ url_for('.static', 
+                             filename='img/graph/cultura_digital.png') }}"
+                     alt="Logotipo do Cultura Digital" />
+              </a>
+            </div><!-- .author -->
 
-    <div id="footer">
-      <div id="footerWrapper" class="definedWidth">
-        <div class="softwareLivre">
-          <h2>Código do site</h2>
-          <p>
-            O código desse site está lisenciado sob a Affero GPL v3+ e
-            você tem o direito de ter acesso ao seu código fonte.
-          </p>
+            <p>&copy; 2010 Pontão de Brasília. Lorem ipsum...</p>
 
-          Para isso, execute o seguinte comando no seu computador:
-          <pre>git clone http://git.comum.org/lincoln/cdpc.git</pre>
-          Ou visite o endereço do nosso
-          <a href="http://git.comum.org">gitweb</a>.
-        </div><!-- softwareLivre -->
-      </div><!-- footerWrapper -->
-    </div><!-- footer -->
+            <div class="license">
+              <a href="http://creativecommons.com/">
+                <img src="{{ url_for('.static', 
+                             filename='img/graph/creative_commons.png') }}"
+                     alt="Logotipo Creative Commons">
+              </a>
+            </div><!-- .license -->
+          </div><!-- .centralize -->
+        </div><!-- .footer -->
+
+        <ul style="display:none;">
+          <li><a href="#nav" title="Pular para o menu de navegação">Ir para
+          o menu de navegação</a></li>
+          <li><a href="#content" title="Ir para o conteúdo">Ir para o
+          conteúdo</a></li>
+          <li><a href="#login" title="Pular para o formulário de login">Pular
+          para o formulário de login</a></li>
+          <li><a href="#footer" title="Pular para o rodapé">Pular para o
+          rodapé</a></li>
+        </ul>
+      </div><!-- #footer -->
+    </div><!-- #general -->
+
   </body>
 </html>

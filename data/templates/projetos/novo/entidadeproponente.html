@@ -1,177 +1,142 @@
-<li id="entidadeProponente" style="display: none;">
-  <h3>Entidade Proponente</h3>
-  <ol class="section">
-    <li>
-      <label for="nome_ent">Nome Completo da Entidade*</label>
-      <input
-         type="text" name="nome_ent" id="nome_ent" class="required"
-         placeholder="Ponto de Cultura Vila Pangéia"/>
-    </li>
+<div class="step" id="entidadeProponente">
+  <div class="main">
+    <ul>
+      <li>
+        <label for="nome_ent">Nome Completo da Entidade: *</label>
+        <input type="text" name="nome_ent" id="nome_ent" class="required textarea large" />
+      </li>
 
-    <li>
-      <label>
-        O endereço da Entidade é o mesmo endereço do Projeto?*
-      </label>
-      <ul>
-        <li>
-          <label>
-            <input
-                type="radio" name="endereco_ent_proj" value="sim" class="required" />
-            Sim
-          </label>
-        </li>
+      <li>
+        <label for="email_ent">Email:</label>
+        <input
+           type="text" name="email_ent" id="email_ent" class="textarea large email" />
+      </li>
 
-        <li>
-          <label>
-            <input
-                type="radio" name="endereco_ent_proj" value="nao" class="required" />
-            Não
+      <li>
+        <label for="website_ent">Website:</label>
+        <input
+           type="text" name="website_ent" id="website_ent" class="textarea large url" />
+      </li>
+
+      <li id="ent_tel">
+        <ul class="telefones">
+          <li>
+            <label>Telefone:</label>
+            <input type="text" name="ent_tel" class="textarea phone" placeholder="(00) 0000-0000" />
+            <a href="javascript: novoTelefone ($('.telefones', '#ent_tel'), 'ent');" class="add">Adicionar outro número</a>
+          </li>
+        </ul>
+        <span style="display: none;"> <form:error name="ent_tel" format="escapenl"></span>
+      </li>
+
+      <li>
+        <label>
+          A entidade possui outro convênio com o programa Cultura Viva?
         </label>
-        </li>
-      </ul>
-    </li>
+        <input type="radio" name="convenio_ent" value="" class="required" style="display: none;" />
+        <label class="radio">
+          <input type="radio" name="convenio_ent" value="sim"/>
+          Sim
+        </label>
+        <label class="radio">
+          <input type="radio" name="convenio_ent" value="nao"/>
+          Não
+        </label>
+      </li>
 
-    <div id="endereco_ent_proj_nao" class="displayNone">
-      <li class="subForm">
-        <h4>Endereço da Entidade</h4>
+      <li id="convenio_ent_sim">
+        <ul class="telefones subForm">
+          <li>
+            <label>Qual?</label>
+            <input type="text" name="outro_convenio" class="required textarea" />
+            <a href="javascript: novoConvenio ($('.telefones', '#convenio_ent_sim'))" class="add">Outro convenio...</a>
+          </li>
+        </ul>
+      </li>
+      
+      <li>
+        <label>
+          O endereço da Entidade é o mesmo endereço do Projeto?*
+        </label>
+        <input type="radio" name="endereco_ent_proj" value="" class="required" style="display: none;" />
+        <label class="radio">
+          <input type="radio" name="endereco_ent_proj" value="sim" class="required" />
+          Sim
+        </label>
+        <label class="radio">
+          <input type="radio" name="endereco_ent_proj" value="nao" class="required" />
+          Não
+        </label>
+      </li>
 
-        <div class="formEndereco">
-          <ul>
-            <li>
-              <label for="end_ent_cep">CEP*</label>
-              <input
-                  type="text" name="end_ent_cep" id="end_ent_cep" class="required"
-                  onblur="cepWebService (this.value);"/>
-              <em class="helpText">
-                <a href="#">Não sabe o seu CEP?</a>
-              </em>
-            </li>
 
-            <li>
-              <label for="end_ent_numero">Número*</label>
-              <input
-                  type="text" name="end_ent_numero" id="end_ent_numero" class="required"
-                  placeholder="Ex.: 202"/>
-            </li>
+      <li class="subbodyfooter" id="endereco_ent_proj_nao">
+        <ul>
+          <li>
+            <label for="end_ent_cep">CEP: *</label>
+            <input
+                type="text" name="end_ent_cep" id="end_ent_cep" class="required textarea cep"
+                onblur="cepWebService(this.value, $('#novoProjeto')[0], 'end_ent');"/>
+          </li>
+          <li>
+            <label for="end_ent_logradouro">Logradouro: *</label>
+            <input
+                type="text" name="end_ent_logradouro"
+                id="end_ent_logradouro" class="required textarea large" />
+          </li>
 
-            <li>
-              <label for="end_ent_logradouro">Logradouro*</label>
-              <input
-                 type="text" name="end_ent_logradouro"
-                 id="end_ent_logradouro" class="required"
-                 placeholder="Digite o nome de sua rua, Al., Av., Viela, etc. Ex.: Rua Lírios"/>
-            </li>
-
-            <li>
-              <label for="end_ent_complemento">Complemento</label>
+          <li>
+            <div class="column">
+              <label for="end_ent_complemento">Complemento: </label>
               <input
                   type="text" name="end_ent_complemento"
-                  id="end_ent_complemento" placeholder="Ex.: B"/>
-            </li>
+                  class="textarea complement" id="end_ent_complemento" />
+            </div>
+            <div class="column last">
+              <label for="end_ent_numero">Número: *</label>
+              <input
+                  type="text" name="end_ent_numero" id="end_ent_numero"
+                  class="required textarea number" />
+            </div>        
+          </li>
 
-            <li>
-              <label>UF*</label>
-              <select name="end_ent_uf" id="end_ent_uf" class="required">
+          <li>
+            <div class="column">
+              <label for="end_ent_bairro">Bairro: *</label>
+              <input type="text" name="end_ent_bairro" id="end_ent_bairro" class="required textarea district" />
+            </div>
+            <div class="column">
+              <label for="end_ent_cidade">Cidade: *</label>
+              <input type="text" name="end_ent_cidade" id="end_ent_cidade" class="required textarea city" />
+              
+            </div>
+            <div class="column last">
+              <label for="end_ent_uf">UF: *</label>
+              <select name="end_ent_uf" id="end_ent_uf" class="required state">
                 <option></option>
                 {% for uf in vals_uf %}
                 <option value="{{ uf }}">{{ uf }}</option>
                 {% endfor %}
               </select>
-            </li>
+            </div>
+          </li>
 
-            <li>
-              <label for="end_ent_cidade">Cidade*</label>
+          <li>
+            <div class="column">
+              <label for="end_ent_latitude">Latitude: *</label>
               <input
-                  type="text" name="end_ent_cidade" id="end_ent_cidade" class="required"
-                  placeholder="Ex.: Salvador"/>
-            </li>
-
-            <li>
-              <label for="end_ent_bairro">Bairro*</label>
+                  type="text" name="end_proj_latitude"
+                  id="end_ent_latitude" class="textarea" />
+            </div>
+            <div class="column last">
+              <label for="end_ent_longitude">Longitude: *</label>
               <input
-                  type="text" name="end_ent_bairro" id="end_ent_bairro" class="required"
-                  placeholder="Ex.: Vila das Flores"/>
-            </li>
-
-            <li>
-              <label for="end_ent_latitude">Latitude*</label>
-              <input
-                  type="text" name="end_ent_latitude" id="end_ent_latitude" class="required"
-                  placeholder="Ex.: + 23146940000"/>
-            </li>
-
-            <li class="bottomBorder">
-              <label for="end_ent_longitude">Longitude*</label>
-              <input
-                  type="text" name="end_ent_longitude" class="required"
-                  id="end_ent_longitude" placeholder="Ex.: - 234559898332"/>
-            </li>
-          </ul>
-        </div>
+                  type="text" name="end_ent_longitude"
+                  id="end_ent_longitude" class="textarea" />
+            <div>
+          </li>
+        </ul>
       </li>
-    </div>
-
-    <li>
-      <ul class="telefones subForm"  id="ent_tel">
-        <li class="bottomBorder">
-          <label>Telefone</label>
-          <input type="text" name="ent_tel" placeholder="DDD + Fone"/>
-        </li>
-      </ul>
-      <input
-         type="button" value="Outro telefone"
-         onclick="novoTelefone ($('.telefones', $(this).parent()), 'ent');"/>
-      <span style="display: none;"> <form:error name="ent_tel" format="escapenl"></span>
-    </li>
-
-    <li>
-      <label for="email_ent">Email</label>
-      <input
-         type="text" name="email_ent" id="email_ent"
-         placeholder="Ex.: pcvilapangeia@cultura.org.br"/>
-    </li>
-
-    <li>
-      <label for="website_ent">Website</label>
-      <input
-         type="text" name="website_ent" id="website_ent"
-         placeholder="www.pcvilapangeia.com.br"/>
-    </li>
-
-    <li>
-      <label>
-      A entidade possui outro convênio com o programa Cultura Viva?
-      </label>
-      <ul>
-        <li>
-          <label>
-            <input type="radio" name="convenio_ent" value="sim"/>
-            Sim
-          </label>
-        </li>
-
-        <li>
-          <label>
-            <input type="radio" name="convenio_ent" value="nao"/>
-            Não
-          </label>
-        </li>
-      </ul>
-    </li>
-
-    <li id="convenio_ent_sim" class="displayNone">
-      <ul class="telefones subForm">
-        <li class="bottomBorder">
-          <label>
-          Qual?
-          <input
-              type="text" name="outro_convenio"
-              placeholder="Ex.: Pontão Vila Pangéia"/>
-          </label>
-        </li>
-      </ul>
-      <input class="sub" type="button" value="Outro convenio"
-             onclick="novoConvenio ($('.telefones', $(this).parent()));"/>
-    </li>
-  </ol>
-</li><!-- Entidade Proponente -->
+    </ul>
+  </div>
+</div>

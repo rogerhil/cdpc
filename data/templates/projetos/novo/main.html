@@ -2,60 +2,86 @@
 {% extends 'base.html' %}
 
 {% block extra_head %}
+
 <link
-   rel="stylesheet" type="text/css"
-   href="{{ url_for('.static', filename='css/usuarios.novo.css') }}">
-<link
-   rel="stylesheet" type="text/css"
-   href="{{ url_for('.static', filename='css/projetos.novo.css') }}">
+   rel="stylesheet" type="text/css" media="all"
+   href="{{ url_for('.static', filename='css/register.css') }}">
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/inc/jquery.js') }}"></script>
 <script
    type="text/javascript"
-   src="{{ url_for('.static', filename='js/inc/jquery.validate.js') }}">
+   src="{{ url_for('.static', filename='js/inc/jquery.form.js') }}">
 </script>
-  <script
-     type="text/javascript"
-     src="{{ url_for('.static', filename='js/inc/jquery.form.js') }}">
-  </script>
 
+<script src="{{ url_for('.static', filename='js/inc/jquery-1.4.4.min.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/inc/jquery.maskedinput-1.2.2.min.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/inc/jquery.validate.fixed-0.1.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/forms.js') }}"></script>
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/geral.novo.js') }}"></script>
 <script
    type="text/javascript"
+   src="{{ url_for('.static', filename='js/validator.methods.js') }}"></script>
+<script
+   type="text/javascript"
    src="{{ url_for('.static', filename='js/projetos.novo.js') }}"></script>
 {% endblock %}
 
-{% block content %}
-<h2>Cadastro de projetos</h2>
+{% block bodyclass %}project_register{% endblock %}
+
+{% block contenthead %}
+
+<h2>Cadastro de Projetos</h2>
+
+<ul class="steps">
+  <li class="dadosProjeto active">Dados</li>
+  <li class="localizacaoGeoProjeto">Endereço</li>
+  <li class="entidadeProponente">Entidade</li>
+  <li class="comunicacaoCulturaDigital">Comunicação</li>
+  <li class="atividadesExercidasProjeto">Atividades</li>
+  <li class="project_pub">Público</li>
+  <li class="project_index">Índice</li>
+</ul>
+  
+{% endblock %}
+
+{% block content %}  
 
 <form id="novoProjeto" method="post" action=".">
 
+
   {% include "projetos/novo/dadosprojeto.html" %}
   {% include "projetos/novo/localizacaogeoprojeto.html" %}
-  {% include "projetos/novo/contatosespacorede.html" %}
-  {% include "projetos/novo/comunicacaoculturadigital.html" %}
   {% include "projetos/novo/entidadeproponente.html" %}
+  {% include "projetos/novo/comunicacaoculturadigital.html" %}
   {% include "projetos/novo/atividadesexercidasprojeto.html" %}
-  {% include "projetos/novo/parceriasprojeto.html" %}
+  {% include "projetos/novo/publico.html" %}
   {% include "projetos/novo/indiceacessocultura.html" %}
-  {% include "projetos/novo/avatar.html" %}
 
   <div id="fimDoFormulario"> </div>
-  <div class="botaoEnviar">
-    <input type="button" value="Anterior" onclick="anterior()" id="botaoAnterior"  style="display: none;" />
-    <input type="button" value="Próximo" onclick="proximo()"  id="botaoProximo" />
-    <input type="submit" value="Efetuar o cadastro" id="submitButton" style="display: none;" />
-  </div>
+  
+  <div id="project_index" class="step">
+    <div class="main">
+      <div class="buttons">
+        <button type="submit">Cadastrar</button>
+      </div>
+    </div><!-- .main -->
 
+    <div class="sidebar">
+      <div class="tip">
+      </div>
+    </div><!-- .sidebar -->
+  </div>
+  <input type="hidden" name="step" value="publico">
 </form>
+
 
 <script type="text/javascript">
 
-//var currentTab = "dadosProjeto";
-var currentTab = "localizacaoGeoProjeto";
+var currentTab = "dadosProjeto";
+//var currentTab = "localizacaoGeoProjeto";
 var inicio = "dadosProjeto";
 var fim = "avatar";
 
@@ -64,5 +90,17 @@ $("#"+currentTab).css("display", "block");
 </script>
 
 
+{% endblock %}
+
+{% block sidebar %}
+  <div class="tip">
+    <p>Fale um pouco sobre seu projeto na descrição,
+    é importante.</p>
+    <h3>Onde eu encontro meu número de convênio?</h3>
+    <p>There are many variantions of passages of lorem ipsum
+    available, but the majority have suffered alteration in some
+    form, by injected humour, or randomised words wich don't look
+    even slightly believable.</p>
+  </div>
 {% endblock %}
 

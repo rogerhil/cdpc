@@ -1,4 +1,5 @@
 /* Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
+ * Copyright (C) 2010  Rogério Hilbert Lima <rogerhil@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -24,12 +25,117 @@ var load = function () {
     if (this.checked || this.selected) $(this).change();
 };
 
+var VALIDATOR, CURRENT_STEP;
+
+function carregar () {
+    // Javascript da pagina Cadastro de projetos
+    if ($('body.project_register').length == 0) return;
+
+    CURRENT_STEP = $('input[name=step]').val();
+    
+    var rules = {parcerias: {atLeastOne: true},
+                 acao_cultura_viva: {atLeastOne: true},
+                 atividade: {atLeastOne: true}};
+    
+    VALIDATOR = $('#content form').validate({rules: rules, debug: true});
+    configFields();
+
+    var prev = $('<a href="#">').addClass('previous').text('Voltar');
+    var nex = $('<a href="#">').addClass('next').text('Próximo');
+    var buttons = $('<div class="buttons">').append(nex);
+    $('div.step').hide()
+    $('div.step:not(#project_index) div.main').append(buttons);
+    $('div.step:not(#project_data) div.buttons').prepend(prev);
+    $('div#' + CURRENT_STEP).show();
+    $('ul.steps li.active').removeClass('active');
+    $('ul.steps li.' + CURRENT_STEP).addClass('active');
+
+    $('div.step div.buttons .next').click(next);
+    $('div.step div.buttons .previous').click(previous);
+}
+
+function configFields() {
+    supportsPlaceholder();
+    $('input.cep').mask('99.999-999');
+    $('input.phone').mask('(99) 9999-9999');
+}
+
+function validateStep() {
+    var valid = true;
+    var selector = "div#" + CURRENT_STEP + " input, " +
+                   "div#" + CURRENT_STEP + " select, " +
+                   "div#" + CURRENT_STEP + " textarea"
+    $(selector).each(function () {
+        var ret = false;
+        // Não validar campos que estão escondidos
+        $(this).parents().each(function () {
+            if ($(this).is(':hidden')) ret = true;
+        });
+        if (ret) return;
+        if (VALIDATOR.element($(this)) == false) valid = false;
+    });
+    return valid;
+}
+
+function next(e) {
+    var next_step = $('div#' + CURRENT_STEP).next().attr('id');
+    var valid = validateStep();
+    alert(VALIDATOR.numberOfInvalids());
+    if (valid) {
+        $('div#' + CURRENT_STEP).fadeOut('fast', function() {
+            $('div#' + next_step).fadeIn('fast');
+            $('ul.steps li.active').removeClass('active');
+            $('ul.steps li.' + next_step).addClass('active');
+            $('input[name=step]').val(next_step);
+            CURRENT_STEP = next_step;
+            clicked = 0;
+        });
+    } else {
+        $('html, body').animate({scrollTop: 0}, 'slow');
+    }
+    
+    e.preventDefault();
+}
+
+function previous(e) {
+    var previous_step = $('div#' + CURRENT_STEP).prev().attr('id');
+    $('div#' + CURRENT_STEP).fadeOut('fast', function() {
+        $('div#' + previous_step).fadeIn('fast');
+        $('ul.steps li.active').removeClass('active');
+        $('ul.steps li.' + previous_step).addClass('active');
+        $('input[name=step]').val(previous_step);
+        CURRENT_STEP = previous_step;
+    });
+    e.preventDefault();
+}
+
+function loadDadosProjeto() {
+    $("input[name=participa_cultura_viva]").change(function () {
+        loadRadioMultipleExtra(this, 'sim', 'participa_cultura_viva_sim');
+    });
+
+    $("input[name=estabeleceu_parcerias]").change(function () {
+        loadRadioMultipleExtra(this, 'sim', 'parcerias_sim');
+    });
+    
+    loadRadioMultipleExtra($("input[name=participa_cultura_viva]:checked"),
+                           'sim', 'participa_cultura_viva_sim');
+    loadRadioMultipleExtra($("input[name=estabeleceu_parcerias]:checked"),
+                           'sim', 'parcerias_sim');
+
+}
+
 function loadLocalizacaoGeoProjeto() {
     $('#local_proj').change(function () {
+        var li = $(this).parents("li")[0];
         if ($(this).val () == 'outros') {
             $('#local_proj_outros').show ();
+            $('#local_proj_outros_novo').show ();
+            $(li).addClass("subhead");
         } else {
             $('#local_proj_outros').hide ();
+            $('#local_proj_outros_novo').hide ();
+            $(li).removeClass("subhead");
         }
     });
     $('#local_proj').change();
@@ -37,39 +143,13 @@ function loadLocalizacaoGeoProjeto() {
 
 function loadComunicacaoCulturaDigital() {
     $("input[name=sede_possui_tel]").change(function () {
-        if ($(this).val () == 'sim') {
-   
-            $('#sede_possui_tel_sim').show ();
-
-            $('#sede_possui_tel_nao').hide ();
-        }
-        else if ($(this).val () == 'nao') {
-
-            $('#sede_possui_tel_nao').show ();
-            $('#sede_possui_tel_sim').hide ();
-        }
-        else {
-
-            $('#sede_possui_tel_sim').hide ();
-            $('#sede_possui_tel_nao').hide ();
-        }
+        loadRadioSingleExtra(this, 'sim', 'sede_possui_tel_sim', 'sede_possui_tel_nao');
     });
 
     $("input[name=sede_possui_net]").change(function () {
-        if ($(this).val () == 'sim') {
-            $('#sede_possui_net_sim').show ();
-            $('#sede_possui_net_nao').hide ();
-        }
-        else if (
-            $(this).val () == 'nao') {
-            $('#sede_possui_net_nao').show ();
-            $('#sede_possui_net_sim').hide ();
-        }
-        else {
-            $('#sede_possui_net_sim').hide ();
-            $('#sede_possui_net_nao').hide ();
-        }
+        loadRadioSingleExtra(this, 'sim', 'sede_possui_net_sim', 'sede_possui_net_nao');
     });
+    
     $('#pq_sem_tel').change(function () {
         if ($(this).val () == 'outro') {
             $('#pq_sem_tel_outro_escolhido').show ();
@@ -87,11 +167,13 @@ function loadComunicacaoCulturaDigital() {
         }
     });
 
-    $("input[name=sede_possui_tel]").each(load);
-    $("input[name=sede_possui_net]").each(load);
+    loadRadioSingleExtra($("input[name=sede_possui_tel]:checked"),
+                         'sim', 'sede_possui_tel_sim', 'sede_possui_tel_nao');
+    loadRadioSingleExtra($("input[name=sede_possui_net]:checked"),
+                         'sim', 'sede_possui_net_sim', 'sede_possui_net_nao');
     
     var change = function (id) {
-        if ($('#'+id).val () == 'outro') {
+        if ($('#' + id).val () == 'outro') {
             $('#' + id + '_outro_escolhido').show ();
         } else {
             $('#' + id + '_outro_escolhido').hide ();
@@ -104,63 +186,28 @@ function loadComunicacaoCulturaDigital() {
 }
 
 function loadEntidadeProponente() {
-    $("input[name=endereco_ent_proj]").change(function () {
-        if ($(this).val () == 'nao') {
-            $('#endereco_ent_proj_nao').show ();
-        } else {
-            $('#endereco_ent_proj_nao').hide ();
-        }
-    });
-
     $("input[name=convenio_ent]").change(function () {
-        if ($(this).val () == 'sim') {
-            $('#convenio_ent_sim').show ();
-        } else {
-            $('#convenio_ent_sim').hide ();
-        }
+        loadRadioSingleExtra(this, 'sim', 'convenio_ent_sim');
     });
 
-    $("input[name=endereco_ent_proj]").each(load);
-    $("input[name=convenio_ent]").each(load);
-
+    $("input[name=endereco_ent_proj]").change(function () {
+        loadRadioMultipleExtra(this, 'nao', 'endereco_ent_proj_nao');
+    });
+    loadRadioSingleExtra($("input[name=convenio_ent]:checked"), 'sim', 'convenio_ent_sim');
+    loadRadioMultipleExtra($("input[name=endereco_ent_proj]:checked"), 'nao', 'endereco_ent_proj_nao');
 }
 
 function loadParceriasProjeto() {
-    $("input[name=estabeleceu_parcerias]").change(function () {
-        if ($(this).val () == 'sim') {
-            $('#parcerias_sim').show ();
-        } else {
-            $('#parcerias_sim').hide ();
-        }
-    });
-    $("input[name=estabeleceu_parcerias]").each(load);
+
 }
 
 function loadAtividadesExercidasProjeto() {
-    $("input[name=participa_cultura_viva]").change(function () {
-        if ($(this).val () == 'sim') {
-            $('#participa_cultura_viva_sim').show ();
-        } else {
-            $('#participa_cultura_viva_sim').hide ();
-        }
-    });
-    $("input[name=participa_cultura_viva]").each(load);
+
 }
 
 $(document).ready (function () {
-    /*
-    $('#novoProjeto').validate({
-        debug: true,
-        invalidHandler: function (form, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                alert (errors);
-                return false;
-            }
-        }
-    });
-    */
 
+    loadDadosProjeto();
     loadLocalizacaoGeoProjeto();
     loadComunicacaoCulturaDigital();
     loadEntidadeProponente();
@@ -198,30 +245,34 @@ $(document).ready (function () {
             $('#outras_manifestacoes_escolhido').hide ();
         }
     });
+    
+    carregar();
 });
 
 function novoEndereco () {
-    var $newElement = $($('div.formEndereco')[1].cloneNode (true));
+    var $newElement = $($('#local_proj_outros')[0].children[0].cloneNode (true));
     $('input, select', $newElement).val ('');
     $('.error-message', $newElement).remove();
     $('.error', $newElement).removeClass('error');
 
-    var $remove = $('<a href="javascript:;">Remover</a>');
+    var $remove = $('<a href="javascript:;">Remover endereço</a>');
+    var title = $('<a>Outro endereço</a>');
+    title.css('padding', '0px');
+    title.css('margin', '0px');
+    $newElement.css('margin', '20px 0px 0px 0px');
     $remove.click (function (evt) {
-        $newElement.remove ();
+        $newElement.parent().remove ();
     });
 
-    $('*', $newElement).removeClass ('bottomBorder');
-
-    $('<li>')
-        .addClass ('subForm')
+    $newElement.removeClass ('subbody');
+    $newElement.removeAttr('id');
+    $('<div class="subadded">')
+        .append (title)
         .append ($newElement)
-        .appendTo ($('ul.enderecos'));
-    $('<li>')
+        .appendTo ($('#local_proj_outros'));
+    $('<div style="text-align: right;">')
         .append($remove)
-        .addClass ('bottomBorder')
-        .appendTo ($('ul', $newElement));
-
+        .appendTo ($newElement.parent());
     atualizarEnderecos ();
 }
 
@@ -272,27 +323,24 @@ function novoConvenio ($parent) {
         $(this).parent().remove();
     });
 
-    var $label = $('<label>' +
-        'Qual?' +
-        '<input type="text" name="outro_convenio" ' +
-        '       placeholder="Ex.: Pontão Vila Pangéia"/>' +
-        '</label>');
-    $('<li>')
+    var $label = $('<input type="text" name="outro_convenio" ' + 
+                   'class="textarea" />');
+
+    $('<li class="extra">')
         .append ($label)
         .append ($remove)
-        .addClass ('bottomBorder')
         .appendTo ($parent);
+    
 }
 
 function novoParceiro ($parent) {
-    var $remove = $('<a href="javascript:;">Remover</a>');
+    var $remove = $('<a href="javascript:;" style="float: right;">Remover</a>');
     $remove.click (function (evt) {
         $(this).parent().remove();
     });
 
     var $label = $('<label>' +
-        '<span>Nome do Parceiro</span>' +
-        '<input type="text" name="parcerias" placeholder="Ex.: Sesc São Carlos"/>' +
+        '<input type="text" name="parcerias" class="required textarea large" />' +
         '</label>');
     $('<li>')
         .append ($label)
@@ -410,5 +458,52 @@ function anterior() {
     $("#botaoProximo").css("display", "inline");
     if (currentTab == inicio) {
         $("#botaoAnterior").css("display", "none");
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+function loadRadioSingleExtra(o, v, id1, id2) {
+    if ($(o).val()) {
+        if ($(o).val () == v) {
+            $('#' + id1).show();
+            if (id2) {
+                $('#' + id2).hide();
+            }
+        } else {
+            $('#' + id1).hide();
+            if (id2) {
+                $('#' + id2).show();
+            }
+        }
+    } else {
+        $('#' + id1).hide();
+        $('#' + id2).hide();
+        
+    }
+
+}
+
+function loadRadioMultipleExtra(o, v, id1, id2) {
+    var li = $(o).parents("li")[0];
+    if ($(o).val()) {
+        if ($(o).val () == v) {
+            $(li).addClass("subhead");
+            $('#' + id1).show ();
+            if (id2) {
+                $('#' + id2).hide();
+            }
+        } else {
+            $(li).removeClass("subhead");
+            $('#' + id1).hide ();
+            if (id2) {
+                $('#' + id2).hide();
+            }
+        }
+    } else {
+        $(li).removeClass("subhead");
+        $('#' + id1).hide();
+        $('#' + id2).hide();
+        
     }
 }

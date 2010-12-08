@@ -2,28 +2,8 @@
 
 {% block content %}
 
-<h2>Acesso</h2>
-
-<p>
-  Se você ainda não tem acesso ao sistema,
-  <a href="{{ url_for('usuarios.novo') }}">cadastre-se</a> agora.
-</p>
-
-{% if request.args.get('erro') %}
-<div class="erro">Usuário ou senha incorretos</div>
-{% endif %}
-<form id="login" method="post" action="{{ url_for('login') }}">
-  <input type="hidden" name="proxima" value="{{ proxima }}">
-  <ol>
-    <li>
-      <label>Email</label> <input type="text" name="email">
-    </li>
-    <li>
-      <label>Senha</label> <input type="password" name="senha">
-    </li>
-    <li>
-      <input type="submit" value="Entrar">
-    </li>
-  </ol>
-</form>
+  <div class="sidebar">
+    <h2>Acesso</h2>
+    {% include "portlets/login.html" %}
+  </div>  
 {% endblock %}

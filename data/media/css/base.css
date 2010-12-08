@@ -256,3 +256,7 @@ _____________________*/
     margin:0 auto;
     width:955px;
 }
+
+.clear {
+    clear: both;   
+}
