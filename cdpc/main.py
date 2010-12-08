@@ -34,6 +34,8 @@ from .app.projetos import module as projetos
 from .app.cadastro import module as cadastro
 from .app.index import module as index
 
+SECRET_KEY = ''.join(choice(printable) for x in range(50))
+
 class WebApp(Flask):
     """Flask extention to retrieve static files from a configurable
     place
@@ -82,7 +84,7 @@ def create_app():
     app.register_module(projetos, url_prefix="/projetos/")
     app.register_module(cadastro, url_prefix="/cadastro/")
     app.jinja_env.globals['is_logged_in'] = is_logged_in    
-    app.secret_key = ''.join(choice(printable) for x in range(50))
+    app.secret_key = SECRET_KEY
     return app
     
 
