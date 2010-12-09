@@ -134,6 +134,11 @@ ______________________*/
     width:600px;
 }
 
+#content div.container{
+    float:left;
+    width:900px;
+}
+
 #content div.sidebar{
     float:right;
     width:300px;

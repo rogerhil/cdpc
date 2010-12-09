@@ -3,7 +3,7 @@
 {% block extra_head %}
 <link
    rel="stylesheet" type="text/css"
-   href="{{ url_for('.static', filename='css/usuarios.novo.css') }}">
+   href="{{ url_for('.static', filename='css/register.css') }}">
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/inc/jquery.js') }}"></script>
@@ -19,212 +19,219 @@
    src="{{ url_for('.static', filename='js/usuarios.novo.js') }}"></script>
 {% endblock %}
 
-{% block content %}
-<h2>Cadastro de usuários</h2>
+{% block container %}
 
 <form id="novoUsuario" method="post" action="{{ url_for('usuarios.novo') }}">
-<ol class="form col1">
-  <li>
-    <h3>Dados de acesso</h3>
-    <p class="helpText">
-      Você precisa informar um email válido e escolher uma senha para
-      ter acesso ao sistema.
-    </p>
-    <ol class="section acesso">
-      <li class="required">
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email" class="required email">
-      </li>
-      <li class="required">
-        <label for="senha">Senha</label>
-        <input type="password" name="senha" id="senha" class="required">
-      </li>
-      <li class="required">
-        <label for="confirmar_senha">Confirmar senha</label>
-        <input type="password" name="confirmar_senha" id="confirmar_senha"
-               class="required">
-      </li>
-    </ol>
-  </li>
-
-  <li>
-    <h3>Dados Pessoais</h3>
-    <ol class="section pessoal">
-      <li class="required">
-        <label for="nome">Nome completo</label>
-        <input
-           type="text" name="nome" id="nome" class="required">
-      </li>
-
-      <li class="required">
-        <label for="cpf">CPF</label>
-        <input
-           type="text" name="cpf" id="cpf" class="required">
-        <em class="helpText">
-          <a href="#">Por que pedimos o seu CPF</a>
-        </em>
-      </li>
-
-      <li class="required">
-        <label for="data_nascimento">Data de nascimento</label>
-        <input type="text" name="data_nascimento" id="data_nascimento"
-               class="required">
-      </li>
-
-      <li class="required">
-        <label>Sexo</label>
-        <label class="radio">
-          <input type="radio" name="sexo" value="feminino">
-          Feminino
-        </label>
-        <label class="radio">
-          <input type="radio" name="sexo" value="masculino">
-          Masculino
-        </label>
-      </li>
-
+  <div class="main container">
+    <ul>
       <li>
-        <ul class="telefones">
-          <li class="bottomBorder">
-            <label class="required">Telefones</label>
-            <input type="text" name="telefone" class="required">
-          </li>
-        </ul>
-        <input class="sub" type="button" value="Outro telefone" name="nt"
-               onclick="novoTelefone ($('.telefones', $(this).parent()));">
-      </li>
-
-      <li>
-        <label for="avatar">Sua foto</label>
-        <input type="file" name="avatar" id="avatar">
-      </li>
-    </ol><!-- Dados pessoais -->
-  </li>
-
-</ol>
-<ol class="form col2">
-
-  <li>
-    <h3>Sua localização geográfica</h3>
-    <ol class="section localizacao">
-      <li class="required">
-        <label for="end_cep">CEP</label>
-        <input
-           type="text" name="end_cep" id="end_cep" class="required"
-           onblur="cepWebService (this.value, $('#novoUsuario')[0], 'end');">
-        <em class="helpText">
-          <a href="#">Não sabe o seu CEP?</a>
-        </em>
-      </li>
-
-      <li class="required">
-        <label for="end_logradouro">Logradouro</label>
-        <input
-           type="text" name="end_logradouro" id="end_logradouro"
-           class="required">
-      </li>
-
-      <li class="required">
-        <label for="end_uf">UF</label>
-        <select name="end_uf" id="end_uf" class="required">
-          <option></option>
-          {% for uf in vals_uf %}
-          <option value="{{ uf }}">{{ uf }}</option>
-          {% endfor %}
-        </select>
-      </li>
-
-      <li class="required">
-        <label for="end_cidade">Cidade</label>
-        <input
-           type="text" name="end_cidade" id="end_cidade" class="required">
-      </li>
-
-      <li class="required">
-        <label for="end_bairro">Bairro</label>
-        <input
-           type="text" name="end_bairro" id="end_bairro" class="required">
-      </li>
-
-      <li>
-        <label for="end_latitude">Latitude</label>
-        <input
-           type="text" name="end_latitude" id="end_latitude">
-      </li>
-
-      <li>
-        <label for="end_longitude">Longitude</label>
-        <input
-           type="text" name="end_longitude" id="end_longitude">
-      </li>
-
-      <li class="required">
-        <label for="end_numero">Número</label>
-        <input
-           type="text" name="end_numero" id="end_numero" class="required">
-      </li>
-
-      <li>
-        <label for="end_complemento">Complemento</label>
-        <input
-           type="text" name="end_complemento" id="end_complemento">
-      </li>
-    </ol><!-- Sobre a sua localização geográfica -->
-  </li>
-
-  <li>
-    <h3>Espaços na rede</h3>
-    <ol class="section">
-
-      <li>
-        <label for="website">Website</label>
-        <input
-           type="text" name="website" id="website">
-      </li>
-
-      <li class="subForm">
-        <h4>Redes sociais</h4>
-        <ul id="redesSociais">
+        <h2>Cadastro de usuários</h2>
+        <div class="column largetwocolumn">
           <li>
-            <label for="rs_nome">Nome</label>
-            <input type="text" name="rs_nome" id="rs_nome">
+            <h3>Dados de acesso</h3>
+            <em class="helptext hidden">
+              Você precisa informar um email válido e escolher uma senha para
+              ter acesso ao sistema.
+            </em>
+            <ul class="section acesso">
+              <li class="required">
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" class="textarea required email">
+              </li>
+              <li class="required">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" class="textarea required">
+              </li>
+              <li class="required">
+                <label for="confirmar_senha">Confirmar senha</label>
+                <input type="password" name="confirmar_senha" id="confirmar_senha"
+                       class="textarea required">
+              </li>
+            </ul>
           </li>
-          <li class="bottomBorder">
-            <label for="rs_link">Endereço</label>
-            <input
-               type="text" name="rs_link" id="rs_link" class="url">
-          </li>
-        </ul><!-- Redes sociais -->
-        <input
-           class="sub" type="button" value="Outra rede" name="nt"
-           onclick="novaEntrada ($('#redesSociais'));">
-      </li>
 
-      <li class="subForm">
-        <h4>Feeds</h4>
-        <ul id="feeds">
           <li>
-            <label for="feed_nome">Nome</label>
-            <input
-               type="text" name="feed_nome" id="feed_nome">
-          </li>
-          <li class="bottomBorder">
-            <label for="feed_link">Endereço</label>
-            <input
-               type="text" name="feed_link" id="feed_link"
-               class="url">
-          </li>
-        </ul><!-- Feeds -->
-        <input class="sub" type="button" value="Outro feed" name="nt"
-           onclick="novaEntrada ($('#feeds'));">
-      </li>
-    </ol><!-- Contatos e espaços na rede -->
-  </li>
-</ol>
+            <h3>Dados Pessoais</h3>
+            <ul>
+              <li class="required">
+                <label for="nome">Nome completo</label>
+                <input
+                   type="text" name="nome" id="nome" class="textarea required">
+              </li>
 
-<div class="botaoEnviar">
-  <input type="submit" class="submit" value="Cadastrar">
-</div>
+              <li class="required">
+                <label for="cpf">CPF</label>
+                <input
+                   type="text" name="cpf" id="cpf" class="textarea required">
+                <em class="helpText">
+                  <a href="#">Por que pedimos o seu CPF</a>
+                </em>
+              </li>
+
+              <li class="required">
+                <label for="data_nascimento">Data de nascimento</label>
+                <input type="text" name="data_nascimento" id="data_nascimento"
+                       class="textarea required">
+              </li>
+
+              <li class="required">
+                <label>Sexo</label>
+                <label class="radio">
+                  <input type="radio" name="sexo" value="feminino" class="textarea">
+                  Feminino
+                </label>
+                <label class="radio">
+                  <input type="radio" name="sexo" value="masculino" class="textarea">
+                  Masculino
+                </label>
+              </li>
+
+              <li>
+                <ul class="telefones">
+                  <li class="bottomBorder">
+                    <label class="required">Telefones</label>
+                    <input type="text" name="telefone" class="textarea required">
+                  </li>
+                </ul>
+                <input class="sub" type="button" value="Outro telefone" name="nt"
+                       onclick="novoTelefone ($('.telefones', $(this).parent()));">
+              </li>
+
+              <li>
+                <label for="avatar">Sua foto</label>
+                <input type="file" name="avatar" id="avatar">
+              </li>
+            </ul><!-- Dados pessoais -->
+          </li>
+
+          <li>
+            <h3>Sua localização geográfica</h3>
+            <ul>
+              <li class="required">
+                <label for="end_cep">CEP</label>
+                <input
+                   type="text" name="end_cep" id="end_cep" class="textarea required"
+                   onblur="cepWebService (this.value, $('#novoUsuario')[0], 'end');">
+                <em class="helpText">
+                  <a href="#">Não sabe o seu CEP?</a>
+                </em>
+              </li>
+
+              <li class="required">
+                <label for="end_logradouro">Logradouro</label>
+                <input
+                   type="text" name="end_logradouro" id="end_logradouro"
+                   class="textarea required">
+              </li>
+
+              <li class="required">
+                <label for="end_uf">UF</label>
+                <select name="end_uf" id="end_uf" class="required">
+                  <option></option>
+                  {% for uf in vals_uf %}
+                  <option value="{{ uf }}">{{ uf }}</option>
+                  {% endfor %}
+                </select>
+              </li>
+
+              <li class="required">
+                <label for="end_cidade">Cidade</label>
+                <input
+                   type="text" name="end_cidade" id="end_cidade" class="textarea required">
+              </li>
+
+              <li class="required">
+                <label for="end_bairro">Bairro</label>
+                <input
+                   type="text" name="end_bairro" id="end_bairro" class="textarea required">
+              </li>
+
+              <li>
+                <label for="end_latitude">Latitude</label>
+                <input
+                   type="text" name="end_latitude" id="end_latitude" class="textarea">
+              </li>
+
+              <li>
+                <label for="end_longitude">Longitude</label>
+                <input
+                   type="text" name="end_longitude" id="end_longitude"  class="textarea">
+              </li>
+
+              <li class="required">
+                <label for="end_numero">Número</label>
+                <input
+                   type="text" name="end_numero" id="end_numero" class="textarea required">
+              </li>
+
+              <li>
+                <label for="end_complemento">Complemento</label>
+                <input
+                   type="text" name="end_complemento" id="end_complemento" class="textarea">
+              </li>
+            </ul><!-- Sobre a sua localização geográfica -->
+          </li>
+
+
+        </div>
+
+        <div class="column largetwocolumn last">
+
+          <li>
+            <h3>Espaços na rede</h3>
+            <ul>
+              <li>
+                <label for="website">Website</label>
+                <input
+                   type="text" name="website" id="website" class="textarea">
+              </li>
+
+              <li class="subForm">
+                <h4>Redes sociais</h4>
+                <ul id="redesSociais">
+                  <li>
+                    <label for="rs_nome">Nome</label>
+                    <input type="text" name="rs_nome" id="rs_nome" class="textarea">
+                  </li>
+                  <li class="bottomBorder">
+                    <label for="rs_link">Endereço</label>
+                    <input
+                       type="text" name="rs_link" id="rs_link" class="textarea url">
+                  </li>
+                </ul><!-- Redes sociais -->
+                <input
+                   class="sub" type="button" value="Outra rede" name="nt"
+                   onclick="novaEntrada ($('#redesSociais'));">
+              </li>
+
+              <li class="subForm">
+                <h4>Feeds</h4>
+                <ul id="feeds">
+                  <li>
+                    <label for="feed_nome">Nome</label>
+                    <input
+                       type="text" name="feed_nome" id="feed_nome" class="textarea">
+                  </li>
+                  <li class="bottomBorder">
+                    <label for="feed_link">Endereço</label>
+                    <input
+                       type="text" name="feed_link" id="feed_link"
+                       class="textarea url">
+                  </li>
+                </ul><!-- Feeds -->
+                <input class="sub" type="button" value="Outro feed" name="nt"
+                   onclick="novaEntrada ($('#feeds'));">
+              </li>
+            </ul><!-- Contatos e espaços na rede -->
+          </li>
+        </div>
+
+        <div class="botaoEnviar">
+          <input type="submit" class="submit" value="Cadastrar">
+        </div>
+      </li>
+    </ul>
+  </div>
 </form>
 
 {% endblock %}
