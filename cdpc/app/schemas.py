@@ -26,7 +26,7 @@ from formencode.interfaces import *
 from formencode.api import *
 from formencode.schema import format_compound_error
 from validators import CpfValidator, Cep, BrazilPhoneNumber, Dependent, \
-                       AtLeastOne
+                       AtLeastOne, NotEmptyList
 
 
 class CdpcSchema(formencode.Schema):
@@ -46,9 +46,6 @@ class CdpcSchema(formencode.Schema):
                         if value_dict.has_key(name):
                             del value_dict[name]
                         del self.fields[name]
-        print "oioioi"
-        print value_dict
-        print "oioioi"
         return super(CdpcSchema, self)._to_python(value_dict, state)
 
 
@@ -105,11 +102,19 @@ class Usuario(formencode.Schema):
 
 
 class Projeto:
-    class DadosProjeto(formencode.Schema):
+    class DadosProjeto(CdpcSchema):
         nome = validators.String(not_empty=True)
+        descricao = validators.String(not_empty=True)
         tipo = validators.String(not_empty=True)
         tipo_convenio = validators.String(not_empty=True)
+        avatar = validators.FieldStorageUploadConverter()
         numero_convenio = validators.String(not_empty=True)
+
+        participa_cultura_viva = validators.String(not_empty=True)
+        acao_cultura_viva = Dependent(schema=AtLeastOne(schema=formencode.ForEach(validators.String())), depend_field=('participa_cultura_viva', 'sim'))
+     
+        estabeleceu_parcerias = validators.String(not_empty=True)
+        parcerias = Dependent(schema=AtLeastOne(schema=formencode.ForEach(validators.String())), depend_field=('estabeleceu_parcerias', 'sim'))
 
 
     class LocalizacaoGeoProjeto(CdpcSchema):
@@ -123,27 +128,37 @@ class Projeto:
         end_proj_latitude = validators.String()
         end_proj_longitude = validators.String()
         local_proj = validators.String(not_empty=True)
-        end_outro_nome = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('local_proj', 'outros'))
-        end_outro_cep = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('local_proj', 'outros'))
-        end_outro_numero = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('local_proj', 'outros'))
-        end_outro_logradouro = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('local_proj', 'outros'))
+        end_outro_nome = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
+        end_outro_cep = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
+        end_outro_numero = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
+        end_outro_logradouro = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
         end_outro_complemento = Dependent(schema=formencode.ForEach(validators.String()), depend_field=('local_proj', 'outros'))
-        end_outro_uf = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('local_proj', 'outros'))
-        end_outro_cidade = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('local_proj', 'outros'))
-        end_outro_bairro = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('local_proj', 'outros'))
+        end_outro_uf = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
+        end_outro_cidade = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
+        end_outro_bairro = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
         end_outro_latitude = Dependent(schema=formencode.ForEach(validators.String()), depend_field=('local_proj', 'outros'))
         end_outro_longitude = Dependent(schema=formencode.ForEach(validators.String()), depend_field=('local_proj', 'outros'))
 
 
-    class ContatosEspacoRede(CdpcSchema):
-        proj_tel = formencode.ForEach(BrazilPhoneNumber(not_empty=True))
-        email_proj = validators.Email(not_empty=True)
-        website_proj = validators.URL()
-        frequencia = validators.String()
-        rs_nome = validators.String()
-        rs_link = validators.String()
-        feed_nome = validators.String()
-        feed_link = validators.String()
+    class EntidadeProponente(CdpcSchema):
+        nome_ent = validators.String(not_empty=True)
+        email_ent = validators.String()
+        website_ent = validators.URL()
+        ent_tel = formencode.ForEach(BrazilPhoneNumber())
+
+        convenio_ent = validators.String(not_empty=True)
+        outro_convenio = Dependent(schema=validators.String(not_empty=True), depend_field=('convenio_ent', 'sim'))
+
+        endereco_ent_proj = validators.String(not_empty=True)
+        end_ent_cep = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_numero = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_logradouro = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_complemento = Dependent(schema=validators.String(), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_uf = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_cidade = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_bairro = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_latitude = Dependent(schema=validators.String(), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_longitude = Dependent(schema=validators.String(), depend_field=('endereco_ent_proj', 'nao'))
 
 
     class ComunicacaoCulturaDigital(CdpcSchema):
@@ -156,32 +171,16 @@ class Projeto:
         pq_sem_internet =  Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_net', 'nao'))
         pq_sem_internet_outro =  Dependent(schema=validators.String(not_empty=True), depend_field=('pq_sem_internet', 'outro'))
 
-
-
-    class EntidadeProponente(CdpcSchema):
-        nome_ent = validators.String(not_empty=True)
-        endereco_ent_proj = validators.String(not_empty=True)
-
-        end_ent_cep = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_numero = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_logradouro = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_complemento = Dependent(schema=validators.String(), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_uf = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_cidade = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_bairro = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_latitude = Dependent(schema=validators.String(), depend_field=('endereco_ent_proj', 'nao'))
-        end_ent_longitude = Dependent(schema=validators.String(), depend_field=('endereco_ent_proj', 'nao'))
-
-        ent_tel = formencode.ForEach(BrazilPhoneNumber())
-        email_ent = validators.String()
-        website_ent = validators.URL()
-        convenio_ent = validators.String(not_empty=True)
-        outro_convenio = Dependent(schema=validators.String(not_empty=True), depend_field=('convenio_ent', 'sim'))
-
+        rs_nome = validators.String()
+        rs_link = validators.String()
+        feed_nome = validators.String()
+        feed_link = validators.String()
 
     class AtividadesExercidasProjeto(CdpcSchema):
-        atividade = formencode.ForEach(validators.String(not_empty=True))
+        atividade = AtLeastOne(schema=formencode.ForEach(validators.String(not_empty=True)))
 
+
+    class Publico(CdpcSchema):
         # ---  Com qual Público Alvo o Projeto é desenvolvido?
         # ---- Sob aspectos de Faixa Etária
         publico_alvo = formencode.ForEach(validators.String(not_empty=True))
@@ -200,20 +199,7 @@ class Projeto:
         # em suas atividades?
         manifestacoes_linguagens = formencode.ForEach(validators.String(not_empty=True))
 
-        participa_cultura_viva = validators.String(not_empty=True)
-
-        # --- O Projeto participa de alguma Ação do Programa Cultura Viva?
-        acao_cultura_viva = Dependent(schema=AtLeastOne(schema=formencode.ForEach(validators.String())), depend_field=('participa_cultura_viva', 'sim'))
-
-        descricao = validators.String()
-
         documentacoes = validators.FieldStorageUploadConverter()
-
-
-    class ParceriasProjeto(CdpcSchema):
-        estabeleceu_parcerias = validators.String(not_empty=True)
-        parcerias = Dependent(schema=AtLeastOne(schema=formencode.ForEach(validators.String())), depend_field=('estabeleceu_parcerias', 'sim'))
-
 
     class IndiceAcessoCultura(formencode.Schema):
         # -- Índice de acesso à cultura
@@ -222,7 +208,18 @@ class Projeto:
         ind_populacao = validators.Int()
 
 
-    class Avatar(formencode.Schema):
-        avatar = validators.FieldStorageUploadConverter()
+    #class ParceriasProjeto(CdpcSchema):
+    #    estabeleceu_parcerias = validators.String(not_empty=True)
+    #    parcerias = Dependent(schema=AtLeastOne(schema=formencode.ForEach(validators.String())), depend_field=('estabeleceu_parcerias', 'sim'))
 
+    #class Avatar(formencode.Schema):
+    #    avatar = validators.FieldStorageUploadConverter()
+
+
+    # CAMPOS EXCLUIDOS!!!!!!!
+    #class ContatosEspacoRede(CdpcSchema):
+    #    proj_tel = formencode.ForEach(BrazilPhoneNumber(not_empty=True))
+    #    email_proj = validators.Email(not_empty=True)
+    #    website_proj = validators.URL()
+    #    frequencia = validators.String()
 

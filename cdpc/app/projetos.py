@@ -156,7 +156,8 @@ def validar():
                     errors=errors_list,
                     values=values_list)
         errors = dict([(i,j) for i,j in e.unpack_errors().items() if type(j) != list])
-        filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False)
+        error_tag = lambda x : '<label generated="true" class="error">%s</label>' % x
+        filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False, auto_error_formatter=error_tag)
         ret = {'html': filled,
                'error': True,
                'errors_list': errors_list,
@@ -225,12 +226,14 @@ def novo():
             print e
             #import pdb; pdb.set_trace()
             rendered = render_template(
-                        'projetos/novo.html',
+                        'projetos/novo/main.html',
                         vals_uf=VALORES_UF,
                         errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
                         values=[i for i  in request.form.lists() if len(i[1]) > 1])
             errors = e.error_dict
-            filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False)
+            
+            error_tag = lambda x : '<label generated="true" class="error">%s</label>' % x
+            filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False, auto_error_formatter=error_tag)
             return make_response(filled)
         else:
             print 'ELSE'
@@ -279,13 +282,17 @@ def novo():
                     )
 
             # -- Contatos e espaços na rede
-            projeto.email = validado['email_proj']
-            projeto.website = validado['website_proj']
-            projeto.frequencia = validado['frequencia']
-            for i in validado['proj_tel']:
-                tel = models.Telefone()
-                tel.numero = i
-                projeto.telefones.append(tel)
+            
+            ######################
+            # CAMPOS EXCLUÍDOS!!!
+            #projeto.email = validado['email_proj']
+            #projeto.website = validado['website_proj']
+            #projeto.frequencia = validado['frequencia']
+            #for i in validado['proj_tel']:
+            #    tel = models.Telefone()
+            #    tel.numero = i
+            #    projeto.telefones.append(tel)
+            ######################
 
             for i in range(len(rs_nomes)):
                 rsocial = models.RedeSocial()
@@ -358,7 +365,7 @@ def novo():
             for i in validado['atividade']:
                 obj = models.Atividade()
                 obj.nome = i
-                projeto.objs.append(obj)
+                projeto.atividades.append(obj)
 
             # ---  Com qual Público Alvo o Projeto é desenvolvido?
             # ---- Sob aspectos de Faixa Etária
@@ -428,10 +435,7 @@ def novo():
             # FIXME: Avisar ao usuário que tudo deu certo. OK!
             return redirect("/projetos")
 
-
-
     return render_template(
-        #'projetos/novo.html',
         'projetos/novo/main.html',
         vals_uf=VALORES_UF,
         errors={})

@@ -28,45 +28,72 @@ var load = function () {
 var VALIDATOR, CURRENT_STEP;
 
 function carregar () {
-    // Javascript da pagina Cadastro de projetos
     if ($('body.project_register').length == 0) return;
-
     CURRENT_STEP = $('input[name=step]').val();
-    
+    configValidator();
+    createStepButtons();
+    configStepButtons();
+    configFields();
+    supportsPlaceholder();
+}
+
+function configValidator() {
     var rules = {parcerias: {atLeastOne: true},
                  acao_cultura_viva: {atLeastOne: true},
                  atividade: {atLeastOne: true}};
-    
     VALIDATOR = $('#content form').validate({rules: rules, debug: true});
-    configFields();
+}
 
+function configStepButtons() {
+    if ($('div#' + CURRENT_STEP).prev().length) {
+        $('div.step div.buttons a.previous').show();
+    } else {
+        $('div.step div.buttons a.previous').hide();
+    }
+    if ($('div#' + CURRENT_STEP).next().length) {
+        $('div.step div.buttons a.next').show();
+        $('div.step div.buttons a.cadastrar').hide();
+    } else {
+        $('div.step div.buttons a.next').hide();
+        $('div.step div.buttons a.cadastrar').show();
+    }
+}
+
+function createStepButtons() {
     var prev = $('<a href="#">').addClass('previous').text('Voltar');
     var nex = $('<a href="#">').addClass('next').text('Próximo');
-    var buttons = $('<div class="buttons">').append(nex);
+    var cadastrar = $('<a href="#">').addClass('cadastrar').text('Cadastrar');
     $('div.step').hide()
-    $('div.step:not(#project_index) div.main').append(buttons);
-    $('div.step:not(#project_data) div.buttons').prepend(prev);
+    $('div.step div.buttons').append(prev);
+    $('div.step div.buttons').append(nex);
+    $('div.step div.buttons').append(cadastrar);
+    cadastrar.hide();
+    $('#project_index').show();
     $('div#' + CURRENT_STEP).show();
     $('ul.steps li.active').removeClass('active');
     $('ul.steps li.' + CURRENT_STEP).addClass('active');
 
     $('div#' + CURRENT_STEP + "Tip").removeClass('hidden');
 
-    $('div.step div.buttons .next').click(next);
-    $('div.step div.buttons .previous').click(previous);
+    $('div.step div.buttons a.next').click(next);
+    $('div.step div.buttons a.previous').click(previous);
+    $('div.step div.buttons a.cadastrar').click(submit);
 }
 
 function configFields() {
-    supportsPlaceholder();
+    $('input.cep').unmask();
+    $('input.phone').unmask();
     $('input.cep').mask('99.999-999');
     $('input.phone').mask('(99) 9999-9999');
 }
 
 function validateStep() {
+
     var valid = true;
     var selector = "div#" + CURRENT_STEP + " input, " +
                    "div#" + CURRENT_STEP + " select, " +
-                   "div#" + CURRENT_STEP + " textarea"
+                   "div#" + CURRENT_STEP + " textarea";
+
     $(selector).each(function () {
         var ret = false;
         // Não validar campos que estão escondidos
@@ -80,20 +107,77 @@ function validateStep() {
 }
 
 function next(e) {
-    var next_step = $('div#' + CURRENT_STEP).next().attr('id');
+    var current = $("div#" + CURRENT_STEP);
+    var next = current.next();
+    var next_step = next.attr('id');
+    var children, theForm;
+ 
+    function afterServerValidation(data) {
+        var current = $("div#" + CURRENT_STEP);
+        $("div#ajaxsplash").fadeOut('fast');
+        if (data.error) {
+
+            current.html($(data.html).children());
+            try {
+                eval("load" + CURRENT_STEP.capitalize() + "()");
+            } catch (e) {
+                alert(e);
+            }
+            novosCamposLista(data.values_list);
+            preencherCamposLista(data.values_list, data.errors_list);
+            configFields();
+        } else {
+            
+            current.append(children);
+                        
+            $('label[generated=true]', current).remove();
+            $('.error', current).removeClass('error');
+
+            children.find("input[type=pseudofile]").each( function () {
+                this.type = 'file';
+            });
+            $('div#' + CURRENT_STEP).fadeOut('fast', function() {
+                $('div#' + next_step).fadeIn('fast');
+                $('ul.steps li.active').removeClass('active');
+                $('ul.steps li.' + next_step).addClass('active');
+                $('input[name=step]').val(next_step);
+                $('div#' + CURRENT_STEP + "Tip").addClass('hidden');
+                $('div#' + next_step + "Tip").removeClass('hidden');
+                CURRENT_STEP = next_step;
+                configStepButtons();
+                configFields();
+            });
+        }
+        configValidator();
+    }
+ 
+    var options = {
+        success: afterServerValidation,
+        url: "/projetos/validar/",
+        type: 'post',
+        data: {'step_name': current[0].id},
+        dataType:  'json'
+        //target:        '#output1',   // target element(s) to be updated with server response
+        //beforeSubmit:  showRequest,  // pre-submit callback
+        //clearForm: true        // clear all form fields after successful submit
+        //resetForm: true        // reset the form after successful submit
+        // $.ajax options can be used here too, for example:
+        //timeout:   3000
+    };
+
     var valid = validateStep();
-    //alert(VALIDATOR.numberOfInvalids());
+            
+    // COMENTE A LINHA ABAIXO PARA DEBUGAR A VALIDACAO DO SERVIDOR
+    //var valid = true;
+    
     if (valid) {
-        $('div#' + CURRENT_STEP).fadeOut('fast', function() {
-            $('div#' + next_step).fadeIn('fast');
-            $('ul.steps li.active').removeClass('active');
-            $('ul.steps li.' + next_step).addClass('active');
-            $('input[name=step]').val(next_step);
-            $('div#' + CURRENT_STEP + "Tip").addClass('hidden');
-            $('div#' + next_step + "Tip").removeClass('hidden');
-            CURRENT_STEP = next_step;
-            clicked = 0;
+        children = current.children();
+        theForm = $("<form></form>").append(children);
+        theForm.find("input[type=file]").each( function () {
+            this.type = 'pseudofile';
         });
+        $("div#ajaxsplash").fadeIn('fast');
+        $(theForm).ajaxSubmit(options);
     } else {
         $('html, body').animate({scrollTop: 0}, 'slow');
     }
@@ -109,8 +193,14 @@ function previous(e) {
         $('ul.steps li.' + previous_step).addClass('active');
         $('input[name=step]').val(previous_step);
         CURRENT_STEP = previous_step;
+        configStepButtons();
+        configFields();
     });
     e.preventDefault();
+}
+
+function submit(e) {
+    var form = document.getElementById("novoProjeto").submit();
 }
 
 function loadDadosProjeto() {
@@ -202,22 +292,19 @@ function loadEntidadeProponente() {
     loadRadioMultipleExtra($("input[name=endereco_ent_proj]:checked"), 'nao', 'endereco_ent_proj_nao');
 }
 
-function loadParceriasProjeto() {
-
+function loadAtividadesExercidasProjeto() {
+    //nothing yet
 }
 
-function loadAtividadesExercidasProjeto() {
+function loadPublico() {
+    //nothing yet
+}
 
+function loadIndiceAcessoCultura() {
+    //nothing yet
 }
 
 $(document).ready (function () {
-
-    loadDadosProjeto();
-    loadLocalizacaoGeoProjeto();
-    loadComunicacaoCulturaDigital();
-    loadEntidadeProponente();
-    loadParceriasProjeto();
-    loadAtividadesExercidasProjeto();
 
     $('input[name=outras_atividades]').change(function () {
         if ($(this).is (':checked')) {
@@ -251,7 +338,14 @@ $(document).ready (function () {
         }
     });
     
+    loadDadosProjeto();
+    loadLocalizacaoGeoProjeto();
+    loadComunicacaoCulturaDigital();
+    loadEntidadeProponente();
+    loadAtividadesExercidasProjeto();
+    
     carregar();
+        
 });
 
 function novoEndereco () {
@@ -384,7 +478,7 @@ function novosCamposLista(values) {
 }
 
 function proximo() {
-    var current = $("#"+currentTab);
+    var current = $("#" + CURRENT_STEP);
     var next = current.next();
     var children = current.children();
     var theForm = $("<form></form>").append(children);
@@ -435,7 +529,7 @@ function proximo() {
     theForm.find("input[type=file]").each( function () {
         this.type = 'text';
     });
-    theForm.ajaxSubmit(options);
+    $(theForm).ajaxSubmit(options);
 }
 
 function anterior() {

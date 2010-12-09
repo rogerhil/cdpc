@@ -154,8 +154,8 @@ class Cep(formencode.FancyValidator):
     """
 
     strip = True
-    _cep_re = [re.compile(r"^(\d{5})[-_/\.\\ ]*(\d{3})$")]
-    _store_format = "%s-%s"
+    _cep_re = [re.compile(r"^(\d{2})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})$")]
+    _store_format = "%s-%s-%s"
     messages = {
         'cepFormat': _('Please enter a valid cep number in the format #####-###.')
         }
@@ -185,6 +185,7 @@ class Dependent(formencode.FancyValidator):
 
 class AtLeastOne(formencode.FancyValidator):
     schema = None
+    msg = None
     messages = {
         'errorMessage': _('Please mark at least one option'),
         }
@@ -198,6 +199,23 @@ class AtLeastOne(formencode.FancyValidator):
            ((isinstance(value, str) or isinstance(value, unicode)) and value):
             return self.schema.to_python(value, state)
         else:
+            if self.msg:
+                raise Invalid(self.msg, value, state)
             raise Invalid(self.message('errorMessage', state), value, state)
 
 
+class NotEmptyList(formencode.FancyValidator):
+    schema = None
+    messages = {
+        'errorMessage': _('Please enter a value'),
+        }
+    def to_python(self, value, state):
+        if not value:        
+            raise Invalid(self.message('errorMessage', state), value, state)
+        if isinstance(value, list):
+            for cv in value:
+                if not cv:
+                    raise Invalid(self.message('errorMessage', state), value, state)
+        return self.schema.to_python(value, state)
+
+            

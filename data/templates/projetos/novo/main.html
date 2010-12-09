@@ -9,15 +9,18 @@
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/inc/jquery.js') }}"></script>
-<script
-   type="text/javascript"
-   src="{{ url_for('.static', filename='js/inc/jquery.form.js') }}">
-</script>
 
 <script src="{{ url_for('.static', filename='js/inc/jquery-1.4.4.min.js') }}"></script>
 <script src="{{ url_for('.static', filename='js/inc/jquery.maskedinput-1.2.2.min.js') }}"></script>
 <script src="{{ url_for('.static', filename='js/inc/jquery.validate.fixed-0.1.js') }}"></script>
 <script src="{{ url_for('.static', filename='js/forms.js') }}"></script>
+
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/inc/jquery.form.js') }}">
+</script>
+
+
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/geral.novo.js') }}"></script>
@@ -49,30 +52,27 @@
 
 {% block content %}  
 
+<div class="ajaxsplash" id="ajaxsplash">
+  validando . . .
+</div>
+
 <form id="novoProjeto" method="post" action=".">
 
-
-  {% include "projetos/novo/dadosprojeto.html" %}
-  {% include "projetos/novo/localizacaogeoprojeto.html" %}
-  {% include "projetos/novo/entidadeproponente.html" %}
-  {% include "projetos/novo/comunicacaoculturadigital.html" %}
-  {% include "projetos/novo/atividadesexercidasprojeto.html" %}
-  {% include "projetos/novo/publico.html" %}
-  {% include "projetos/novo/indiceacessocultura.html" %}
-
-  <div id="fimDoFormulario"> </div>
+  <div>
+    {% include "projetos/novo/dadosprojeto.html" %}
+    {% include "projetos/novo/localizacaogeoprojeto.html" %}
+    {% include "projetos/novo/entidadeproponente.html" %}
+    {% include "projetos/novo/comunicacaoculturadigital.html" %}
+    {% include "projetos/novo/atividadesexercidasprojeto.html" %}
+    {% include "projetos/novo/publico.html" %}
+    {% include "projetos/novo/indiceacessocultura.html" %}
+  </div>
   
   <div id="project_index" class="step">
     <div class="main">
       <div class="buttons">
-        <button type="submit">Cadastrar</button>
       </div>
     </div><!-- .main -->
-
-    <div class="sidebar">
-      <div class="tip">
-      </div>
-    </div><!-- .sidebar -->
   </div>
   <input type="hidden" name="step" value="dadosProjeto">
 </form>

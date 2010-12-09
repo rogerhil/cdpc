@@ -195,6 +195,7 @@ div.main .bordertop{
 
 div.main div.buttons .next
 , div.main div.buttons .previous
+, div.main div.buttons .cadastrar
 , div.main div.buttons button{
   overflow:hidden;
   text-indent:-999em;
@@ -202,8 +203,16 @@ div.main div.buttons .next
 
 div.main div.buttons .next:hover
 , div.main div.buttons .previous:hover
+, div.main div.buttons .cadastrar:hover
 , div.main div.buttons button:hover{
   opacity:0.7;
+}
+
+div.main div.buttons .next{
+  background:url("../img/bt/bt_next.png") no-repeat;
+  float:right;
+  height:33px;
+  width:127px;
 }
 
 div.main div.buttons .previous{
@@ -213,12 +222,13 @@ div.main div.buttons .previous{
   width:99px;
 }
 
-div.main div.buttons .next{
-  background:url("../img/bt/bt_next.png") no-repeat;
+div.main div.buttons .cadastrar{
+  background:url("../img/bt/bt_register.png") no-repeat;
   float:right;
   height:33px;
   width:127px;
 }
+
 
 div.main div.buttons button{
   background:url("../img/bt/bt_register.png") no-repeat;
@@ -273,10 +283,14 @@ li.extra {
     margin-top: -15px;
 }
 
-label.error{
+label.error, .error-message{
     color:red !important;
     display:block;
     margin-top:5px !important;
+}
+
+.error-message {
+    font:normal 14px/100% Trebuchet MS, sans-serif;
 }
 
 

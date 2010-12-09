@@ -80,13 +80,6 @@
       {% endif %}
       {% endwith %}
 
-      {% if site_messages %}
-        {% for message in site_messages %}
-          <div class="site-message {{ message.status }}">
-            {{ message.text }}
-          </div>
-        {% endfor %}
-      {% endif %}
 
 
       <div id="content">
@@ -95,6 +88,13 @@
           {% endblock %}
           {% block container %}
           <div class="main">
+            {% if site_messages %}
+              {% for message in site_messages %}
+                <div class="site-message {{ message.status }}">
+                  {{ message.text }}
+                </div>
+              {% endfor %}
+            {% endif %}
             {% block content %}{% endblock %}
           </div>
           <div class="sidebar">

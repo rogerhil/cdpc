@@ -264,3 +264,50 @@ _____________________*/
 .hidden {
     display: none;   
 }
+
+div.ajaxsplash {
+    background-color: #458CC1;
+    opacity: .3;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 9999;
+    color: white;
+    font-size: 70px;
+    padding-left: 700px;
+    padding-top: 500px;
+    width: 1200px;
+    height: 900px;
+    display: none;
+}
+
+div.site-message { 
+    padding:5px;
+    border:1px solid;
+    margin-top: 5px;
+}
+
+div.info {
+    background-color:#C7D6EC;
+    color:#003B91;
+    border-color: #003B91;
+}
+
+div.success {
+    background-color:#C7FBAF;
+    color:#2C6A11;
+    border-color:#2C6A11;
+}
+
+div.warning {
+    background-color:#F1F19D;
+    color:#828200;
+    border-color:#828200;
+}
+
+div.error {
+    background-color:#FFBBA3;
+    color: #FF0003;
+    border-color: #FF0003;
+}
+
