@@ -49,7 +49,7 @@ def listing():
     return render_template('usuarios/listing.html',
                            lista=lista,
                            pagination=pagination,
-                           vals_uf=VALORES_UF)
+                           vals_uf=VALORES_UF.keys())
 
 @module.route("novo/", methods=('GET', 'POST'))
 def novo():
@@ -66,7 +66,7 @@ def novo():
         except Invalid, e:
             rendered = render_template(
                         'usuarios/novo.html',
-                        vals_uf=VALORES_UF,
+                        vals_uf=VALORES_UF.keys(),
                         errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
                         values=[i for i  in request.form.lists() if len(i[1]) > 1])
             errors = e.error_dict
@@ -134,5 +134,5 @@ def novo():
             flash(u'Usuário cadastrado com sucesso!', 'success')
             return redirect("/usuarios/")
 
-    return render_template('usuarios/novo.html', vals_uf=VALORES_UF)
+    return render_template('usuarios/novo.html', vals_uf=VALORES_UF.keys())
 

@@ -80,7 +80,6 @@ function createStepButtons() {
 }
 
 function configFields() {
-    decorateRequiredLabels('novoProjeto');
     supportsPlaceholder();
     $('input.cep').unmask();
     $('input.phone').unmask();
@@ -307,6 +306,8 @@ function loadIndiceAcessoCultura() {
 }
 
 $(document).ready (function () {
+
+    decorateRequiredLabels('novoProjeto');
 
     $('input[name=outras_atividades]').change(function () {
         if ($(this).is (':checked')) {

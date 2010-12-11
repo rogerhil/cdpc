@@ -34,20 +34,73 @@ module = Module(__name__)
 
 @module.route('/')
 def listing():
-    count = models.Projeto.query.count()
-    page = int(request.args.get('page', 1))
+
+    page = int(request.args.get('page', 1) or 1)
     limit = int(request.args.get('limit', 20))
+    index = limit*(page-1)
+    nome = request.args.get('nome', '')
+    cidade = request.args.get('cidade', '')
+    estado = request.args.get('uf', '')
+    order_by = [i.strip() for i in request.args.get('order_by', '').split(' ') if i.strip()]
+    if not order_by:
+        order_by = ['data_cadastro']
+
+    filtro = models.Projeto.query
+            
+    if nome:
+        filtro = filtro.filter(models.Projeto.nome.contains(nome))
+    if cidade:
+        filtro = filtro.filter(models.Projeto.enderecos.any(models.Endereco.cidade.contains(cidade)))
+    if estado:
+        filtro = filtro.filter(models.Projeto.enderecos.any(uf=estado))
+
+    vals_uf = VALORES_UF.items()
+    vals_uf.sort(lambda a, b: a > b and 1 or -1)
+
+    limites = [10, 20, 30, 40, 50, 100, 200]
+    request_args = request.args.copy()
+    request_args['limit'] = limit
+    
+    request_args['nome_class'] = 'arrowdown'
+    request_args['responsavel_class'] = 'arrowdown'
+    request_args['cidade_class'] = 'arrowdown'
+    request_args['uf_class'] = 'arrowdown'
+    request_args['data_class'] = 'arrowdown'
+    
+    from sqlalchemy import desc
+    
+    for oby in order_by:
+        n = oby.replace('-', '')
+        #print n, n, n
+        if n in ['uf', 'cidade']:
+            pass
+            #filtro = filtro.order_by(desc(getattr(models.Endereco, n)))
+        elif n == 'responsavel_por':
+            pass
+            #filtro = filtro.order_by('responsavel')
+        else:
+            if oby.startswith('-'):
+                filtro = filtro.order_by(desc(n))                
+            else:
+                filtro = filtro.order_by(oby)
+        request_args['%s_class' % n] = oby.startswith('-') and "arrowup" or "arrowdown"
+    
+    request_args['order_by'] = " ".join(order_by)
+    lista = filtro[index:index+limit]
+    count = filtro.count()
 
     pages = ceil(count / limit)
-    index = limit*(page-1)
-
-    lista = models.Projeto.query.order_by('data_cadastro')[index:index+limit]
+    display = page-1 == int(pages) and len(lista) or limit
+    
     pagination = dict(count=count, limit=limit, pages=pages,
-                      page=page)
+                      page=page, display=display)
+    
     return render_template('projetos/listing.html',
                            projetos=lista,
                            pagination=pagination,
-                           vals_uf=VALORES_UF)
+                           vals_uf=vals_uf,
+                           limites=limites,
+                           request_args=request_args)
 
 @module.route('<int:pid>.json')
 def projeto_json(pid):
@@ -152,7 +205,7 @@ def validar():
 
         rendered = render_template(
                     'projetos/novo/%s.html' % class_name.lower(),
-                    vals_uf=VALORES_UF,
+                    vals_uf=VALORES_UF.keys(),
                     errors=errors_list,
                     values=values_list)
         errors = dict([(i,j) for i,j in e.unpack_errors().items() if type(j) != list])
@@ -166,7 +219,7 @@ def validar():
 
     rendered = render_template(
                 'projetos/novo/%s.html' % class_name.lower(),
-                vals_uf=VALORES_UF,
+                vals_uf=VALORES_UF.keys(),
                 errors={},
                 values=values_list)
     filled = htmlfill.render(rendered, request.form.to_dict(), {}, prefix_error=False)
@@ -227,7 +280,7 @@ def novo():
             #import pdb; pdb.set_trace()
             rendered = render_template(
                         'projetos/novo/main.html',
-                        vals_uf=VALORES_UF,
+                        vals_uf=VALORES_UF.keys(),
                         errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
                         values=[i for i  in request.form.lists() if len(i[1]) > 1])
             errors = e.error_dict
@@ -236,7 +289,9 @@ def novo():
             filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False, auto_error_formatter=error_tag)
             return make_response(filled)
         else:
-            print 'ELSE'
+            print "@"*20
+            print validado
+            print "@"*20
             # Instanciando o modelo e associando os campos validados e
             # transformados em valores python à instância que será
             # salva no db.
@@ -435,6 +490,6 @@ def novo():
 
     return render_template(
         'projetos/novo/main.html',
-        vals_uf=VALORES_UF,
+        vals_uf=VALORES_UF.keys(),
         errors={})
 

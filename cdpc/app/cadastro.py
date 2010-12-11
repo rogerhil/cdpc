@@ -26,6 +26,35 @@ VALORES_UF = (
     'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 )
 
+VALORES_UF = {'BA': u'Bahia',
+              'DF': u'Distrito Federal',
+              'PR': u'Paraná',
+              'RR': u'Roraima',
+              'RS': u'Rio Grande do Sul',
+              'PB': u'Paraiba',
+              'TO': u'Tocantins',
+              'PA': u'Pará',
+              'PE': u'Pernambuco',
+              'RN': u'Rio Grande do Norte',
+              'RO': u'Rondônia',
+              'RJ': u'Rio de Janeiro',
+              'AC': u'Acre',
+              'AM': u'Amazonas',
+              'AL': u'Alagoas',
+              'CE': u'Ceará',
+              'AP': u'Amapá',
+              'GO': u'Goiás',
+              'ES': u'Espírito Santo',
+              'MG': u'Minas Gerais',
+              'PI': u'Piauí',
+              'MA': u'Maranhão',
+              'SP': u'São Paulo',
+              'MT': u'Mato Grosso',
+              'MS': u'Mato Grosso do Sul',
+              'SC': u'Santa Catarina',
+              'SE': u'Sergipe'}
+
+
 CONSULTA_CEP = 'http://viavirtual.com.br/webservicecep.php?cep=%s'
 CONSULTA_GEO = 'http://ws.geonames.org/postalCodeLookupJSON?postalcode=%s&country=BR'
 

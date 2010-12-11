@@ -22,28 +22,35 @@
 {% block container %}
 
 
-{% if projetos %}
 
-<form id="busca">
-  <div class="main container">
+
+<div class="main container">
+  <form id="lista_projetos" method="get">
     <ul>
       <li class="busca">
         <div class="column">
           <label>Nome:</label>
-          <input name="nome" id="nome" class="textarea medium" />
+          <input name="nome" id="nome" class="textarea medium" value="{{ request_args.nome }}" />
         </div>      
         <div class="column">
           <label>Cidade:</label>
-          <select name="cidade">
-            <option value=""></option>
-          </select>
+          <input name="cidade" id="cidade" class="textarea medium" value="{{ request_args.cidade }}" />
         </div>
         <div class="column">
           <label>Estado:</label>
           <select name="uf">
             <option value=""></option>
-            {% for uf in vals_uf %}
-            <option value="{{ uf }}">{{ uf }}</option>
+            {% for v, uf in vals_uf %}
+            <option value="{{ v }}" {% if v == request_args.uf %}selected="selected"{% endif %}>{{ uf }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="column">
+          <label>Limite:</label>
+          <select name="limit" class="small">
+            {% for l in limites %}
+            <option value="{{ l }}" {% if l == request_args.limit %}selected="selected"{% endif %}>{{ l }}</option>
             {% endfor %}
           </select>
         </div>
@@ -53,82 +60,119 @@
         </div>
       </li>
     </ul>
-  </div>
-</form>
 
-<div class="main container" style="clear: both;">
-  <ul id="sumarioProjetos">
-    <li>
-      Exibindo <strong>{{ pagination.limit }}</strong> de um total de
-      <strong>{{ pagination.count }}</strong> projetos.
-    </li>
-    <li>
+    {% if projetos %}
+
+    <div id="sumarioProjetos">
+      <p>
+        Exibindo <strong>{{ pagination.display }}</strong> de um total de
+        <strong>{{ pagination.count }}</strong> projetos.
+      </p>
+    </div>
+
+    <div class="tablecontent">
+      <table id="projetos">
+        <thead>
+          <tr>
+            <th class="{{ request_args.nome_class }}" id="nome">Nome</th>
+            <th class="{{ request_args.responsavel_por_class }}" id="responsavel_por">Cadastrado por</th>
+            <th class="{{ request_args.cidade_class }}" id="cidade">Cidade</th>
+            <th class="{{ request_args.uf_class }}" id="uf">UF</th>
+            <th class="{{ request_args.data_cadastro_class }}" id="data_cadastro">Data do cadastro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for projeto in projetos %}
+          <tr onclick="showProject({{ projeto.id }}, this)">
+            <td style="width: 360px; max-width: 360px;">
+              <a>
+                {{ projeto.nome }}
+              </a>
+            </td>
+            <td>{{ projeto.responsavel_por }}</td>
+            <td style="width: 150px; max-width: 150px;">{{ projeto.enderecos.0.cidade }}</td>
+            <td style="width: 50px;">{{ projeto.enderecos.0.uf }}</td>
+            <td>{{ projeto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
+          </tr>
+          <tr class="detalhesProjeto hidden">
+            <td colspan="5">
+              <fieldset class="endereco">
+                <legend>Endereço</legend>
+                <ul>
+                  <li><a class="logradouro"></a></li>
+                  <li><a class="bairro"></a></li>
+                  <li><a class="cidade"></a> - <a class="uf"></a></li>
+                </ul>
+              </fieldset>
+
+              <fieldset class="contatos hidden">
+                <legend>Contatos</legend>
+                <div class="email">
+                  <label>Email</label> <a href=""></a>
+                </div>
+                <div class="site">
+                  <label>Site</label>
+                  <a href=""></a>
+                </div>
+                <div class="telefones">
+                  <strong>Telefones</strong>
+                  <ul></ul>
+                </div>
+              </fieldset>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 10px;">
       {% for i in range(1, pagination['pages']) %}
-      <a href="?page={{ i }}"
+      <a href="javascript: $('input[name=page]').val('{{ i }}'); FORM.submit()"
          {% if i == pagination['page'] %}
          class="selected"
          {% endif %}>{{ i }}</a>
       {% endfor %}
-    </li>
-  </ul>
+      <input type="hidden" name="page" />
+    </div>
+    
+    {% else %}
+      <h3>Nenhum projeto cadastrado no momento.</h3>
+    {% endif %}
+    
+    <input type="hidden" name="order_by" value="{{ request_args.order_by }}" />
+    
+  </form>
+  <script type="text/javascript">
+    var FORM = document.getElementById('lista_projetos');
+    
+    function appendOrderBy(newob) {
+        var $orderby = $("input[name=order_by]");
+        var obys = $orderby.val().split(' ');
+        var n = newob.replace('-', '').replace(' ', '');
+        for (var k = 0; k < obys.length; k++) {
+            if (n == obys[k].replace('-', '').replace(' ', '')) {
+                obys.splice(k,1);
+                break;
+            }
+        }
+        return newob.replace(' ', '') + " " + obys.join(' ');
+    }
+    
+    $("table th").each(function() {
+        $(this).click(function() {
+            var n = $(this).attr('id');
+            var $orderby = $("input[name=order_by]");
+            var minus = " ";
+            if ($(this).hasClass('arrowdown')) {
+                minus = "-";
+            }
+            $orderby.val(appendOrderBy(minus + n));
+            FORM.submit();
+        });
+    });
+  </script>
 </div>
-<div class="main container" style="clear: both;">
-  <table id="projetos" cellspacing="15">
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Cadastrado por</th>
-        <th>Cidade</th>
-        <th>UF</th>
-        <th>Data do cadastro</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for projeto in projetos %}
-      <tr onclick="showProject({{ projeto.id }}, this)">
-        <td>
-          <a>
-            {{ projeto.nome }}
-          </a>
-        </td>
-        <td>{{ projeto.responsavel_por }}</td>
-        <td>{{ projeto.enderecos.0.cidade }}</td>
-        <td>{{ projeto.enderecos.0.uf }}</td>
-        <td>{{ projeto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
-      </tr>
-      <tr class="detalhesProjeto hidden">
-        <td colspan="5">
-          <fieldset class="endereco">
-            <legend>Endereço</legend>
-            <ul>
-              <li><a class="logradouro"></a></li>
-              <li><a class="bairro"></a></li>
-              <li><a class="cidade"></a> - <a class="uf"></a></li>
-            </ul>
-          </fieldset>
 
-          <fieldset class="contatos hidden">
-            <legend>Contatos</legend>
-            <div class="email">
-              <label>Email</label> <a href=""></a>
-            </div>
-            <div class="site">
-              <label>Site</label>
-              <a href=""></a>
-            </div>
-            <div class="telefones">
-              <strong>Telefones</strong>
-              <ul></ul>
-            </div>
-          </fieldset>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-{% else %}
-  <h3>Nenhum projeto cadastrado no momento.</h3>
-{% endif %}
 
 {% endblock %}
