@@ -2,6 +2,10 @@
 {% extends 'base.html' %}
 
 {% block extra_head %}
+   
+<link
+   rel="stylesheet" type="text/css"
+   href="{{ url_for('.static', filename='css/register.css') }}">
 <link
    rel="stylesheet" type="text/css"
    href="{{ url_for('.static', filename='css/projetos.listing.css') }}">
@@ -13,103 +17,118 @@
    src="{{ url_for('.static', filename='js/projetos.listing.js') }}"></script>
 {% endblock %}
 
-{% block content %}
-<h2>Projetos</h2>
+{% block contenttitle %}<h2>Projetos</h2>{% endblock %}
+
+{% block container %}
+
 
 {% if projetos %}
 
 <form id="busca">
-  <div class="campoBusca">
-    <label>UF</label>
-    <select name="uf">
-      <option disabled="disabled">Selecione</option>
-      {% for uf in vals_uf %}
-      <option value="{{ uf }}">{{ uf }}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <div class="campoBusca">
-    <label>Cidade</label>
-    <select name="cidade">
-      <option disabled="disabled">Selecione uma UF</option>
-    </select>
-  </div>
-
-  <div class="resumo">
-    <div class="button">+</div>
+  <div class="main container">
+    <ul>
+      <li class="busca">
+        <div class="column">
+          <label>Nome:</label>
+          <input name="nome" id="nome" class="textarea medium" />
+        </div>      
+        <div class="column">
+          <label>Cidade:</label>
+          <select name="cidade">
+            <option value=""></option>
+          </select>
+        </div>
+        <div class="column">
+          <label>Estado:</label>
+          <select name="uf">
+            <option value=""></option>
+            {% for uf in vals_uf %}
+            <option value="{{ uf }}">{{ uf }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="column last">
+          <label>&nbsp;</label>
+          <input type="submit" value="Buscar" />
+        </div>
+      </li>
+    </ul>
   </div>
 </form>
 
-<ul id="sumarioProjetos">
-  <li>
-    Exibindo <strong>{{ pagination.limit }}</strong> de um total de
-    <strong>{{ pagination.count }}</strong> projetos.
-  </li>
-  <li>
-    {% for i in range(1, pagination['pages']) %}
-    <a href="?page={{ i }}"
-       {% if i == pagination['page'] %}
-       class="selected"
-       {% endif %}>{{ i }}</a>
-    {% endfor %}
-  </li>
-</ul>
+<div class="main container" style="clear: both;">
+  <ul id="sumarioProjetos">
+    <li>
+      Exibindo <strong>{{ pagination.limit }}</strong> de um total de
+      <strong>{{ pagination.count }}</strong> projetos.
+    </li>
+    <li>
+      {% for i in range(1, pagination['pages']) %}
+      <a href="?page={{ i }}"
+         {% if i == pagination['page'] %}
+         class="selected"
+         {% endif %}>{{ i }}</a>
+      {% endfor %}
+    </li>
+  </ul>
+</div>
+<div class="main container" style="clear: both;">
+  <table id="projetos" cellspacing="15">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Cadastrado por</th>
+        <th>Cidade</th>
+        <th>UF</th>
+        <th>Data do cadastro</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for projeto in projetos %}
+      <tr onclick="showProject({{ projeto.id }}, this)">
+        <td>
+          <a>
+            {{ projeto.nome }}
+          </a>
+        </td>
+        <td>{{ projeto.responsavel_por }}</td>
+        <td>{{ projeto.enderecos.0.cidade }}</td>
+        <td>{{ projeto.enderecos.0.uf }}</td>
+        <td>{{ projeto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
+      </tr>
+      <tr class="detalhesProjeto hidden">
+        <td colspan="5">
+          <fieldset class="endereco">
+            <legend>Endereço</legend>
+            <ul>
+              <li><a class="logradouro"></a></li>
+              <li><a class="bairro"></a></li>
+              <li><a class="cidade"></a> - <a class="uf"></a></li>
+            </ul>
+          </fieldset>
 
-<table id="projetos">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Cidade</th>
-      <th>UF</th>
-      <th>Data do cadastro</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for projeto in projetos %}
-    <tr onclick="showProject({{ projeto.id }}, this)">
-      <td>
-        <a>
-          {{ projeto.nome }}
-        </a>
-      </td>
-      <td>{{ projeto.enderecos.0.cidade }}</td>
-      <td>{{ projeto.enderecos.0.uf }}</td>
-      <td>{{ projeto.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
-    </tr>
-    <tr class="detalhesProjeto">
-      <td colspan="4">
-        <fieldset class="endereco">
-          <legend>Endereço</legend>
-          <ul>
-            <li><a class="logradouro"></a></li>
-            <li><a class="bairro"></a></li>
-            <li><a class="cidade"></a> - <a class="uf"></a></li>
-          </ul>
-        </fieldset>
-
-        <fieldset class="contatos">
-          <legend>Contatos</legend>
-          <div class="email">
-            <label>Email</label> <a href=""></a>
-          </div>
-          <div class="site">
-            <label>Site</label>
-            <a href=""></a>
-          </div>
-          <div class="telefones">
-            <strong>Telefones</strong>
-            <ul></ul>
-          </div>
-        </fieldset>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
+          <fieldset class="contatos hidden">
+            <legend>Contatos</legend>
+            <div class="email">
+              <label>Email</label> <a href=""></a>
+            </div>
+            <div class="site">
+              <label>Site</label>
+              <a href=""></a>
+            </div>
+            <div class="telefones">
+              <strong>Telefones</strong>
+              <ul></ul>
+            </div>
+          </fieldset>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% else %}
-<p>Nenhum projeto cadastrado no momento.</p>
+  <h3>Nenhum projeto cadastrado no momento.</h3>
 {% endif %}
 
 {% endblock %}

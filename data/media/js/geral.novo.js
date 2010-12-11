@@ -141,8 +141,8 @@ function removeButton(remClick) {
     return $remove;
 }
 
-function decorateRequiredLabels() {
-    $('#novoUsuario label').each(function () {
+function decorateRequiredLabels(id) {
+    $('#' + id + ' label').each(function () {
         var html = $(this).html();
         var newHtml = html.replace('*', '<span class="requiredstar">*</span>');
         $(this).html(newHtml);

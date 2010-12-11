@@ -80,7 +80,7 @@ function createStepButtons() {
 }
 
 function configFields() {
-    decorateRequiredLabels();
+    decorateRequiredLabels('novoProjeto');
     supportsPlaceholder();
     $('input.cep').unmask();
     $('input.phone').unmask();

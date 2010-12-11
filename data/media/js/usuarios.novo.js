@@ -22,7 +22,7 @@ $(document).ready (function () {
 });
 
 function configFields() {
-    decorateRequiredLabels();
+    decorateRequiredLabels('novoUsuario');
     supportsPlaceholder();
     $('input.cpf').unmask();
     $('input.phone').unmask();
