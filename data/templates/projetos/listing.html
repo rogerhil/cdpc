@@ -21,27 +21,24 @@
 
 {% block container %}
 
-
-
-
 <div class="main container">
   <form id="lista_projetos" method="get">
     <ul>
       <li class="busca">
         <div class="column">
           <label>Nome:</label>
-          <input name="nome" id="nome" class="textarea medium" value="{{ request_args.nome }}" />
+          <input name="nome" id="nome" class="textarea medium" value="{{ cvars.nome }}" />
         </div>      
         <div class="column">
           <label>Cidade:</label>
-          <input name="cidade" id="cidade" class="textarea medium" value="{{ request_args.cidade }}" />
+          <input name="cidade" id="cidade" class="textarea medium" value="{{ cvars.cidade }}" />
         </div>
         <div class="column">
           <label>Estado:</label>
           <select name="uf">
             <option value=""></option>
             {% for v, uf in vals_uf %}
-            <option value="{{ v }}" {% if v == request_args.uf %}selected="selected"{% endif %}>{{ uf }}</option>
+            <option value="{{ v }}" {% if v == cvars.uf %}selected="selected"{% endif %}>{{ uf }}</option>
             {% endfor %}
           </select>
         </div>
@@ -50,7 +47,7 @@
           <label>Limite:</label>
           <select name="limit" class="small">
             {% for l in limites %}
-            <option value="{{ l }}" {% if l == request_args.limit %}selected="selected"{% endif %}>{{ l }}</option>
+            <option value="{{ l }}" {% if l == cvars.limit %}selected="selected"{% endif %}>{{ l }}</option>
             {% endfor %}
           </select>
         </div>
@@ -74,11 +71,11 @@
       <table id="projetos">
         <thead>
           <tr>
-            <th class="{{ request_args.nome_class }}" id="nome">Nome</th>
-            <th class="{{ request_args.responsavel_por_class }}" id="responsavel_por">Cadastrado por</th>
-            <th class="{{ request_args.cidade_class }}" id="cidade">Cidade</th>
-            <th class="{{ request_args.uf_class }}" id="uf">UF</th>
-            <th class="{{ request_args.data_cadastro_class }}" id="data_cadastro">Data do cadastro</th>
+            <th class="{{ cvars.nome_class }}" id="nome">Nome</th>
+            <th class="{{ cvars.responsavel_por_class }}" id="responsavel_por">Cadastrado por</th>
+            <th class="{{ cvars.cidade_class }}" id="cidade">Cidade</th>
+            <th class="{{ cvars.uf_class }}" id="uf">UF</th>
+            <th class="{{ cvars.data_cadastro_class }}" id="data_cadastro">Data do cadastro</th>
           </tr>
         </thead>
         <tbody>
@@ -127,20 +124,24 @@
     </div>
 
     <div style="margin-top: 10px;">
-      {% for i in range(1, pagination['pages']) %}
-      <a href="javascript: $('input[name=page]').val('{{ i }}'); FORM.submit()"
-         {% if i == pagination['page'] %}
-         class="selected"
-         {% endif %}>{{ i }}</a>
-      {% endfor %}
-      <input type="hidden" name="page" />
+      <ul>
+        <li>
+          {% for i in range(1, pagination['pages']) %}
+          <a href="javascript: $('input[name=page]').val('{{ i }}'); FORM.submit()"
+             {% if i == pagination['page'] %}
+             class="selected"
+             {% endif %}>{{ i }}</a>
+          {% endfor %}
+          <input type="hidden" name="page" />
+        </li>
+      </ul>
     </div>
     
     {% else %}
       <h3>Nenhum projeto cadastrado no momento.</h3>
     {% endif %}
     
-    <input type="hidden" name="order_by" value="{{ request_args.order_by }}" />
+    <input type="hidden" name="order_by" value="{{ cvars.order_by }}" />
     
   </form>
   <script type="text/javascript">

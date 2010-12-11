@@ -58,14 +58,13 @@ def listing():
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
     limites = [10, 20, 30, 40, 50, 100, 200]
-    request_args = request.args.copy()
-    request_args['limit'] = limit
-    
-    request_args['nome_class'] = 'arrowdown'
-    request_args['responsavel_class'] = 'arrowdown'
-    request_args['cidade_class'] = 'arrowdown'
-    request_args['uf_class'] = 'arrowdown'
-    request_args['data_class'] = 'arrowdown'
+    cvars = request.args.copy()
+    cvars['limit'] = limit    
+    cvars['nome_class'] = 'arrowdown'
+    cvars['responsavel_por_class'] = 'arrowdown'
+    cvars['cidade_class'] = 'arrowdown'
+    cvars['uf_class'] = 'arrowdown'
+    cvars['data_cadastro_class'] = 'arrowdown'
     
     from sqlalchemy import desc
     
@@ -83,9 +82,9 @@ def listing():
                 filtro = filtro.order_by(desc(n))                
             else:
                 filtro = filtro.order_by(oby)
-        request_args['%s_class' % n] = oby.startswith('-') and "arrowup" or "arrowdown"
+        cvars['%s_class' % n] = oby.startswith('-') and "arrowup" or "arrowdown"
     
-    request_args['order_by'] = " ".join(order_by)
+    cvars['order_by'] = " ".join(order_by)
     lista = filtro[index:index+limit]
     count = filtro.count()
 
@@ -100,7 +99,7 @@ def listing():
                            pagination=pagination,
                            vals_uf=vals_uf,
                            limites=limites,
-                           request_args=request_args)
+                           cvars=cvars)
 
 @module.route('<int:pid>.json')
 def projeto_json(pid):
