@@ -19,9 +19,10 @@
 """
 from hashlib import sha1
 from math import ceil
-from formencode import Invalid
+from formencode import Invalid, htmlfill
 from simplejson import dumps, loads
-from flask import Module, request, render_template, flash
+from flask import Module, request, render_template, flash, make_response, \
+                  redirect
 from elixir import session
 
 from . import schemas
@@ -62,22 +63,16 @@ def novo():
             validado = validator.to_python(request.form)
             clean_list = lambda x: [i for i in x if i.strip()];
 
-            rs_nomes = clean_list(request.form.getlist('rs_nome'))
-            rs_links = clean_list(request.form.getlist('rs_link'))
-            assert len(rs_nomes) == len(rs_links)
-
-            feed_nomes = clean_list(request.form.getlist('feed_nome'))
-            feed_links = clean_list(request.form.getlist('feed_link'))
-            assert len(feed_nomes) == len(feed_links)
-
         except Invalid, e:
-            # Dar um feedback pro usuário usando a instância da
-            # exceção "e".
-            raise e
-
-        except AssertionError, e:
-            # Feedback sobre erros nos campos de lista
-            raise e
+            rendered = render_template(
+                        'usuarios/novo.html',
+                        vals_uf=VALORES_UF,
+                        errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
+                        values=[i for i  in request.form.lists() if len(i[1]) > 1])
+            errors = e.error_dict
+            error_tag = lambda x : '<label generated="true" class="error">%s</label>' % x
+            filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False, auto_error_formatter=error_tag)
+            return make_response(filled)
 
         else:
             # Instanciando o modelo e associando os campos validados e
@@ -112,22 +107,23 @@ def novo():
 
             # -- Contatos e espaços na rede
             usuario.website = validado['website']
-            for i in request.form.getlist('telefone'):
+            for i in validado['telefone']:
                 tel = models.Telefone()
                 tel.numero = i
                 usuario.telefones.append(tel)
-
-            for i in range(len(rs_nomes)):
-                rsocial = models.RedeSocial()
-                rsocial.nome = rs_nomes[i]
-                rsocial.link = rs_links[i]
-                usuario.redes_sociais.append(rsocial)
-
-            for i in range(len(feed_nomes)):
-                feed = models.Feed()
-                feed.nome = feed_nomes[i]
-                feed.link = feed_links[i]
-                usuario.feeds.append(feed)
+            
+            if validado.has_key('rs_nome'):
+                for i in range(len(validado['rs_nome'])):
+                    rsocial = models.RedeSocial()
+                    rsocial.nome = validado['rs_nome'][i]
+                    rsocial.link = validado['rs_link'][i]
+                    usuario.redes_sociais.append(rsocial)
+            if validado.has_key('feed_nome'):
+                for i in range(len(validado['feed_nome'])):
+                    feed = models.Feed()
+                    feed.nome = validado['feed_nome'][i]
+                    feed.link = validado['feed_link'][i]
+                    usuario.feeds.append(feed)
 
             try:
                 session.commit()
@@ -135,8 +131,8 @@ def novo():
                 session.rollback()
                 raise e
 
-            flash(u'Usuário cadastrado com sucesso')
+            flash(u'Usuário cadastrado com sucesso!', 'success')
+            return redirect("/usuarios/")
 
-    return render_template(
-        'usuarios/novo.html',
-        vals_uf=VALORES_UF)
+    return render_template('usuarios/novo.html', vals_uf=VALORES_UF)
+

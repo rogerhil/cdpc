@@ -27,35 +27,52 @@ from formencode.api import *
 from formencode.schema import format_compound_error
 
 
-class CpfValidator(formencode.FancyValidator):
+class Cpf(formencode.FancyValidator):
+
+    """
+    Validates, and converts Cpf codes to ########### (11 charactes)
+    >>> cpf = Cpf()
+    >>> cpf.to_python("012.345.678-90")
+    '01234567890'
+    >>> cpf.to_python("012 345 678 90")
+    '01234567890'
+    >>> cpf.to_python("012_345_678_90")
+    '01234567890'
+    >>> cpf.to_python("012.345.678.90")
+    '01234567890'
+    >>> cpf.to_python("01234567890")
+    '01234567890'
+    >>> cpf.to_python(" 0 1 2 3 4 5 6 7 8 9 0 ")
+    '01234567890'
+    >>> cpf.to_python("012--345--678--90")
+    '01234567890'
+    >>> cpf.to_python("0.12.345.678-90")
+    ...
+    formencode.api.Invalid: Please enter a valid cep number in the format ###.###.###-##.
+    >>> cpf.to_python("012.345.678-900")
+    ...
+    formencode.api.Invalid: Please enter a valid cep number in the format ###.###.###-##.
+    >>> 
+    """
+
+    strip = True
+    _cpf_re = [re.compile(r"^(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{2})$")]
+    _store_format = "%s%s%s%s"
+    messages = {'cpfFormat': _('Please enter a valid cep number in the ' \
+                               'format ###.###.###-##.')}
+
     def _to_python(self, value, state):
-        # Tratando o tamanho mínimo do cpf
-        if len(value) != 11:
-            raise formencode.Invalid(u'Cpf inválido', value, state)
-
-        # tratando os valores óbvios
-        if value in [str(i) * 11 for i in range(10)]:
-            raise formencode.Invalid(u'Cpf inválido', value, state)
-
-        # transformando o cpf num int
-        cpf = map(int, value)
-
-        # gerando os dois últimos dígitos do cpf
-        newval = cpf[:9]
-        while len(newval) < 11:
-            new_item =  \
-                [(len(newval)+1-x)*y for x, y in enumerate(newval)]
-            result = sum(new_item) % 11
-            if result > 1:
-                newval.append(11 - result)
-            else:
-                newval.append(0)
-
-        # Comparando o cpf informado pelo usuário com o gerado pela
-        # bagunça acima
-        if newval != cpf:
-            raise formencode.Invalid(u'Cpf inválido', value, state)
-        return value
+        self.assert_string(value, state)
+        try:
+            value = value.encode('ascii', 'replace')
+        except:
+            raise Invalid(self.message('cpfFormat', state), value, state)
+        clean_value = value.strip().replace(' ', '')
+        for regexp in self._cpf_re:
+            match = regexp.match(clean_value)
+            if match:
+                return self._store_format % match.groups()
+        raise Invalid(self.message('cpfFormat', state), value, state)
 
 class BrazilPhoneNumber(formencode.FancyValidator):
 
@@ -90,18 +107,16 @@ class BrazilPhoneNumber(formencode.FancyValidator):
         >>> valid.to_python("31-12349.5678")
             ...
         formencode.api.Invalid: Please enter a number, with area code, in the form (##)########.
-
     """
 
     strip = True
     _br_phone_re = [re.compile(r"^\s*\(\s*(\d{2})\s*\)[\s\.\-/_|]*(\d{4})[\s\.\-/_|]*(\d{4})\s*$"),
-                   re.compile(r"^\s*(\d{2})[\s\.\-/_|]*(\d{4})[\s\.\-/_|]*(\d{4})\s*$")]
+                    re.compile(r"^\s*(\d{2})[\s\.\-/_|]*(\d{4})[\s\.\-/_|]*(\d{4})\s*$")]
     _store_format = "%s%s%s"
-    messages = {
-        'phoneFormat': _('Please enter a number, with area code, in the form (##)########.'),
-        'alreadyExists': _('This phone number already exists in database, please choose another one.')
-        }
-
+    messages = {'phoneFormat': _('Please enter a number, with area code, in ' \
+                                 'the form (##)########.'),
+                'alreadyExists': _('This phone number already exists in ' \
+                                   'database, please choose another one.')}
 
     def _to_python(self, value, state):
         from models import Telefone
@@ -127,7 +142,6 @@ class Cep(formencode.FancyValidator):
 
     """
     Validates, and converts Cep numbers to ########
-    Adapted from formencode.validators.national.InternationPhoneNumber
 
     >>> valid = Cep()
     >>> valid.to_python("12345-678")
@@ -156,10 +170,8 @@ class Cep(formencode.FancyValidator):
     strip = True
     _cep_re = [re.compile(r"^(\d{2})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})$")]
     _store_format = "%s-%s-%s"
-    messages = {
-        'cepFormat': _('Please enter a valid cep number in the format #####-###.')
-        }
-
+    messages = {'cepFormat': _('Please enter a valid cep number ' \
+                               'in the format #####-###.')}
 
     def _to_python(self, value, state):
         self.assert_string(value, state)
@@ -176,6 +188,8 @@ class Cep(formencode.FancyValidator):
 
 
 class Dependent(formencode.FancyValidator):
+    """
+    """
     schema = None
     depend_field = None
 
@@ -184,11 +198,12 @@ class Dependent(formencode.FancyValidator):
         return self.schema.to_python(value, state)
 
 class AtLeastOne(formencode.FancyValidator):
+    """
+    """
     schema = None
     msg = None
-    messages = {
-        'errorMessage': _('Please mark at least one option'),
-        }
+    messages = {'errorMessage': _('Please mark at least one option')}
+
     def to_python(self, value, state):
         print "####"
         print value
@@ -205,17 +220,19 @@ class AtLeastOne(formencode.FancyValidator):
 
 
 class NotEmptyList(formencode.FancyValidator):
+    """
+    """
     schema = None
-    messages = {
-        'errorMessage': _('Please enter a value'),
-        }
+    messages = {'errorMessage': _('Please enter a value')}
+
     def to_python(self, value, state):
         if not value:        
             raise Invalid(self.message('errorMessage', state), value, state)
         if isinstance(value, list):
             for cv in value:
                 if not cv:
-                    raise Invalid(self.message('errorMessage', state), value, state)
+                    raise Invalid(self.message('errorMessage', state),
+                                  value, state)
         return self.schema.to_python(value, state)
 
             

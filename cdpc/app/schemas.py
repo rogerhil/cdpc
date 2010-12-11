@@ -25,7 +25,7 @@ from formencode.validators import _, Invalid
 from formencode.interfaces import *
 from formencode.api import *
 from formencode.schema import format_compound_error
-from validators import CpfValidator, Cep, BrazilPhoneNumber, Dependent, \
+from validators import Cpf, Cep, BrazilPhoneNumber, Dependent, \
                        AtLeastOne, NotEmptyList
 
 
@@ -62,10 +62,10 @@ class Usuario(formencode.Schema):
 
     # -- Dados pessoais
     nome = validators.String(not_empty=True)
-    cpf = CpfValidator(not_empty=True)
+    cpf = Cpf(not_empty=True)
     data_nascimento = validators.DateConverter(month_style='dd/mm/yyyy')
     sexo = validators.String(not_empty=True)
-    telefone = validators.String(not_empty=True)
+    telefone = NotEmptyList(schema=formencode.ForEach(BrazilPhoneNumber()))
     avatar = validators.FieldStorageUploadConverter()
 
     # -- Sobre a sua geolocalização
@@ -81,10 +81,14 @@ class Usuario(formencode.Schema):
 
     # -- Contatos e Espaços na rede
     website = validators.URL()
-    rs_nome = validators.String()
-    rs_link = validators.String()
-    feed_nome = validators.String()
-    feed_link = validators.String()
+    rs_nome = formencode.ForEach(validators.String())
+    rs_link = formencode.ForEach(validators.URL())
+    feed_nome = formencode.ForEach(validators.String())
+    feed_link = formencode.ForEach(validators.URL())
+    
+    chained_validators = [validators.FieldsMatch('senha', 'confirmar_senha'),
+                          validators.RequireIfPresent('rs_nome', present='rs_link'),
+                          validators.RequireIfPresent('rs_link', present='rs_nome')]
 
 
 ################################################################################

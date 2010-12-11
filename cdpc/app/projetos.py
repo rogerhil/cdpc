@@ -19,7 +19,7 @@
 from math import ceil
 from formencode import Invalid, foreach
 from flask import Module, render_template, request, abort, make_response, \
-                  url_for, redirect
+                  url_for, redirect, flash
 from elixir import session
 from simplejson import dumps
 from formencode import htmlfill
@@ -344,7 +344,6 @@ def novo():
                     )
             else:
                 projeto.entidade.enderecos.append(projeto.enderecos[0])
-            #import pdb; pdb.set_trace()
 
             for i in validado['ent_tel']:
                 tel = models.Telefone(numero=i)
@@ -430,9 +429,8 @@ def novo():
             except Exception, e:
                 session.rollback()
                 raise e
-            
-            msg = models.SiteMessage.create('Novo projeto criado com sucesso!', user, 'success')
-            # FIXME: Avisar ao usuário que tudo deu certo. OK!
+
+            flash(u'Projeto ccadastrado com sucesso!', 'success')
             return redirect("/projetos")
 
     return render_template(

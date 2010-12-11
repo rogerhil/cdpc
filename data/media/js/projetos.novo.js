@@ -34,7 +34,6 @@ function carregar () {
     createStepButtons();
     configStepButtons();
     configFields();
-    supportsPlaceholder();
 }
 
 function configValidator() {
@@ -81,6 +80,8 @@ function createStepButtons() {
 }
 
 function configFields() {
+    decorateRequiredLabels();
+    supportsPlaceholder();
     $('input.cep').unmask();
     $('input.phone').unmask();
     $('input.cep').mask('99.999-999');
@@ -111,7 +112,7 @@ function next(e) {
     var next = current.next();
     var next_step = next.attr('id');
     var children, theForm;
- 
+    
     function afterServerValidation(data) {
         var current = $("div#" + CURRENT_STEP);
         $("div#ajaxsplash").fadeOut('fast');
@@ -164,7 +165,7 @@ function next(e) {
         // $.ajax options can be used here too, for example:
         //timeout:   3000
     };
-
+    clearPlaceholders();
     var valid = validateStep();
             
     // COMENTE A LINHA ABAIXO PARA DEBUGAR A VALIDACAO DO SERVIDOR
@@ -200,7 +201,8 @@ function previous(e) {
 }
 
 function submit(e) {
-    var form = document.getElementById("novoProjeto").submit();
+    clearPlaceholders();
+    document.getElementById("novoProjeto").submit();
 }
 
 function loadDadosProjeto() {

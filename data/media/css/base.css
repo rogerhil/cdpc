@@ -126,7 +126,17 @@ ______________________*/
 #content{
     background:url("../img/bg/bg_content.png") repeat-x;
     overflow:hidden;
-    padding:60px 0;
+    padding:40px 0;
+}
+
+#content h2{
+  background:url("../img/bg/bg_sidebar.png") bottom right no-repeat;
+  color:#5699cb;
+  font-size:22px;
+  font-weight:normal;
+  margin-bottom:33px;
+  padding-bottom:7px;
+  width:297px;
 }
 
 #content div.main{
@@ -289,7 +299,7 @@ div.ajaxsplash {
 div.site-message { 
     padding:5px;
     border:1px solid;
-    margin-top: 5px;
+    margin: 0px 0px 20px 0px;
 }
 
 div.info {

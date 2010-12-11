@@ -14,7 +14,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var VALIDATOR;
+
 $(document).ready (function () {
-    $('#novoUsuario').validate();
+    VALIDATOR = $('#novoUsuario').validate();
+    configFields();
 });
+
+function configFields() {
+    decorateRequiredLabels();
+    supportsPlaceholder();
+    $('input.cpf').unmask();
+    $('input.phone').unmask();
+    $('input.cep').unmask();
+    $('input.data').unmask();
+    $('input.cpf').mask('999.999.999-99');
+    $('input.phone').mask('(99) 9999-9999');
+    $('input.cep').mask('99.999-999');
+    $('input.data').mask('99/99/9999');
+}
+
+function submit() {
+    var valid;
+    clearPlaceholders();
+    valid = VALIDATOR.form();
+    //valid = true;
+    if (valid) {
+        document.getElementById('novoUsuario').submit();
+    } else {
+        $('html, body').animate({scrollTop: 0}, 'slow');
+    }
+}
+
+
 

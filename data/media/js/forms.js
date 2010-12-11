@@ -15,6 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function clearPlaceholders() {
+    $('*[placeholder]').each(function() {
+        if ($(this).val() == $(this).attr('placeholder')) {
+            $(this).val('');
+        }
+    });
+}
+
 function supportsPlaceholder() {
     var input = document.createElement('input');
     if ('placeholder' in input) return;    
@@ -24,11 +32,7 @@ function supportsPlaceholder() {
     });
     $('*[placeholder]').resetDefaultValue();
     $('*[placeholder]').parents('form').bind('submit', function() {
-        $('*[placeholder]', $(this)).each(function() {
-            if($(this).val() == $(this).attr('placeholder')) {
-                $(this).val('');
-            }
-        });
+        clearPlaceholders();
     });
 }
 

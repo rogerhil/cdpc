@@ -1,12 +1,36 @@
- * Finalizar a validação do form de projetos
-   - Server side
-   - JavaScript
 
- * Finalizar a listagem de projetos
+ * Projetos
+   - Finalizar a listagem de projetos 
+   - Validacão com RequireIfPresent para campos do tipo rs_nome, rs_link etc
+   - Verificar os tips
+   - Veririfcar quais fields unique
+   - Após validacão do servidor com erros:
+     - indicar quais steps possuem erros
+     - ir para o primeiro step que possui erros
+   
+ * Usuarios
+   - Fazer a listagem de usuários
+   - Veririfcar quais fields unique
+   
+ * Geral
+   - Analisar se telefone precisa ser unique
+   - Implementar validacao RequireIfPresent do lado do cliente JS
+   - Layout para o splash de ajax
+   - Verificar com o designer sobre possíveis layouts extra incluídos
+   - Implementar forms de edição de cada tipo de dados
+   - Melhorias no layout em geral
+   - Organizacão do CSS
+ 
+ * Tela principal
 
- * Fazer a listagem de usuários
 
- * Implementar forms de edição de cada tipo de dados
+ * Imagens
+   - Imagens para flash messages (error, warning, info, success)
+   - Imagem do lápis no topo
+   
 
- * Melhorias no layout em geral
+
+
+
+
 

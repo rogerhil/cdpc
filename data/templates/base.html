@@ -70,32 +70,23 @@
         </div><!-- .bg -->
       </div><!-- #header -->
 
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class="flashes definedWidth">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
-
-
-
       <div id="content">
         <div class="centralize">
+          {% block contenttitle %}{% endblock %}
           {% block contenthead %}
           {% endblock %}
-          {% block container %}
-          <div class="main">
-            {% if site_messages %}
-              {% for message in site_messages %}
-                <div class="site-message {{ message.status }}">
-                  {{ message.text }}
+          {% with messages = get_flashed_messages(True) %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="site-message {{ message.0 }}">
+                  {{ message.1 }}
                 </div>
               {% endfor %}
             {% endif %}
-            {% block content %}{% endblock %}
+          {% endwith %}
+          {% block container %}
+          <div class="main">
+          {% block content %}{% endblock %}
           </div>
           <div class="sidebar">
             {% block sidebar %}{% endblock %}

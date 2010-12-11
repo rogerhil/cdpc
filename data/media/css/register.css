@@ -14,20 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#content{
-  padding:40px 0;
-}
-
-#content h2{
-  background:url("../img/bg/bg_sidebar.png") bottom right no-repeat;
-  color:#5699cb;
-  font-size:22px;
-  font-weight:normal;
-  margin-bottom:33px;
-  padding-bottom:7px;
-  width:297px;
-}
-
 /* Cadastro de Projetos
 ________________________*/
 ul.steps{
@@ -157,6 +143,27 @@ div.main li select.state{
   width:100px;
 }
 
+div.main input.tiny, select.tiny {
+    width: 60px !important;
+}
+
+div.main input.small, select.small {
+    width: 100px !important;
+}
+
+div.main input.medium, select.medium {
+    width: 180px !important;
+}
+
+div.main input.big, select.big {
+    width: 280px !important;
+}
+
+div.main input.total, select.total {
+    width: 420px;
+}
+
+
 div.step{
   overflow:hidden;
   position:relative;
@@ -167,6 +174,14 @@ div#project_comunication div.sidebar div.tip{
   right:0;
   top:196px;
   width:270px;
+}
+
+div.main .helptext{
+  color:#629fcd !important;
+  font-size:12px;
+  font-weight:normal;
+  line-height:100%;
+  margin-bottom:25px;
 }
 
 div.main h3{
@@ -340,4 +355,8 @@ div.subadded {
 
 div.subadded a {
    margin: 0px !important;
+}
+
+span.requiredstar {
+    color: #B90000;
 }

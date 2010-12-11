@@ -20,7 +20,6 @@
    src="{{ url_for('.static', filename='js/inc/jquery.form.js') }}">
 </script>
 
-
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/geral.novo.js') }}"></script>
@@ -34,9 +33,9 @@
 
 {% block bodyclass %}project_register{% endblock %}
 
-{% block contenthead %}
+{% block contenttitle %}<h2>Cadastro de Projetos</h2>{% endblock %}
 
-<h2>Cadastro de Projetos</h2>
+{% block contenthead %}
 
 <ul class="steps">
   <li class="dadosProjeto active">Dados</li>
