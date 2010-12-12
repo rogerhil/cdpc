@@ -35,6 +35,9 @@ module = Module(__name__)
 
 @module.route('/')
 def listing():
+    
+    flash('teste', 'success');
+    
     vals_uf = VALORES_UF.items()
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 

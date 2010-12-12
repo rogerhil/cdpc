@@ -296,32 +296,38 @@ div.ajaxsplash {
 }
 
 div.site-message { 
-    padding:5px;
-    border:1px solid;
+    padding:10px 10px 10px 36px;
     margin: 0px 0px 20px 0px;
+    background-repeat: no-repeat;
+    background-position: 6px;
+    font-size: 16px;
 }
 
 div.info {
     background-color:#C7D6EC;
     color:#003B91;
     border-color: #003B91;
+    background-image:url("../img/bg/info.png");
 }
 
 div.success {
     background-color:#C7FBAF;
     color:#2C6A11;
     border-color:#2C6A11;
+    background-image:url("../img/bg/success.png");
 }
 
 div.warning {
     background-color:#F1F19D;
     color:#828200;
     border-color:#828200;
+    background-image:url("../img/bg/warning.png");
 }
 
 div.error {
     background-color:#FFBBA3;
-    color: #FF0003;
-    border-color: #FF0003;
+    color: #A20000;
+    border-color: #A20000;
+    background-image:url("../img/bg/error.png");
 }
 

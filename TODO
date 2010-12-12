@@ -1,6 +1,5 @@
 
  * Projetos
-   - Finalizar a listagem de projetos 
    - Validacão com RequireIfPresent para campos do tipo rs_nome, rs_link etc
    - Verificar os tips
    - Veririfcar quais fields unique
@@ -9,7 +8,6 @@
      - ir para o primeiro step que possui erros
    
  * Usuarios
-   - Fazer a listagem de usuários
    - Veririfcar quais fields unique
    
  * Geral
@@ -25,7 +23,6 @@
 
 
  * Imagens
-   - Imagens para flash messages (error, warning, info, success)
    - Imagem do lápis no topo
    
 
