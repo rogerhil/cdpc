@@ -39,8 +39,14 @@ th {
     border: 1px solid #DADADA;
     text-transform: uppercase;
     padding: 5px;
+    padding-right: 20px;
     font-size: 13px;
     white-space: nowrap;
+}
+
+th:hover {
+    border-color: #629FCD;
+
 }
 
 td {
@@ -71,3 +77,4 @@ th.arrowdown {
     background-image: url("../img/bg/arrow-down.png");
     cursor: pointer;
 }
+

@@ -265,6 +265,8 @@ class Projeto(Cadastrado):
     # -- Avatar
     avatar = Field(Unicode(128)) # Caminho para o arquivo
 
+    def cadastrado_por(self):
+        return " ".join([resp.nome for resp in self.responsavel])
 
 class SiteMessage(Entity):
     text = Field(Unicode(1024))

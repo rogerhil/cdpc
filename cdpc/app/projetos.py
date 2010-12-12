@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
 # Copyright (C) 2010  Marco Túlio Gontijo e Silva <marcot@marcot.eti.br>
+# Copyright (C) 2010  Rogerio Hilbert Lima <rogerhi@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -16,7 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from math import ceil
 from formencode import Invalid, foreach
 from flask import Module, render_template, request, abort, make_response, \
                   url_for, redirect, flash
@@ -29,77 +29,29 @@ from . import models
 from .index import get_user_or_login
 from cadastro import VALORES_UF
 from schemas import CdpcSchema
+from .paginator import Paginator
 
 module = Module(__name__)
 
 @module.route('/')
 def listing():
-
-    page = int(request.args.get('page', 1) or 1)
-    limit = int(request.args.get('limit', 20))
-    index = limit*(page-1)
-    nome = request.args.get('nome', '')
-    cidade = request.args.get('cidade', '')
-    estado = request.args.get('uf', '')
-    order_by = [i.strip() for i in request.args.get('order_by', '').split(' ') if i.strip()]
-    if not order_by:
-        order_by = ['data_cadastro']
-
-    filtro = models.Projeto.query
-            
-    if nome:
-        filtro = filtro.filter(models.Projeto.nome.contains(nome))
-    if cidade:
-        filtro = filtro.filter(models.Projeto.enderecos.any(models.Endereco.cidade.contains(cidade)))
-    if estado:
-        filtro = filtro.filter(models.Projeto.enderecos.any(uf=estado))
-
     vals_uf = VALORES_UF.items()
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
-    limites = [10, 20, 30, 40, 50, 100, 200]
-    cvars = request.args.copy()
-    cvars['limit'] = limit    
-    cvars['nome_class'] = 'arrowdown'
-    cvars['responsavel_por_class'] = 'arrowdown'
-    cvars['cidade_class'] = 'arrowdown'
-    cvars['uf_class'] = 'arrowdown'
-    cvars['data_cadastro_class'] = 'arrowdown'
-    
-    from sqlalchemy import desc
-    
-    for oby in order_by:
-        n = oby.replace('-', '')
-        #print n, n, n
-        if n in ['uf', 'cidade']:
-            pass
-            #filtro = filtro.order_by(desc(getattr(models.Endereco, n)))
-        elif n == 'responsavel_por':
-            pass
-            #filtro = filtro.order_by('responsavel')
-        else:
-            if oby.startswith('-'):
-                filtro = filtro.order_by(desc(n))                
-            else:
-                filtro = filtro.order_by(oby)
-        cvars['%s_class' % n] = oby.startswith('-') and "arrowup" or "arrowdown"
-    
-    cvars['order_by'] = " ".join(order_by)
-    lista = filtro[index:index+limit]
-    count = filtro.count()
+    columns = [('nome',   {'title': 'Nome'}),
+               ('cadastrado_por', {'title': 'Cadastrado por', 'call': True}),
+               ('cidade', {'title': 'Cidade', 'mcol': 'enderecos'}),
+               ('uf', {'title': 'Estado', 'mcol': 'enderecos'}),
+               ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})]
 
-    pages = ceil(count / limit)
-    display = page-1 == int(pages) and len(lista) or limit
+    search_fields = [('nome',   {'label': 'Nome', 'type': 'text'}),
+                     ('cidade', {'label': 'Cidade', 'type': 'text', 'mcol': 'enderecos'}),
+                     ('uf',     {'label': 'Estado', 'type': 'select', 'mcol': 'enderecos',
+                                 'choices': vals_uf})]
+
+    paginator = Paginator(models.Projeto, columns, search_fields)
     
-    pagination = dict(count=count, limit=limit, pages=pages,
-                      page=page, display=display)
-    
-    return render_template('projetos/listing.html',
-                           projetos=lista,
-                           pagination=pagination,
-                           vals_uf=vals_uf,
-                           limites=limites,
-                           cvars=cvars)
+    return render_template('projetos/listing.html', paginator=paginator.render())
 
 @module.route('<int:pid>.json')
 def projeto_json(pid):
@@ -256,11 +208,7 @@ def novo():
         try:
             data = dict(request.form.lists())
             data = prepare_data(data, ProjetoSchema.fields)
-            print "-"*10
-            print data
             validado = validator.to_python(data)
-            print validado
-            print "OK!!!! "*20
             clean_list = lambda x: [i for i in x if i.strip()];
 
             rs_nomes = clean_list(request.form.getlist('rs_nome'))
@@ -272,11 +220,6 @@ def novo():
             assert len(feed_nomes) == len(feed_links)
 
         except Invalid, e:
-            # Dar um feedback pro usuário usando a instância da
-            # exceção "e".
-            print 'Exceção'
-            print e
-            #import pdb; pdb.set_trace()
             rendered = render_template(
                         'projetos/novo/main.html',
                         vals_uf=VALORES_UF.keys(),
@@ -288,9 +231,7 @@ def novo():
             filled = htmlfill.render(rendered, request.form.to_dict(), errors, prefix_error=False, auto_error_formatter=error_tag)
             return make_response(filled)
         else:
-            print "@"*20
-            print validado
-            print "@"*20
+
             # Instanciando o modelo e associando os campos validados e
             # transformados em valores python à instância que será
             # salva no db.
@@ -475,6 +416,8 @@ def novo():
             ind_expectadores = validado['ind_expectadores']
             ind_populacao = validado['ind_populacao']
 
+            projeto.responsavel.append(user)
+            
             # -- Avatar
             # TODO: Tratar upload de avatar
 

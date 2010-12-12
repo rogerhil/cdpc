@@ -1,6 +1,7 @@
 # -*- coding: utf-8; Mode: Python -*-
 #
 # Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
+# Copyright (C) 2010  Rogerio Hilbert Lima <rogerhi@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -29,73 +30,28 @@ from . import schemas
 from . import models
 from .cadastro import VALORES_UF
 
+from .paginator import Paginator
+
 module = Module(__name__)
 
 @module.route('/')
 def listing():
-
-    page = int(request.args.get('page', 1) or 1)
-    limit = int(request.args.get('limit', 20))
-    index = limit*(page-1)
-    nome = request.args.get('nome', '')
-    cidade = request.args.get('cidade', '')
-    estado = request.args.get('uf', '')
-    order_by = [i.strip() for i in request.args.get('order_by', '').split(' ') if i.strip()]
-    if not order_by:
-        order_by = ['data_cadastro']
-
-    filtro = models.Pessoa.query
-            
-    if nome:
-        filtro = filtro.filter(models.Pessoa.nome.contains(nome))
-    if cidade:
-        filtro = filtro.filter(models.Pessoa.endereco.any(models.Endereco.cidade.contains(cidade)))
-    if estado:
-        filtro = filtro.filter(models.Pessoa.endereco.any(uf=estado))
-
     vals_uf = VALORES_UF.items()
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
-    limites = [10, 20, 30, 40, 50, 100, 200]
-    cvars = request.args.copy()
-    cvars['limit'] = limit
-    cvars['nome_class'] = 'arrowdown'
-    cvars['responsavel_por_class'] = 'arrowdown'
-    cvars['cidade_class'] = 'arrowdown'
-    cvars['uf_class'] = 'arrowdown'
-    cvars['data_cadastro_class'] = 'arrowdown'
-    
-    from sqlalchemy import desc
-    
-    for oby in order_by:
-        n = oby.replace('-', '')
-        #print n, n, n
-        if n in ['uf', 'cidade']:
-            pass
-            #filtro = filtro.order_by(desc(getattr(models.Endereco, n)))
-        else:
-            if oby.startswith('-'):
-                filtro = filtro.order_by(desc(n))                
-            else:
-                filtro = filtro.order_by(oby)
-        cvars['%s_class' % n] = oby.startswith('-') and "arrowup" or "arrowdown"
-    
-    cvars['order_by'] = " ".join(order_by)
-    lista = filtro.slice(index, index+limit)
-    count = filtro.count()
+    columns = [('nome',   {'title': 'Nome'}),
+               ('cidade', {'title': 'Cidade', 'mcol': 'endereco'}),
+               ('uf',     {'title': 'Estado', 'mcol': 'endereco'}),
+               ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})]
 
-    pages = ceil(count / limit)
-    display = min(limit, count)
+    search_fields = [('nome',   {'label': 'Nome', 'type': 'text'}),
+                     ('cidade', {'label': 'Cidade', 'type': 'text', 'mcol': 'endereco'}),
+                     ('uf',     {'label': 'Estado', 'type': 'select', 'mcol': 'endereco',
+                                 'choices': vals_uf})]
+
+    paginator = Paginator(models.Pessoa, columns, search_fields)
     
-    pagination = dict(count=count, limit=limit, pages=pages,
-                      page=page, display=display)
-    
-    return render_template('usuarios/listing.html',
-                           lista=lista,
-                           pagination=pagination,
-                           vals_uf=vals_uf,
-                           limites=limites,
-                           cvars=cvars)
+    return render_template('usuarios/listing.html', paginator=paginator.render())
 
 
 @module.route("novo/", methods=('GET', 'POST'))

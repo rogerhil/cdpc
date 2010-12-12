@@ -1,0 +1,128 @@
+
+<form id="paginator" method="get">
+  <ul>
+    <li class="busca">
+      {% for name, props in search_fields %}
+      <div class="column">
+        <label>{{ props.label }}:</label>
+        {% if props.type == 'select' %}
+          <select name="{{ name }}">
+            <option value=""></option>
+            {% for v, title in props.choices %}
+            <option value="{{ v }}" {% if v == cvars[name] %}selected="selected"{% endif %}>{{ title }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input type="text" name="{{ name }}" id="{{ name }}" value="{{ cvars[name] }}" class="textarea medium" />
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div class="column">
+        <label>Limite:</label>
+        <select name="limit" class="small">
+          {% for l in cvars.limites %}
+          <option value="{{ l }}" {% if l == cvars.limit %}selected="selected"{% endif %}>{{ l }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="column last">
+        <label>&nbsp;</label>
+        <input type="submit" value="Buscar" />
+      </div>
+    </li>
+  </ul>
+
+  {% if items %}
+  
+  <div>
+    <p>
+      Exibindo <strong>{{ pagination.limit }}</strong> de um total de
+      <strong>{{ pagination.count }}</strong> items.
+    </p>
+  </div>
+  
+  <div class="tablecontent">
+    <table>
+      <thead>
+        <tr>
+          {% for id, props in columns %}
+          <th class="{{ props.thclass }}" id="{{ id }}">{{ props.title }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          {% for id, props in columns %}
+          <td class="{{ props.class }}">
+            {% if props.mcol and item[props.mcol] %}
+              {% if props.call %}
+                {{ item[props.mcol][0][id]() }}
+              {% else %}
+                {{ item[props.mcol][0][id] }}
+              {% endif %}
+            {% else %}
+              {% if props.call %}
+                {{ item[id]() }}
+              {% else %}
+                {{ item[id] }}
+              {% endif %}
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <div style="margin-top: 10px;">
+    <ul>
+      <li>
+        {% for i in range(1, pagination['pages']) %}
+        <a href="javascript: $('input[name=page]').val('{{ i }}'); FORM.submit()"
+           {% if i == pagination['page'] %}
+           class="selected"
+           {% endif %}>{{ i }}</a>
+        {% endfor %}
+        <input type="hidden" name="page" />
+      </li>
+    </ul>
+  </div>
+
+  <input type="hidden" name="order_by" value="{{ cvars.order_by }}" />
+  
+  <script type="text/javascript">
+    var FORM = document.getElementById('paginator');
+    
+    function appendOrderBy(newob) {
+        var $orderby = $("input[name=order_by]");
+        var obys = $orderby.val().split(' ');
+        var n = newob.replace('-', '').replace(' ', '');
+        for (var k = 0; k < obys.length; k++) {
+            if (n == obys[k].replace('-', '').replace(' ', '')) {
+                obys.splice(k,1);
+                break;
+            }
+        }
+        return newob.replace(' ', '') + " " + obys.join(' ');
+    }
+    
+    $("table th").each(function() {
+        $(this).click(function() {
+            var n = $(this).attr('id');
+            var $orderby = $("input[name=order_by]");
+            var minus = " ";
+            if ($(this).hasClass('arrowdown')) {
+                minus = "-";
+            }
+            $orderby.val(appendOrderBy(minus + n));
+            FORM.submit();
+        });
+    });
+  </script>
+  
+  {% else %}
+    <h3>Nenhum item cadastrado no momento.</h3>
+  {% endif %}
+</form>  
