@@ -15,9 +15,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Contém as visualizações para a gestão de usuários
-"""
-
 from . import models
 from math import ceil
 from flask import request, render_template
@@ -87,7 +84,7 @@ class Paginator(object):
         query = self._order_items(order_by, query)
         count = query.count()
         pages = int(ceil(count / limit))
-        page = page <= pages and page or pages
+        page = (page >= pages and pages) and pages or page
         index = limit*(page-1)               
         items = query[index:index+limit]
 
