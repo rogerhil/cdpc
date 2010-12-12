@@ -20,7 +20,7 @@
 from hashlib import sha1
 from sqlalchemy.orm.exc import NoResultFound
 from flask import Module, request, render_template, session, \
-    g, url_for, redirect, abort
+    g, url_for, redirect, abort, flash
 from .models import Pessoa
 
 module = Module(__name__)
@@ -29,7 +29,8 @@ module = Module(__name__)
 def index():
     """Renderiza o template da index
     """
-    return render_template("index.html")
+    email = request.args.get('email', '')
+    return render_template("index.html", email=email)
 
 @module.route('login', methods=('POST',))
 def login():
@@ -38,12 +39,13 @@ def login():
     usuario = request.form.get('email')
     senha = sha1(request.form.get('senha')).hexdigest()
     proxima = request.form.get('proxima', request.referrer)
+
     try:
         g.usuario = Pessoa.query.filter_by(email=usuario, senha=senha).one()
         session['usuario'] = usuario
         return redirect(proxima)
     except NoResultFound:
-        proxima += '?erro=1'
+        proxima = '%s?erro=1&email=%s' % (proxima.split("?")[0], usuario)
         return redirect(proxima)
 
 @module.route('login_form')
@@ -51,11 +53,12 @@ def login_form():
     """Exibe o form de login
     """
     proxima = request.args.get('proxima', request.referrer)
+    email = request.args.get('email', '')
     if proxima == url_for('index.login_form'):
         proxima = url_for('index.index')
     if is_logged_in():
         return redirect(proxima)
-    return render_template('login.html', proxima=proxima)
+    return render_template('login.html', proxima=proxima, email=email)
 
 @module.route('logout')
 def logout():
@@ -63,6 +66,7 @@ def logout():
     """
     if 'usuario' in session:
         session.pop('usuario')
+    flash(u'Sessão finalizada!', 'info')
     return redirect(url_for('index.index'))
 
 def is_logged_in():

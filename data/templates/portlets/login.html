@@ -1,18 +1,24 @@
 {% if request.args.get('erro') %}
-  <div class="erro">Usuário ou senha incorretos</div>
+  <div id="login_error" class="site-message error">Usuário ou senha incorretos</div>
 {% endif %}
 <form action="{{ url_for('login') }}" method="post" id="login">
-  <label for="email">E-mail:</label>
-  <input type="text" id="email" name="email" maxlength="100"
-  placeholder="exemplo@exemplo.com.br" class="textarea">
-
-  <div class="forgot">
-    <label for="password">Senha:</label>
-    <a href="" class="forgot">Esqueceu sua senha?</a>
-  </div>
-
-  <input type="password" id="password" name="senha" maxlength="30"
-  placeholder="senha" class="textarea">
+  <ul>
+    <li>
+      <label for="email">E-mail:</label>
+      <input type="text" id="email" name="email" maxlength="100"
+             value="{{ email }}" class="required email textarea">
+    </li>
+  </ul>
+  <ul>
+    <li>
+      <div class="forgot">
+        <label for="password">Senha:</label>
+        <a href="" class="forgot">Esqueceu sua senha?</a>
+      </div>
+      <input type="password" id="password" name="senha" maxlength="30"
+      placeholder="senha" class="required textarea">
+    </li>
+  </ul>
   <a href="{{ url_for('usuarios.novo') }}" class="register">
     Cadastrar
   </a>

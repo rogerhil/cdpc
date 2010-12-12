@@ -3,6 +3,25 @@
 {% block extra_head %}
 <link rel="stylesheet" type="text/css" media="all"
       href="{{ url_for('.static', filename='css/home.css') }}">
+<link
+   rel="stylesheet" type="text/css" media="all"
+   href="{{ url_for('.static', filename='css/login.css') }}">
+
+<script src="{{ url_for('.static', filename='js/inc/jquery-1.4.4.min.js') }}"></script>
+<script src="{{ url_for('.static', filename='js/inc/jquery.validate.fixed-0.1.js') }}"></script>
+
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/inc/jquery.form.js') }}">
+</script>
+
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/validator.methods.js') }}"></script>
+
+<script type="text/javascript"
+        src="{{ url_for('.static', filename='js/login.js') }}"></script>
+   
 {% endblock %}
 
 {% block content %}

@@ -78,8 +78,11 @@
     margin-bottom:8px;
 }
 
-#content div.sidebar input{
+#content div.sidebar li {
     margin-bottom:20px;
+}
+
+#content div.sidebar input{
     width:278px;
 }
 
