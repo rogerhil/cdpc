@@ -92,7 +92,20 @@ tr.quickview {
     display: none;
 }
 
+tr.quickview td {
+   border-bottom: 2px solid #629FCD;
+}
+
 tr.quickview:hover {
     background-color: transparent;
     cursor: default;
+}
+
+tr.selecionada td {
+    border-bottom: none !important;
+    border-top: 2px solid #629FCD;
+}
+
+tr.selecionada {
+
 }
