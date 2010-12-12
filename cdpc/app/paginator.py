@@ -82,7 +82,9 @@ class Paginator(object):
     def cel_content(item, cid, props):
         value = ""
         if props.get('mcol'):
-            value = getattr(getattr(item, props['mcol'])[0], cid)
+            mcol = getattr(item, props['mcol'])
+            if mcol:
+                value = getattr(mcol[0], cid)
         else:
             value = getattr(item, cid)
         if props.get('call'):
