@@ -40,7 +40,7 @@ def listing():
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
     columns = [('nome',   {'title': 'Nome'}),
-               ('cadastrado_por', {'title': 'Cadastrado por', 'call': True}),
+               ('responsaveis', {'title': 'Cadastrado por', 'call': True}),
                ('cidade', {'title': 'Cidade', 'mcol': 'enderecos'}),
                ('uf', {'title': 'Estado', 'mcol': 'enderecos'}),
                ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})]

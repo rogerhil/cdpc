@@ -44,6 +44,9 @@ class Paginator(object):
             cols[key]['thclass'] = 'arrowdown'
         for oby in order_by:
             n = oby.replace('-', '')
+            if not (n in self.model.__dict__.keys() and \
+                    not hasattr(getattr(self.model, n), '__call__')):
+                continue
             if oby.startswith('-'):
                 query = query.order_by(desc(n))                
             else:
@@ -72,7 +75,7 @@ class Paginator(object):
                     query = query.filter(getattr(cmodel, col).contains(value))
                 else:
                     query = query.filter(getattr(self.model, col).contains(value))
-                    #query = query.filter_by(**{col: value})
+
         return query
     
     def render(self):
