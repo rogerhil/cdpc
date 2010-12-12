@@ -17,8 +17,8 @@
 function showProject(pid, line) {
     var $cur = $(line);
     var $tr = $(line).next();
-
-    if ($tr.css('display') == 'none') {
+    var duration = 500;
+    if ($tr.is(':hidden')) {
         /* Formatando a linha corrente */
         $cur.addClass('selecionada');
 
@@ -60,13 +60,14 @@ function showProject(pid, line) {
                     $('.site').hide();
                 }
 
-                $tr.fadeIn('slow');
+                $tr.animate({opacity: '+=1', height: 'toggle'}, duration);
             });
         } else {
-            $tr.fadeIn('slow');
+            $tr.animate({opacity: '+=1', height: 'toggle'}, duration);
         }
     } else {
         $cur.removeClass('selecionada');
-        $tr.fadeOut();
+        //$tr.fadeOut();
+        $tr.animate({opacity: '-=1', height: 'toggle'}, duration);
     }
 }

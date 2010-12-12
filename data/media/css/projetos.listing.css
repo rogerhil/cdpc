@@ -54,6 +54,16 @@ td {
     padding: 3px 0px 3px 3px;
 }
 
+td a {
+    color: #797979;
+    text-decoration: none;
+}
+
+tr:hover {
+    background-color: #DEE7EE;
+    cursor: pointer;
+}
+
 li.busca {
     border: 1px solid #DADADA;
     padding: 20px;
@@ -78,3 +88,11 @@ th.arrowdown {
     cursor: pointer;
 }
 
+tr.quickview {
+    display: none;
+}
+
+tr.quickview:hover {
+    background-color: transparent;
+    cursor: default;
+}

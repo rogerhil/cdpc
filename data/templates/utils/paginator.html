@@ -52,25 +52,22 @@
       </thead>
       <tbody>
         {% for item in items %}
-        <tr>
+        <tr {% autoescape false %}{{ tr_event(item) }}{% endautoescape %}>
           {% for id, props in columns %}
           <td class="{{ props.class }}">
-            {% if props.mcol and item[props.mcol] %}
-              {% if props.call %}
-                {{ item[props.mcol][0][id]() }}
-              {% else %}
-                {{ item[props.mcol][0][id] }}
-              {% endif %}
-            {% else %}
-              {% if props.call %}
-                {{ item[id]() }}
-              {% else %}
-                {{ item[id] }}
-              {% endif %}
-            {% endif %}
+            {% autoescape false %}
+              {{ cel(item, id, props) }}
+            {% endautoescape %}
           </td>
           {% endfor %}
         </tr>
+        {% if quickview %}
+        <tr class="quickview">
+          <td colspan="{{ columns|length }}">
+            {% include quickview %}
+          </td>
+        </tr>
+        {% endif %}
         {% endfor %}
       </tbody>
     </table>

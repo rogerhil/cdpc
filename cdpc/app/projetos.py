@@ -39,6 +39,12 @@ def listing():
     vals_uf = VALORES_UF.items()
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
+    trevent = {'event': 'onclick',
+               'value': 'showProject(%s, this)',
+               'params': ['id']}
+                   
+    quickview = 'projetos/quickview.html'
+
     columns = [('nome',   {'title': 'Nome'}),
                ('responsaveis', {'title': 'Cadastrado por', 'call': True}),
                ('cidade', {'title': 'Cidade', 'mcol': 'enderecos'}),
@@ -50,7 +56,8 @@ def listing():
                      ('uf',     {'label': 'Estado', 'type': 'select', 'mcol': 'enderecos',
                                  'choices': vals_uf})]
 
-    paginator = Paginator(models.Projeto, columns, search_fields)
+    paginator = Paginator(models.Projeto, columns, search_fields,
+                          quickview=quickview, trevent=trevent)
     
     return render_template('projetos/listing.html', paginator=paginator.render())
 

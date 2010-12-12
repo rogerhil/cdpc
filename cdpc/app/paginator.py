@@ -22,12 +22,15 @@ from sqlalchemy import desc
 
 class Paginator(object):
     
-    def __init__(self, model, columns, search_fields, cvars={}):
+    def __init__(self, model, columns, search_fields, cvars={},
+                 quickview=None, trevent=None):
         self.model = model
         self.columns = columns
         self.search_fields = search_fields
         self.cvars = cvars
         self.limites = [10, 20, 30, 40, 50, 100, 200]
+        self.quickview = quickview
+        self.trevent = trevent
     
     def _order_columns(self, d):
         items = []
@@ -75,6 +78,27 @@ class Paginator(object):
 
         return query
     
+    @staticmethod
+    def cel_content(item, cid, props):
+        value = ""
+        if props.get('mcol'):
+            value = getattr(getattr(item, props['mcol'])[0], cid)
+        else:
+            value = getattr(item, cid)
+        if props.get('call'):
+            value = value()
+        return value
+    
+    def tr_event(self, item):
+        if not self.tr_event:
+            return ''
+        event = self.trevent['event']
+        func = self.trevent['value']
+        params = self.trevent['params']
+        func = func % tuple([getattr(item, p) for p in params])
+        value = '%s="%s"' % (event, func)
+        return value
+        
     def render(self):
         page = int(request.args.get('page', 1) or 1)
         limit = int(request.args.get('limit', 20))
@@ -105,5 +129,8 @@ class Paginator(object):
                                search_fields=self.search_fields,
                                columns=self.columns,
                                cvars=cvars,
-                               string=str)
+                               quickview=self.quickview,
+                               string=str,
+                               cel=Paginator.cel_content,
+                               tr_event=self.tr_event)
 
