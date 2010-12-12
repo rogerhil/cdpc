@@ -92,7 +92,7 @@ class Paginator(object):
         return value
     
     def tr_event(self, item):
-        if not self.tr_event:
+        if not self.trevent:
             return ''
         event = self.trevent['event']
         func = self.trevent['value']
