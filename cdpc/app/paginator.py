@@ -72,32 +72,30 @@ class Paginator(object):
                     query = query.filter(getattr(cmodel, col).contains(value))
                 else:
                     query = query.filter(getattr(self.model, col).contains(value))
+                    #query = query.filter_by(**{col: value})
         return query
     
     def render(self):
         page = int(request.args.get('page', 1) or 1)
         limit = int(request.args.get('limit', 20))
-        index = limit*(page-1)
         order_by = [i.strip() for i in request.args.get('order_by', '').split(' ') if i.strip()]
         
         query = self._make_query()
         query = self._order_items(order_by, query)
-        items = query.slice(index, index+limit)
-                
         count = query.count()
-        pages = ceil(count / limit)
+        pages = int(ceil(count / limit))
+        page = page <= pages and page or pages
+        index = limit*(page-1)               
+        items = query[index:index+limit]
+
         display = min(limit, count)
         pagination = dict(count=count, limit=limit, pages=pages, page=page,
                           display=display)
 
         cvars = request.args.copy()
         cvars['limit'] = limit
-        cvars['nome_class'] = 'arrowdown'
-        cvars['responsavel_por_class'] = 'arrowdown'
-        cvars['cidade_class'] = 'arrowdown'
-        cvars['uf_class'] = 'arrowdown'
-        cvars['data_cadastro_class'] = 'arrowdown'
-        cvars['limites'] = self.limites
+        cvars['page'] = page
+        cvars['limites'] = [i for i in self.limites]
         cvars['order_by'] = " ".join(order_by)
         cvars.update(self.cvars)
         
@@ -106,5 +104,6 @@ class Paginator(object):
                                pagination=pagination,
                                search_fields=self.search_fields,
                                columns=self.columns,
-                               cvars=cvars)
+                               cvars=cvars,
+                               string=str)
 
