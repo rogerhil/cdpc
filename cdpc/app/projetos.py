@@ -40,10 +40,8 @@ def listing():
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
     trevent = {'event': 'onclick',
-               'value': 'showProject(%s, this)',
+               'value': 'mostraProjeto(%s, this)',
                'params': ['id']}
-                   
-    quickview = 'projetos/quickview.html'
 
     columns = [('nome',   {'title': 'Nome'}),
                ('responsaveis', {'title': 'Cadastrado por', 'call': True}),
@@ -56,8 +54,7 @@ def listing():
                      ('uf',     {'label': 'Estado', 'type': 'select', 'mcol': 'enderecos',
                                  'choices': vals_uf})]
 
-    paginator = Paginator(models.Projeto, columns, search_fields,
-                          quickview=quickview, trevent=trevent)
+    paginator = Paginator(models.Projeto, columns, search_fields, trevent=trevent)
     
     return render_template('projetos/listing.html', paginator=paginator.render())
 
@@ -102,6 +99,17 @@ def projeto_json(pid):
         }
 
     return dumps(ctx)
+
+@module.route('<int:pid>.quickview.json')
+def projeto_quickview_json(pid):
+    projeto = models.Projeto.query.filter_by(id=pid).first()
+    if projeto is None:
+        return dumps({'error': 'Projeto não encontrado.'})
+
+    rendered = render_template('projetos/quickview.html', projeto=projeto)
+    data = {'content': rendered}
+    
+    return dumps(data)
 
 def prepare_data(lists, fields):
     data = {}

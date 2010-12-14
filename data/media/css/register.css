@@ -119,6 +119,35 @@ div.main li div.fourcolumn{
   width: 137px;
 }
 
+
+div.container li div.column{
+  float:left;
+  margin-right:10px;
+  border-right: 1px solid #DADADA;
+}
+
+div.container li div.last{
+  margin-right: 0px;
+  border-right: none;
+}
+
+div.container li div.twocolumn{
+  width: 291px;
+}
+
+div.container li div.largetwocolumn{
+  width: 469px;
+}
+
+div.container li div.threecolumn{
+  width: 188px;
+}
+
+div.container li div.fourcolumn{
+  width: 220px;
+}
+
+
 div.main li div.last{
   margin:0;
 }

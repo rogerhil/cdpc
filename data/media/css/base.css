@@ -279,6 +279,10 @@ _____________________*/
     display: none;   
 }
 
+.noborder {
+    border: none !important;
+}
+
 div.ajaxsplash {
     background-color: #458CC1;
     opacity: .3;

@@ -71,3 +71,44 @@ function showProject(pid, line) {
         $tr.animate({opacity: '-=1', height: 'toggle'}, duration);
     }
 }
+
+function mostraProjeto(pid, o) {
+    var $cur = $(o);
+    var colspan = $cur.children().length;
+    var trid = 'projeto_' + pid;
+    var duration = 1000;
+    if (!$cur.next().hasClass('detalhes')) {
+        if ($cur.hasClass('loading')) return;
+        $cur.addClass('selecionada');
+        $cur.addClass('loading');
+        $.getJSON(pid + '.quickview.json', function (data) {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                var html = '<tr class="detalhes"><td colspan="' + colspan + '">' +
+                           '<div class="hidden">' + data.content +
+                           '</div></td></tr>';
+                var $thbef = $('<tr>');
+                var $tdbef = $('<td>');
+                $thbef.addClass('borderbottom');
+                $tdbef.attr('colspan', colspan);
+                $thbef.append($tdbef);
+                $cur.after(html);
+                $cur.before($thbef);
+            }
+            $cur.next().children().children().slideDown('slow', function(){
+                $cur.removeClass('loading');    
+            });
+        });
+    } else {
+        if ($cur.hasClass('loading')) return;
+        $cur.addClass('loading');
+        $cur.next().children().children().slideUp('slow', function(){
+            $cur.removeClass('selecionada');
+            $cur.removeClass('loading');    
+            $cur.next().remove();
+            $cur.prev().remove();
+        });
+    }
+    
+}

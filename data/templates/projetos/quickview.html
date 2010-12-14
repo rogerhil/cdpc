@@ -1,23 +1,88 @@
-<fieldset class="endereco" style="width: 100%">
-  <legend>Endereço</legend>
-  <ul>
-    <li><a class="logradouro"></a></li>
-    <li><a class="bairro"></a></li>
-    <li><a class="cidade"></a> - <a class="uf"></a></li>
-  </ul>
-</fieldset>
-
-<fieldset class="contatos"  style="width: 100%">
-  <legend>Contatos</legend>
-  <div class="email">
-    <label>Email</label> <a href=""></a>
-  </div>
-  <div class="site">
-    <label>Site</label>
-    <a href=""></a>
-  </div>
-  <div class="telefones">
-    <strong>Telefones</strong>
-    <ul></ul>
-  </div>
-</fieldset>
+<ul>
+  <li>
+    <div class="descricao">
+       {% if projeto.descricao %}{{ projeto.descricao }}{% endif %}
+    </div>
+    <div class="column fourcolumn">
+      <h3>Dados gerais:</h3>
+      <ul>
+        <li><label>Tipo:</label>{{ projeto.tipo }}</li>
+        <li><label>Tipo convênio:</label>{{ projeto.tipo_convenio }}</li>
+        <li><label>Número convênio:</label>{{ projeto.numero_convenio }}</li>
+      </ul>    
+    </div>
+    <div class="column fourcolumn">
+      <h3>Endereço:</h3>
+      {% if projeto.enderecos %}
+      {% for end in projeto.enderecos %}
+      <ul>
+        <li>{{ end.logradouro }}, {{ end.numero }} {{ end.complemento }}</li>
+        <li>{{ end.bairro }}</li>
+        <li>{{ end.cidade }} - {{ end.uf }}</li>
+      </ul>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="column fourcolumn">
+      <h3>Contatos:</h3>
+      <ul>
+        <li><label>Email:</label>{{ projeto.email }}</li>
+        <li><label>Site:</label>{{ projeto.website }}</li>
+        <li>
+          <div class="column noborder">
+            <label>Telefones:</label>
+          </div>
+          <div class="column last">
+            {% for tel in projeto.telefones %}{{ tel }}{% endfor %}
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="column fourcolumn last">
+      <h3>Entidade proponente:</h3>
+      {% if projeto.entidades %}
+      {% for ent in projeto.entidades %}
+      <ul>
+        <li><label>Nome:</label>{{ ent.nome }}</li>
+        <li><label>Email:</label>{{ ent.email }}</li>
+        <li><label>Site:</label>{{ ent.site }}</li>
+        <li><label>Telefones:</label>{{ ent.telefones }}</li>
+        {% if ent.convenios %}
+        <li>
+          <label>Convênio Cultura Viva:</label>
+          {% for conv in ent.convenios %}
+            {{ conv }}
+          {% endfor %}
+        </li>
+        {% endif %}
+        <li>
+          <label>Endereco:</label>
+          {% if not ent.enderecos %}      
+            O mesmo que o projeto
+          {% else %}
+          {% for end in ent.enderecos %}
+          <ul>
+            <li>{{ end.logradouro }}, {{ end.numero }}
+                {{ end.complemento }}</li>
+            <li>{{ end.bairro }}</li>
+            <li>{{ end.cidade }} - {{ end.uf }}</li>
+          </ul>
+          {% endfor %}
+          {% endif %}
+        </li>
+      </ul>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </li>
+</ul>
+<ul>
+  <li>
+    <div class="column">
+    </div>
+    <div class="colummn">
+    </div>
+    <div class="column last">
+    </div>
+  </li>
+</ul>

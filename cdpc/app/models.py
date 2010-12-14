@@ -268,6 +268,7 @@ class Projeto(Cadastrado):
     def responsaveis(self):
         return " ".join([resp.nome for resp in self.responsavel])
 
+
 class SiteMessage(Entity):
     text = Field(Unicode(1024))
     status =  Field(Unicode(64))
