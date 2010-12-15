@@ -123,12 +123,10 @@ div.main li div.fourcolumn{
 div.container li div.column{
   float:left;
   margin-right:10px;
-  border-right: 1px solid #DADADA;
 }
 
 div.container li div.last{
   margin-right: 0px;
-  border-right: none;
 }
 
 div.container li div.twocolumn{
@@ -140,7 +138,7 @@ div.container li div.largetwocolumn{
 }
 
 div.container li div.threecolumn{
-  width: 188px;
+  width: 310px;
 }
 
 div.container li div.fourcolumn{

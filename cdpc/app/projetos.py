@@ -364,11 +364,11 @@ def novo():
             projeto.website_ent = validado['website_ent']
             projeto.convenio_ent = validado['convenio_ent'] == 'sim'
 
-            if(projeto.convenio_ent):
+            if projeto.convenio_ent:
                 for i in validado['outro_convenio']:
                     conv = models.Convenio()
                     tel.nome = i
-                    projeto.outro_convenio.append(conv)
+                    projeto.convenios.append(conv)
 
             # -- Atividades exercidas pelo projeto
             # --- Qual a área de atuação das atividades do Projeto?

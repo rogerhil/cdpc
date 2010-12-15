@@ -23,15 +23,6 @@ td, th, p {
     color: #797979;
 }
 
-p {
-    margin-bottom: 10px;
-}
-
-a.selected {
-    font-size: 20px;
-    font-weight: bold;
-}
-
 
 th {
     background-color: #F1F1F1;
@@ -64,17 +55,6 @@ tr:hover {
     cursor: pointer;
 }
 
-
-li.busca {
-    border: 1px solid #DADADA;
-    padding: 20px;
-}
-
-div.tablecontent {
-    width: 985px !important;
-    margin: 0px -15px 0px -15px;
-}
-
 th.arrowup {
     background-repeat: no-repeat;
     background-position: right; 
@@ -87,15 +67,6 @@ th.arrowdown {
     background-position: right;
     background-image: url("../img/bg/arrow-down.png");
     cursor: pointer;
-}
-
-tr.selecionada td {
-    border-bottom: none !important;
-    font-weight: bold;
-}
-
-tr.selecionada {
-
 }
 
 tr.borderbottom, tr.borderbottom td {
@@ -130,11 +101,46 @@ tr.detalhes li {
     white-space: no-wrap;
 }
 
+
+tr.detalhes h3 {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+tr.selecionada td {
+    border-bottom: none !important;
+    font-weight: bold;
+}
+
+tr.selecionada {
+
+}
+
+/******************************************************************************/
+
 div.descricao {
     margin-bottom: 5px;
 }
 
-tr.detalhes h3 {
+p {
     margin-bottom: 10px;
 }
 
+a.selected {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+li.busca {
+    border: 1px solid #DADADA;
+    padding: 20px;
+}
+
+div.tablecontent {
+    width: 985px !important;
+    margin: 0px -15px 0px -15px;
+}
+
+li.borderbottom {
+    border-bottom: 1px solid #DADADA;
+}

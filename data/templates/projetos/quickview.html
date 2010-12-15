@@ -1,18 +1,23 @@
 <ul>
-  <li>
+  <li class="borderbottom">
     <div class="descricao">
        {% if projeto.descricao %}{{ projeto.descricao }}{% endif %}
     </div>
-    <div class="column fourcolumn">
-      <h3>Dados gerais:</h3>
+    <div class="column threecolumn">
+      <h3>Dados gerais</h3>
       <ul>
         <li><label>Tipo:</label>{{ projeto.tipo }}</li>
         <li><label>Tipo convênio:</label>{{ projeto.tipo_convenio }}</li>
-        <li><label>Número convênio:</label>{{ projeto.numero_convenio }}</li>
+        <li>
+          <label>Número convênio:</label>
+          {% if projeto.numero_convenio %}
+            {{ projeto.numero_convenio }}
+          {% endif %}
+        </li>
       </ul>    
     </div>
-    <div class="column fourcolumn">
-      <h3>Endereço:</h3>
+    <div class="column threecolumn">
+      <h3>Endereço</h3>
       {% if projeto.enderecos %}
       {% for end in projeto.enderecos %}
       <ul>
@@ -23,13 +28,16 @@
       {% endfor %}
       {% endif %}
     </div>
-    <div class="column fourcolumn">
-      <h3>Contatos:</h3>
+    <div class="column threecolumn last">
+      <h3>Contatos</h3>
       <ul>
         <li><label>Email:</label>{{ projeto.email }}</li>
-        <li><label>Site:</label>{{ projeto.website }}</li>
         <li>
-          <div class="column noborder">
+          <label>Site:</label>
+          {% if projeto.website %}{{ projeto.website }}{% endif %}
+        </li>
+        <li>
+          <div class="column">
             <label>Telefones:</label>
           </div>
           <div class="column last">
@@ -38,8 +46,12 @@
         </li>
       </ul>
     </div>
-    <div class="column fourcolumn last">
-      <h3>Entidade proponente:</h3>
+  </li>
+</ul>
+<ul>
+  <li>
+    <div class="column threecolumn">
+      <h3>Entidade proponente</h3>
       {% if projeto.entidades %}
       {% for ent in projeto.entidades %}
       <ul>
@@ -74,15 +86,61 @@
       {% endfor %}
       {% endif %}
     </div>
-  </li>
-</ul>
-<ul>
-  <li>
-    <div class="column">
-    </div>
-    <div class="colummn">
-    </div>
-    <div class="column last">
+    <div class="column threecolumn">
+      <h3>Comunicacão Cultura Digital</h3>
+      <ul>
+        <li>
+          <div class="hidden">
+          # -- Comunicação e Cultura Digital
+          email = Field(Unicode(256))
+          site = Field(Unicode(256))
+          sede_possui_tel = Field(Boolean)
+          tipo_tel_sede = Field(Unicode(7))
+          pq_sem_tel = Field(Unicode(256))
+          sede_possui_net = Field(Boolean)
+          tipo_internet = Field(Unicode(16))
+          pq_sem_internet = Field(Unicode(256))
+
+          sede_possui_tel = validators.String(not_empty=True)
+          tipo_tel_sede = Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_tel', 'sim'))
+          pq_sem_tel = Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_tel', 'nao'))
+          pq_sem_tel_outro = Dependent(schema=validators.String(not_empty=True), depend_field=('pq_sem_tel', 'outro'))
+          sede_possui_net = validators.String(not_empty=True)
+          tipo_internet =  Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_net', 'sim'))
+          pq_sem_internet =  Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_net', 'nao'))
+          pq_sem_internet_outro =  Dependent(schema=validators.String(not_empty=True), depend_field=('pq_sem_internet', 'outro'))
+
+          rs_nome = validators.String()
+          rs_link = validators.String()
+          feed_nome = validators.String()
+          feed_link = validators.String()
+          </div>
+        </li>
+      </ul>
+    </div>   
+    <div class="column threecolumn last">
+      <h3>Atividades e Público Alvo</h3>
+      <ul>
+        <li><label>Atividades:</label>
+        {% for at in projeto.atividades %}
+        {{ at.nome }}
+        {% endfor %}
+        </li>
+        <li><label>Público alvo sob aspecto de:</label>
+          <div>
+            - Faixa etária: {{ ', '.join(projeto.publico_alvo) }}<br/>
+            - Culturas Tradicionais: {{ ', '.join(projeto.culturas_tradicionais) }}<br/>
+            - Ocupação do Meio: {{ ', '.join(projeto.ocupacao_do_meio) }}<br/>
+            - Gênero: {{ ', '.join(projeto.genero) }}<br/>
+          </div>  
+        </li>
+        <li><label>Manifestações e Linguagens:</label>
+        {{ ', '.join(projeto.manifestacoes_linguagens) }}
+        </li>
+        <li><label>Plano de trabalho e documentações:</label>
+        {{ ', '.join(projeto.documentacoes) }}
+        </li>
+      </ul>
     </div>
   </li>
 </ul>
