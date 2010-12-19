@@ -72,10 +72,14 @@ def novo():
             errors = e.unpack_errors()
             if not isinstance(errors, dict):
                 raise Exception(errors)
+            errors_list = dict([(i,j) for i,j in errors.items() if type(j) == list])
+            values_list = [i for i  in request.form.lists() if len(i[1]) > 1]
             rendered = render_template(
                         'usuarios/novo.html',
                         cadastro=cadastro,
                         errors=dict([(i,j) for i,j in errors.items() if type(j) == list]),
+                        errors_list=dumps(errors_list),
+                        values_list=dumps(dict(values_list)),
                         values=[i for i  in request.form.lists() if len(i[1]) > 1])
             errors = e.error_dict
             error_tag = lambda x : '<label generated="true" class="error">%s</label>' % x

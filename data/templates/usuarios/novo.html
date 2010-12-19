@@ -104,7 +104,7 @@
                   </label>
                 </li>
                 <li>
-                  <ul class="telefones">
+                  <ul class="telefones" id="pessoa_tel">
                     <li class="bottomBorder">
                       <label class="required">Telefones: *</label>
                       <select name="pessoa_tel_tipo" class="small">
@@ -241,7 +241,7 @@
                              class="textarea url" placeholder="http://">
                     </li>
                   </ul><!-- Feeds -->
-                  <a href="javascript: novaEntrada ($('#feeds'), 'rs');"
+                  <a href="javascript: novaEntrada ($('#feeds'), 'feed');"
                      class="add">
                     Adicionar outro feed
                   </a>
@@ -258,5 +258,14 @@
     </div>
   </div>
 </form>
+
+<script type="text/javascript">
+  var ERRORS_LIST;
+  var VALUES_LIST;
+  {% if errors_list %}
+  ERRORS_LIST = {% autoescape false %}{{ errors_list }}{% endautoescape %};
+  VALUES_LIST = {% autoescape false %}{{ values_list }}{% endautoescape %};
+  {% endif %}
+</script>
 
 {% endblock %}

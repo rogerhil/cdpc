@@ -387,3 +387,9 @@ div.subadded a {
 span.requiredstar {
     color: #B90000;
 }
+
+.steperrors {
+    color: #A20000 !important;
+    padding: 0px 5px 0px 5px;
+    font-weight: bold !important;
+}

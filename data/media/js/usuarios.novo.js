@@ -17,6 +17,10 @@
 var VALIDATOR;
 
 $(document).ready (function () {
+    if (ERRORS_LIST) {
+        novosCamposLista(VALUES_LIST);
+        preencherCamposLista(VALUES_LIST, ERRORS_LIST);
+    }
     VALIDATOR = $('#novoUsuario').validate();
     configFields();
 });
@@ -37,8 +41,8 @@ function configFields() {
 function submit() {
     var valid;
     clearPlaceholders();
-    valid = VALIDATOR.form();
-    //valid = true;
+    //valid = VALIDATOR.form();
+    valid = true;
     if (valid) {
         document.getElementById('novoUsuario').submit();
     } else {
@@ -46,5 +50,46 @@ function submit() {
     }
 }
 
+function preencherCamposLista(values, errors) {
+    var thee, thev;
 
+    for (var key in values) {
+        thev = values[key];
+        $('input[name=' + key + ']').each(function () {
+            $(this).val(thev.splice(0,1));
+        });
+        $('select[name=' + key + ']').each(function () {
+            $(this).val(thev.splice(0,1));
+        });
+    }
+
+    for (var key in errors) {
+        $('input[name=' + key + ']').each(function () {
+            thee = errors[key].splice(0,1);
+            if (thee != '') {
+                $(this).addClass("error");
+                $('<div class="error-message">' + thee + '</div>').insertAfter($(this));
+            }
+        });
+    }
+}
+
+function novosCamposLista(values) {
+    var funcs = {'rs_nome': novaEntrada,
+                 'feed_nome': novaEntrada,
+                 'pessoa_tel': novoTelefone};
+    var blocksSet = {'rs_nome': $('#redesSociais'),
+                     'feed_nome': $('#feeds'),
+                     'pessoa_tel': $('#pessoa_tel')};
+    var items;
+    for (var id in values) {
+        items = values[id];
+        for (var k = 0; k < items.length; k++) {
+            if (k < 1) continue;
+            if (funcs[id]) {
+                funcs[id](blocksSet[id], id.split('_')[0]);
+            }
+        }
+    }
+}
 

@@ -1,16 +1,10 @@
 
  * Projetos
    - Verificar os tips
-   - Veririfcar quais fields unique
-   - Após validacão do servidor com erros:
-     - indicar quais steps possuem erros
-     - ir para o primeiro step que possui erros
    
  * Usuarios
-   - Veririfcar quais fields unique
    
  * Geral
-   - Analisar se telefone precisa ser unique
    - Implementar validacao RequireIfPresent do lado do cliente JS
    - Layout para o splash de ajax
    - Verificar com o designer sobre possíveis layouts extra incluídos

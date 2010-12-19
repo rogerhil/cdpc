@@ -29,11 +29,41 @@ var VALIDATOR, CURRENT_STEP;
 
 function carregar () {
     if ($('body.project_register').length == 0) return;
+    verifyStepErrors();
     CURRENT_STEP = $('input[name=step]').val();
     configValidator();
     createStepButtons();
     configStepButtons();
     configFields();
+}
+
+function verifyStepErrors() {
+    var steps = ['dadosProjeto', 'localizacaoGeoProjeto', 'entidadeProponente',
+                 'comunicacaoCulturaDigital', 'atividadesExercidasProjeto',
+                 'publico', 'indiceAcessoCultura'];
+    var first = true;
+    var someError = false;
+    for (var k = 0; k < steps.length; k++) {
+        var errors = $('.error:not(label)', '#' + steps[k]).length;
+
+        if (errors) {
+            someError = true;
+            $('.' + steps[k], '#headsteps').addClass('steperrors');
+            if (first) {
+                $('.' + steps[k], '#headsteps').addClass('active');
+                $('input[name=step]').val(steps[k]);
+                first = false;
+            }
+        }
+    }
+    if (someError) {
+        $('<div class="site-message error">Existem erros nos passos do formulário ' + 
+          'indicados em vermelho.</div>').insertBefore($('#novoProjeto'));
+    }
+}
+
+function clearStep(id) {
+    $('.' + id, '#headsteps').removeClass('steperrors');
 }
 
 function configValidator() {
@@ -143,6 +173,7 @@ function next(e) {
                 $('input[name=step]').val(next_step);
                 $('div#' + CURRENT_STEP + "Tip").addClass('hidden');
                 $('div#' + next_step + "Tip").removeClass('hidden');
+                clearStep(CURRENT_STEP);
                 CURRENT_STEP = next_step;
                 configStepButtons();
                 configFields();
@@ -181,6 +212,8 @@ function next(e) {
     } else {
         $('html, body').animate({scrollTop: 0}, 'slow');
     }
+    
+    $('.site-message').remove();
     
     e.preventDefault();
 }
@@ -444,6 +477,9 @@ function preencherCamposLista(values, errors) {
         $('input[name=' + key + ']').each(function () {
             $(this).val(thev.splice(0,1));
         });
+        $('select[name=' + key + ']').each(function () {
+            $(this).val(thev.splice(0,1));
+        });
     }
 
     for (var key in errors) {
@@ -460,12 +496,12 @@ function preencherCamposLista(values, errors) {
 function novosCamposLista(values) {
     var funcs = {'rs_nome': novaEntrada,
                  'feed_nome': novaEntrada,
-                 'proj_tel': novoTelefone,
+                 'sede_tel': novoTelefone,
                  'ent_tel': novoTelefone,
                  'end_outro_bairro': novoEndereco};
     var blocksSet = {'rs_nome': $('#redesSociais'),
                      'feed_nome': $('#feeds'),
-                     'proj_tel': $('#proj_tel'),
+                     'sede_tel': $('#sede_tel'),
                      'ent_tel': $('#ent_tel'),
                      'end_proj_complemento': $('#localizacaoGeoProjetoSection')};
     var items;
