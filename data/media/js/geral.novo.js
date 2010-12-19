@@ -73,19 +73,23 @@ function novaEntrada ($container, prefix) {
 }
 
 function novoTelefone ($parent, prefix, value) {
-    var $remove = $('<a href="javascript:;">Remover</a>');
+    var $remove = $('<a class="remove" href="javascript:;">Remover</a>');
     $remove.click (animatedRemove);
     var attrValue = '';
     if (value) {
         attrValue = ' value="' + value + '"';
     }
+    var $selec = $('<select type="text" name="' + prefix + '_tel_tipo"' +
+                   'class="small">');
+    $selec.html($($("select", $parent)[0]).html());
     var $label = $('<input type="text" name="' + prefix + '_tel"' +
                    'class="textarea phone" placeholder="(00) 0000-0000">');
+    $label.mask('(99) 9999-9999');
     var $tel = $('<li class="extra">')
+                .append ($selec)
                 .append ($label)
                 .append ($remove)
     animatedAppendTo($tel, $parent);
-    configFields();
 }
 
 function toogleSingle(show, $o, callBack) {

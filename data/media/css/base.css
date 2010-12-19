@@ -335,3 +335,7 @@ div.error {
     background-image:url("../img/bg/error.png");
 }
 
+div.cursorloading {
+    position: absolute;
+    background-image:url("../img/bg/ajax-loader.gif");
+}

@@ -26,8 +26,8 @@ from formencode.interfaces import *
 from formencode.api import *
 from formencode.schema import format_compound_error
 from validators import Cpf, Cep, BrazilPhoneNumber, Dependent, \
-                       AtLeastOne, NotEmptyList
-
+                       AtLeastOne, NotEmptyList, CdpcEmail
+from models import Pessoa, Projeto
 
 class CdpcSchema(formencode.Schema):
     """
@@ -57,7 +57,7 @@ class Usuario(formencode.Schema):
     # -- Dados de acesso
     senha = validators.String(not_empty=True)
     confirmar_senha = validators.String(not_empty=True)
-    email = validators.String(not_empty=True)
+    email = CdpcEmail(not_empty=True, model=Pessoa)
     # TODO: Comparar senha original e confimada
 
     # -- Dados pessoais
@@ -65,7 +65,8 @@ class Usuario(formencode.Schema):
     cpf = Cpf(not_empty=True)
     data_nascimento = validators.DateConverter(month_style='dd/mm/yyyy')
     sexo = validators.String(not_empty=True)
-    telefone = NotEmptyList(schema=formencode.ForEach(BrazilPhoneNumber()))
+    pessoa_tel = NotEmptyList(schema=formencode.ForEach(BrazilPhoneNumber()))
+    pessoa_tel_tipo = validators.String()
     avatar = validators.FieldStorageUploadConverter()
 
     # -- Sobre a sua geolocalização
@@ -88,7 +89,9 @@ class Usuario(formencode.Schema):
     
     chained_validators = [validators.FieldsMatch('senha', 'confirmar_senha'),
                           validators.RequireIfPresent('rs_nome', present='rs_link'),
-                          validators.RequireIfPresent('rs_link', present='rs_nome')]
+                          validators.RequireIfPresent('rs_link', present='rs_nome'),
+                          validators.RequireIfPresent('feed_nome', present='feed_link'),
+                          validators.RequireIfPresent('feed_link', present='feed_nome')]
 
 
 ################################################################################
@@ -146,12 +149,13 @@ class Projeto:
 
     class EntidadeProponente(CdpcSchema):
         nome_ent = validators.String(not_empty=True)
-        email_ent = validators.String()
+        email_ent = validators.Email()
         website_ent = validators.URL()
         ent_tel = formencode.ForEach(BrazilPhoneNumber())
+        ent_tel_tipo = formencode.ForEach(validators.String())
 
         convenio_ent = validators.String(not_empty=True)
-        outro_convenio = Dependent(schema=validators.String(not_empty=True), depend_field=('convenio_ent', 'sim'))
+        outro_convenio = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('convenio_ent', 'sim'))
 
         endereco_ent_proj = validators.String(not_empty=True)
         end_ent_cep = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
@@ -166,8 +170,12 @@ class Projeto:
 
 
     class ComunicacaoCulturaDigital(CdpcSchema):
+        email_proj = CdpcEmail(not_empty=True, model=Projeto)
+        website_proj = validators.URL()
+        
         sede_possui_tel = validators.String(not_empty=True)
-        tipo_tel_sede = Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_tel', 'sim'))
+        sede_tel_tipo = Dependent(schema=formencode.ForEach(validators.String()), depend_field=('sede_possui_tel', 'sim'))
+        sede_tel = Dependent(schema=NotEmptyList(schema=formencode.ForEach(BrazilPhoneNumber(not_empty=True))), depend_field=('sede_possui_tel', 'sim'))
         pq_sem_tel = Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_tel', 'nao'))
         pq_sem_tel_outro = Dependent(schema=validators.String(not_empty=True), depend_field=('pq_sem_tel', 'outro'))
         sede_possui_net = validators.String(not_empty=True)
@@ -175,10 +183,15 @@ class Projeto:
         pq_sem_internet =  Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_net', 'nao'))
         pq_sem_internet_outro =  Dependent(schema=validators.String(not_empty=True), depend_field=('pq_sem_internet', 'outro'))
 
-        rs_nome = validators.String()
-        rs_link = validators.String()
-        feed_nome = validators.String()
-        feed_link = validators.String()
+        rs_nome = formencode.ForEach(validators.String())
+        rs_link = formencode.ForEach(validators.URL())
+        feed_nome = formencode.ForEach(validators.String())
+        feed_link = formencode.ForEach(validators.URL())
+
+        chained_validators = [validators.RequireIfPresent('rs_nome', present='rs_link'),
+                              validators.RequireIfPresent('rs_link', present='rs_nome'),
+                              validators.RequireIfPresent('feed_nome', present='feed_link'),
+                              validators.RequireIfPresent('feed_link', present='feed_nome')]
 
     class AtividadesExercidasProjeto(CdpcSchema):
         atividade = AtLeastOne(schema=formencode.ForEach(validators.String(not_empty=True)))
@@ -190,8 +203,7 @@ class Projeto:
         publico_alvo = formencode.ForEach(validators.String(not_empty=True))
 
         # ---- Sob aspectos das Culturas Tradicionais
-        culturas_tradicionais = formencode.ForEach(
-            validators.String(not_empty=True))
+        culturas_tradicionais = formencode.ForEach(validators.String(not_empty=True))
 
         # ---- Sob aspectos de Ocupação do Meio
         ocupacao_do_meio = formencode.ForEach(validators.String(not_empty=True))

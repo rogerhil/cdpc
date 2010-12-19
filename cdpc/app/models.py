@@ -44,7 +44,8 @@ class Telefone(Entity):
     """Wrapper para a entidade telefone no banco de dados
     """
     using_options(shortnames=True)
-    numero = Field(Unicode(32), unique=True)
+    numero = Field(Unicode(32))
+    tipo = Field(Unicode(32))
     cadastrado = ManyToMany('Cadastrado')
     entidades = ManyToMany('Entidade')
 
@@ -136,18 +137,17 @@ class Pessoa(Cadastrado):
 
     # -- Dados pessoais
     nome = Field(Unicode(256))
-    cpf = Field(Unicode(11))
+    cpf = Field(Unicode(11), unique=True)
     data_nascimento = Field(DateTime)
     sexo = Field(Unicode(16))
     avatar = Field(Unicode(128))
-    email = Field(Unicode(256))
-    site = Field(Unicode(256))
 
     # -- Geolocalização
     endereco = ManyToMany('Endereco')
 
     # -- Dados de acesso
     # O email será usado como login.
+    email = Field(Unicode(256), unique=True)
     senha = Field(Unicode(256))
 
 class Entidade(Entity):
@@ -157,7 +157,7 @@ class Entidade(Entity):
     enderecos = ManyToMany('Endereco')
     telefones = ManyToMany('Telefone')
     email = Field(Unicode(256))
-    site = Field(Unicode(256))
+    website = Field(Unicode(256))
     projetos = OneToMany('Projeto')
 
 class Atividade(Entity):
@@ -215,10 +215,8 @@ class Projeto(Cadastrado):
     local = Field(Unicode(16))
 
     # -- Comunicação e Cultura Digital
-    email = Field(Unicode(256))
-    site = Field(Unicode(256))
+    email = Field(Unicode(256), unique=True)
     sede_possui_tel = Field(Boolean)
-    tipo_tel_sede = Field(Unicode(7))
     pq_sem_tel = Field(Unicode(256))
     sede_possui_net = Field(Boolean)
     tipo_internet = Field(Unicode(16))

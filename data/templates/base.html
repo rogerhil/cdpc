@@ -1,3 +1,10 @@
+{% macro make_select_options(items) -%}
+  {% for key, title in items %}
+    <option value="{{ key }}">{{ title }}</option>
+  {% endfor %}
+  {{ caller() }}
+{%- endmacro %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>

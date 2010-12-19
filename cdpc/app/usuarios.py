@@ -28,7 +28,7 @@ from elixir import session
 
 from . import schemas
 from . import models
-from .cadastro import VALORES_UF
+import cadastro
 
 from .paginator import Paginator
 
@@ -36,8 +36,7 @@ module = Module(__name__)
 
 @module.route('/')
 def listing():
-    vals_uf = VALORES_UF.items()
-    vals_uf.sort(lambda a, b: a > b and 1 or -1)
+    vals_uf = cadastro.VALORES_UF
 
     columns = [('nome',   {'title': 'Nome'}),
                ('cidade', {'title': 'Cidade', 'mcol': 'endereco'}),
@@ -63,14 +62,20 @@ def novo():
         validator = schemas.Usuario()
         validado = {}
         try:
-            validado = validator.to_python(request.form)
+            data = dict(request.form.lists())
+            data = cadastro.prepare_data(data, validator.fields)
+            validado = validator.to_python(data)
             clean_list = lambda x: [i for i in x if i.strip()];
 
         except Invalid, e:
+            print e
+            errors = e.unpack_errors()
+            if not isinstance(errors, dict):
+                raise Exception(errors)
             rendered = render_template(
                         'usuarios/novo.html',
-                        vals_uf=VALORES_UF.keys(),
-                        errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
+                        cadastro=cadastro,
+                        errors=dict([(i,j) for i,j in errors.items() if type(j) == list]),
                         values=[i for i  in request.form.lists() if len(i[1]) > 1])
             errors = e.error_dict
             error_tag = lambda x : '<label generated="true" class="error">%s</label>' % x
@@ -110,9 +115,11 @@ def novo():
 
             # -- Contatos e espaços na rede
             usuario.website = validado['website']
-            for i in validado['telefone']:
+            for i, num in enumerate(validado['pessoa_tel']):
                 tel = models.Telefone()
-                tel.numero = i
+                tel.numero = num
+                if validado['pessoa_tel_tipo']:
+                    tel.tipo = validado['pessoa_tel_tipo'][i]
                 usuario.telefones.append(tel)
             
             if validado.has_key('rs_nome'):
@@ -137,5 +144,5 @@ def novo():
             flash(u'Usuário cadastrado com sucesso!', 'success')
             return redirect("/usuarios/")
 
-    return render_template('usuarios/novo.html', vals_uf=VALORES_UF.keys())
+    return render_template('usuarios/novo.html', cadastro=cadastro)
 

@@ -1,3 +1,10 @@
+{% macro make_select_options(items) -%}
+  {% for key, title in items %}
+    <option value="{{ key }}">{{ title }}</option>
+  {% endfor %}
+  {{ caller() }}
+{%- endmacro %}
+
 <div class="step" id="localizacaoGeoProjeto">
   <div class="main">
     <ul>
@@ -39,15 +46,13 @@
       <li>
         <div class="column">
           <label for="end_proj_cidade">Cidade: *</label>
-          <input type="text" name="end_proj_cidade" id="end_proj_cidade" class="required textarea city" />
+          <input type="text" name="end_proj_cidade" id="end_proj_cidade" class="required textarea city big" />
         </div>
         <div class="column last">
           <label for="end_proj_uf">UF: *</label>
-          <select name="end_proj_uf" id="end_proj_uf" class="required state">
+          <select name="end_proj_uf" id="end_proj_uf" class="required medium">
             <option></option>
-            {% for uf in vals_uf %}
-            <option value="{{ uf }}">{{ uf }}</option>
-            {% endfor %}
+            {% call make_select_options(cadastro.VALORES_UF) %}{% endcall %}
           </select>
         </div>
       </li>

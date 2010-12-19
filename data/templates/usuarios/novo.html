@@ -94,12 +94,12 @@
                   <input type="radio" name="sexo" value="" class="hidden">
                   <label class="radio">
                     <input type="radio" name="sexo"
-                           value="feminino" class="textarea">
+                           value="feminino">
                     Feminino
                   </label>
                   <label class="radio">
                     <input type="radio" name="sexo"
-                           value="masculino" class="textarea">
+                           value="masculino">
                     Masculino
                   </label>
                 </li>
@@ -107,10 +107,14 @@
                   <ul class="telefones">
                     <li class="bottomBorder">
                       <label class="required">Telefones: *</label>
-                      <input type="text" name="telefone"
+                      <select name="pessoa_tel_tipo" class="small">
+                        <option value="">- Tipo -</option>
+                        {% call make_select_options(cadastro.TIPO_TEL_SEDE) %}{% endcall %}
+                      </select>
+                      <input type="text" name="pessoa_tel"
                              class="textarea required phone medium"
                              placeholder="(00) 0000-0000">
-                      <a href="javascript:novoTelefone ($('ul.telefones'), 'sede');"
+                      <a href="javascript:novoTelefone ($('ul.telefones'), 'pessoa');"
                          class="add">
                         Adicionar outro número
                       </a>
@@ -143,7 +147,7 @@
                 <li class="required">
                   <label for="end_logradouro">Logradouro: *</label>
                   <input type="text" name="end_logradouro" id="end_logradouro"
-                         class="textarea required total">
+                         class="textarea required large">
                 </li>
                 <li>
                   <div class="column">
@@ -154,13 +158,13 @@
                   <div class="column last">
                     <label for="end_complemento">Complemento:</label>
                     <input type="text" name="end_complemento"
-                           id="end_complemento" class="textarea medium">
+                           id="end_complemento" class="textarea big">
                   </div>
                 </li>
                 <li>
                     <label for="end_bairro">Bairro: *</label>
                     <input type="text" name="end_bairro"
-                           id="end_bairro" class="textarea required medium">
+                           id="end_bairro" class="textarea required large">
                 </li>
                 <li>
                   <ul>
@@ -171,11 +175,9 @@
                     </div>
                     <div class="column last">
                       <label for="end_uf">UF: *</label>
-                      <select name="end_uf" id="end_uf" class="required small">
+                      <select name="end_uf" id="end_uf" class="required" style="width: 160px">
                         <option></option>
-                        {% for uf in vals_uf %}
-                        <option value="{{ uf }}">{{ uf }}</option>
-                        {% endfor %}
+                        {% call make_select_options(cadastro.VALORES_UF) %}{% endcall %}
                       </select>
                     </div>
                   </ul>

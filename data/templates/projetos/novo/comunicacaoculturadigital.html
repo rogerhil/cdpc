@@ -1,6 +1,24 @@
+{% macro make_select_options(items) -%}
+  {% for key, title in items %}
+    <option value="{{ key }}">{{ title }}</option>
+  {% endfor %}
+  {{ caller() }}
+{%- endmacro %}
+
 <div class="step" id="comunicacaoCulturaDigital">
   <div class="main">
     <ul>
+    
+      <li>
+        <label for="email_proj">Email:</label>
+        <input type="text" name="email_proj" id="email_proj" class="required textarea large email" />
+      </li>
+
+      <li>
+        <label for="website_proj">Website:</label>
+        <input type="text" name="website_proj" id="website_proj" class="textarea large url" placeholder="http://" />
+      </li>
+    
       <li>
         <label>A sede do projeto possui telefone? *</label>
         <input type="radio" name="sede_possui_tel" value=""
@@ -17,21 +35,14 @@
 
       <li id="sede_possui_tel_sim" class="subbodyfooter">
         <ul>
-          <li>
-            <label for="tipo_tel_sede">Qual tipo?</label>
-            <select name="tipo_tel_sede" id="tipo_tel_sede" class="required">
-              <option></option>
-              <option value="fixo">Fixo</option>
-              <option value="celular">Celular</option>
-              <option value="radio">Rádio</option>
-              <option value="rural">Rural</option>
-              <option value="publico">Público</option>
-            </select>
-          </li>
           <li style="margin-bottom: 0px;">
             <ul class="telefones">
               <li>
                 <label>Telefone:</label>
+                <select name="sede_tel_tipo" class="small">
+                  <option value="">- Tipo -</option>
+                  {% call make_select_options(cadastro.TIPO_TEL_SEDE) %}{% endcall %}
+                </select>
                 <input type="text" name="sede_tel" class="textarea phone required" placeholder="(00) 0000-0000" />
                 <a href="javascript: novoTelefone ($('.telefones', '#sede_possui_tel_sim'), 'sede');" class="add">Adicionar outro número</a>
               </li>
@@ -159,7 +170,7 @@
                   </ul>
                 </li>
               </ul><!-- Feeds -->
-              <a href="javascript: novaEntrada ($('#feeds'), 'rs');" class="add">Outro feed</a>
+              <a href="javascript: novaEntrada ($('#feeds'), 'feed');" class="add">Outro feed</a>
             </li>
           </ul>
         </li>

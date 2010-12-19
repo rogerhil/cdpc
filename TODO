@@ -1,6 +1,5 @@
 
  * Projetos
-   - Validacão com RequireIfPresent para campos do tipo rs_nome, rs_link etc
    - Verificar os tips
    - Veririfcar quais fields unique
    - Após validacão do servidor com erros:

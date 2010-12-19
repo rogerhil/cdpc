@@ -1,6 +1,8 @@
 # -*- coding: utf-8; Mode: Python -*-
 
 from random import randint as r
+from urllib import urlopen
+from cdpc.app.projetos import cadastra_projeto
 
 latin = """
 Pri Putent Antiopam Convenire An Putent Erroribus Vel Dicunt Democritum Vel
@@ -223,7 +225,6 @@ base = [('nome', randword),
 
 
 CONSULTA_CEP = 'http://viavirtual.com.br/webservicecep.php?cep=%s'
-from urllib import urlopen
 
 def get_cep(cep):
     """

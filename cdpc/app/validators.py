@@ -26,6 +26,31 @@ from formencode.interfaces import *
 from formencode.api import *
 from formencode.schema import format_compound_error
 
+class CdpcEmail(formencode.validators.Email):
+
+    """
+    Validates user in Cdpc Site
+    >>> cpf = CdpcUser()
+    """
+    model = None
+    strip = True
+    _cpf_re = [re.compile(r"^(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{2})$")]
+    _store_format = "%s%s%s%s"
+    messages = {'stringFormat': _('Invalid format.'),
+                'alreadyExists': _('This e-mail already exists in ' \
+                                   'database, please choose another e-mail address.')}
+    def _to_python(self, value, state):
+        self.assert_string(value, state)
+        try:
+            value = value.encode('ascii', 'replace')
+        except:
+            raise Invalid(self.message('stringFormat', state), value, state)
+        clean_value = value.strip()
+
+
+        if self.model.query.filter_by(email=clean_value).count():
+            raise Invalid(self.message('alreadyExists', state), value, state)
+        return clean_value
 
 class Cpf(formencode.FancyValidator):
 
@@ -59,19 +84,27 @@ class Cpf(formencode.FancyValidator):
     _cpf_re = [re.compile(r"^(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{2})$")]
     _store_format = "%s%s%s%s"
     messages = {'cpfFormat': _('Please enter a valid cep number in the ' \
-                               'format ###.###.###-##.')}
-
+                               'format ###.###.###-##.'),
+                'alreadyExists': _('This cpf already exists in ' \
+                                   'database, please choose another one.')}
     def _to_python(self, value, state):
+        from models import Pessoa
         self.assert_string(value, state)
         try:
             value = value.encode('ascii', 'replace')
         except:
             raise Invalid(self.message('cpfFormat', state), value, state)
         clean_value = value.strip().replace(' ', '')
+        cpf = None
         for regexp in self._cpf_re:
             match = regexp.match(clean_value)
             if match:
-                return self._store_format % match.groups()
+                cpf = self._store_format % match.groups()
+                break
+        if cpf:
+            if Pessoa.query.filter_by(cpf=cpf).count():
+                raise Invalid(self.message('alreadyExists', state), value, state)
+            return cpf
         raise Invalid(self.message('cpfFormat', state), value, state)
 
 class BrazilPhoneNumber(formencode.FancyValidator):
@@ -133,8 +166,8 @@ class BrazilPhoneNumber(formencode.FancyValidator):
                 phone = self._store_format % match.groups()
                 break
         if phone:
-            if Telefone.query.filter_by(numero=phone).count():
-                raise Invalid(self.message('alreadyExists', state), value, state)
+        #    if Telefone.query.filter_by(numero=phone).count():
+        #        raise Invalid(self.message('alreadyExists', state), value, state)
             return phone        
         raise Invalid(self.message('phoneFormat', state), value, state)
 
@@ -169,7 +202,7 @@ class Cep(formencode.FancyValidator):
 
     strip = True
     _cep_re = [re.compile(r"^(\d{2})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})$")]
-    _store_format = "%s-%s-%s"
+    _store_format = "%s%s%s"
     messages = {'cepFormat': _('Please enter a valid cep number ' \
                                'in the format #####-###.')}
 
@@ -205,9 +238,6 @@ class AtLeastOne(formencode.FancyValidator):
     messages = {'errorMessage': _('Please mark at least one option')}
 
     def to_python(self, value, state):
-        print "####"
-        print value
-        print "####"
         if isinstance(value, list):
             clean_value = [i for i in value if i.strip()]
         if isinstance(value, list) and len(clean_value) >= 1 or \

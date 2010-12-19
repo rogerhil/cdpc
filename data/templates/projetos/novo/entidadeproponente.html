@@ -1,3 +1,10 @@
+{% macro make_select_options(items) -%}
+  {% for key, title in items %}
+    <option value="{{ key }}">{{ title }}</option>
+  {% endfor %}
+  {{ caller() }}
+{%- endmacro %}
+
 <div class="step" id="entidadeProponente">
   <div class="main">
     <ul>
@@ -22,6 +29,10 @@
         <ul class="telefones">
           <li>
             <label>Telefone:</label>
+            <select name="ent_tel_tipo" class="small">
+              <option value="">- Tipo -</option>
+              {% call make_select_options(cadastro.TIPO_TEL_SEDE) %}{% endcall %}
+            </select>
             <input type="text" name="ent_tel" class="textarea phone" placeholder="(00) 0000-0000" />
             <a href="javascript: novoTelefone ($('.telefones', '#ent_tel'), 'ent');" class="add">Adicionar outro número</a>
           </li>

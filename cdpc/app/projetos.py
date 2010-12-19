@@ -27,7 +27,7 @@ from formencode import htmlfill
 from . import schemas
 from . import models
 from .index import get_user_or_login
-from cadastro import VALORES_UF
+import cadastro
 from schemas import CdpcSchema
 from .paginator import Paginator
 
@@ -36,7 +36,7 @@ module = Module(__name__)
 @module.route('/')
 def listing():
 
-    vals_uf = VALORES_UF.items()
+    vals_uf = cadastro.VALORES_UF
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
     trevent = {'event': 'onclick',
@@ -106,40 +106,14 @@ def projeto_quickview_json(pid):
     if projeto is None:
         return dumps({'error': 'Projeto não encontrado.'})
 
-    rendered = render_template('projetos/quickview.html', projeto=projeto)
+    format_tel = lambda x : "(%s) %s.%s" % (x[:2], x[2:6], x[6:])
+    
+    rendered = render_template('projetos/quickview.html',
+                               projeto=projeto,
+                               format_tel=format_tel)
     data = {'content': rendered}
     
     return dumps(data)
-
-def prepare_data(lists, fields):
-    data = {}
-    for key, valid in fields.items():
-        value = lists.get(key)
-        if value != None and len(value) > 1:
-            value = [i for i in value if i]
-            data[key] = value
-        else:
-            if isinstance(valid, foreach.ForEach):
-                if value == None:
-                    value = []
-                value = [i for i in value if i]
-                data[key] = value
-                continue
-            sch = getattr(valid, 'schema', None)
-            for i in xrange(5):
-                if sch == None:
-                    if value == None:
-                        continue
-                    data[key] = value[0]
-                    continue
-                if isinstance(sch, foreach.ForEach):
-                    if value == None:
-                        value = []
-                    value = [i for i in value if i]                    
-                    data[key] = value 
-                    continue
-                sch = getattr(sch, 'schema', None)
-    return data
     
 @module.route("validar/", methods=('GET', 'POST'))
 def validar():
@@ -149,22 +123,13 @@ def validar():
     fields = validator.fields
     data = dict(request.form.lists())
     del data["step_name"]
-    data = prepare_data(data, fields)
+    data = cadastro.prepare_data(data, fields)
     values_list = [i for i  in request.form.lists() if len(i[1]) > 1]
     errors_list = {}    
     validado = {}
     try:
         validado = validator.to_python(data)
-        clean_list = lambda x: [i for i in x if i.strip()];
-
-        rs_nomes = clean_list(request.form.getlist('rs_nome'))
-        rs_links = clean_list(request.form.getlist('rs_link'))
-        assert len(rs_nomes) == len(rs_links)
-
-        feed_nomes = clean_list(request.form.getlist('feed_nome'))
-        feed_links = clean_list(request.form.getlist('feed_link'))
-        assert len(feed_nomes) == len(feed_links)
-
+        
     except Invalid, e:
         print "Exception"
         print e
@@ -172,7 +137,7 @@ def validar():
 
         rendered = render_template(
                     'projetos/novo/%s.html' % class_name.lower(),
-                    vals_uf=VALORES_UF.keys(),
+                    cadastro=cadastro,
                     errors=errors_list,
                     values=values_list)
         errors = dict([(i,j) for i,j in e.unpack_errors().items() if type(j) != list])
@@ -186,7 +151,7 @@ def validar():
 
     rendered = render_template(
                 'projetos/novo/%s.html' % class_name.lower(),
-                vals_uf=VALORES_UF.keys(),
+                cadastro=cadastro,
                 errors={},
                 values=values_list)
     filled = htmlfill.render(rendered, request.form.to_dict(), {}, prefix_error=False)
@@ -195,6 +160,228 @@ def validar():
            'errors_list': errors_list,
            'values_list': dict(values_list)}
     return make_response(dumps(ret))
+
+def cadastra_projeto(validado, user):
+    # Instanciando o modelo e associando os campos validados e
+    # transformados em valores python à instância que será
+    # salva no db.
+    projeto = models.Projeto()
+
+    # -- Dados do projeto
+    projeto.nome = validado['nome']
+    projeto.tipo = validado['tipo']
+    projeto.tipo_convenio = validado['tipo_convenio']
+    projeto.numero_convenio = validado['numero_convenio']
+
+    # -- Localização geográfica do projeto
+    projeto.enderecos.append(
+        models.Endereco(
+            cep=validado['end_proj_cep'],
+            numero=validado['end_proj_numero'],
+            logradouro=validado['end_proj_logradouro'],
+            complemento=validado['end_proj_complemento'],
+            uf=validado['end_proj_uf'],
+            cidade=validado['end_proj_cidade'],
+            bairro=validado['end_proj_bairro'],
+            latitude=validado['end_proj_latitude'],
+            longitude=validado['end_proj_longitude']
+            )
+        )
+
+    projeto.local = validado['local_proj']
+
+    if projeto.local == 'outros':
+        for i in range(len(validado['end_outro_nome'])):
+            endereco = models.Endereco(nome=validado['end_outro_nome'][i],
+                                       cep=validado['end_outro_cep'][i],
+                                       numero=validado['end_outro_numero'][i],
+                                       logradouro=validado['end_outro_logradouro'][i],
+                                       complemento=validado['end_outro_complemento'][i],
+                                       uf=validado['end_outro_uf'][i],
+                                       cidade=validado['end_outro_cidade'][i],
+                                       bairro=validado['end_outro_bairro'][i],
+                                       latitude=validado['end_outro_latitude'][i],
+                                       longitude=validado['end_outro_longitude'][i])
+            projeto.enderecos.append(endereco)
+
+    # -- Contatos e espaços na rede
+
+    ######################
+    # CAMPOS EXCLUÍDOS!!!
+    #projeto.email = validado['email_proj']        ------------> INCLUIDO
+    #projeto.website = validado['website_proj']    ------------> INCLUIDO
+    #projeto.frequencia = validado['frequencia']   
+    #for i in validado['proj_tel']:                ------------> INCLUIDO
+    #    tel = models.Telefone()
+    #    tel.numero = i
+    #    projeto.telefones.append(tel)
+    ######################
+
+    for i in range(len(validado['rs_nome'])):
+        rsocial = models.RedeSocial()
+        rsocial.nome = validado['rs_nome'][i]
+        rsocial.link = validado['rs_link'][i]
+        projeto.redes_sociais.append(rsocial)
+
+    for i in range(len(validado['feed_nome'])):
+        feed = models.Feed()
+        feed.nome = validado['feed_nome'][i]
+        feed.link = validado['feed_link'][i]
+        projeto.feeds.append(feed)
+
+    # -- Comunicação e Cultura Digital
+    
+    projeto.email = validado['email_proj']
+    projeto.website = validado['website_proj']    
+    
+    
+    def get_tel(numero):
+        tel = None
+        if models.Telefone.query.filter_by(numero=numero).count() and \
+           (numero in [t.numero for t in projeto.telefones] or \
+            numero in [t.numero for t in user.telefones] or \
+            projeto.entidade and numero in [t.numero for t in projeto.entidade.telefones]):
+            if numero in [t.numero for t in projeto.telefones]:
+                tel = [t for t in projeto.telefones if t.numero == numero][0]
+            if numero in [t.numero for t in user.telefones]:
+                tel = [t for t in user.telefones if t.numero == numero][0]
+            if projeto.entidade and numero in [t.numero for t in projeto.entidade.telefones]:
+                tel = [t for t in projeto.entidade.telefones if t.numero == numero][0]
+        else:
+            tel = models.Telefone(numero=numero)
+        return tel
+    
+    projeto.sede_possui_tel = validado['sede_possui_tel'] == 'sim'
+    if projeto.sede_possui_tel:
+        for i, t in enumerate(validado['sede_tel']):
+            tel = get_tel(t)
+            if validado['sede_tel_tipo']:
+                tel.tipo = validado['sede_tel_tipo'][i]
+            projeto.telefones.append(tel)
+    else:
+        projeto.pq_sem_tel = validado['pq_sem_tel']
+        if projeto.pq_sem_tel == 'outro':
+            projeto.pq_sem_tel_outro = validado['pq_sem_tel_outro']
+    projeto.sede_possui_net = validado['sede_possui_net'] == 'sim'
+    if projeto.sede_possui_net:
+        projeto.tipo_internet = validado['tipo_internet']
+    else:
+        projeto.pq_sem_internet = validado['pq_sem_internet']
+        if projeto.pq_sem_internet == 'outro':
+            projeto.pq_sem_internet_outro = \
+                validado['pq_sem_internet_outro']
+
+    # -- Entidade Proponente
+    projeto.entidade = models.Entidade(
+        nome=validado['nome_ent'],
+        )
+
+    if validado.get('endereco_ent_proj') == 'nao':
+        projeto.entidade.enderecos.append(
+            models.Endereco(
+                cep=validado['end_ent_cep'],
+                numero=validado['end_ent_numero'],
+                logradouro=validado['end_ent_logradouro'],
+                complemento=validado['end_ent_complemento'],
+                uf=validado['end_ent_uf'],
+                cidade=validado['end_ent_cidade'],
+                bairro=validado['end_ent_bairro'],
+                latitude=validado['end_ent_latitude'],
+                longitude=validado['end_ent_longitude']
+                )
+            )
+    else:
+        for end in projeto.enderecos:
+            projeto.entidade.enderecos.append(end)
+
+    for i, t in enumerate(validado['ent_tel']):
+        tel = get_tel(t)
+        if validado['ent_tel_tipo']:
+            tel.tipo = validado['ent_tel_tipo'][i]        
+        projeto.entidade.telefones.append(tel)
+
+    projeto.entidade.email = validado['email_ent']
+    projeto.entidade.website = validado['website_ent']
+
+    if validado['convenio_ent'] == 'sim':
+        for i in validado['outro_convenio']:
+            conv = models.Convenio()
+            conv.nome = i
+            projeto.entidade.convenios.append(conv)
+
+    # -- Atividades exercidas pelo projeto
+    # --- Qual a área de atuação das atividades do Projeto?
+    for i in validado['atividade']:
+        obj = models.Atividade()
+        obj.nome = i
+        projeto.atividades.append(obj)
+
+    # ---  Com qual Público Alvo o Projeto é desenvolvido?
+    # ---- Sob aspectos de Faixa Etária
+    for i in validado['publico_alvo']:
+        obj = models.PublicoAlvo()
+        obj.nome = i
+        projeto.publico_alvo.append(obj)
+
+    # ---- Sob aspectos das Culturas Tradicionais
+    for i in validado['culturas_tradicionais']:
+        obj = models.CulturaTradicional()
+        obj.nome = i
+        projeto.culturas_tradicionais.append(obj)
+
+    # ---- Sob aspectos de Ocupação do Meio
+    for i in validado['ocupacao_do_meio']:
+        obj = models.OcupacaoDoMeio()
+        obj.nome = i
+        projeto.ocupacao_do_meio.append(obj)
+
+    # ---- Sob aspectos de Gênero
+    for i in validado['genero']:
+        obj = models.Genero()
+        obj.nome = i
+        projeto.genero.append(obj)
+
+    # --- Quais são as Manifestações e Linguagens que o Projeto utiliza
+    # em suas atividades?
+    for i in validado['manifestacoes_linguagens']:
+        obj = models.ManifestacaoLinguagem()
+        obj.nome = i
+        projeto.manifestacoes_linguagens.append(obj)
+
+    # --- O Projeto participa de alguma Ação do Programa Cultura Viva?
+    if validado['participa_cultura_viva'] == 'sim':
+        for i in validado['acao_cultura_viva']:
+            obj = models.AcaoCulturaViva()
+            obj.nome = i
+            projeto.acao_cultura_viva.append(obj)
+
+    descricao = validado['descricao']
+
+    # TODO: Tratar upload de documentacoes
+
+    # -- Parcerias do Projeto
+    if validado['estabeleceu_parcerias'] == 'sim':
+        for i in validado['parcerias']:
+            obj = models.Parceiro()
+            obj.nome = i
+            projeto.parcerias.append(obj)
+
+    # -- Índice de acesso à cultura
+    projeto.ind_oficinas = validado['ind_oficinas']
+    ind_expectadores = validado['ind_expectadores']
+    ind_populacao = validado['ind_populacao']
+
+    projeto.responsavel.append(user)
+
+    # -- Avatar
+    # TODO: Tratar upload de avatar
+    
+    try:
+        session.commit()
+    except Exception, e:
+        session.rollback()
+        raise e
+    return projeto
 
 @module.route("novo/", methods=('GET', 'POST'))
 def novo():
@@ -214,7 +401,7 @@ def novo():
         map(up, [getattr(schemas.Projeto, class_name).fields for class_name in dir(schemas.Projeto) if not class_name.startswith("__")])
         class ProjetoSchema(CdpcSchema):
             pass
-        #ProjetoSchema.fields.update(members)
+
         for key, v in members.items():
             setattr(ProjetoSchema, key, v)
         ProjetoSchema.fields.update(members)
@@ -223,22 +410,13 @@ def novo():
         print 'POST'
         try:
             data = dict(request.form.lists())
-            data = prepare_data(data, ProjetoSchema.fields)
+            data = cadastro.prepare_data(data, ProjetoSchema.fields)
             validado = validator.to_python(data)
-            clean_list = lambda x: [i for i in x if i.strip()];
-
-            rs_nomes = clean_list(request.form.getlist('rs_nome'))
-            rs_links = clean_list(request.form.getlist('rs_link'))
-            assert len(rs_nomes) == len(rs_links)
-
-            feed_nomes = clean_list(request.form.getlist('feed_nome'))
-            feed_links = clean_list(request.form.getlist('feed_link'))
-            assert len(feed_nomes) == len(feed_links)
 
         except Invalid, e:
             rendered = render_template(
                         'projetos/novo/main.html',
-                        vals_uf=VALORES_UF.keys(),
+                        cadastro=cadastro,
                         errors=dict([(i,j) for i,j in e.unpack_errors().items() if type(j) == list]),
                         values=[i for i  in request.form.lists() if len(i[1]) > 1])
             errors = e.error_dict
@@ -248,206 +426,13 @@ def novo():
             return make_response(filled)
         else:
 
-            # Instanciando o modelo e associando os campos validados e
-            # transformados em valores python à instância que será
-            # salva no db.
-            projeto = models.Projeto()
+            projeto = cadastra_projeto(validado, user)
 
-            # -- Dados do projeto
-            projeto.nome = validado['nome']
-            projeto.tipo = validado['tipo']
-            projeto.tipo_convenio = validado['tipo_convenio']
-            projeto.numero_convenio = validado['numero_convenio']
-
-            # -- Localização geográfica do projeto
-            projeto.enderecos.append(
-                models.Endereco(
-                    cep=validado['end_proj_cep'],
-                    numero=validado['end_proj_numero'],
-                    logradouro=validado['end_proj_logradouro'],
-                    complemento=validado['end_proj_complemento'],
-                    uf=validado['end_proj_uf'],
-                    cidade=validado['end_proj_cidade'],
-                    bairro=validado['end_proj_bairro'],
-                    latitude=validado['end_proj_latitude'],
-                    longitude=validado['end_proj_longitude']
-                    )
-                )
-
-            projeto.local = validado['local_proj']
-
-            if projeto.local == 'outros':
-                projeto.enderecos.append(
-                    models.Endereco(
-                        nome=validado['end_outro_nome'],
-                        cep=validado['end_outro_cep'],
-                        numero=validado['end_outro_numero'],
-                        logradouro=validado['end_outro_logradouro'],
-                        complemento=validado['end_outro_complemento'],
-                        uf=validado['end_outro_uf'],
-                        cidade=validado['end_outro_cidade'],
-                        bairro=validado['end_outro_bairro'],
-                        latitude=validado['end_outro_latitude'],
-                        longitude=validado['end_outro_longitude']
-                        )
-                    )
-
-            # -- Contatos e espaços na rede
-            
-            ######################
-            # CAMPOS EXCLUÍDOS!!!
-            #projeto.email = validado['email_proj']
-            #projeto.website = validado['website_proj']
-            #projeto.frequencia = validado['frequencia']
-            #for i in validado['proj_tel']:
-            #    tel = models.Telefone()
-            #    tel.numero = i
-            #    projeto.telefones.append(tel)
-            ######################
-
-            for i in range(len(rs_nomes)):
-                rsocial = models.RedeSocial()
-                rsocial.nome = rs_nomes[i]
-                rsocial.link = rs_links[i]
-                projeto.redes_sociais.append(rsocial)
-
-            for i in range(len(feed_nomes)):
-                feed = models.Feed()
-                feed.nome = feed_nomes[i]
-                feed.link = feed_links[i]
-                projeto.feeds.append(feed)
-
-            # -- Comunicação e Cultura Digital
-            projeto.sede_possui_tel = validado['sede_possui_tel'] == 'sim'
-            if(projeto.sede_possui_tel):
-                projeto.tipo_tel_sede = validado['tipo_tel_sede']
-            else:
-                projeto.pq_sem_tel = validado['pq_sem_tel']
-                if(projeto.pq_sem_tel == 'outro'):
-                    projeto.pq_sem_tel_outro = validado['pq_sem_tel_outro']
-            projeto.sede_possui_net = validado['sede_possui_net'] == 'sim'
-            if(projeto.sede_possui_net):
-                projeto.tipo_internet = validado['tipo_internet']
-            else:
-                projeto.pq_sem_internet = validado['pq_sem_internet']
-                if(projeto.pq_sem_internet == 'outro'):
-                    projeto.pq_sem_internet_outro = \
-                        validado['pq_sem_internet_outro']
-
-            # -- Entidade Proponente
-            projeto.entidade = models.Entidade(
-                nome=validado['nome_ent'],
-                )
-
-            if validado.get('endereco_ent_proj') == 'nao':
-                projeto.entidade.enderecos.append(
-                    models.Endereco(
-                        cep=validado['end_ent_cep'],
-                        numero=validado['end_ent_numero'],
-                        logradouro=validado['end_ent_logradouro'],
-                        complemento=validado['end_ent_complemento'],
-                        uf=validado['end_ent_uf'],
-                        cidade=validado['end_ent_cidade'],
-                        bairro=validado['end_ent_bairro'],
-                        latitude=validado['end_ent_latitude'],
-                        longitude=validado['end_ent_longitude']
-                        )
-                    )
-            else:
-                projeto.entidade.enderecos.append(projeto.enderecos[0])
-
-            for i in validado['ent_tel']:
-                tel = models.Telefone(numero=i)
-                projeto.entidade.telefones.append(tel)
-
-            projeto.email_ent = validado['email_ent']
-            projeto.website_ent = validado['website_ent']
-            projeto.convenio_ent = validado['convenio_ent'] == 'sim'
-
-            if projeto.convenio_ent:
-                for i in validado['outro_convenio']:
-                    conv = models.Convenio()
-                    tel.nome = i
-                    projeto.convenios.append(conv)
-
-            # -- Atividades exercidas pelo projeto
-            # --- Qual a área de atuação das atividades do Projeto?
-            for i in validado['atividade']:
-                obj = models.Atividade()
-                obj.nome = i
-                projeto.atividades.append(obj)
-
-            # ---  Com qual Público Alvo o Projeto é desenvolvido?
-            # ---- Sob aspectos de Faixa Etária
-            for i in validado['publico_alvo']:
-                obj = models.PublicoAlvo()
-                obj.nome = i
-                projeto.publico_alvo.append(obj)
-
-            # ---- Sob aspectos das Culturas Tradicionais
-            for i in validado['culturas_tradicionais']:
-                obj = models.CulturaTradicional()
-                obj.nome = i
-                projeto.culturas_tradicionais.append(obj)
-
-            # ---- Sob aspectos de Ocupação do Meio
-            for i in validado['ocupacao_do_meio']:
-                obj = models.OcupacaoDoMeio()
-                obj.nome = i
-                projeto.ocupacao_do_meio.append(obj)
-
-            # ---- Sob aspectos de Gênero
-            for i in validado['genero']:
-                obj = models.Genero()
-                obj.nome = i
-                projeto.genero.append(obj)
-
-            # --- Quais são as Manifestações e Linguagens que o Projeto utiliza
-            # em suas atividades?
-            for i in validado['manifestacoes_linguagens']:
-                obj = models.ManifestacaoLinguagem()
-                obj.nome = i
-                projeto.manifestacoes_linguagens.append(obj)
-
-            # --- O Projeto participa de alguma Ação do Programa Cultura Viva?
-            if validado['participa_cultura_viva'] == 'sim':
-                for i in validado['acao_cultura_viva']:
-                    obj = models.AcaoCulturaViva()
-                    obj.nome = i
-                    projeto.acao_cultura_viva.append(obj)
-
-            descricao = validado['descricao']
-
-            # TODO: Tratar upload de documentacoes
-
-            # -- Parcerias do Projeto
-            if validado['estabeleceu_parcerias'] == 'sim':
-                for i in validado['parcerias']:
-                    obj = models.Parceiro()
-                    obj.nome = i
-                    projeto.parcerias.append(obj)
-
-            # -- Índice de acesso à cultura
-            projeto.ind_oficinas = validado['ind_oficinas']
-            ind_expectadores = validado['ind_expectadores']
-            ind_populacao = validado['ind_populacao']
-
-            projeto.responsavel.append(user)
-            
-            # -- Avatar
-            # TODO: Tratar upload de avatar
-
-            try:
-                session.commit()
-            except Exception, e:
-                session.rollback()
-                raise e
-
-            flash(u'Projeto ccadastrado com sucesso!', 'success')
+            flash(u'Projeto cadastrado com sucesso!', 'success')
             return redirect("/projetos")
 
     return render_template(
         'projetos/novo/main.html',
-        vals_uf=VALORES_UF.keys(),
+        cadastro=cadastro,
         errors={})
-
+        

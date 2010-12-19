@@ -57,6 +57,7 @@ def login_form():
     if proxima == url_for('index.login_form'):
         proxima = url_for('index.index')
     if is_logged_in():
+        flash(u'Usuário logado com sucesso!', 'success')
         return redirect(proxima)
     return render_template('login.html', proxima=proxima, email=email)
 

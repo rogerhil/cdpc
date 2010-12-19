@@ -1,3 +1,17 @@
+{% macro make_list(items, key) -%}
+  {% for item in items %}
+  {{ item[key] }}{% if loop.index != items|length %}, {% else %}.{% endif %}
+  {% endfor %}
+  {{ caller() }}
+{%- endmacro %}
+
+{% macro make_tel_list(items, key) -%}
+  {% for item in items %}
+  {{ format_tel(item[key]) }}{% if loop.index != items|length %}<br/>{% endif %}
+  {% endfor %}
+  {{ caller() }}
+{%- endmacro %}
+
 <ul>
   <li class="borderbottom">
     <div class="descricao">
@@ -20,11 +34,13 @@
       <h3>Endereço</h3>
       {% if projeto.enderecos %}
       {% for end in projeto.enderecos %}
-      <ul>
-        <li>{{ end.logradouro }}, {{ end.numero }} {{ end.complemento }}</li>
-        <li>{{ end.bairro }}</li>
-        <li>{{ end.cidade }} - {{ end.uf }}</li>
-      </ul>
+      <div {% if loop.index != projeto.enderecos|length %}class="borderbottom"{% endif %}>
+        <ul>
+          <li>{{ end.logradouro }}, {{ end.numero }} {{ end.complemento }}</li>
+          <li>{{ end.bairro }}</li>
+          <li>{{ end.cidade }} - {{ end.uf }}</li>
+        </ul>
+      </div>
       {% endfor %}
       {% endif %}
     </div>
@@ -41,7 +57,7 @@
             <label>Telefones:</label>
           </div>
           <div class="column last">
-            {% for tel in projeto.telefones %}{{ tel }}{% endfor %}
+            {% call make_tel_list(projeto.telefones, 'numero') %}{% endcall %}
           </div>
         </li>
       </ul>
@@ -52,21 +68,32 @@
   <li>
     <div class="column threecolumn">
       <h3>Entidade proponente</h3>
-      {% if projeto.entidades %}
-      {% for ent in projeto.entidades %}
+      {% if projeto.entidade %}
+      {% with ent = projeto.entidade %}
       <ul>
         <li><label>Nome:</label>{{ ent.nome }}</li>
         <li><label>Email:</label>{{ ent.email }}</li>
-        <li><label>Site:</label>{{ ent.site }}</li>
-        <li><label>Telefones:</label>{{ ent.telefones }}</li>
-        {% if ent.convenios %}
+        <li><label>Site:</label>{{ ent.website }}</li>
         <li>
-          <label>Convênio Cultura Viva:</label>
-          {% for conv in ent.convenios %}
-            {{ conv }}
-          {% endfor %}
+          <div class="column">
+            <label>Telefones:</label>
+          </div>
+          <div class="column last">
+            {% call make_tel_list(ent.telefones, 'numero') %} {% endcall %}
+          </div>
         </li>
-        {% endif %}
+  
+        <li>
+          <div class="column">
+            <label>Convênio Cultura Viva:</label>
+          </div>
+          {% if ent.convenios %}
+          <div class="column last">
+            {% call make_list(ent.convenios, 'nome') %}{% endcall %}
+          </div>
+          {% endif %}
+        </li>
+
         <li>
           <label>Endereco:</label>
           {% if not ent.enderecos %}      
@@ -83,37 +110,55 @@
           {% endif %}
         </li>
       </ul>
-      {% endfor %}
+      {% endwith %}
       {% endif %}
     </div>
     <div class="column threecolumn">
       <h3>Comunicacão Cultura Digital</h3>
       <ul>
+
+        <li><label>Eamil:</label>{{ projeto.email }}</li>
+        <li><label>Site:</label>{{ projeto.site }}</li>
+        {% if projeto.sede_possui_tel %}
         <li>
-          <div class="hidden">
-          # -- Comunicação e Cultura Digital
-          email = Field(Unicode(256))
-          site = Field(Unicode(256))
-          sede_possui_tel = Field(Boolean)
-          tipo_tel_sede = Field(Unicode(7))
-          pq_sem_tel = Field(Unicode(256))
-          sede_possui_net = Field(Boolean)
-          tipo_internet = Field(Unicode(16))
-          pq_sem_internet = Field(Unicode(256))
-
-          sede_possui_tel = validators.String(not_empty=True)
-          tipo_tel_sede = Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_tel', 'sim'))
-          pq_sem_tel = Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_tel', 'nao'))
-          pq_sem_tel_outro = Dependent(schema=validators.String(not_empty=True), depend_field=('pq_sem_tel', 'outro'))
-          sede_possui_net = validators.String(not_empty=True)
-          tipo_internet =  Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_net', 'sim'))
-          pq_sem_internet =  Dependent(schema=validators.String(not_empty=True), depend_field=('sede_possui_net', 'nao'))
-          pq_sem_internet_outro =  Dependent(schema=validators.String(not_empty=True), depend_field=('pq_sem_internet', 'outro'))
-
-          rs_nome = validators.String()
-          rs_link = validators.String()
-          feed_nome = validators.String()
-          feed_link = validators.String()
+          <label>Tipo telefone:</label> {{ projeto.tipo_tel_sede }}
+        </li>
+        <li>
+          <div class="column">
+            <label>Telefones:</label>
+          </div>
+          <div class="column last">
+            {% call make_tel_list(projeto.telefones, 'numero') %}{% endcall %}
+          </div>
+        </li>
+        {% else %}
+        <li>
+          <label>Motivo por falta de telefone:</label>{{ projeto.pq_sem_tel }}
+        </li>
+        {% endif %}
+        {% if projeto.sede_possui_net %}
+        <li>
+          <label>Tipo:</label> {{ projeto.tipo_internet }}
+        </li>
+        {% else %}
+        <li>
+          <label>Motivo por falta de internet:</label>{{ projeto.pq_sem_internet }}
+        </li>
+        {% endif %}  
+        <li>
+          <div class="column">
+            <label>Redes sociais:</label>
+          </div>
+          <div class="column last">
+            {% call make_tel_list(projeto.redes_sociais, 'link') %}{% endcall %}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            <label>Feeds:</label>
+          </div>
+          <div class="column last">
+            {% call make_tel_list(projeto.feeds, 'link') %}{% endcall %}
           </div>
         </li>
       </ul>
@@ -122,23 +167,48 @@
       <h3>Atividades e Público Alvo</h3>
       <ul>
         <li><label>Atividades:</label>
-        {% for at in projeto.atividades %}
-        {{ at.nome }}
-        {% endfor %}
+        {% call make_list(projeto.atividades, 'nome') %}{% endcall %}
         </li>
-        <li><label>Público alvo sob aspecto de:</label>
+        <li>
+          <label>Público alvo sob aspecto de:</label>
           <div>
-            - Faixa etária: {{ ', '.join(projeto.publico_alvo) }}<br/>
-            - Culturas Tradicionais: {{ ', '.join(projeto.culturas_tradicionais) }}<br/>
-            - Ocupação do Meio: {{ ', '.join(projeto.ocupacao_do_meio) }}<br/>
-            - Gênero: {{ ', '.join(projeto.genero) }}<br/>
+            <div class="column">
+              - Faixa etária:
+            </div>
+            <div class="column last">
+              {% call make_list(projeto.publico_alvo, 'nome') %}{% endcall %}
+            </div>
+          </div>
+          <div>
+            <div class="column">
+              - Culturas Tradicionais:
+            </div>
+            <div class="column last">
+              {% call make_list(projeto.culturas_tradicionais, 'nome') %}{% endcall %}
+            </div>
+          </div>
+          <div>
+            <div class="column">
+              - Ocupação do Meio:
+            </div>
+            <div class="column last">
+              {% call make_list(projeto.ocupacao_do_meio, 'nome') %}{% endcall %}
+            </div>
+          </div>
+          <div>
+            <div class="column">
+              - Gênero:
+            </div>
+            <div class="column last">
+              {% call make_list(projeto.genero, 'nome') %}{% endcall %}
+            </div>
           </div>  
         </li>
         <li><label>Manifestações e Linguagens:</label>
-        {{ ', '.join(projeto.manifestacoes_linguagens) }}
+        {% call make_list(projeto.manifestacoes_linguagens, 'nome') %}{% endcall %}
         </li>
         <li><label>Plano de trabalho e documentações:</label>
-        {{ ', '.join(projeto.documentacoes) }}
+        {% call make_list(projeto.documentacoes, 'nome') %}{% endcall %}
         </li>
       </ul>
     </div>
