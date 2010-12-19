@@ -30,7 +30,7 @@ from .index import get_user_or_login
 import cadastro
 from schemas import CdpcSchema
 from .paginator import Paginator
-from .filestorage import save_image
+from .filestorage import save_image, save_file
 
 module = Module(__name__)
 
@@ -378,9 +378,34 @@ def cadastra_projeto(validado, user):
         raise e
 
     if validado['avatar']:
-        import pdb; pdb.set_trace()
-        save_image(validado['avatar'].stream, projeto.id, 'projeto')
+        try:
+            save_image(validado['avatar'].stream, projeto.id, 'projeto')
+        except Exception, e:
+            print
+            print e
+            print
+            pass
 
+    if validado['documentacoes']:
+        try:
+            for f in validado['documentacoes']:
+                filename = f.filename
+                save_file(f, projeto.id)
+                doc = models.Documentacao()
+                doc.doc = filename
+                projeto.documentacoes.append(doc)
+        except Exception, e:
+            print
+            print e
+            print
+            pass
+
+    try:
+        session.commit()
+    except Exception, e:
+        session.rollback()
+        raise e
+        
     return projeto
 
 @module.route("novo/", methods=('GET', 'POST'))

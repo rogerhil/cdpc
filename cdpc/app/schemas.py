@@ -215,7 +215,7 @@ class Projeto:
         # em suas atividades?
         manifestacoes_linguagens = formencode.ForEach(validators.String(not_empty=True))
 
-        documentacoes = validators.FieldStorageUploadConverter()
+        documentacoes = formencode.ForEach(validators.FieldStorageUploadConverter())
 
     class IndiceAcessoCultura(formencode.Schema):
         # -- Índice de acesso à cultura

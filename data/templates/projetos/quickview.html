@@ -173,8 +173,13 @@
         <li><label>Manifestações e Linguagens:</label>
         {{ macros.make_inline_list(projeto.manifestacoes_linguagens, 'nome') }}
         </li>
-        <li><label>Plano de trabalho e documentações:</label>
-        {{ macros.make_inline_list(projeto.documentacoes, 'nome') }}
+        <li>
+          <label>Plano de trabalho e documentações:</label>
+          <div>
+          {% autoescape false %}
+            {{ functions.file_list(projeto.documentacoes, projeto.id) }}
+          {% endautoescape %}
+          </div>
         </li>
       </ul>
     </div>

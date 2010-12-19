@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os, Image
-from cdpc.config import UPLOAD_PATH_AVATAR_PESSOA, UPLOAD_PATH_AVATAR_PROJETO
+from cdpc.config import UPLOAD_PATH_AVATAR_PESSOA, UPLOAD_PATH_AVATAR_PROJETO, \
+                        UPLOAD_PATH_DOCS
 
 IMAGE_SIZE = (256, 256)
 
@@ -28,3 +29,10 @@ def save_image(stream, name, mtype):
     image.thumbnail(IMAGE_SIZE)
     path = os.path.join(MTYPE[mtype], '%s.jpg' % name)
     image.save(path)
+    
+def save_file(fieldstorage, name):
+    path = os.path.join(UPLOAD_PATH_DOCS, str(name))
+    if not os.path.isdir(path):
+        os.makedirs(path)
+    path = os.path.join(path, fieldstorage.filename)
+    fieldstorage.save(path)

@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from cdpc.config import UPLOAD_PATH_AVATAR_PESSOA, UPLOAD_PATH_AVATAR_PROJETO
+from cdpc.config import UPLOAD_PATH_AVATAR_PESSOA, UPLOAD_PATH_AVATAR_PROJETO, \
+                        UPLOAD_PATH_DOCS
 
 def avatar_pessoa(obj):
     urlpath = "/static/upload/avatar/pessoa/%s.jpg" % obj.id
@@ -36,3 +37,15 @@ def avatar_projeto(obj):
     if os.path.isfile(fspath):
         return img % urlpath
     return img % '/static/img/bg/project_icon.jpg'
+    
+    
+def file_list(objs, name):
+    res = []
+    for obj in objs:
+        urlpath = "/static/upload/documentos/%s/%s" % (name, obj.doc)
+        fspath = os.path.join(UPLOAD_PATH_DOCS, str(name), obj.doc)
+        link = ' - <a href="%s" target="_blank">%s</a>'
+        if not os.path.isfile(fspath):
+            continue
+        res.append(link % (urlpath, obj.doc))
+    return "<br />".join(res)
