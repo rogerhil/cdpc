@@ -41,8 +41,8 @@ function configFields() {
 function submit() {
     var valid;
     clearPlaceholders();
-    //valid = VALIDATOR.form();
-    valid = true;
+    valid = VALIDATOR.form();
+    //valid = true;
     if (valid) {
         document.getElementById('novoUsuario').submit();
     } else {
