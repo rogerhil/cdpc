@@ -25,7 +25,7 @@ aplicação pode ser usada pelo executável `cdpc', que chama o método
 import os
 from string import printable
 from random import choice
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from jinja2 import FileSystemLoader
 from .config import STATIC_DIR, TEMPLATE_DIR
 from .app.index import is_logged_in, get_authenticated_user
@@ -33,6 +33,7 @@ from .app.usuarios import module as usuarios
 from .app.projetos import module as projetos
 from .app.cadastro import module as cadastro
 from .app.index import module as index
+import flask
 
 SECRET_KEY = ''.join(choice(printable) for x in range(50))
 
@@ -74,10 +75,12 @@ def create_app():
     app.jinja_env.loader = FileSystemLoader(TEMPLATE_DIR)
     
     @app.context_processor
-    def site_messages():
-        from .app.models import SiteMessage
-        from .app.index import get_authenticated_user
-        return dict(site_messages=SiteMessage.get_list(get_authenticated_user()))
+    def contexts():
+        path = [i for i in request.path.split('/') if i.strip()]
+        active = "inicio"
+        if path:
+            active = path[0]
+        return dict(active=active)
     
     app.register_module(index, url_prefix="/")
     app.register_module(usuarios, url_prefix="/usuarios/")
@@ -86,11 +89,5 @@ def create_app():
     app.jinja_env.globals['is_logged_in'] = is_logged_in    
     app.secret_key = SECRET_KEY
     return app
-    
 
-#@flask.app.context_processor
-#def cont():
-#    from .cdpc.app.models import SiteMessage
-#    from .cdpc.app.index import get_authenticated_user
-#    return dict(messages=SiteMessage.get_list(get_authenticated_user()))
     

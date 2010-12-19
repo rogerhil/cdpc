@@ -284,8 +284,9 @@ _____________________*/
 }
 
 div.ajaxsplash {
-    background-color: #458CC1;
-    opacity: .3;
+    background: url('../img/bg/ajax-loader.gif') no-repeat center center;
+    background-color: white;
+    opacity: .8;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -335,7 +336,10 @@ div.error {
     background-image:url("../img/bg/error.png");
 }
 
-div.cursorloading {
+div.loadcursor {
     position: absolute;
     background-image:url("../img/bg/ajax-loader.gif");
+    width: 31px;
+    height: 31px;
 }
+

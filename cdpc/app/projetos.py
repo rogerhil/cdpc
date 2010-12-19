@@ -112,7 +112,7 @@ def projeto_quickview_json(pid):
                                projeto=projeto,
                                format_tel=format_tel)
     data = {'content': rendered}
-    
+
     return dumps(data)
     
 @module.route("validar/", methods=('GET', 'POST'))

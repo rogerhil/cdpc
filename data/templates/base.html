@@ -15,6 +15,8 @@
           href="{{ url_for('.static', filename='css/base.css') }}">
     <!-- Front-end author: Marcos Maia <marcosmlopes01@gmail.com> -->
     {% block extra_head %}{% endblock %}
+    <script type="text/javascript"
+            src="{{ url_for('.static', filename='js/global.js') }}"></script>
   </head>
   <body class="{% block bodyclass %}{% endblock %}">
 
@@ -50,22 +52,26 @@
         <div class="bg">
           <div class="centralize">
             <h1>
-              <a href="">
+              <a href="/">
                 <span>Cadastramento dos</span> Pontos de Cultura
               </a>
             </h1>
             <ul id="nav" class="nav">
-              <li {% if selected == "inicio" %} class="selected"{% endif %}>
-                <a href="{{ url_for('index.index') }}" class="active">Início</a>
+              <li>
+                <a {% if active == "inicio" %} class="active"{% endif %}
+                   href="{{ url_for('index.index') }}">Início</a>
               </li>
-              <li {% if selected == "pessoas" %} class="selected"{% endif %}>
-                <a href="{{ url_for('usuarios.listing') }}">Pessoas</a>
+              <li>
+                <a {% if active == "usuarios" %} class="active"{% endif %}
+                   href="{{ url_for('usuarios.listing') }}">Pessoas</a>
               </li>
-              <li {% if selected == "projetos" %} class="selected"{% endif %}>
-                <a href="{{ url_for('projetos.listing') }}">Projetos</a>
+              <li>
+                <a {% if active == "projetos" %} class="active"{% endif %}
+                   href="{{ url_for('projetos.listing') }}">Projetos</a>
               </li>
-              <li {% if selected == "estats" %} class="selected"{% endif %}>
-                <a href="">Estatísticas</a>
+              <li>
+                <a {% if active == "estats" %} class="active"{% endif %}
+                   href="#">Estatísticas</a>
               </li>
             </ul>
             <div style="margin-top: 70px;">
