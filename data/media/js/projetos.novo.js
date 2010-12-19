@@ -162,10 +162,12 @@ function next(e) {
                         
             $('label[generated=true]', current).remove();
             $('.error', current).removeClass('error');
-
             children.find("input[type=pseudofile]").each( function () {
-                this.type = 'file';
+                var $inpfile = $('input[name=' + this.name + ']', '#fileaux');
+                $inpfile.insertAfter($(this));
+                $(this).remove();
             });
+            
             $('div#' + CURRENT_STEP).fadeOut('fast', function() {
                 $('div#' + next_step).fadeIn('fast');
                 $('ul.steps li.active').removeClass('active');
@@ -205,7 +207,9 @@ function next(e) {
         children = current.children();
         theForm = $("<form></form>").append(children);
         theForm.find("input[type=file]").each( function () {
-            this.type = 'pseudofile';
+            //this.type = 'pseudofile';
+            $('<input type="pseudofile" name="' + this.name + '">').insertAfter($(this));
+            $('#fileaux').append($(this));
         });
         $("div#ajaxsplash").fadeIn('fast');
         $(theForm).ajaxSubmit(options);

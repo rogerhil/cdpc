@@ -84,7 +84,7 @@ class Paginator(object):
         if props.get('mcol'):
             mcol = getattr(item, props['mcol'])
             if mcol:
-                value = getattr(mcol[0], cid)
+                value = ", ".join(list(set([getattr(i, cid) for i in mcol])))
         else:
             value = getattr(item, cid)
         if props.get('call'):
@@ -109,7 +109,7 @@ class Paginator(object):
         query = self._make_query()
         query = self._order_items(order_by, query)
         count = query.count()
-        pages = int(ceil(count / limit))
+        pages = int(ceil(float(count)/limit))
         page = (page >= pages and pages) and pages or page
         index = limit*(page-1)               
         items = query[index:index+limit]

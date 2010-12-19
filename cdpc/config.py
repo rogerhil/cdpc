@@ -32,3 +32,13 @@ STATIC_DIR = get_path('data', 'media')
 
 #DATABASE_URI = 'mysql://cdpc:cdpc@localhost/cdpc'
 DATABASE_URI = 'mysql://root@localhost/cdpc'
+    
+UPLOAD_PATH = get_path('data', 'media', 'upload')
+UPLOAD_PATH_AVATAR = os.path.join(UPLOAD_PATH, 'avatar/')
+UPLOAD_PATH_AVATAR_PESSOA = os.path.join(UPLOAD_PATH_AVATAR, 'pessoa/')
+UPLOAD_PATH_AVATAR_PROJETO = os.path.join(UPLOAD_PATH_AVATAR, 'projeto/')
+
+if not os.path.exists(UPLOAD_PATH_AVATAR_PESSOA):
+    os.makedirs(UPLOAD_PATH_AVATAR_PESSOA)
+if not os.path.exists(UPLOAD_PATH_AVATAR_PROJETO):
+    os.makedirs(UPLOAD_PATH_AVATAR_PROJETO)

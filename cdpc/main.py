@@ -76,11 +76,12 @@ def create_app():
     
     @app.context_processor
     def contexts():
+        from cdpc.app import templatefunctions as functions
         path = [i for i in request.path.split('/') if i.strip()]
         active = "inicio"
         if path:
             active = path[0]
-        return dict(active=active)
+        return dict(active=active, functions=functions)
     
     app.register_module(index, url_prefix="/")
     app.register_module(usuarios, url_prefix="/usuarios/")

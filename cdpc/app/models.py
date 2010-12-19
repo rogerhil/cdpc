@@ -140,7 +140,7 @@ class Pessoa(Cadastrado):
     cpf = Field(Unicode(11), unique=True)
     data_nascimento = Field(DateTime)
     sexo = Field(Unicode(16))
-    avatar = Field(Unicode(128))
+    avatar = Field(Unicode(256))
 
     # -- Geolocalização
     endereco = ManyToMany('Endereco')
@@ -261,7 +261,7 @@ class Projeto(Cadastrado):
     ind_populacao = Field(Integer)
 
     # -- Avatar
-    avatar = Field(Unicode(128)) # Caminho para o arquivo
+    avatar = Field(Unicode(256)) # Caminho para o arquivo
 
     def responsaveis(self):
         return " ".join([resp.nome for resp in self.responsavel])

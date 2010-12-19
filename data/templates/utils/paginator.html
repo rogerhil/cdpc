@@ -76,12 +76,14 @@
   <div style="margin-top: 10px;">
     <ul>
       <li>
+        {% if pagination['pages'] != 1 %}
         {% for i in range(1, pagination['pages']+1) %}
         <a href="javascript: $('input[name=page]').val('{{ i }}'); FORM.submit()"
            {% if i == pagination['page'] %}
            class="selected"
            {% endif %}>{{ string(i).zfill(2) }}</a>
         {% endfor %}
+        {% endif %}
         <input type="hidden" name="page" value="{{ cvars.page }}" />
       </li>
     </ul>

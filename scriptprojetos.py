@@ -4,7 +4,8 @@ from random import randint as r
 from urllib import urlopen
 from optparse import OptionParser
 
-from cdpc.app.projetos import cadastra_projeto, prepare_data
+from cdpc.app.projetos import cadastra_projeto
+from cdpc.app.cadastro import prepare_data
 from cdpc.app import schemas
 from cdpc.app.models import Pessoa
 from cdpc.app.cadastro import *
@@ -48,10 +49,10 @@ randemail = lambda : "%s@%s.%s" % (randword().lower(), randword().lower(), randu
 randwordlist = lambda : [randword() for i in xrange(r(5,10))]
 randurllist = lambda : [randurl() for i in xrange(r(5,10))]
 randredesociallist = lambda : [(randword().capitalize(), randurl()) for i in xrange(r(5,10))]
-randtel = lambda : ''.join([unicode(r(0,9)) for i in xrange(10)])
-randtellist = lambda : [randtel() for i in xrange(5)]
 randchoice = lambda X : X[r(0, len(X)-1)][0]
 randchoices = lambda X : [X[i][0] for i in xrange(r(1, len(X)-1))]
+randtel = lambda : (''.join([unicode(r(0,9)) for i in xrange(10)]), randchoice(TIPO_TEL_SEDE))
+randtellist = lambda : [randtel() for i in xrange(5)]
     
 base = [('nome', randword),
         ('descricao', randtext),
@@ -98,12 +99,11 @@ base = [('nome', randword),
         ('website_proj', randurl),
         ('sede_possui_tel', simnao),
         ('pq_sem_tel', (randchoice, 'sede_possui_tel', 'nao')),
-        ('tipo_tel_sede', (randchoice, 'sede_possui_tel', 'sim')),
         ('sede_tel', (randtellist, 'sede_possui_tel', 'sim')),
         ('sede_possui_net', simnao),
         ('pq_sem_internet', (randchoice, 'sede_possui_net', 'nao')),
         ('tipo_internet', (randchoice, 'sede_possui_net', 'sim')),
-        ('redes', randredesociallist),
+        ('rss', randredesociallist),
         ('feeds', randredesociallist),
 
         ('atividade', randchoices),
@@ -232,7 +232,24 @@ def generate_data():
             endentfilled = True
             continue
 
-        data[key] = extract_value(value, data, key)
+        result = extract_value(value, data, key)
+        if result and key in ['sede_tel', 'ent_tel']:
+            data[key] = []
+            data[key + '_tipo'] = []
+            for item in result:
+                tel, tipo = item
+                data[key].append(tel)
+                data[key + '_tipo'].append(tipo)
+            continue
+        if key in ['feeds', 'rss']:
+            data[key[:-1] + '_nome'] = []
+            data[key[:-1] + '_link'] = []
+            for item in result:
+                nome, link = item
+                data[key[:-1] + '_nome'].append(nome)
+                data[key[:-1] + '_link'].append(link)
+            continue
+        data[key] = result
     return data            
 
 def validate_and_create(data, user):

@@ -1,9 +1,4 @@
-{% macro make_select_options(items) -%}
-  {% for key, title in items %}
-    <option value="{{ key }}">{{ title }}</option>
-  {% endfor %}
-  {{ caller() }}
-{%- endmacro %}
+{% import "utils/macros.html" as macros %}
 
 <div class="step" id="localizacaoGeoProjeto">
   <div class="main">
@@ -52,7 +47,7 @@
           <label for="end_proj_uf">UF: *</label>
           <select name="end_proj_uf" id="end_proj_uf" class="required medium">
             <option></option>
-            {% call make_select_options(cadastro.VALORES_UF) %}{% endcall %}
+            {{ macros.make_select_options(cadastro.VALORES_UF) }}
           </select>
         </div>
       </li>

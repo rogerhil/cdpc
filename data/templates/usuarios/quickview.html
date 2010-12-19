@@ -1,0 +1,59 @@
+{% import "utils/macros.html" as macros %}
+
+<ul>
+  <li class="borderbottom">
+    <div class="column threecolumn">
+      <h3>Avatar</h3>
+      <ul>
+        <li>
+          {% autoescape false %}
+            {{ functions.avatar_pessoa(pessoa) }}
+          {% endautoescape %}
+        </li>
+      </ul>    
+    </div>
+    <div class="column threecolumn">
+      <h3>Endereço</h3>
+      {{ macros.make_address_list(pessoa.endereco) }}
+    </div>
+    <div class="column threecolumn last">
+      <h3>Contato</h3>
+      <ul>
+        <li><label>Email:</label>{{ pessoa.email }}</li>
+        <li>
+          <div class="column">
+            <label>Telefones:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_tel_list(pessoa.telefones) }}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            <label>Website:</label>
+          </div>
+          <div class="column last">
+            {{ pessoa.website }}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            <label>Redes sociais:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_list(pessoa.redes_sociais, 'link') }}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            <label>Feeds:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_list(pessoa.feeds, 'link') }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </li>
+</ul>
+

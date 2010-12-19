@@ -30,6 +30,7 @@ from .index import get_user_or_login
 import cadastro
 from schemas import CdpcSchema
 from .paginator import Paginator
+from .filestorage import save_image
 
 module = Module(__name__)
 
@@ -105,12 +106,9 @@ def projeto_quickview_json(pid):
     projeto = models.Projeto.query.filter_by(id=pid).first()
     if projeto is None:
         return dumps({'error': 'Projeto não encontrado.'})
-
-    format_tel = lambda x : "(%s) %s.%s" % (x[:2], x[2:6], x[6:])
     
     rendered = render_template('projetos/quickview.html',
-                               projeto=projeto,
-                               format_tel=format_tel)
+                               projeto=projeto)
     data = {'content': rendered}
 
     return dumps(data)
@@ -372,15 +370,17 @@ def cadastra_projeto(validado, user):
     ind_populacao = validado['ind_populacao']
 
     projeto.responsavel.append(user)
-
-    # -- Avatar
-    # TODO: Tratar upload de avatar
     
     try:
         session.commit()
     except Exception, e:
         session.rollback()
         raise e
+
+    if validado['avatar']:
+        import pdb; pdb.set_trace()
+        save_image(validado['avatar'].stream, projeto.id, 'projeto')
+
     return projeto
 
 @module.route("novo/", methods=('GET', 'POST'))
@@ -410,6 +410,7 @@ def novo():
         print 'POST'
         try:
             data = dict(request.form.lists())
+            data.update(request.files)
             data = cadastro.prepare_data(data, ProjetoSchema.fields)
             validado = validator.to_python(data)
 

@@ -54,7 +54,9 @@
 <div class="ajaxsplash" id="ajaxsplash">
 </div>
 
-<form id="novoProjeto" method="post" action=".">
+<div id="fileaux" class="hidden"></div>
+
+<form id="novoProjeto" method="post" enctype="multipart/form-data" action=".">
 
   <div>
     {% include "projetos/novo/dadosprojeto.html" %}

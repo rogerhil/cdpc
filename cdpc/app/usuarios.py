@@ -31,12 +31,17 @@ from . import models
 import cadastro
 
 from .paginator import Paginator
+from .filestorage import save_image
 
 module = Module(__name__)
 
 @module.route('/')
 def listing():
     vals_uf = cadastro.VALORES_UF
+
+    trevent = {'event': 'onclick',
+               'value': 'mostraPessoa(%s, this)',
+               'params': ['id']}
 
     columns = [('nome',   {'title': 'Nome'}),
                ('cidade', {'title': 'Cidade', 'mcol': 'endereco'}),
@@ -48,10 +53,20 @@ def listing():
                      ('uf',     {'label': 'Estado', 'type': 'select', 'mcol': 'endereco',
                                  'choices': vals_uf})]
 
-    paginator = Paginator(models.Pessoa, columns, search_fields)
+    paginator = Paginator(models.Pessoa, columns, search_fields, trevent=trevent)
     
     return render_template('usuarios/listing.html', paginator=paginator.render())
 
+@module.route('<int:pid>.quickview.json')
+def pessoa_quickview_json(pid):
+    pessoa = models.Pessoa.query.filter_by(id=pid).first()
+    if pessoa is None:
+        return dumps({'error': 'Pessoa não encontrada.'})
+    
+    rendered = render_template('usuarios/quickview.html',
+                               pessoa=pessoa)
+    data = {'content': rendered}
+    return dumps(data)
 
 @module.route("novo/", methods=('GET', 'POST'))
 def novo():
@@ -63,6 +78,7 @@ def novo():
         validado = {}
         try:
             data = dict(request.form.lists())
+            data.update(request.files)
             data = cadastro.prepare_data(data, validator.fields)
             validado = validator.to_python(data)
             clean_list = lambda x: [i for i in x if i.strip()];
@@ -139,11 +155,15 @@ def novo():
                     feed.link = validado['feed_link'][i]
                     usuario.feeds.append(feed)
 
+
             try:
                 session.commit()
             except Exception, e:
                 session.rollback()
                 raise e
+
+            if validado['avatar']:
+                save_image(validado['avatar'].stream, usuario.id, 'pessoa')
 
             flash(u'Usuário cadastrado com sucesso!', 'success')
             return redirect("/usuarios/")

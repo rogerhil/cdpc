@@ -1,22 +1,79 @@
-{% macro make_list(items, key) -%}
-  {% for item in items %}
-  {{ item[key] }}{% if loop.index != items|length %}, {% else %}.{% endif %}
-  {% endfor %}
-  {{ caller() }}
-{%- endmacro %}
-
-{% macro make_tel_list(items, key) -%}
-  {% for item in items %}
-  {{ format_tel(item[key]) }}{% if loop.index != items|length %}<br/>{% endif %}
-  {% endfor %}
-  {{ caller() }}
-{%- endmacro %}
+{% import "utils/macros.html" as macros %}
 
 <ul>
   <li class="borderbottom">
     <div class="descricao">
        {% if projeto.descricao %}{{ projeto.descricao }}{% endif %}
     </div>
+    <div class="column threecolumn">
+      <h3>Avatar</h3>
+      <ul>
+        <li>
+          {% autoescape false %}
+            {{ functions.avatar_projeto(projeto) }}
+          {% endautoescape %}
+        </li>
+      </ul>
+    </div>
+    <div class="column threecolumn">
+      <h3>Endereço</h3>
+      {% if projeto.enderecos %}
+      {{ macros.make_address_list(projeto.enderecos) }}
+      {% endif %}
+    </div>
+    <div class="column threecolumn last">
+      <h3>Contatos</h3>
+      <ul>
+        <li><label>Email:</label>{{ projeto.email }}</li>
+        <li>
+          <label>Site:</label>
+          {% if projeto.website %}{{ projeto.website }}{% endif %}
+        </li>
+        {% if projeto.sede_possui_tel %}
+        <li>
+          <div class="column">
+            <label>Telefones:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_tel_list(projeto.telefones) }}
+          </div>
+        </li>
+        {% else %}
+        <li>
+          <label>Motivo por falta de telefone:</label>{{ projeto.pq_sem_tel }}
+        </li>
+        {% endif %}
+        {% if projeto.sede_possui_net %}
+        <li>
+          <label>Tipo internet:</label> {{ projeto.tipo_internet }}
+        </li>
+        {% else %}
+        <li>
+          <label>Motivo por falta de internet:</label>{{ projeto.pq_sem_internet }}
+        </li>
+        {% endif %}  
+        <li>
+          <div class="column">
+            <label>Redes sociais:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.redes_sociais, 'link') }}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            <label>Feeds:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.feeds, 'link') }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </li>
+</ul>
+<ul>
+  <li>
     <div class="column threecolumn">
       <h3>Dados gerais</h3>
       <ul>
@@ -31,42 +88,6 @@
       </ul>    
     </div>
     <div class="column threecolumn">
-      <h3>Endereço</h3>
-      {% if projeto.enderecos %}
-      {% for end in projeto.enderecos %}
-      <div {% if loop.index != projeto.enderecos|length %}class="borderbottom"{% endif %}>
-        <ul>
-          <li>{{ end.logradouro }}, {{ end.numero }} {{ end.complemento }}</li>
-          <li>{{ end.bairro }}</li>
-          <li>{{ end.cidade }} - {{ end.uf }}</li>
-        </ul>
-      </div>
-      {% endfor %}
-      {% endif %}
-    </div>
-    <div class="column threecolumn last">
-      <h3>Contatos</h3>
-      <ul>
-        <li><label>Email:</label>{{ projeto.email }}</li>
-        <li>
-          <label>Site:</label>
-          {% if projeto.website %}{{ projeto.website }}{% endif %}
-        </li>
-        <li>
-          <div class="column">
-            <label>Telefones:</label>
-          </div>
-          <div class="column last">
-            {% call make_tel_list(projeto.telefones, 'numero') %}{% endcall %}
-          </div>
-        </li>
-      </ul>
-    </div>
-  </li>
-</ul>
-<ul>
-  <li>
-    <div class="column threecolumn">
       <h3>Entidade proponente</h3>
       {% if projeto.entidade %}
       {% with ent = projeto.entidade %}
@@ -79,7 +100,7 @@
             <label>Telefones:</label>
           </div>
           <div class="column last">
-            {% call make_tel_list(ent.telefones, 'numero') %} {% endcall %}
+            {{ macros.make_tel_list(ent.telefones) }}
           </div>
         </li>
   
@@ -89,7 +110,7 @@
           </div>
           {% if ent.convenios %}
           <div class="column last">
-            {% call make_list(ent.convenios, 'nome') %}{% endcall %}
+            {{ macros.make_inline_list(ent.convenios, 'nome') }}
           </div>
           {% endif %}
         </li>
@@ -99,116 +120,61 @@
           {% if not ent.enderecos %}      
             O mesmo que o projeto
           {% else %}
-          {% for end in ent.enderecos %}
-          <ul>
-            <li>{{ end.logradouro }}, {{ end.numero }}
-                {{ end.complemento }}</li>
-            <li>{{ end.bairro }}</li>
-            <li>{{ end.cidade }} - {{ end.uf }}</li>
-          </ul>
-          {% endfor %}
+            {{ macros.make_address_list(ent.enderecos) }}
           {% endif %}
         </li>
       </ul>
       {% endwith %}
       {% endif %}
-    </div>
-    <div class="column threecolumn">
-      <h3>Comunicacão Cultura Digital</h3>
-      <ul>
-
-        <li><label>Eamil:</label>{{ projeto.email }}</li>
-        <li><label>Site:</label>{{ projeto.site }}</li>
-        {% if projeto.sede_possui_tel %}
-        <li>
-          <label>Tipo telefone:</label> {{ projeto.tipo_tel_sede }}
-        </li>
-        <li>
-          <div class="column">
-            <label>Telefones:</label>
-          </div>
-          <div class="column last">
-            {% call make_tel_list(projeto.telefones, 'numero') %}{% endcall %}
-          </div>
-        </li>
-        {% else %}
-        <li>
-          <label>Motivo por falta de telefone:</label>{{ projeto.pq_sem_tel }}
-        </li>
-        {% endif %}
-        {% if projeto.sede_possui_net %}
-        <li>
-          <label>Tipo:</label> {{ projeto.tipo_internet }}
-        </li>
-        {% else %}
-        <li>
-          <label>Motivo por falta de internet:</label>{{ projeto.pq_sem_internet }}
-        </li>
-        {% endif %}  
-        <li>
-          <div class="column">
-            <label>Redes sociais:</label>
-          </div>
-          <div class="column last">
-            {% call make_tel_list(projeto.redes_sociais, 'link') %}{% endcall %}
-          </div>
-        </li>
-        <li>
-          <div class="column">
-            <label>Feeds:</label>
-          </div>
-          <div class="column last">
-            {% call make_tel_list(projeto.feeds, 'link') %}{% endcall %}
-          </div>
-        </li>
-      </ul>
     </div>   
     <div class="column threecolumn last">
       <h3>Atividades e Público Alvo</h3>
       <ul>
         <li><label>Atividades:</label>
-        {% call make_list(projeto.atividades, 'nome') %}{% endcall %}
+        {{ macros.make_inline_list(projeto.atividades, 'nome') }}
         </li>
         <li>
-          <label>Público alvo sob aspecto de:</label>
           <div>
-            <div class="column">
-              - Faixa etária:
-            </div>
-            <div class="column last">
-              {% call make_list(projeto.publico_alvo, 'nome') %}{% endcall %}
-            </div>
+            <label>Público alvo sob aspecto de:</label>
           </div>
-          <div>
-            <div class="column">
-              - Culturas Tradicionais:
-            </div>
-            <div class="column last">
-              {% call make_list(projeto.culturas_tradicionais, 'nome') %}{% endcall %}
-            </div>
+        </li>
+        <li>        
+          <div class="column">
+            - Faixa etária:
           </div>
-          <div>
-            <div class="column">
-              - Ocupação do Meio:
-            </div>
-            <div class="column last">
-              {% call make_list(projeto.ocupacao_do_meio, 'nome') %}{% endcall %}
-            </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.publico_alvo, 'nome') }}
           </div>
-          <div>
-            <div class="column">
-              - Gênero:
-            </div>
-            <div class="column last">
-              {% call make_list(projeto.genero, 'nome') %}{% endcall %}
-            </div>
-          </div>  
+        </li>
+        <li>
+          <div class="column">
+            - Culturas Tradicionais:
+          </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.culturas_tradicionais, 'nome') }}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            - Ocupação do Meio:
+          </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.ocupacao_do_meio, 'nome') }}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            - Gênero:
+          </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.genero, 'nome') }}
+          </div>
         </li>
         <li><label>Manifestações e Linguagens:</label>
-        {% call make_list(projeto.manifestacoes_linguagens, 'nome') %}{% endcall %}
+        {{ macros.make_inline_list(projeto.manifestacoes_linguagens, 'nome') }}
         </li>
         <li><label>Plano de trabalho e documentações:</label>
-        {% call make_list(projeto.documentacoes, 'nome') %}{% endcall %}
+        {{ macros.make_inline_list(projeto.documentacoes, 'nome') }}
         </li>
       </ul>
     </div>

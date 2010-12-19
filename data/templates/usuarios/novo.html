@@ -34,7 +34,8 @@
 
 {% block container %}
 
-<form id="novoUsuario" method="post" action="{{ url_for('usuarios.novo') }}">
+<form id="novoUsuario" method="post" enctype="multipart/form-data"
+      action="{{ url_for('usuarios.novo') }}">
   <div class="main container">
     <ul>
       <li>
@@ -109,7 +110,7 @@
                       <label class="required">Telefones: *</label>
                       <select name="pessoa_tel_tipo" class="small">
                         <option value="">- Tipo -</option>
-                        {% call make_select_options(cadastro.TIPO_TEL_SEDE) %}{% endcall %}
+                        {{ macros.make_select_options(cadastro.TIPO_TEL_SEDE) }}
                       </select>
                       <input type="text" name="pessoa_tel"
                              class="textarea required phone medium"
@@ -177,7 +178,7 @@
                       <label for="end_uf">UF: *</label>
                       <select name="end_uf" id="end_uf" class="required" style="width: 160px">
                         <option></option>
-                        {% call make_select_options(cadastro.VALORES_UF) %}{% endcall %}
+                        {{ macros.make_select_options(cadastro.VALORES_UF) }}
                       </select>
                     </div>
                   </ul>

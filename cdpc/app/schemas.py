@@ -66,7 +66,7 @@ class Usuario(formencode.Schema):
     data_nascimento = validators.DateConverter(month_style='dd/mm/yyyy')
     sexo = validators.String(not_empty=True)
     pessoa_tel = NotEmptyList(schema=formencode.ForEach(BrazilPhoneNumber()))
-    pessoa_tel_tipo = validators.String()
+    pessoa_tel_tipo = formencode.ForEach(validators.String())
     avatar = validators.FieldStorageUploadConverter()
 
     # -- Sobre a sua geolocalização

@@ -1,0 +1,40 @@
+{% macro make_select_options(items) -%}
+  {% for key, title in items %}
+    <option value="{{ key }}">{{ title }}</option>
+  {% endfor %}
+{%- endmacro %}
+
+{% macro make_inline_list(items, key) -%}
+  {% for item in items %}
+  {{ item[key] }}{% if loop.index != items|length %}, {% else %}.{% endif %}
+  {% endfor %}
+{%- endmacro %}
+
+{% macro make_list(items, key) -%}
+  {% for item in items %}
+  {{ item[key] }}{% if loop.index != items|length %}<br/>{% endif %}
+  {% endfor %}
+{%- endmacro %}
+
+{% macro format_tel(tel) -%}
+  {{ "(%s) %s.%s" % (tel[:2], tel[2:6], tel[6:]) }}
+{%- endmacro %}
+
+{% macro make_tel_list(items) -%}
+  {% for item in items %}
+  {{ format_tel(item['numero']) }} <span style="color: #BDBDBD;">({{ item['tipo'] }})</span>{% if loop.index != items|length %}<br/>{% endif %}
+  {% endfor %}
+{%- endmacro %}
+
+{% macro make_address_list(adresses) -%}
+  {% for end in adresses %}
+  <div {% if loop.index != adresses|length %}class="borderbottom"{% endif %}>
+    <ul>
+      <li>{{ end.logradouro }}, {{ end.numero }} {{ end.complemento }}</li>
+      <li>{{ end.bairro }}</li>
+      <li>{{ end.cidade }} - {{ end.uf }}</li>
+    </ul>
+  </div>
+  {% endfor %}
+{%- endmacro %}
+
