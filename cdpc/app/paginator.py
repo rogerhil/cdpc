@@ -40,6 +40,7 @@ class Paginator(object):
     
     def _order_items(self, order_by, query):
         cols = dict(self.columns).copy()
+        #import pdb; pdb.set_trace()
         for key, props in cols.items():
             cols[key]['thclass'] = 'arrowdown'
         for oby in order_by:

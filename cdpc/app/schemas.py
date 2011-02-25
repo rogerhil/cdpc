@@ -70,7 +70,7 @@ class Usuario(formencode.Schema):
     avatar = validators.FieldStorageUploadConverter()
 
     # -- Sobre a sua geolocalização
-    end_cep = validators.String(not_empty=True)
+    end_cep = Cep(not_empty=True)
     end_numero = validators.String(not_empty=True)
     end_uf = validators.String(not_empty=True)
     end_cidade = validators.String(not_empty=True)
@@ -136,7 +136,7 @@ class Projeto:
         end_proj_longitude = validators.String()
         local_proj = validators.String(not_empty=True)
         end_outro_nome = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
-        end_outro_cep = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
+        end_outro_cep = Dependent(schema=NotEmptyList(schema=formencode.ForEach(Cep(not_empty=True))), depend_field=('local_proj', 'outros'))
         end_outro_numero = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
         end_outro_logradouro = Dependent(schema=NotEmptyList(schema=formencode.ForEach(validators.String(not_empty=True))), depend_field=('local_proj', 'outros'))
         end_outro_complemento = Dependent(schema=formencode.ForEach(validators.String()), depend_field=('local_proj', 'outros'))
@@ -158,7 +158,7 @@ class Projeto:
         outro_convenio = Dependent(schema=formencode.ForEach(validators.String(not_empty=True)), depend_field=('convenio_ent', 'sim'))
 
         endereco_ent_proj = validators.String(not_empty=True)
-        end_ent_cep = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
+        end_ent_cep = Dependent(schema=Cep(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
         end_ent_numero = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
         end_ent_logradouro = Dependent(schema=validators.String(not_empty=True), depend_field=('endereco_ent_proj', 'nao'))
         end_ent_complemento = Dependent(schema=validators.String(), depend_field=('endereco_ent_proj', 'nao'))
