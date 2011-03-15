@@ -23,6 +23,9 @@ from formencode import foreach
 PREFIX = 'OPCAO_SISTEMA'
 format = lambda items: [("%s: %s" % (PREFIX, i), i) for i in items]
 
+EMPTY_HACK = '____________________'
+
+
 VALORES_UF = (
     'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
     'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',

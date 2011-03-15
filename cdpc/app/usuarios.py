@@ -64,7 +64,9 @@ def pessoa_quickview_json(pid):
         return dumps({'error': 'Pessoa não encontrada.'})
     
     rendered = render_template('usuarios/quickview.html',
-                               pessoa=pessoa)
+                               pessoa=pessoa,
+                               cadastro=cadastro,
+                               dict=dict)
     data = {'content': rendered}
     return dumps(data)
 

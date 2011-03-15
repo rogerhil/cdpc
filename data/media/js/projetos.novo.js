@@ -138,7 +138,8 @@ function validateStep() {
             if ($(this).is(':hidden')) ret = true;
         });
         if (ret) return;
-        if (VALIDATOR.element($(this)) == false) valid = false;
+        //if (VALIDATOR.element($(this)) == false) valid = false;
+        valid = VALIDATOR.element($(this));
     });
     return valid;
 }
@@ -250,8 +251,21 @@ function previous(e) {
     e.preventDefault();
 }
 
+function hackEmptyFields(pattern) {
+    // campos vazios são preenchidos com ' ', hack para manter
+    // o número de elementos do post 
+    $('input[name*=' + pattern + ']').each(function () {
+        if (!$(this).val()) {
+            $(this).val(' ');
+        }
+    });
+}
+
 function submit(e) {
     clearPlaceholders();
+    hackEmptyFields('_complemento');
+    hackEmptyFields('_latitude');
+    hackEmptyFields('_longitude');
     document.getElementById("novoProjeto").submit();
 }
 
@@ -429,8 +443,10 @@ function novoEndereco () {
     animatedAppendTo($end, $('#local_proj_outros'));
     $('<div style="text-align: right;">')
         .append($remove)
-        .appendTo ($newElement.parent());
+        .appendTo($newElement.parent());
     //atualizarEnderecos ();
+    $('input.cep').unmask();
+    $('input.cep').mask('99.999-999');
 }
 
 function atualizarEnderecos () {
@@ -467,14 +483,14 @@ function novaDocumentacao ($parent) {
    animatedAppendTo($doc, $parent);
 }
 
-function novoConvenio ($parent) {
+function novoConvenio ($el) {
     var $remove = removeButton();
     var $input = $('<input type="text" name="outro_convenio" ' + 
-                   'class="textarea" />');
+                   'id="outro_convenio" class="textarea" />');
     var $conv = $('<li>')
                  .append ($input)
                  .append ($remove)
-    animatedAppendTo($conv, $parent);    
+    animatedAppendTo($conv, $el.parent().parent());    
 }
 
 function novoParceiro ($parent) {
@@ -513,11 +529,13 @@ function preencherCamposLista(values, errors) {
 function novosCamposLista(values) {
     var funcs = {'rs_nome': novaEntrada,
                  'feed_nome': novaEntrada,
+                 'outro_convenio': novoConvenio,
                  'sede_tel': novoTelefone,
                  'ent_tel': novoTelefone,
                  'end_outro_bairro': novoEndereco};
     var blocksSet = {'rs_nome': $('#redesSociais'),
                      'feed_nome': $('#feeds'),
+                     'outro_convenio': $('#outro_convenio'),
                      'sede_tel': $('#sede_tel'),
                      'ent_tel': $('#ent_tel'),
                      'end_proj_complemento': $('#localizacaoGeoProjetoSection')};
@@ -527,7 +545,11 @@ function novosCamposLista(values) {
         for (var k = 0; k < items.length; k++) {
             if (k < 1) continue;
             if (funcs[id]) {
-                funcs[id](blocksSet[id], id.split('_')[0]);
+                if (id == 'outro_convenio') {
+                    funcs[id](blocksSet[id], id);
+                } else {
+                    funcs[id](blocksSet[id], id.split('_')[0]);
+                }
             }
         }
     }

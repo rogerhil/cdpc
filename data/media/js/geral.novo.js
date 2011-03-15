@@ -15,32 +15,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function cepWebService (cep, form, prefix) {
+function cepWebService (cepField, form, prefix) {
+    var cep = cepField.value;
     var cepre = /^(\d{2})\.(\d{3})-(\d{3})$/;
     var matched = cep.match(cepre);
+    var ind = -1;
+    $(form[prefix+'_cep']).each(function (index) {
+        if (cepField == this) {
+            ind = index;
+        }
+    });
     if (matched) {
         cep = matched[1]+matched[2]+matched[3];
         $.getJSON ('../../cadastro/consulta_cep/', {cep: cep}, function (data) {
-            $(form[prefix+'_logradouro']).val (data.rua);
-            $(form[prefix+'_logradouro']).focusout ();
+            $($(form[prefix+'_logradouro'])[ind]).val(data.rua);
+            $($(form[prefix+'_logradouro'])[ind]).focusout();
 
-            $(form[prefix+'_bairro']).val (data.bairro);
-            $(form[prefix+'_bairro']).focusout ();
+            $($(form[prefix+'_bairro'])[ind]).val(data.bairro);
+            $($(form[prefix+'_bairro'])[ind]).focusout();
 
-            $(form[prefix+'_cidade']).val (data.cidade);
-            $(form[prefix+'_cidade']).focusout ();
+            $($(form[prefix+'_cidade'])[ind]).val(data.cidade);
+            $($(form[prefix+'_cidade'])[ind]).focusout();
 
-            $(form[prefix+'_uf']).val (data.uf);
-            $(form[prefix+'_uf']).focusout ();
+            $($(form[prefix+'_uf'])[ind]).val(data.uf);
+            $($(form[prefix+'_uf'])[ind]).focusout();
 
             if (data.uf != "") {
-                $('#'+prefix+'_numero').focus();
+                $($('#'+prefix+'_numero')[ind]).focus();
             }
         });
 
         $.getJSON ('../../cadastro/consulta_geo/', {cep: cep}, function (data) {
-	        $(form[prefix+'_latitude']).val (data.lat);
-	        $(form[prefix+'_longitude']).val (data.lng);
+	        $($(form[prefix+'_latitude'])[ind]).val(data.lat);
+	        $($(form[prefix+'_longitude'])[ind]).val(data.lng);
         });
     }
 }

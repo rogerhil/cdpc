@@ -14,7 +14,7 @@
     </div>
     <div class="column threecolumn">
       <h3>Endereço</h3>
-      {{ macros.make_address_list(pessoa.endereco) }}
+      {{ macros.make_address_list([pessoa.endereco]) }}
     </div>
     <div class="column threecolumn last">
       <h3>Contato</h3>
@@ -25,7 +25,7 @@
             <label>Telefones:</label>
           </div>
           <div class="column last">
-            {{ macros.make_tel_list(pessoa.telefones) }}
+            {{ macros.make_tel_list(pessoa.telefones, dict(cadastro.TIPO_TEL_SEDE)) }}
           </div>
         </li>
         <li>
@@ -33,7 +33,7 @@
             <label>Website:</label>
           </div>
           <div class="column last">
-            {{ pessoa.website }}
+            {% if pessoa.website %}{{ pessoa.website }}{% endif %}
           </div>
         </li>
         <li>

@@ -54,8 +54,8 @@
         <ul class="telefones subForm">
           <li>
             <label>Qual?</label>
-            <input type="text" name="outro_convenio" class="required textarea" />
-            <a href="javascript: novoConvenio ($('.telefones', '#convenio_ent_sim'))" class="add">Outro convenio...</a>
+            <input type="text" name="outro_convenio" id="outro_convenio" class="required textarea" />
+            <a href="javascript: novoConvenio($('#outro_convenio'))" class="add">Outro convenio...</a>
           </li>
         </ul>
       </li>
@@ -82,7 +82,7 @@
             <label for="end_ent_cep">CEP: *</label>
             <input
                 type="text" name="end_ent_cep" id="end_ent_cep" class="required textarea cep"
-                onblur="cepWebService(this.value, $('#novoProjeto')[0], 'end_ent');"/>
+                onblur="cepWebService(this, $('#novoProjeto')[0], 'end_ent');"/>
           </li>
           <li>
             <label for="end_ent_logradouro">Logradouro: *</label>
@@ -128,13 +128,13 @@
 
           <li>
             <div class="column">
-              <label for="end_ent_latitude">Latitude: *</label>
+              <label for="end_ent_latitude">Latitude: </label>
               <input
-                  type="text" name="end_proj_latitude"
+                  type="text" name="end_ent_latitude"
                   id="end_ent_latitude" class="textarea" />
             </div>
             <div class="column last">
-              <label for="end_ent_longitude">Longitude: *</label>
+              <label for="end_ent_longitude">Longitude: </label>
               <input
                   type="text" name="end_ent_longitude"
                   id="end_ent_longitude" class="textarea" />

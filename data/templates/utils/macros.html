@@ -20,9 +20,9 @@
   {{ "(%s) %s.%s" % (tel[:2], tel[2:6], tel[6:]) }}
 {%- endmacro %}
 
-{% macro make_tel_list(items) -%}
+{% macro make_tel_list(items, dict) -%}
   {% for item in items %}
-  {{ format_tel(item['numero']) }} <span style="color: #BDBDBD;">({{ item['tipo'] }})</span>{% if loop.index != items|length %}<br/>{% endif %}
+  {{ format_tel(item['numero']) }} <span style="color: #BDBDBD;">({{ dict[item['tipo']] }})</span>{% if loop.index != items|length %}<br/>{% endif %}
   {% endfor %}
 {%- endmacro %}
 
@@ -38,11 +38,11 @@
   {% endfor %}
 {%- endmacro %}
 
-{% macro make_checkbox_list(name, items, columns) -%}
+{% macro make_checkbox_list(name, items, columns, use_class=True) -%}
   {% for col in range(columns) %}
       {% with %}
       {% set class = {2: 'two', 3: 'three', 4: 'four'} %}
-      <div class="column {% if columns >= 2 %}{{ class[columns] }}column{% endif %} {% if loop.index == columns %}last{% endif %}">
+      <div class="column {% if columns >= 2 and use_class %}{{ class[columns] }}column{% endif %} {% if loop.index == columns %}last{% endif %}">
       {% endwith %}
         <ul>
           {% with %}

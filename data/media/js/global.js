@@ -14,6 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+if (typeof(String.prototype.strip) === "undefined") {
+    String.prototype.trim = function () {
+        return String(this).replace(/^\s+|\s+$/g, '');
+    };
+}
+
+
 function startWaitCursor() {
     var $loadcursor = $('<div class="loadcursor" id="loadcursor">');
     $($("body")[0]).append($loadcursor); 
@@ -27,3 +34,5 @@ function stopWaitCursor() {
     $(document).unbind('mousemove');
     $('#loadcursor').remove();
 }
+
+

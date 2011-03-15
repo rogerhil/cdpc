@@ -7,7 +7,7 @@
         <label for="end_proj_cep">CEP: *</label>
         <input
             type="text" name="end_proj_cep" id="end_proj_cep" class="required textarea cep"
-            onblur="cepWebService(this.value, $('#novoProjeto')[0], 'end_proj');"/>
+            onblur="cepWebService(this, $('#novoProjeto')[0], 'end_proj');"/>
       </li>
       <li>
         <label for="end_proj_logradouro">Logradouro: *</label>
@@ -90,7 +90,7 @@
             <label for="end_outro_cep">CEP: *</label>
             <input
                 type="text" name="end_outro_cep" id="end_outro_cep" class="required textarea cep"
-                onblur="cepWebService(this.value, $('#novoProjeto')[0], 'end_outro');"/>
+                onblur="cepWebService(this, $('#novoProjeto')[0], 'end_outro');"/>
           </li>
           <li>
             <label for="end_outro_logradouro">Logradouro: *</label>
