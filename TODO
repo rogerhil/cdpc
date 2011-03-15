@@ -1,8 +1,26 @@
 
  * Projetos
    - Verificar os tips
+   - Analisar sobre a entidade, seria mais de uma?
+   - Projeto.responsavel: pode existir mais de um? no banco está ManyToMany,
+                          já na interface somente 1.
+
+   - Formulário de edição: testar se todos os valores realmente estão sendo
+                           preenchidos no form, e consertar;
+   - Formulário de edição: avatar e documentos, listar;
+   - Formulários: testar após submeter e dar erro, os valores preenchidos;
+   - Decorator;
+   - Link para edição;
+   - Filtro para listagem dos projetos do responsável;
+   - Verificar o schema por causa das mudanças do banco;
    
- * Usuarios
+   
+ * Usuários
+   - Formulário de edição;
+   - Formulário de cadastro: captcha;
+   - Ocultar o CPF da listagem se não for o próprio usuário;
+   - Decorator;
+   - Link para edição, profile;
    
  * Geral
    - Implementar validacao RequireIfPresent do lado do cliente JS
@@ -11,9 +29,11 @@
    - Implementar forms de edição de cada tipo de dados
    - Melhorias no layout em geral
    - Organizacão do CSS
+   
+   - Paginator, lista de pages, melhorar layout;
  
  * Tela principal
-
+  - Link de logout mais bonito;
 
  * Imagens
    - Imagem do lápis no topo
@@ -22,5 +42,12 @@
 
 
 
-
+BUGS:
+  - lance do complemento sem preecher
+  - focus no número após digitar cep
+  - ao digitar o cep a latitude e longitude apagam
+  - ao digitar cep ele atualizar todos endereços, errado!!
+  - passo 3 (entidade), não passa se preencher endereco, sem mostrar o erro;
+  - além disso, ao retornar, perde os valores adicionados de outro_convenio;
+  - campo latitude e longitude colocam valor de lista quando editados
 

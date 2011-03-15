@@ -38,3 +38,27 @@
   {% endfor %}
 {%- endmacro %}
 
+{% macro make_checkbox_list(name, items, columns) -%}
+  {% for col in range(columns) %}
+      {% with %}
+      {% set class = {2: 'two', 3: 'three', 4: 'four'} %}
+      <div class="column {% if columns >= 2 %}{{ class[columns] }}column{% endif %} {% if loop.index == columns %}last{% endif %}">
+      {% endwith %}
+        <ul>
+          {% with %}
+          {% set size = (col < (items|length % columns))|int + (items|length / columns)|int %}
+          {% set left = (col)*size %}
+          {% set right = (col+1)*size %}
+          {% for key, label in items[left:right] %}
+          <li>
+            <label>
+              <input type="checkbox" name="{{ name }}" value="{{ key }}"/>
+              {{ label }}
+            </label>
+          </li>
+          {% endfor %}
+          {% endwith %}
+        </ul>
+      </div>
+  {% endfor %}
+{%- endmacro %}

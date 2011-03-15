@@ -102,9 +102,10 @@ class Endereco(Entity):
     longitude = Field(Unicode(16))
 
     # -- relacionamentos
-    pessoas = ManyToMany('Pessoa')
+    pessoas = OneToMany('Pessoa')
     projetos = ManyToMany('Projeto')
-    entidades = ManyToMany('Entidade')
+    projeto = OneToMany('Projeto')
+    entidades = OneToMany('Entidade')
 
 class Cadastrado(Entity):
     """Classe base para Pessoa e Projeto
@@ -143,7 +144,7 @@ class Pessoa(Cadastrado):
     avatar = Field(Unicode(256))
 
     # -- Geolocalização
-    endereco = ManyToMany('Endereco')
+    endereco = ManyToOne('Endereco')
 
     # -- Dados de acesso
     # O email será usado como login.
@@ -154,7 +155,7 @@ class Entidade(Entity):
     using_options(shortnames=True)
     nome = Field(Unicode(256))
     convenios = ManyToMany('Convenio')
-    enderecos = ManyToMany('Endereco')
+    endereco = ManyToOne('Endereco')
     telefones = ManyToMany('Telefone')
     email = Field(Unicode(256))
     website = Field(Unicode(256))
@@ -211,6 +212,7 @@ class Projeto(Cadastrado):
     numero_convenio = Field(Unicode(32))
 
     # -- Geolocalização
+    endereco_sede = ManyToOne('Endereco')
     enderecos = ManyToMany('Endereco')
     local = Field(Unicode(16))
 

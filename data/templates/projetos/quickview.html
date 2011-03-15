@@ -17,8 +17,8 @@
     </div>
     <div class="column threecolumn">
       <h3>Endereço</h3>
-      {% if projeto.enderecos %}
-      {{ macros.make_address_list(projeto.enderecos) }}
+      {% if projeto.enderecos or projeto.endereco_sede %}
+      {{ macros.make_address_list([projeto.endereco_sede] + projeto.enderecos) }}
       {% endif %}
     </div>
     <div class="column threecolumn last">
@@ -117,10 +117,10 @@
 
         <li>
           <label>Endereco:</label>
-          {% if not ent.enderecos %}      
+          {% if ent.endereco.id == projeto.endereco_sede.id %}      
             O mesmo que o projeto
           {% else %}
-            {{ macros.make_address_list(ent.enderecos) }}
+            {{ macros.make_address_list([ent.endereco]) }}
           {% endif %}
         </li>
       </ul>

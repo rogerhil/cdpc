@@ -1,3 +1,5 @@
+{% import "utils/macros.html" as macros %}
+
 <div class="step" id="dadosProjeto">
   <div class="main">
     <ul>
@@ -73,99 +75,7 @@
             <em class="helptext">Responda mais de uma se necessário!</em>
           </label>
         </div>
-        <div class="column">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Agente cultura viva"/>
-               Agente Cultura Viva
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Cultura digital"/>
-               Cultura Digital
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Cultura e saúde"/>
-               Cultura e Saúde
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Economia viva"/>
-               Economia Viva
-             </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Escola viva"/>
-               Escola Viva
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Grios"/>
-               Grios
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Interacoes estéticas"/>
-               Interações Estéticas
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Mídias livres"/>
-               Mídias Livres
-             </label>
-            </li>
-           </ul>
-        </div>
-        <div class="column last">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Pontinho de cultura"/>
-               Pontinho de Cultura
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Pontos de memoria"/>
-               Pontos de memória
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Redes indígenas"/>
-               Redes Indígenas
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="acao_cultura_viva" value="Tuxaua"/>
-               Tuxaua
-             </label>
-            </li>
-          </ul>
-        </div>
+        {{ macros.make_checkbox_list('acao_cultura_viva', cadastro.ACAO_CULTURA_VIVA, 3) }}
       </li>
 
       <li>
@@ -192,92 +102,7 @@
             <em class="helptext">Responda mais de uma se necessário!</em>
           </label>
         </div>
-        <div class="column">
-          <ul>
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Biblioteca"/>
-                Biblioteca
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Empresa"/>
-                Empresa
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Equipamento de saúde"/>
-                Equipamento de Saúde
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Escola"/>
-                Escola
-              </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column">
-          <ul>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Igreja"/>
-                Igreja
-              </label>
-            </li>
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="ONG"/>
-                ONG
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Poder público"/>
-                Poder público
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Pontos de memória"/>
-                Pontos de Memória
-              </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column last">
-          <ul>
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Redes indígenas"/>
-                Redes Indígenas
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Sistema S"/>
-                Sistema S (Sesc, Senai, etc)
-              </label>
-            </li>
-
-            <li>
-              <label>
-                <input type="checkbox" name="parcerias" value="Tuxaua"/>
-                Tuxaua
-              </label>
-            </li>
-          </ul>
-        </div>
+        {{ macros.make_checkbox_list('parceria', cadastro.PARCERIAS, 3) }}
         <div class="clear"></div>
         <div>
           <label>

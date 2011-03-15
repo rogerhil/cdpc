@@ -15,10 +15,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import models
+
+import re
 from math import ceil
+
 from flask import request, render_template
-from sqlalchemy import desc
+from sqlalchemy import desc, orm
+
+from . import models
+
+
 
 class Paginator(object):
     
@@ -40,20 +46,30 @@ class Paginator(object):
     
     def _order_items(self, order_by, query):
         cols = dict(self.columns).copy()
-        #import pdb; pdb.set_trace()
         for key, props in cols.items():
             cols[key]['thclass'] = 'arrowdown'
         for oby in order_by:
-            n = oby.replace('-', '')
-            if not (n in self.model.__dict__.keys() and \
-                    not hasattr(getattr(self.model, n), '__call__')):
+            clause = oby.replace('-', '')
+            key = clause
+            if hasattr(getattr(self.model, clause, None), '__call__'):
                 continue
-            if oby.startswith('-'):
-                query = query.order_by(desc(n))                
+            match = re.match('^(\w+)\.(\w+)$', clause)
+            if match:
+                attr, subattr = match.groups()
+                clause = subattr
+                key = subattr
+                query = query.join(attr)
             else:
-                query = query.order_by(oby)
+                amb = dict(self.columns)[clause].get('ambiguity')
+                if amb:
+                    clause = "%s.%s" % (amb, clause)
+                
+            if oby.startswith('-'):
+                query = query.order_by(desc(clause))
+            else:
+                query = query.order_by(clause)
             cssclass = oby.startswith('-') and "arrowup" or "arrowdown"
-            cols[n]['thclass'] = cssclass
+            cols[key]['thclass'] = cssclass
         self.columns = self._order_columns(cols)
         return query
     
@@ -85,7 +101,10 @@ class Paginator(object):
         if props.get('mcol'):
             mcol = getattr(item, props['mcol'])
             if mcol:
-                value = ", ".join(list(set([getattr(i, cid) for i in mcol])))
+                if hasattr(mcol, '__iter__'):
+                    value = ", ".join(list(set([getattr(i, cid) for i in mcol])))
+                else:
+                    value = getattr(mcol, cid)
         else:
             value = getattr(item, cid)
         if props.get('call'):

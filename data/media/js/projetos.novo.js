@@ -35,6 +35,13 @@ function carregar () {
     createStepButtons();
     configStepButtons();
     configFields();
+    loadDynamicValues();
+}
+
+function loadDynamicValues() {
+    if (!DYNAMIC_VALUES) return;
+    novosCamposLista(DYNAMIC_VALUES);
+    preencherCamposLista(DYNAMIC_VALUES, []);
 }
 
 function verifyStepErrors() {
@@ -184,12 +191,19 @@ function next(e) {
         configValidator();
     }
  
+    var data = {'step_name': current[0].id};
+    
+    if (EDIT) {
+        data['edit'] = EDIT;
+        data['projeto_id'] = PROJETO_ID;
+    }
+ 
     var options = {
         success: afterServerValidation,
         url: "/projetos/validar/",
         type: 'post',
-        data: {'step_name': current[0].id},
-        dataType:  'json'
+        data: data,
+        dataType: 'json'
         //target:        '#output1',   // target element(s) to be updated with server response
         //beforeSubmit:  showRequest,  // pre-submit callback
         //clearForm: true        // clear all form fields after successful submit
@@ -389,7 +403,7 @@ $(document).ready (function () {
 });
 
 function novoEndereco () {
-    var $newElement = $($('#local_proj_outros')[0].children[0].cloneNode (true));
+    var $newElement = $($('#local_proj_outros')[0].children[0].cloneNode(true));
     $('input, select', $newElement).val ('');
     $('.error-message', $newElement).remove();
     $('.error', $newElement).removeClass('error');
@@ -406,7 +420,6 @@ function novoEndereco () {
     title.css('padding', '0px');
     title.css('margin', '0px');
     $newElement.css('margin', '20px 0px 0px 0px');
-
 
     $newElement.removeClass ('subbody');
     $newElement.removeAttr('id');
@@ -520,73 +533,6 @@ function novosCamposLista(values) {
     }
 }
 
-function proximo() {
-    var current = $("#" + CURRENT_STEP);
-    var next = current.next();
-    var children = current.children();
-    var theForm = $("<form></form>").append(children);
-    var success = function (data) {
-
-        if (data.error) {
-             current.html($(data.html).children());
-            try {
-                eval("load" + currentTab.capitalize() + "()");
-            } catch (e) {
-            
-            }
-            novosCamposLista(data.values_list);
-            preencherCamposLista(data.values_list, data.errors_list);
-        } else {
-            current.append(children);
-            try {
-                eval("load" + currentTab.capitalize() + "()");
-            } catch (e) {
-            
-            }
-            $('.error-message', current).remove();
-            $('.error', current).removeClass('error');
-            currentTab = next[0].id;
-            current.css("display", "none");
-            next.css("display", "block");
-            $("#botaoAnterior").css("display", "inline");
-            if (currentTab == fim) {
-                $("#botaoProximo").css("display", "none");
-                $("#submitButton").css("display", "inline");
-            }
-        }
-    }
-    var options = {
-        success: success,
-        url: "/projetos/validar/",
-        type: 'post',
-        data: {'step_name': current[0].id},
-        dataType:  'json'
-        //target:        '#output1',   // target element(s) to be updated with server response
-        //beforeSubmit:  showRequest,  // pre-submit callback
-        //clearForm: true        // clear all form fields after successful submit
-        //resetForm: true        // reset the form after successful submit
-        // $.ajax options can be used here too, for example:
-        //timeout:   3000
-    };
-
-    theForm.find("input[type=file]").each( function () {
-        this.type = 'text';
-    });
-    $(theForm).ajaxSubmit(options);
-}
-
-function anterior() {
-    var current = $("#"+currentTab);
-    var previous = current.prev();
-    current.css("display", "none");
-    $("#submitButton").css("display", "none");
-    currentTab = previous[0].id;
-    previous.css("display", "block");
-    $("#botaoProximo").css("display", "inline");
-    if (currentTab == inicio) {
-        $("#botaoAnterior").css("display", "none");
-    }
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 

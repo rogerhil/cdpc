@@ -1,3 +1,5 @@
+{% import "utils/macros.html" as macros %}
+
 <div class="step" id="atividadesExercidasProjeto">
   <div class="main">
     <div>
@@ -9,158 +11,10 @@
     </div>
     <div>
       <input type="checkbox" name="atividade" value="" style="display: none;" />
-    </div>    
+    </div>
     <ul>
       <li>
-        <div class="column twocolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Cultura popular"/>
-               Cultura Popular
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Direitos humanos"/>
-               Direitos Humanos
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Economia solidária"/>
-               Economia Solidária
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Educação"/>
-               Educação
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Esportes e lazer"/>
-               Esportes e Lazer
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Etnia"/>
-               Etnia
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Gênero"/>
-               Gênero
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Habitação"/>
-               Habitação
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Meio Ambiente"/>
-               Meio ambiente
-             </label>
-            </li>
-
-            <li>
-              <label>
-               <input type="checkbox" name="atividade" value="Memória"/>
-               Memória
-              </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column last twocolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="atividade"
-                      value="Patrimônio histórico imaterial"/>
-               Patrimônio Histórico Imaterial
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade"
-                      value="Patrimônio histórico material"/>
-               Patrimônio Histórico Material
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Pesquisa e Extensão"/>
-               Pesquisa e Extensão
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade"
-                      value="Povos e comunidades tradicionais"/>
-               Povos e comunidades tradicionais
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Recreação"/>
-               Recreação
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Religião"/>
-               Religião
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Saúde"/>
-               Saúde
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Sexualidade"/>
-               Sexualidade
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Tecnologia"/>
-               Tecnologia
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="atividade" value="Trabalho"/>
-               Trabalho
-             </label>
-            </li>
-          </ul>
-        </div>
+        {{ macros.make_checkbox_list('atividade', cadastro.ATIVIDADE, 2) }}
       </li>
     </ul>
   </div>

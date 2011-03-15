@@ -43,7 +43,7 @@ def listing():
                'value': 'mostraPessoa(%s, this)',
                'params': ['id']}
 
-    columns = [('nome',   {'title': 'Nome'}),
+    columns = [('nome',   {'title': 'Nome', 'ambiguity': 'pessoa'}),
                ('cidade', {'title': 'Cidade', 'mcol': 'endereco'}),
                ('uf',     {'title': 'Estado', 'mcol': 'endereco'}),
                ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})]
@@ -131,7 +131,7 @@ def novo():
             endereco.complemento = validado['end_complemento']
             endereco.latitude = validado['end_latitude']
             endereco.longitude = validado['end_longitude']
-            usuario.endereco.append(endereco)
+            usuario.endereco = endereco
 
             # -- Contatos e espaços na rede
             usuario.website = validado['website']

@@ -1,5 +1,4 @@
 # -*- coding: utf-8; Mode: Python -*-
-
 #
 # Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
 #
@@ -20,6 +19,9 @@ from urllib import urlopen
 from simplejson import dumps, loads
 from flask import Module, request
 from formencode import foreach
+
+PREFIX = 'OPCAO_SISTEMA'
+format = lambda items: [("%s: %s" % (PREFIX, i), i) for i in items]
 
 VALORES_UF = (
     'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
@@ -59,115 +61,138 @@ VALORES_UF = [(u'AC', u'Acre'),
 CONSULTA_CEP = 'http://viavirtual.com.br/webservicecep.php?cep=%s'
 CONSULTA_GEO = 'http://ws.geonames.org/postalCodeLookupJSON?postalcode=%s&country=BR'
 
-TIPO = [(u'ponto', u'Ponto'),
-        (u'pontao', u'Pontão'),
-        (u'iniciativa_premiada', u'Iniciativa Premiada')]
+TIPO = format(
+    [u'Ponto',
+     u'Pontão',
+     u'Iniciativa Premiada'])
 
-TIPO_CONVENIO = [(u'internacional', u'Internacional'),
-                 (u'federal', u'Federal'),
-                 (u'estadual', u'Estadual'),
-                 (u'municipal', u'Municipal')]
+TIPO_CONVENIO = format(
+    [u'Internacional',
+     u'Federal',
+     u'Estadual',
+     u'Municipal'])
 
-ACAO_CULTURA_VIVA = [(u'Agente Cultura Viva', u'Agente Cultura Viva'),
-                     (u'Cultura Digital', u'Cultura Digital'),
-                     (u'Cultura e Saúde', u'Cultura e Saúde'),
-                     (u'Economia Viva', u'Economia Viva'),
-                     (u'Escola Viva', u'Escola Viva'),
-                     (u'Grios', u'Grios'),
-                     (u'Interações Estéticas', u'Interações Estéticas'),
-                     (u'Mídias Livres', u'Mídias Livres'),
-                     (u'Pontinho de Cultura', u'Pontinho de Cultura'),
-                     (u'Pontos de memória', u'Pontos de memória'),
-                     (u'Redes Indígenas', u'Redes Indígenas'),
-                     (u'Tuxaua', u'Tuxaua')]
+ACAO_CULTURA_VIVA = format(
+                    [u'Agente Cultura Viva',
+                     u'Cultura Digital',
+                     u'Cultura e Saúde',
+                     u'Economia Viva',
+                     u'Escola Viva',
+                     u'Grios',
+                     u'Interações Estéticas',
+                     u'Mídias Livres',
+                     u'Pontinho de Cultura',
+                     u'Pontos de memória',
+                     u'Redes Indígenas',
+                     u'Tuxaua'])
 
-PARCERIAS = [(u'Biblioteca', u'Biblioteca'),
-             (u'Empresa', u'Empresa'),
-             (u'Equipamento de Saúde', u'Equipamento de Saúde'),
-             (u'Escola', u'Escola'),
-             (u'Igreja', u'Igreja'),
-             (u'ONG', u'ONG'),
-             (u'Poder público', u'Poder público'),
-             (u'Pontos de Memória', u'Pontos de Memória'),
-             (u'Redes Indígenas', u'Redes Indígenas'),
-             (u'Sistemas S', u'Sistemas S (Sesc, Senai, etc)'),
-             (u'Tuxaua', u'Tuxaua')]
+PARCERIAS = format(
+    [u'Biblioteca',
+     u'Empresa',
+     u'Equipamento de Saúde',
+     u'Escola',
+     u'Igreja',
+     u'ONG',
+     u'Poder público',
+     u'Pontos de Memória',
+     u'Redes Indígenas',
+     u'Sistemas S (Sesc, Senai, etc)',
+     u'Tuxaua'])
 
-LOCAL_PROJ = [(u'sede', u'Sede'),
-              (u'itinerante', u'Itinerante'),
-              (u'outros', u'Outros locais')]
+LOCAL_PROJ = format(
+    [u'Sede',
+     u'Itinerante',
+     u'Outros locais'])
 
-PQ_SEM_TEL = [(u'opcao', u'Opção'),
-              (u'fornecimento', u'Não há fornecimento de serviços na região'),
-              (u'recursos', u'Falta de recursos'),
-              (u'outros', u'Outros')]
+PQ_SEM_TEL = format(
+    [u'Opção',
+     u'Não há fornecimento de serviços na região',
+     u'Falta de recursos',
+     u'Outros'])
 
 PQ_SEM_INTERNET = PQ_SEM_TEL
 
-TIPO_TEL_SEDE = [(u'fixo', u'Fixo'),
-                 (u'celular', u'Celular'),
-                 (u'radio', u'Rádio'),
-                 (u'rural', u'Rural'),
-                 (u'publico', u'Público')]
+TIPO_TEL_SEDE = format(
+    [u'Fixo',
+     u'Celular',
+     u'Rádio',
+     u'Rural',
+     u'Público'])
 
-TIPO_INTERNET = [(u'discada', u'Discada'),
-                 (u'3g', u'3G'),
-                 (u'adsl', u'ADSL/Cabo (Banda Larga)'),
-                 (u'radio', u'Rádio'),
-                 (u'gesac', u'Gesac'),
-                 (u'public', u'Internet Pública')]
+TIPO_INTERNET = format(
+    [u'Discada',
+     u'3G',
+     u'ADSL/Cabo (Banda Larga)',
+     u'Rádio',
+     u'Gesac',
+     u'Internet Pública'])
 
-ATIVIDADE = [(u'Agente cultura viva', u'Agente Cultura Viva'),
-             (u'Cultura digital', u'Cultura Digital'),
-             (u'Cultura e saúde', u'Cultura e Saúde'),
-             (u'Economia viva', u'Economia Viva'),
-             (u'Escola viva', u'Escola Viva'),
-             (u'Grios', u'Grios'),
-             (u'Interacoes estéticas', u'Interações Estéticas'),
-             (u'Mídias livres', u'Mídias Livres'),
-             (u'Pontinho de cultura', u'Pontinho de Cultura'),
-             (u'Pontos de memoria', u'Pontos de memória'),
-             (u'Redes indígenas', u'Redes Indígenas'),
-             (u'Tuxaua', u'Tuxaua')]
+ATIVIDADE = format(
+    [u'Cultura Popular',
+     u'Direitos Humanos',
+     u'Economia Solidária',
+     u'Educação',
+     u'Esportes e Lazer',
+     u'Etnia',
+     u'Gênero',
+     u'Habitação',
+     u'Meio ambiente',
+     u'Memória',
+     u'Patrimônio Histórico Imaterial',
+     u'Patrimônio Histórico Material',
+     u'Pesquisa e Extensão',
+     u'Povos e comunidades tradicionais',
+     u'Recreação',
+     u'Religião',
+     u'Saúde',
+     u'Sexualidade',
+     u'Tecnologia',
+     u'Trabalho'])
 
-PUBLICO_ALVO = [(u'Criancas', u'Crianças'),
-                (u'Adolescentes', u'Adolescentes'),
-                (u'Adultos', u'Adultos'),
-                (u'Jovens', u'Jovens')]
+PUBLICO_ALVO = format(
+    [u'Crianças',
+     u'Adolescentes',
+     u'Adultos',
+     u'Jovens'])
                 
-CULTURAS_TRADICIONAIS = [(u'Quilombola', u'Quilombola'),
-                         (u'Pomerano', u'Pomerano'),
-                         (u'Caiçara', u'Caiçara'),
-                         (u'Indígena', u'Indígena'),
-                         (u'Cigana', u'Cigana'),
-                         (u'Ribeirinhos', u'Ribeirinhos'),
-                         (u'Povos da floresta', u'Povos da Floresta')]
+CULTURAS_TRADICIONAIS = format(
+    [u'Quilombola',
+     u'Pomerano',
+     u'Caiçara',
+     u'Indígena',
+     u'Cigana',
+     u'Ribeirinhos',
+     u'Povos da Floresta'])
 
 
-OCUPACAO_DO_MEIO = [(u'Rural', u'Rural'),
-                    (u'Urbano', u'Urbano')]
+OCUPACAO_DO_MEIO = format(
+    [u'Rural',
+     u'Urbano'])
 
-GENERO = [(u'Mulheres', u'Mulheres'),
-          (u'Homens', u'Homens'),
-          (u'LGBT', u'LGBT')]
+GENERO = format(
+    [u'Mulheres',
+     u'Homens',
+     u'LGBT'])
 
-MANIFESTACOES_LINGUAGENS = [(u'Artes digitais', u'Artes digitais'),
-                            (u'Artes plásticas', u'Artes plásticas'),
-                            (u'Audiovisual', u'Audiovisual'),
-                            (u'Circo', u'Circo'),
-                            (u'Culinária', u'Culinária'),
-                            (u'Dança', u'Dança'),
-                            (u'Fotografia', u'Fotografia'),
-                            (u'Grafite', u'Grafite'),
-                            (u'Internet', u'Internet'),
-                            (u'Jornalismo', u'Jornalismo'),
-                            (u'Literatura', u'Literatura'),
-                            (u'Música', u'Música'),
-                            (u'Rádio', u'Rádio'),
-                            (u'Teatro', u'Teatro'),
-                            (u'Tecnologias digitais', u'Tecnologias digitais'),
-                            (u'Tradição oral', u'Tradição oral'),
-                            (u'TV', u'TV')]
+MANIFESTACOES_LINGUAGENS = format(
+    [u'Artes digitais',
+     u'Artes plásticas',
+     u'Audiovisual',
+     u'Circo',
+     u'Culinária',
+     u'Dança',
+     u'Fotografia',
+     u'Grafite',
+     u'Internet',
+     u'Jornalismo',
+     u'Literatura',
+     u'Música',
+     u'Rádio',
+     u'Teatro',
+     u'Tecnologias digitais',
+     u'Tradição oral',
+     u'TV',
+     u'Outras'])
 
 module = Module(__name__)
 
@@ -230,3 +255,4 @@ def prepare_data(lists, fields):
                     continue
                 sch = getattr(sch, 'schema', None)
     return data
+

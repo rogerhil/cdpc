@@ -33,6 +33,7 @@ class CdpcEmail(formencode.validators.Email):
     >>> cpf = CdpcUser()
     """
     model = None
+    valid_email = None
     strip = True
     _cpf_re = [re.compile(r"^(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{2})$")]
     _store_format = "%s%s%s%s"
@@ -47,9 +48,15 @@ class CdpcEmail(formencode.validators.Email):
             raise Invalid(self.message('stringFormat', state), value, state)
         clean_value = value.strip()
 
+        user = self.model.query.filter_by(email=clean_value)
+        alreadyExists = bool(user.count())
 
-        if self.model.query.filter_by(email=clean_value).count():
+        if self.valid_email:
+            alreadyExists = self.valid_email not in [u.email for u in user]
+        
+        if alreadyExists:
             raise Invalid(self.message('alreadyExists', state), value, state)
+            
         return clean_value
 
 class Cpf(formencode.FancyValidator):

@@ -33,7 +33,7 @@
 
 {% block bodyclass %}project_register{% endblock %}
 
-{% block contenttitle %}<h2>Cadastro de Projetos</h2>{% endblock %}
+{% block contenttitle %}<h2>{{ title }}</h2>{% endblock %}
 
 {% block contenthead %}
 
@@ -74,7 +74,9 @@
       </div>
     </div><!-- .main -->
   </div>
-  <input type="hidden" name="step" value="dadosProjeto">
+  <input type="hidden" name="step" value="publico" />
+  <input type="hidden" name="edit" value="{{ edit }}" />
+  <input type="hidden" name="projeto_id" value="{{ projeto_id }}" />
 </form>
 
 
@@ -86,6 +88,22 @@ var inicio = "dadosProjeto";
 var fim = "avatar";
 
 $("#"+currentTab).css("display", "block");
+
+{% if dynamic_values %}
+var DYNAMIC_VALUES = {% autoescape off %}{{ dynamic_values }}{% endautoescape %};
+{% else %}
+var DYNAMIC_VALUES = null;
+{% endif %}
+
+{% if edit %}
+var EDIT = {{ edit }};
+var PROJETO_ID = {{ projeto_id }};
+{% else %}
+var EDIT = null;
+var PROJETO_ID = null;
+{% endif %}
+
+
 
 </script>
 

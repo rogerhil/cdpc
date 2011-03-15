@@ -1,3 +1,5 @@
+{% import "utils/macros.html" as macros %}
+
 <div class="step" id="publico">
   <div class="main">
     <h3>Com qual Público Alvo o Projeto é desenvolvido? *</h3>
@@ -7,317 +9,35 @@
         <div>
           <input type="checkbox" name="publico_alvo" value="" style="display: none;" />
         </div>
-        <div class="column fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="publico_alvo" value="Criancas" />
-               Crianças
-             </label>
-            </li>
-          </ul>
-        </div>
-        <div  class="column fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="publico_alvo" value="Adolescentes"/>
-               Adolescentes
-             </label>
-            </li>
-          </ul>
-        </div>
-        <div  class="column fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="publico_alvo" value="Adultos"/>
-               Adultos
-             </label>
-            </li>
-          </ul>
-        </div>
-        <div  class="column last fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="publico_alvo" value="Jovens"/>
-               Jovens
-             </label>
-            </li>
-          </ul>
-        </div>
+        {{ macros.make_checkbox_list('publico_alvo', cadastro.PUBLICO_ALVO, 4) }}
       </li>
 
       <li>
         <h4>Sob aspectos das <strong>Culturas Tradicionais</strong></h4>
-        <div class="column  fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="culturas_tradicionais" value="Quilombola"/>
-               Quilombola
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="culturas_tradicionais" value="Pomerano"/>
-               Pomerano
-             </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="culturas_tradicionais" value="Caiçara"/>
-               Caiçara
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="culturas_tradicionais" value="Indígena"/>
-               Indígena
-             </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="culturas_tradicionais" value="Cigana"/>
-               Cigana
-             </label>
-            </li>
-
-            <li>
-             <label>
-               <input type="checkbox" name="culturas_tradicionais" value="Ribeirinhos"/>
-               Ribeirinhos
-             </label>
-            </li>
-
-          </ul>
-        </div>
-        <div class="column last fourcolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="culturas_tradicionais" value="Povos da floresta"/>
-               Povos da Floresta
-             </label>
-            </li>
-          </ul>
-        </div>
+        {{ macros.make_checkbox_list('culturas_tradicionais', cadastro.CULTURAS_TRADICIONAIS, 4) }}
       </li>
 
 
       <li>
         <h4>Sob aspectos de <strong>Ocupação do Meio</strong></h4>
-        <div class="column twocolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="ocupacao_do_meio" value="Rural"/>
-               Rural
-             </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column last twocolumn">
-          <ul>
-            <li>
-             <label>
-               <input type="checkbox" name="ocupacao_do_meio" value="Urbano"/>
-               Urbano
-             </label>
-            </li>
-          </ul>
-        </div>
+        {{ macros.make_checkbox_list('ocupacao_do_meio', cadastro.OCUPACAO_DO_MEIO, 2) }}
       </li>
 
 
       <li>
         <h4>Sob aspectos de <strong>Gênero</strong></h4>
-        <div class="column threecolumn">
-          <ul>
-            <li>
-              <label>
-               <input type="checkbox" name="genero" value="Mulheres"/>
-               Mulheres
-              </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column threecolumn">
-          <ul>
-            <li>
-              <label>
-               <input type="checkbox" name="genero" value="Homens"/>
-               Homens
-              </label>
-            </li>
-          </ul>
-        </div>
-        <div class="column last threecolumn">
-          <ul>
-            <li>
-              <label>
-               <input type="checkbox" name="genero" value="LGBT"/>
-               LGBT
-              </label>
-            </li>
-          </ul>
-        </div>
+        {{ macros.make_checkbox_list('genero', cadastro.GENERO, 3) }}
       </li>
 
       <li class="bordertop">
-       <h3>
-         Quais são as Manifestações e Linguagens que o Projeto utiliza em
-         suas atividades? <em class="helptext">Responda mais de uma se necessário!</em>
-       </h3>
-       <div class="column threecolumn">
-         <ul>
-          <li>
-           <label>
-             <input type="checkbox" name="manifestacoes_linguagens" value="Artes digitais"/>
-             Artes digitais
-           </label>
-          </li>
+        <h3>
+          Quais são as Manifestações e Linguagens que o Projeto utiliza em
+          suas atividades? <em class="helptext">Responda mais de uma se necessário!</em>
+        </h3>
+        {{ macros.make_checkbox_list('manifestacoes_linguagens', cadastro.MANIFESTACOES_LINGUAGENS, 3) }}
+      </li>
 
-          <li>
-           <label>
-             <input type="checkbox" name="manifestacoes_linguagens" value="Artes plásticas"/>
-             Artes plásticas
-           </label>
-          </li>
-
-          <li>
-           <label>
-             <input type="checkbox" name="manifestacoes_linguagens" value="Audiovisual"/>
-             Audiovisual
-           </label>
-          </li>
-
-          <li>
-           <label>
-             <input type="checkbox" name="manifestacoes_linguagens" value="Circo"/>
-             Circo
-           </label>
-          </li>
-
-          <li>
-           <label>
-             <input type="checkbox" name="manifestacoes_linguagens" value="Culinária"/>
-             Culinária
-           </label>
-          </li>
-
-          <li>
-           <label>
-             <input type="checkbox" name="manifestacoes_linguagens" value="Dança"/>
-             Dança
-           </label>
-          </li>
-        </ul>
-      </div>
-      <div class="column threecolumn">
-        <ul>
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Fotografia"/>
-               Fotografia
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Grafite"/>
-               Grafite
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Internet"/>
-               Internet
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Jornalismo"/>
-               Jornalismo
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Literatura"/>
-               Literatura
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Música"/>
-               Música
-             </label>
-           </li>
-        </ul>
-      </div>
-      <div class="column last threecolumn">
-        <ul>
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Rádio"/>
-               Rádio
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Teatro"/>
-               Teatro
-             </label>
-           </li>
-           
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Tecnologias digitais"/>
-               Tecnologias digitais
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="Tradição oral"/>
-               Tradição oral
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="manifestacoes_linguagens" value="TV"/>
-               TV
-             </label>
-           </li>
-
-           <li>
-             <label>
-               <input type="checkbox" name="outras_manifestacoes"/>
-               Outras
-             </label>
-           </li>
-         </ul>
-       </div>
-     </li>
-
-     <li>
+      <li>
        <ul id="upload_doc">
          <li>
            <label>
@@ -326,7 +46,7 @@
            <input type="file" name="documentacoes" />        <a href="javascript: novaDocumentacao ($('#upload_doc'));" class="add">Outro arquivo</a>
          </li>
        </ul>
-     </li>
+      </li>
     </ul>
   </div>
 </div>

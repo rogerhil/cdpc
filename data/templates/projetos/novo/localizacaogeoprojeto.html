@@ -101,6 +101,13 @@
 
           <li>
             <div class="column">
+
+              <label for="end_outro_numero">Número: *</label>
+              <input
+                  type="text" name="end_outro_numero" id="end_outro_numero"
+                  class="required textarea number" />
+            </div>        
+            <div class="column">
               <label for="end_outro_complemento">Complemento: </label>
               <input
                   type="text" name="end_outro_complemento"
@@ -108,35 +115,27 @@
 
             </div>
             <div class="column last">
-
-              <label for="end_outro_numero">Número: *</label>
+              <label for="end_outro_bairro">Bairro: *</label>
               <input
-                  type="text" name="end_outro_numero" id="end_outro_numero"
-                  class="required textarea number" />
-            </div>        
+                  type="text" name="end_outro_bairro" id="end_outro_bairro" class="required textarea district big" />
+            </div>
+
           </li>
 
 
 
           <li>
             <div class="column">
-              <label for="end_outro_bairro">Bairro: *</label>
-              <input
-                  type="text" name="end_outro_bairro" id="end_outro_bairro" class="required textarea district" />
-            </div>
-            <div class="column">
               <label for="end_outro_cidade">Cidade: *</label>
               <input
-                  type="text" name="end_outro_cidade" id="end_outro_cidade" class="required textarea city" />
+                  type="text" name="end_outro_cidade" id="end_outro_cidade" class="required textarea city big" />
               
             </div>
             <div class="column last">
               <label for="end_outro_uf">UF: *</label>
-              <select name="end_outro_uf" id="end_outro_uf" class="required state">
+              <select name="end_outro_uf" id="end_outro_uf" class="required state medium">
                 <option></option>
-                {% for uf in vals_uf %}
-                <option value="{{ uf }}">{{ uf }}</option>
-                {% endfor %}
+                {{ macros.make_select_options(cadastro.VALORES_UF) }}
               </select>
             </div>
           </li>
