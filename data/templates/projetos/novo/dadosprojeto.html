@@ -104,12 +104,15 @@
         </div>
         {{ macros.make_checkbox_list('parcerias', cadastro.PARCERIAS, 3, False) }}
         <div class="clear"></div>
-        <div>
+        <div id="outro_parceiro_block" class="hidden">
           <label>
             Outros parceiros:
-            <a href="javascript: novoParceiro($('.novosparceiros', $('#parcerias_sim')));" class="add">Adicionar novo Parceiro</a>          
+            <a href="javascript: novoParceiro($('#outro_parceiro'));" class="add">Adicionar novo Parceiro</a>          
           </label>
           <ul class="novosparceiros">
+            <li>
+              <input type="text" name="outro_parceiro" id="outro_parceiro" class="required textarea" />
+            </li>
 
           </ul>
         </div>

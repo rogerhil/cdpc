@@ -28,10 +28,11 @@ from elixir import session
 
 from . import schemas
 from . import models
-import cadastro
+from ..common import models as common_models
+from ..common import cadastro
 
-from .paginator import Paginator
-from .filestorage import save_image
+from ..utils.paginator import Paginator
+from ..utils.filestorage import save_image
 
 module = Module(__name__)
 
@@ -123,7 +124,7 @@ def novo():
             usuario.sexo = validado['sexo']
 
             # -- Sobre a sua localização geográfica
-            endereco = models.Endereco()
+            endereco = common_models.Endereco()
             endereco.cep = validado['end_cep']
             endereco.uf = validado['end_uf']
             endereco.cidade = validado['end_cidade']
@@ -138,7 +139,7 @@ def novo():
             # -- Contatos e espaços na rede
             usuario.website = validado['website']
             for i, num in enumerate(validado['pessoa_tel']):
-                tel = models.Telefone()
+                tel = common_models.Telefone()
                 tel.numero = num
                 if validado['pessoa_tel_tipo']:
                     tel.tipo = validado['pessoa_tel_tipo'][i]
@@ -146,13 +147,13 @@ def novo():
             
             if validado.has_key('rs_nome'):
                 for i in range(len(validado['rs_nome'])):
-                    rsocial = models.RedeSocial()
+                    rsocial = common_models.RedeSocial()
                     rsocial.nome = validado['rs_nome'][i]
                     rsocial.link = validado['rs_link'][i]
                     usuario.redes_sociais.append(rsocial)
             if validado.has_key('feed_nome'):
                 for i in range(len(validado['feed_nome'])):
-                    feed = models.Feed()
+                    feed = common_models.Feed()
                     feed.nome = validado['feed_nome'][i]
                     feed.link = validado['feed_link'][i]
                     usuario.feeds.append(feed)

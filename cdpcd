@@ -2,6 +2,7 @@
 # -*- coding: utf-8; Mode: Python -*-
 #
 # Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
+# Copyright (C) 2010  Rogério Hilbert Lima <rogerhil@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -37,10 +38,16 @@ def main():
     """
     # Cria a base de dados com a uri fornecida pelo arquivo de
     # configuração config.py.
-    print sys.argv
+    from elixir import metadata, setup_all, create_all
+    from cdpc.config import DATABASE_URI
+    import cdpc.app.common.models
+    import cdpc.app.usuarios.models
+    import cdpc.app.projetos.models
+    metadata.bind = DATABASE_URI
+    metadata.bind.echo = True
+    setup_all()
+    
     if '-d' in sys.argv:
-        import cdpc.app.models
-        from elixir import create_all
         create_all()
         exit(0)
 

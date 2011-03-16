@@ -1,6 +1,7 @@
 # -*- coding: utf-8; Mode: Python -*-
 #
 # Copyright (C) 2010  Lincoln de Sousa <lincoln@comum.org>
+# Copyright (C) 2010  Rogério Hilbert Lima <rogerhil@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
@@ -29,9 +30,9 @@ from flask import Flask, send_from_directory, request
 from jinja2 import FileSystemLoader
 from .config import STATIC_DIR, TEMPLATE_DIR
 from .app.index import is_logged_in, get_authenticated_user
-from .app.usuarios import module as usuarios
-from .app.projetos import module as projetos
-from .app.cadastro import module as cadastro
+from .app.usuarios.usuarios import module as usuarios
+from .app.projetos.projetos import module as projetos
+from .app.common.cadastro import module as cadastro
 from .app.index import module as index
 import flask
 
@@ -76,7 +77,7 @@ def create_app():
     
     @app.context_processor
     def contexts():
-        from cdpc.app import templatefunctions as functions
+        from cdpc.app.utils import templatefunctions as functions
         path = [i for i in request.path.split('/') if i.strip()]
         active = "inicio"
         if path:

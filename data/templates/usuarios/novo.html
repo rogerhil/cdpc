@@ -142,7 +142,7 @@
                   </label>
                   <input type="text" name="end_cep" id="end_cep"
                          class="textarea required cep"
-                         onblur="cepWebService(this.value, $('#novoUsuario')[0], 'end');"
+                         onblur="cepWebService(this, $('#novoUsuario')[0], 'end');"
                          placeholder="00.000-000">
                 </li>
                 <li class="required">
@@ -205,7 +205,7 @@
                 <li>
                   <label for="website">Web site:</label>
                   <input type="text" name="website" id="website"
-                         class="textarea" placeholder="http://">
+                         class="textarea url" placeholder="http://">
                 </li>
 
                 <li class="subForm">

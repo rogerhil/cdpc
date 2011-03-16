@@ -19,51 +19,10 @@
 """Contém os modelos das tabelas que serão usadas no projeto
 """
 
-from datetime import datetime
-from elixir import metadata, setup_all, using_options, Entity, Field, \
-    Unicode, DateTime, ManyToOne, OneToMany, ManyToMany, Boolean, Integer, \
-    session
-from ..config import DATABASE_URI
+from elixir import using_options, Entity, Field, Unicode, DateTime, ManyToOne, \
+    OneToMany, ManyToMany, Boolean, Integer
 
-def get_or_create(model, **kwargs):
-    """Helper function to search for an object or create it otherwise,
-    based on the Django's Model.get_or_create() method.
-    """
-    instance = model.query.filter_by(**kwargs).first()
-    if instance:
-        return instance, False
-    else:
-        params = {}
-        for k, v in kwargs.iteritems():
-            params[k] = v
-        instance = model(**params)
-        session.add(instance)
-        return instance, True    
-
-class Telefone(Entity):
-    """Wrapper para a entidade telefone no banco de dados
-    """
-    using_options(shortnames=True)
-    numero = Field(Unicode(32))
-    tipo = Field(Unicode(32))
-    cadastrado = ManyToMany('Cadastrado')
-    entidades = ManyToMany('Entidade')
-
-class RedeSocial(Entity):
-    """Wrapper para a entidade redesocial no banco de dados
-    """
-    using_options(shortnames=True)
-    nome = Field(Unicode(128))
-    link = Field(Unicode(128))
-    cadastrado = ManyToMany('Cadastrado')
-
-class Feed(Entity):
-    """Wrapper para a entidade feed no banco de dados
-    """
-    using_options(shortnames=True)
-    nome = Field(Unicode(128))
-    link = Field(Unicode(128))
-    cadastrado = ManyToMany('Cadastrado')
+from ..common.models import Cadastrado
 
 class Convenio(Entity):
     """Wrapper para a entidade convenio no banco de dados
@@ -85,71 +44,6 @@ class Parceiro(Entity):
     using_options(shortnames=True)
     nome = Field(Unicode(128))
     projeto = ManyToMany('Projeto')
-
-class Endereco(Entity):
-    """Wrapper para a entidade endereco no banco de dados
-    """
-    using_options(shortnames=True)
-    nome = Field(Unicode(128), default=u"")
-    cep = Field(Unicode(8))
-    numero = Field(Unicode(16))
-    logradouro = Field(Unicode(128))
-    complemento = Field(Unicode(128))
-    uf = Field(Unicode(2))
-    cidade = Field(Unicode(128))
-    bairro = Field(Unicode(128))
-    latitude = Field(Unicode(16))
-    longitude = Field(Unicode(16))
-
-    # -- relacionamentos
-    pessoas = OneToMany('Pessoa')
-    projetos = ManyToMany('Projeto')
-    projeto = OneToMany('Projeto')
-    entidades = OneToMany('Entidade')
-
-class Cadastrado(Entity):
-    """Classe base para Pessoa e Projeto
-    """
-    using_options(inheritance='multi', shortnames=True)
-
-    # -- Meta informação
-    data_cadastro = Field(DateTime, default=datetime.now)
-    ip_addr = Field(Unicode(16))
-
-    # -- Contatos e espaços na rede
-    telefones = ManyToMany(Telefone, inverse='cadastrado')
-    email = Field(Unicode(256))
-    website = Field(Unicode(256))
-    redes_sociais = ManyToMany(RedeSocial, inverse='cadastrado')
-    feeds = ManyToMany(Feed, inverse='cadastrado')
-
-class Pessoa(Cadastrado):
-    """Wrapper para a entidade pessoa no banco de dados
-    """
-    using_options(inheritance='multi', shortnames=True)
-
-    responsavel_por = ManyToMany('Projeto', inverse='responsavel')
-    projetos = ManyToMany('Projeto')
-
-    # -- Sobre sua participação
-    participacao = Field(Unicode(20))
-    papel = Field(Unicode(26))
-    nome_iniciativa = Field(Unicode(128))
-
-    # -- Dados pessoais
-    nome = Field(Unicode(256))
-    cpf = Field(Unicode(11), unique=True)
-    data_nascimento = Field(DateTime)
-    sexo = Field(Unicode(16))
-    avatar = Field(Unicode(256))
-
-    # -- Geolocalização
-    endereco = ManyToOne('Endereco')
-
-    # -- Dados de acesso
-    # O email será usado como login.
-    email = Field(Unicode(256), unique=True)
-    senha = Field(Unicode(256))
 
 class Entidade(Entity):
     using_options(shortnames=True)
@@ -268,40 +162,3 @@ class Projeto(Cadastrado):
     def responsaveis(self):
         return " ".join([resp.nome for resp in self.responsavel])
 
-
-class SiteMessage(Entity):
-    text = Field(Unicode(1024))
-    status =  Field(Unicode(64))
-    data = Field(DateTime, default=datetime.now)
-    usuario = ManyToOne('Pessoa')
-    
-    _possible_status = ['info', 'success', 'warning', 'error']
-    
-    @staticmethod
-    def create(text, user, status='info'):
-        if not status in SiteMessage._possible_status:
-            raise Exception("%s is not a possible status. Expected: " \
-                            % (status, ", ".join(SiteMessage._possible_status)))
-        from elixir import session
-        msg = SiteMessage(text=text, usuario=user, status=status)
-        try:
-            session.commit()
-        except Exception, e:
-            session.rollback()
-            raise e
-        return msg
-
-    @staticmethod
-    def get_list(user):
-        dict_list = [msg.__dict__.copy() for msg in SiteMessage.query.filter_by(usuario=user)]
-        SiteMessage.query.filter_by(usuario=user).delete()
-        try:
-            session.commit()
-        except Exception, e:
-            session.rollback()
-            raise e
-        return dict_list
-    
-metadata.bind = DATABASE_URI
-metadata.bind.echo = True
-setup_all()

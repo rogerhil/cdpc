@@ -19,9 +19,9 @@
 """
 from hashlib import sha1
 from sqlalchemy.orm.exc import NoResultFound
-from flask import Module, request, render_template, session, \
-    g, url_for, redirect, abort, flash
-from .models import Pessoa
+from flask import Module, request, render_template, session, g, url_for, \
+    redirect, abort, flash
+from usuarios.models import Pessoa
 
 module = Module(__name__)
 

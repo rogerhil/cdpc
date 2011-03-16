@@ -18,15 +18,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import formencode, re
-from formencode import validators
-from formencode.validators import _, Invalid
 
-from formencode.interfaces import *
-from formencode.api import *
-from formencode.schema import format_compound_error
+import re
+from formencode import FancyValidator
+from formencode.validators import _, Invalid, Email
+#from formencode.interfaces import *
+#from formencode.api import *
 
-class CdpcEmail(formencode.validators.Email):
+class CdpcEmail(Email):
 
     """
     Validates user in Cdpc Site
@@ -59,7 +58,7 @@ class CdpcEmail(formencode.validators.Email):
             
         return clean_value
 
-class Cpf(formencode.FancyValidator):
+class Cpf(FancyValidator):
 
     """
     Validates, and converts Cpf codes to ########### (11 charactes)
@@ -95,7 +94,7 @@ class Cpf(formencode.FancyValidator):
                 'alreadyExists': _('This cpf already exists in ' \
                                    'database, please choose another one.')}
     def _to_python(self, value, state):
-        from models import Pessoa
+        from ..usuarios.models import Pessoa
         self.assert_string(value, state)
         try:
             value = value.encode('ascii', 'replace')
@@ -114,7 +113,7 @@ class Cpf(formencode.FancyValidator):
             return cpf
         raise Invalid(self.message('cpfFormat', state), value, state)
 
-class BrazilPhoneNumber(formencode.FancyValidator):
+class BrazilPhoneNumber(FancyValidator):
 
     """
     Validates, and converts phone numbers to ##-########
@@ -159,7 +158,7 @@ class BrazilPhoneNumber(formencode.FancyValidator):
                                    'database, please choose another one.')}
 
     def _to_python(self, value, state):
-        from models import Telefone
+        from ..common.models import Telefone
         phone = ""
         self.assert_string(value, state)
         try:
@@ -178,7 +177,7 @@ class BrazilPhoneNumber(formencode.FancyValidator):
             return phone        
         raise Invalid(self.message('phoneFormat', state), value, state)
 
-class Cep(formencode.FancyValidator):
+class Cep(FancyValidator):
 
     """
     Validates, and converts Cep numbers to ########
@@ -227,7 +226,7 @@ class Cep(formencode.FancyValidator):
         raise Invalid(self.message('cepFormat', state), value, state)
 
 
-class Dependent(formencode.FancyValidator):
+class Dependent(FancyValidator):
     """
     """
     schema = None
@@ -237,7 +236,7 @@ class Dependent(formencode.FancyValidator):
         self.schema.depend_field = self.depend_field
         return self.schema.to_python(value, state)
 
-class AtLeastOne(formencode.FancyValidator):
+class AtLeastOne(FancyValidator):
     """
     """
     schema = None
@@ -256,7 +255,7 @@ class AtLeastOne(formencode.FancyValidator):
             raise Invalid(self.message('errorMessage', state), value, state)
 
 
-class NotEmptyList(formencode.FancyValidator):
+class NotEmptyList(FancyValidator):
     """
     """
     schema = None

@@ -15,16 +15,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 import re
 from math import ceil
 
 from flask import request, render_template
 from sqlalchemy import desc, orm
 
-from . import models
-
-
+from ..common import models as common_models
+from ..projetos import models as projetos_models
+from ..usuarios import models as usuarios_models
 
 class Paginator(object):
     
@@ -73,6 +72,14 @@ class Paginator(object):
         self.columns = self._order_columns(cols)
         return query
     
+    def _get_model(self, table):
+        models = [common_models, projetos_models, usuarios_models]
+        cmodel = None
+        for mds in models:
+            cmodel = getattr(mds, table.capitalize())
+            if cmodel:
+                return cmodel
+    
     def _make_query(self):
         query = self.model.query
         for col, props in self.search_fields:
@@ -88,7 +95,7 @@ class Paginator(object):
                 if self.model.table.columns[col].foreign_keys._list:
                     fk = self.model.table.columns[col].foreign_keys[0]
                     table = fk.column.table.name
-                    cmodel = getattr(models, table.capitalize())
+                    cmodel = self._get_model(table)
                     query = query.filter(getattr(cmodel, col).contains(value))
                 else:
                     query = query.filter(getattr(self.model, col).contains(value))

@@ -164,6 +164,7 @@ function next(e) {
             novosCamposLista(data.values_list);
             preencherCamposLista(data.values_list, data.errors_list);
             configFields();
+            changeParcerias($('input[name=parcerias][value*=Outros]')[0]);
         } else {
             
             current.append(children);
@@ -269,6 +270,14 @@ function submit(e) {
     document.getElementById("novoProjeto").submit();
 }
 
+function changeParcerias(o) {
+    if ($(o).is(':checked')) {
+        $('#outro_parceiro_block').show();
+    } else {
+        $('#outro_parceiro_block').hide();
+    }
+}
+
 function loadDadosProjeto() {
     $("input[name=participa_cultura_viva]").change(function () {
         loadRadioMultipleExtra(this, 'sim', 'participa_cultura_viva_sim');
@@ -278,11 +287,16 @@ function loadDadosProjeto() {
         loadRadioMultipleExtra(this, 'sim', 'parcerias_sim');
     });
     
+    $('input[name=parcerias][value*=Outros]').change(function () {
+        changeParcerias(this);
+    });
+    
     loadRadioMultipleExtra($("input[name=participa_cultura_viva]:checked"),
                            'sim', 'participa_cultura_viva_sim');
     loadRadioMultipleExtra($("input[name=estabeleceu_parcerias]:checked"),
                            'sim', 'parcerias_sim');
 
+    changeParcerias($('input[name=parcerias][value*=Outros]')[0]);
 }
 
 function loadLocalizacaoGeoProjeto() {
@@ -413,8 +427,16 @@ $(document).ready (function () {
     loadAtividadesExercidasProjeto();
     
     carregar();
-        
 });
+
+
+function outroCampo(o, $el) {
+    if (o.checked) {
+        $el.show();
+    } else {
+        $el.hide();
+    }
+}
 
 function novoEndereco () {
     var $newElement = $($('#local_proj_outros')[0].children[0].cloneNode(true));
@@ -493,13 +515,14 @@ function novoConvenio ($el) {
     animatedAppendTo($conv, $el.parent().parent());    
 }
 
-function novoParceiro ($parent) {
+function novoParceiro ($el) {
     var $remove =  removeButton();
-    var $input = $('<input type="text" name="parcerias" class="required textarea" />');
+    var $input = $('<input type="text" name="outro_parceiro" ' + 
+                   'id="outro_parceiro" class="required textarea" />');
     var $parc = $('<li>')
                  .append($input)
                  .append($remove);
-    animatedAppendTo($parc, $parent);
+    animatedAppendTo($parc, $el.parent().parent());
 }
 
 function preencherCamposLista(values, errors) {
@@ -507,10 +530,11 @@ function preencherCamposLista(values, errors) {
 
     for (var key in values) {
         thev = values[key];
-        $('input[name=' + key + ']').each(function () {
+        $('input[name="' + key + '"][type="text"]').each(function () {
             $(this).val(thev.splice(0,1));
         });
-        $('select[name=' + key + ']').each(function () {
+        $('input[name="' + key + '"][type=checkbox]"').val(thev);
+        $('select[name="' + key + '"]').each(function () {
             $(this).val(thev.splice(0,1));
         });
     }
@@ -530,12 +554,14 @@ function novosCamposLista(values) {
     var funcs = {'rs_nome': novaEntrada,
                  'feed_nome': novaEntrada,
                  'outro_convenio': novoConvenio,
+                 'outro_parceiro': novoParceiro,
                  'sede_tel': novoTelefone,
                  'ent_tel': novoTelefone,
                  'end_outro_bairro': novoEndereco};
     var blocksSet = {'rs_nome': $('#redesSociais'),
                      'feed_nome': $('#feeds'),
                      'outro_convenio': $('#outro_convenio'),
+                     'outro_parceiro': $('#outro_parceiro'),
                      'sede_tel': $('#sede_tel'),
                      'ent_tel': $('#ent_tel'),
                      'end_proj_complemento': $('#localizacaoGeoProjetoSection')};
@@ -545,8 +571,8 @@ function novosCamposLista(values) {
         for (var k = 0; k < items.length; k++) {
             if (k < 1) continue;
             if (funcs[id]) {
-                if (id == 'outro_convenio') {
-                    funcs[id](blocksSet[id], id);
+                if (id == 'outro_convenio' || id == 'outro_parceiro') {
+                    funcs[id](blocksSet[id]);
                 } else {
                     funcs[id](blocksSet[id], id.split('_')[0]);
                 }

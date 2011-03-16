@@ -17,20 +17,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from formencode import Invalid, foreach
+from elixir import session
 from flask import Module, render_template, request, abort, make_response, \
                   url_for, redirect, flash
-from elixir import session
+from formencode import Invalid, htmlfill
 from simplejson import dumps
-from formencode import htmlfill
 
+from ..common import models as common_models
+from ..index import get_user_or_login
+from ..utils.paginator import Paginator
+from ..utils.schemas import CdpcSchema
+from ..utils.filestorage import save_image, save_file
 from . import schemas
 from . import models
-from .index import get_user_or_login
-import cadastro
-from schemas import CdpcSchema
-from .paginator import Paginator
-from .filestorage import save_image, save_file
+from . import cadastro
+from ..common import cadastro as common_cadastro
 from .models import Projeto
 
 ERROR_TAG = lambda x : '<label generated="true" class="error">%s</label>' % x
@@ -40,7 +41,7 @@ module = Module(__name__)
 @module.route('/')
 def listing():
 
-    vals_uf = cadastro.VALORES_UF
+    vals_uf = common_cadastro.VALORES_UF
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
     trevent = {'event': 'onclick',
@@ -115,7 +116,9 @@ def projeto_quickview_json(pid):
         return dumps({'error': 'Projeto não encontrado.'})
     
     rendered = render_template('projetos/quickview.html',
-                               projeto=projeto)
+                               projeto=projeto,
+                               cadastro=cadastro,
+                               dict=dict)
     data = {'content': rendered}
 
     return dumps(data)
@@ -142,7 +145,6 @@ def validar():
     validado = {}
     try:
         validado = validator.to_python(data)
-        
     except Invalid, e:
         print "Exception"
         print e
@@ -155,6 +157,10 @@ def validar():
         filled = htmlfill.render(rendered, request.form.to_dict(), errors,
                                  prefix_error=False,
                                  auto_error_formatter=ERROR_TAG)
+
+        print "--------------"
+        print values_list
+        print "--------------"
         ret = {'html': filled,
                'error': True,
                'errors_list': errors_list,
@@ -183,7 +189,7 @@ def set_values_projeto(projeto, validado, user):
     projeto.numero_convenio = validado['numero_convenio']
 
     # -- Localização geográfica do projeto
-    endsede = models.Endereco(cep=validado['end_proj_cep'],
+    endsede = common_models.Endereco(cep=validado['end_proj_cep'],
                               numero=validado['end_proj_numero'],
                               logradouro=validado['end_proj_logradouro'],
                               complemento=validado['end_proj_complemento'],
@@ -200,7 +206,7 @@ def set_values_projeto(projeto, validado, user):
 
     if projeto.local == 'outros':
         for i in range(len(validado['end_outro_nome'])):
-            endereco = models.Endereco(
+            endereco = common_models.Endereco(
                 nome=validado['end_outro_nome'][i],
                 cep=validado['end_outro_cep'][i],
                 numero=validado['end_outro_numero'][i],
@@ -229,7 +235,7 @@ def set_values_projeto(projeto, validado, user):
     projeto.redes_sociais = []
 
     for i in range(len(validado['rs_nome'])):
-        rsocial = models.RedeSocial()
+        rsocial = common_models.RedeSocial()
         rsocial.nome = validado['rs_nome'][i]
         rsocial.link = validado['rs_link'][i]
         projeto.redes_sociais.append(rsocial)
@@ -237,7 +243,7 @@ def set_values_projeto(projeto, validado, user):
     projeto.feeds = []
 
     for i in range(len(validado['feed_nome'])):
-        feed = models.Feed()
+        feed = common_models.Feed()
         feed.nome = validado['feed_nome'][i]
         feed.link = validado['feed_link'][i]
         projeto.feeds.append(feed)
@@ -249,7 +255,7 @@ def set_values_projeto(projeto, validado, user):
 
     def get_tel(numero):
         tel = None
-        if models.Telefone.query.filter_by(numero=numero).count() and \
+        if common_models.Telefone.query.filter_by(numero=numero).count() and \
            (numero in [t.numero for t in projeto.telefones] or \
             numero in [t.numero for t in user.telefones] or \
             projeto.entidade and numero in \
@@ -292,7 +298,7 @@ def set_values_projeto(projeto, validado, user):
         )
 
     if validado.get('endereco_ent_proj') == 'nao':
-        projeto.entidade.endereco =  models.Endereco(
+        projeto.entidade.endereco =  common_models.Endereco(
                 nome=validado['nome_ent'],
                 cep=validado['end_ent_cep'],
                 numero=validado['end_ent_numero'],
@@ -384,7 +390,12 @@ def set_values_projeto(projeto, validado, user):
     # -- Parcerias do Projeto
     projeto.parcerias = []
     if validado['estabeleceu_parcerias'] == 'sim':
-        for i in validado['parcerias']:
+        ov = cadastro.item_format('Outros')
+        outros = []
+        if ov in validado['parcerias']:
+            outros = validado.get('outro_parceiro', [])
+            validado['parcerias'].remove(ov)
+        for i in validado['parcerias'] + outros:
             obj = models.Parceiro()
             obj.nome = i
             projeto.parcerias.append(obj)
