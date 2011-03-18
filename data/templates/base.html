@@ -46,6 +46,24 @@
       <div id="header">
         <div class="bg">
           <div class="centralize">
+          <div style="margin-top: -25px; float: right;">
+            {% if is_logged_in() %}
+              <ul class="access-bar">
+                <li>
+                  <a href="{{ url_for('usuarios.meusdados') }}">{{ get_user().nome }}</a>
+                </li>
+                <li>
+                  <a href="{{ url_for('index.logout') }}">Sair</a>
+                </li>                
+              </ul>
+            {% else %}
+              <ul class="access-bar">
+                <li>
+                  <a href="{{ url_for('index.login_form') }}">Login</a>
+                </li>
+              </ul>
+            {% endif %}
+          </div>
             <h1>
               <a href="/">
                 <span>Cadastramento dos</span> Pontos de Cultura
@@ -69,11 +87,6 @@
                    href="#">Estatísticas</a>
               </li>
             </ul>
-            <div style="margin-top: 70px;">
-              {% if is_logged_in() %}
-                <a href="{{ url_for('index.logout') }}">Sair</a>
-              {% endif %}
-            </div>
           </div><!-- .centralize -->
         </div><!-- .bg -->
       </div><!-- #header -->

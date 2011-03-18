@@ -4,24 +4,15 @@
    - Analisar sobre a entidade, seria mais de uma?
    - Projeto.responsavel: pode existir mais de um? no banco está ManyToMany,
                           já na interface somente 1.
+   - Formulário de edição: documentos, undo delete;
 
-   - Formulário de edição: testar se todos os valores realmente estão sendo
-                           preenchidos no form, e consertar;
-   - Formulário de edição: avatar e documentos, listar;
-   - Formulários: testar após submeter e dar erro, os valores preenchidos;
-   - Decorator;
-   - Link para edição;
-   - Filtro para listagem dos projetos do responsável;
-   - Verificar o schema por causa das mudanças do banco;
-   - Links dos steps.
+   - Formulário, após submeter e ocorrer erro no server, perde os dados dos
+     arquivos adicionados
    
    
  * Usuários
-   - Formulário de edição;
    - Formulário de cadastro: captcha;
    - Ocultar o CPF da listagem se não for o próprio usuário;
-   - Decorator;
-   - Link para edição, profile;
    
  * Geral
    - Implementar validacao RequireIfPresent do lado do cliente JS
@@ -31,19 +22,15 @@
    - Melhorias no layout em geral
    - Organizacão do CSS
    
-   - Paginator, lista de pages, melhorar layout;
+   - Paginator: lista de pages, melhorar layout;
  
  * Tela principal
-  - Link de logout mais bonito;
+
 
  * Imagens
    - Imagem do lápis no topo
-   
 
 
 
-
-BUGS:
-  - lance do complemento sem preecher
-  - campo latitude e longitude colocam valor de lista quando editados
-
+BUG!!!!
+ - Paginator: exactly para campos FK

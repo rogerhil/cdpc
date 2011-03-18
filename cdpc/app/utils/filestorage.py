@@ -36,3 +36,8 @@ def save_file(fieldstorage, name):
         os.makedirs(path)
     path = os.path.join(path, fieldstorage.filename)
     fieldstorage.save(path)
+
+def remove_file(pid, filename):
+    path = os.path.join(UPLOAD_PATH_DOCS, str(pid))
+    path = os.path.join(path, str(filename))
+    os.remove(path)

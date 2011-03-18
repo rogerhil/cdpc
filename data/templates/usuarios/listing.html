@@ -13,13 +13,20 @@
 {% endblock %}
 
 {% block content %}
-<h2>Pessoas</h2>
+<h2>{{ title }}</h2>
 
 <div class="main container">
 {% autoescape false %}
   {{ paginator }} 
 {% endautoescape %}
+{% if meusdados %}
+<div class="buttons">
+  <a href="{{ url_for('usuarios.editar_meusdados') }}" class="editar2"></a>
 </div>
-
+<script type="text/javascript">
+  $('tr').click();
+</script>
+{% endif %}
+</div>
 
 {% endblock %}

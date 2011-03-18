@@ -1,5 +1,6 @@
 
 <form id="paginator" method="get">
+  {% if search_fields %}
   <ul>
     <li class="busca">
       {% for name, props in search_fields %}
@@ -31,15 +32,17 @@
       </div>
     </li>
   </ul>
-
+  {% endif %}
   {% if items %}
   
+  {% if cvars.exibition > 1 %}
   <div>
     <p>
-      Exibindo <strong>{{ pagination.limit }}</strong> de um total de
+      Exibindo <strong>{{ cvars.exibition }}</strong> de um total de
       <strong>{{ pagination.count }}</strong> items.
     </p>
   </div>
+  {% endif %}
   
   <div class="tablecontent">
     <table class="paginator">

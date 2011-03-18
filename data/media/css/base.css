@@ -283,6 +283,26 @@ _____________________*/
     border: none !important;
 }
 
+ul.access-bar {
+    font-size: 14px;
+    list-style-type: none;
+}
+
+ul.access-bar li {
+    display: inline;
+    margin: 0px 15px 0px 0px;
+}
+
+ul.access-bar a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;    
+}
+
+ul.access-bar a:hover {
+    color: #8F1E1E;
+}
+
 div.ajaxsplash {
     background: url('../img/bg/ajax-loader.gif') no-repeat center center;
     background-color: white;

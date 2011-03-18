@@ -4,15 +4,25 @@
   {% endfor %}
 {%- endmacro %}
 
-{% macro make_inline_list(items, key) -%}
+{% macro make_inline_list(items, key, from_choice) -%}
   {% for item in items %}
-  {{ item[key] }}{% if loop.index != items|length %}, {% else %}.{% endif %}
+  {% if from_choice %}
+  {{ from_choice[item[key]] }}
+  {% else %}
+  {{ item[key] }}
+  {% endif %}
+  {% if loop.index != items|length %}, {% else %}.{% endif %}
   {% endfor %}
 {%- endmacro %}
 
-{% macro make_list(items, key) -%}
+{% macro make_list(items, key, from_choice) -%}
   {% for item in items %}
-  {{ item[key] }}{% if loop.index != items|length %}<br/>{% endif %}
+  {% if from_choice %}
+  {{ from_choice[item[key]] }}
+  {% else %}
+  {{ item[key] }}
+  {% endif %}
+  {% if loop.index != items|length %}<br/>{% endif %}
   {% endfor %}
 {%- endmacro %}
 

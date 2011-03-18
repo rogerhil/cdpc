@@ -56,6 +56,7 @@ class Projeto:
      
         estabeleceu_parcerias = validators.String(not_empty=True)
         parcerias = Dependent(schema=AtLeastOne(schema=ForEach(validators.String())), depend_field=('estabeleceu_parcerias', 'sim'))
+        outro_parceiro = ForEach(validators.String())
 
 
     class LocalizacaoGeoProjeto(CdpcSchema):

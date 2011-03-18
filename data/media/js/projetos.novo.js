@@ -16,6 +16,19 @@
  */
 
 
+var STEPS = ['dadosProjeto', 'localizacaoGeoProjeto', 'entidadeProponente',
+             'comunicacaoCulturaDigital', 'atividadesExercidasProjeto',
+             'publico', 'indiceAcessoCultura'];
+var STEPS_I = {}
+
+var STEPS_FINISHED = [];
+
+var VALIDATOR, CURRENT_STEP;
+
+for (var k = 0; k < STEPS.length; k++) {
+    STEPS_I[STEPS[k]] = k;
+}
+
 String.prototype.capitalize = function(){
     return this.replace(/(^|\s)([a-z])/g,
                         function(m,p1,p2){return p1+p2.toUpperCase();});
@@ -25,9 +38,37 @@ var load = function () {
     if (this.checked || this.selected) $(this).change();
 };
 
-var VALIDATOR, CURRENT_STEP;
+function maximun(list) {
+    var ret = 0;
+    for (var k = 0; k < list.length; k++) {
+        if (list[k] > ret) {
+            ret = list[k];
+        }
+    }
+    return ret;
+}
 
-function carregar () {
+function ifIn(el, list) {
+    for (var k = 0; k < list.length; k++) {
+        if (el == list[k]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function finishStep(step) {
+    if (ifIn(step, STEPS_FINISHED)) return;
+    STEPS_FINISHED.push(step);
+}
+
+function canGo(step) {
+    var m = maximun(STEPS_FINISHED);
+    return m+1 >= step;
+}
+
+
+function carregar() {
     if ($('body.project_register').length == 0) return;
     verifyStepErrors();
     CURRENT_STEP = $('input[name=step]').val();
@@ -36,6 +77,12 @@ function carregar () {
     configStepButtons();
     configFields();
     loadDynamicValues();
+    loadAfter();
+    $('#headsteps').children().click(gotoStep);
+}
+
+function loadAfter() {
+    changeParcerias($('input[name=parcerias][value*=Outros]')[0]);
 }
 
 function loadDynamicValues() {
@@ -45,19 +92,17 @@ function loadDynamicValues() {
 }
 
 function verifyStepErrors() {
-    var steps = ['dadosProjeto', 'localizacaoGeoProjeto', 'entidadeProponente',
-                 'comunicacaoCulturaDigital', 'atividadesExercidasProjeto',
-                 'publico', 'indiceAcessoCultura'];
+
     var first = true;
     var someError = false;
-    for (var k = 0; k < steps.length; k++) {
-        var errors = $('.error:not(label)', '#' + steps[k]).length;
+    for (var k = 0; k < STEPS.length; k++) {
+        var errors = $('.error:not(label)', '#' + STEPS[k]).length;
 
         if (errors) {
             someError = true;
-            $('.' + steps[k], '#headsteps').addClass('steperrors');
+            $('.' + STEPS[k], '#headsteps').addClass('steperrors');
             if (first) {
-                $('.' + steps[k], '#headsteps').addClass('active');
+                $('.' + STEPS[k], '#headsteps').addClass('active');
                 $('input[name=step]').val(steps[k]);
                 first = false;
             }
@@ -88,17 +133,22 @@ function configStepButtons() {
     }
     if ($('div#' + CURRENT_STEP).next().length) {
         $('div.step div.buttons a.next').show();
-        $('div.step div.buttons a.cadastrar').hide();
+        $('div.step div.buttons a.submit').hide();
     } else {
         $('div.step div.buttons a.next').hide();
-        $('div.step div.buttons a.cadastrar').show();
+        $('div.step div.buttons a.submit').show();
     }
 }
 
 function createStepButtons() {
     var prev = $('<a href="#">').addClass('previous').text('Voltar');
     var nex = $('<a href="#">').addClass('next').text('Próximo');
-    var cadastrar = $('<a href="#">').addClass('cadastrar').text('Cadastrar');
+    var cadastrar = $('<a href="#">').addClass('submit');
+    if (EDIT) {
+        cadastrar.addClass('editar').text('Editar');
+    } else {
+        cadastrar.addClass('cadastrar').text('Cadastrar');
+    }
     $('div.step').hide()
     $('div.step div.buttons').append(prev);
     $('div.step div.buttons').append(nex);
@@ -113,7 +163,7 @@ function createStepButtons() {
 
     $('div.step div.buttons a.next').click(next);
     $('div.step div.buttons a.previous').click(previous);
-    $('div.step div.buttons a.cadastrar').click(submit);
+    $('div.step div.buttons a.submit').click(submit);
 }
 
 function configFields() {
@@ -138,16 +188,29 @@ function validateStep() {
             if ($(this).is(':hidden')) ret = true;
         });
         if (ret) return;
-        //if (VALIDATOR.element($(this)) == false) valid = false;
         valid = VALIDATOR.element($(this));
     });
     return valid;
 }
 
-function next(e) {
+function gotoStep(e) {
+    var step = Number(this.id.replace('goto_', ''));
+    var curi = STEPS_I[CURRENT_STEP];
+    if (step == curi) return;
+    if (step > curi) {
+        if (EDIT || canGo(step)) {
+            next(e, step);
+        }
+    } else {
+        previous(e, step);
+    }
+    e.preventDefault();
+}
+
+function next(e, step) {
     var current = $("div#" + CURRENT_STEP);
     var next = current.next();
-    var next_step = next.attr('id');
+    var next_step = step ? STEPS[step] :next.attr('id');
     var children, theForm;
     
     function afterServerValidation(data) {
@@ -166,7 +229,7 @@ function next(e) {
             configFields();
             changeParcerias($('input[name=parcerias][value*=Outros]')[0]);
         } else {
-            
+            finishStep(STEPS_I[CURRENT_STEP]);
             current.append(children);
                         
             $('label[generated=true]', current).remove();
@@ -238,8 +301,8 @@ function next(e) {
     e.preventDefault();
 }
 
-function previous(e) {
-    var previous_step = $('div#' + CURRENT_STEP).prev().attr('id');
+function previous(e, step) {
+    var previous_step = step ? STEPS[step] : $('div#' + CURRENT_STEP).prev().attr('id');
     $('div#' + CURRENT_STEP).fadeOut('fast', function() {
         $('div#' + previous_step).fadeIn('fast');
         $('ul.steps li.active').removeClass('active');
@@ -581,6 +644,38 @@ function novosCamposLista(values) {
     }
 }
 
+function removeDoc(o, docId) {
+    var $rem = $('input[name=files_to_remove]');
+    var val = $rem.val();
+    if (!val.length) {
+        val = docId;
+    } else {
+        val += ',' + docId;
+    }
+    $rem.val(val);
+    var $remb = $(o);
+    $remb.prev().css('text-decoration', 'line-through');
+    $remb.remove();
+    $remb.click(function () {
+        undoRemoveDoc(this, docId);
+    });
+    $remb.html("Desfazer");
+}
+
+function undoRemoveDoc(o, docId) {
+    var $rem = $('input[name=files_to_remove]');
+    var val = $rem.val();
+    val = val.replace(','+docId, '');
+    val = val.replace(docId, '');
+    $rem.val(val);
+    var $remb = $(o);
+    $remb.prev().css('text-decoration', 'none');
+    $remb.undelegate();
+    $remb.click(function () {
+        removeDoc(this, docId);
+    });
+    $remb.html("Remove");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 

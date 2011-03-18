@@ -25,7 +25,7 @@
             <label>Telefones:</label>
           </div>
           <div class="column last">
-            {{ macros.make_tel_list(pessoa.telefones, dict(cadastro.TIPO_TEL_SEDE)) }}
+            {{ macros.make_tel_list(pessoa.telefones, functions.to_dict(cadastro.TIPO_TEL_SEDE)) }}
           </div>
         </li>
         <li>

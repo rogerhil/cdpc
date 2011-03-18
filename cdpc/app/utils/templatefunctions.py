@@ -18,6 +18,7 @@
 import os
 from cdpc.config import UPLOAD_PATH_AVATAR_PESSOA, UPLOAD_PATH_AVATAR_PROJETO, \
                         UPLOAD_PATH_DOCS
+from ..projetos import cadastro
 
 def avatar_pessoa(obj):
     urlpath = "/static/upload/avatar/pessoa/%s.jpg" % obj.id
@@ -36,8 +37,7 @@ def avatar_projeto(obj):
     img = '<img src="%s" width="175" />'
     if os.path.isfile(fspath):
         return img % urlpath
-    return img % '/static/img/bg/project_icon.jpg'
-    
+    return img % '/static/img/bg/project_icon.jpg'    
     
 def file_list(objs, name):
     res = []
@@ -49,3 +49,26 @@ def file_list(objs, name):
             continue
         res.append(link % (urlpath, obj.doc))
     return "<br />".join(res)
+
+
+def file_list_for_edit(objs, pid):
+    res = []
+    for obj in objs:
+        urlpath = "/static/upload/documentos/%s/%s" % (pid, obj.doc)
+        fspath = os.path.join(UPLOAD_PATH_DOCS, str(pid), obj.doc)
+        link = '<div class="file-item"><a href="javascript:;">%s</a></div>' \
+               '<a class="remove" onclick="removeDoc(this, %s);">Remover</a>'
+        link = '<label>%s</label>' % link
+        if not os.path.isfile(fspath):
+            continue
+        res.append(link % (obj.doc, obj.id))
+    res = '<div>%s<div style="clear: both; margin-bottom: 10px;"></div></div>' \
+          % "</div><div>".join(res)
+    res += '<input type="hidden" name="files_to_remove" id="files_to_remove" />'
+    return res
+
+def to_dict(obj):
+    return dict(obj)
+
+def get_choices(name):
+    return dict(getattr(cadastro, name, {}))

@@ -18,9 +18,14 @@
       </li>
 
       <li>
+        {% if edit %}
+        {% autoescape false %}
+          {{ functions.avatar_projeto(projeto) }}
+        {% endautoescape %}
+        {% endif %}
         <label for="project_logo">Marca ou imagem: 
         <span>(opcional)</span></label>
-        <input type="file" id="avatar" name="avatar">
+        <input type="file" id="avatar" name="avatar" />
       </li>
 
       <li>

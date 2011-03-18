@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import "utils/macros.html" as macros %}
 
 {% block extra_head %}
 <link
@@ -30,12 +31,12 @@
    src="{{ url_for('.static', filename='js/usuarios.novo.js') }}"></script>
 {% endblock %}
 
-{% block contenttitle %}<h2>Cadastro de usuários</h2>{% endblock %}
+{% block contenttitle %}<h2>{{ title }}</h2>{% endblock %}
 
 {% block container %}
 
 <form id="novoUsuario" method="post" enctype="multipart/form-data"
-      action="{{ url_for('usuarios.novo') }}">
+      action=".">
   <div class="main container">
     <ul>
       <li>
@@ -53,6 +54,38 @@
                   <input type="text" name="email" id="email"
                          class="textarea required email">
                 </li>
+                {% if edit %}
+                <li>
+                  <fieldset style="padding: 20px 10px; width: 300px; border: 1px solid #e1e1e1;">
+                    <legend style="font-size: 16px; color: #629fcd; cursor: pointer;"
+                            onclick="toogleSingle($('#bloco_trocar_senha').is(':hidden'), $('#bloco_trocar_senha')); $('#success_msg').remove();">
+                      Trocar senha
+                    </legend>
+                    <div style="display: none;" id="bloco_trocar_senha">
+                      <ul>
+                        <li>
+                          <label for="senha_antiga">Senha antiga:</label>
+                          <input type="password" name="senha_antiga" id="senha_antiga"
+                                 class="textarea big" />
+                        </li>
+                        <li>
+                          <label for="trocar_senha">Nova senha:</label>
+                          <input type="password" name="trocar_senha" id="trocar_senha"
+                                 class="textarea big" />
+                        </li>
+                        <li>
+                          <label for="confirmar_trocar_senha">Confirmar senha:</label>
+                          <input type="password" name="confirmar_trocar_senha"
+                                 id="confirmar_trocar_senha" class="textarea big" />
+                        </li>
+                      </ul>
+                      <div class="buttons">
+                        <a href="javascript: ;" onclick="trocarSenha(this);" class="trocar"></a>
+                      </div>
+                    </div>
+                  </fieldset>
+                </li>
+                {% else %}
                 <li class="required">
                   <label for="senha">Senha: *</label>
                   <input type="password" name="senha" id="senha"
@@ -63,6 +96,7 @@
                   <input type="password" name="confirmar_senha"
                          id="confirmar_senha" class="textarea required">
                 </li>
+                {% endif %}
               </ul>
             </li>
             <li>
@@ -125,6 +159,13 @@
 
                 <li>
                   <label for="avatar">Sua foto:</label>
+                  {% if edit %}
+                  <div>
+                  {% autoescape false %}
+                    {{ functions.avatar_pessoa(pessoa) }}
+                  {% endautoescape %}
+                  </div>
+                  {% endif %}
                   <input type="file" name="avatar" id="avatar">
                 </li>
               </ul><!-- Dados pessoais -->
@@ -138,7 +179,7 @@
               <ul>
                 <li class="required">
                   <label for="end_cep">
-                    CEP: *<a href="#" class="helptext">Não sabe o seu CEP?</a>
+                    CEP: *<a href="javascript: ;" class="helptext">Não sabe o seu CEP?</a>
                   </label>
                   <input type="text" name="end_cep" id="end_cep"
                          class="textarea required cep"
@@ -255,7 +296,9 @@
     </ul>
     <div class="buttons">
       <!-- <input type="submit" class="submit" value="Cadastrar"> -->
-      <a href="javascript: submit()" class="cadastrar"></a>
+      <a href="javascript: submit()"
+         class="{% if edit %}editar{% else %}cadastrar{% endif %}">
+      </a>
     </div>
   </div>
 </form>
@@ -265,6 +308,8 @@
   var VALUES_LIST;
   {% if errors_list %}
   ERRORS_LIST = {% autoescape false %}{{ errors_list }}{% endautoescape %};
+  {% endif %}
+  {% if values_list %}  
   VALUES_LIST = {% autoescape false %}{{ values_list }}{% endautoescape %};
   {% endif %}
 </script>

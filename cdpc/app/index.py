@@ -25,6 +25,16 @@ from usuarios.models import Pessoa
 
 module = Module(__name__)
 
+def check_password(usuario, password):
+    senha = sha1(password).hexdigest()
+
+    try:
+        g.usuario = Pessoa.query.filter_by(email=usuario.email,
+                                           senha=senha).one()
+        return True
+    except NoResultFound:
+        return False
+
 @module.route("/")
 def index():
     """Renderiza o template da index
@@ -38,14 +48,14 @@ def login():
     """
     usuario = request.form.get('email')
     senha = sha1(request.form.get('senha')).hexdigest()
-    proxima = request.form.get('proxima', request.referrer)
+    proxima = request.form.get('proxima', url_for('index.index'))
 
     try:
         g.usuario = Pessoa.query.filter_by(email=usuario, senha=senha).one()
         session['usuario'] = usuario
         return redirect(proxima)
     except NoResultFound:
-        proxima = '%s?erro=1&email=%s' % (proxima.split("?")[0], usuario)
+        proxima = '%s?erro=1&email=%s' % (url_for('index.login_form'), usuario)
         return redirect(proxima)
 
 @module.route('login_form')
@@ -80,6 +90,8 @@ def get_authenticated_user():
     """Retorna o usuário que está autenticado na sessão atual ou None.
     """
     usuario = getattr(g, 'usuario', None)
+    if usuario:
+        return usuario
     if usuario is None and 'usuario' in session:
         g.usuario = Pessoa.query.filter_by(email=session['usuario']).one()
         return g.usuario
@@ -93,3 +105,8 @@ def get_user_or_login():
         url = '%s?proxima=%s' % (url_for('index.login_form'), request.url)
         abort(redirect(url))
     return user
+    
+def redirect_to_main(msg, state):
+    flash(msg, state)
+    abort(redirect(url_for('index.index')))
+

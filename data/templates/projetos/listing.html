@@ -17,9 +17,18 @@
    src="{{ url_for('.static', filename='js/projetos.listing.js') }}"></script>
 {% endblock %}
 
-{% block contenttitle %}<h2>Projetos</h2>{% endblock %}
+{% block contenttitle %}<h2>{{ title }}</h2>{% endblock %}
 
 {% block container %}
+
+{% if not meus_projetos %}
+<div class="buttons" style="margin-bottom: 20px; float: right;">
+  <a href="{{ url_for('projetos.meus_projetos') }}"
+     style="color: grey; font-size: 16px;">
+    Ver somete meus projetos
+  </a>
+</div>
+{% endif %}
 
 <div class="main container">
 {% autoescape false %}

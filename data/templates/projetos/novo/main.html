@@ -38,13 +38,13 @@
 {% block contenthead %}
 
 <ul class="steps" id="headsteps">
-  <li class="dadosProjeto active">Dados</li>
-  <li class="localizacaoGeoProjeto">Endereço</li>
-  <li class="entidadeProponente">Entidade</li>
-  <li class="comunicacaoCulturaDigital">Comunicação</li>
-  <li class="atividadesExercidasProjeto">Atividades</li>
-  <li class="publico">Público</li>
-  <li class="indiceAcessoCultura">Índice</li>
+  <li class="dadosProjeto active" id="goto_0">Dados</li>
+  <li class="localizacaoGeoProjeto" id="goto_1">Endereço</li>
+  <li class="entidadeProponente" id="goto_2">Entidade</li>
+  <li class="comunicacaoCulturaDigital" id="goto_3">Comunicação</li>
+  <li class="atividadesExercidasProjeto" id="goto_4">Atividades</li>
+  <li class="publico" id="goto_5">Público</li>
+  <li class="indiceAcessoCultura" id="goto_6">Índice</li>
 </ul>
   
 {% endblock %}
@@ -76,7 +76,7 @@
   </div>
   <input type="hidden" name="step" value="dadosProjeto" />
   <input type="hidden" name="edit" value="{{ edit }}" />
-  <input type="hidden" name="projeto_id" value="{{ projeto_id }}" />
+  <input type="hidden" name="projeto_id" value="{% if projeto %}{{ projeto.id }}{% endif %}" />
 </form>
 
 
@@ -97,7 +97,7 @@ var DYNAMIC_VALUES = null;
 
 {% if edit %}
 var EDIT = {{ edit }};
-var PROJETO_ID = {{ projeto_id }};
+var PROJETO_ID = {{ projeto.id }};
 {% else %}
 var EDIT = null;
 var PROJETO_ID = null;

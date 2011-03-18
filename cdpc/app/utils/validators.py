@@ -87,6 +87,7 @@ class Cpf(FancyValidator):
     """
 
     strip = True
+    valid_cpf = None
     _cpf_re = [re.compile(r"^(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{2})$")]
     _store_format = "%s%s%s%s"
     messages = {'cpfFormat': _('Please enter a valid cep number in the ' \
@@ -108,7 +109,11 @@ class Cpf(FancyValidator):
                 cpf = self._store_format % match.groups()
                 break
         if cpf:
-            if Pessoa.query.filter_by(cpf=cpf).count():
+            user = Pessoa.query.filter_by(cpf=cpf)
+            alreadyExists = bool(user.count())
+            if self.valid_cpf:
+                alreadyExists = self.valid_cpf not in [u.cpf for u in user]
+            if alreadyExists:
                 raise Invalid(self.message('alreadyExists', state), value, state)
             return cpf
         raise Invalid(self.message('cpfFormat', state), value, state)

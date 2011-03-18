@@ -30,6 +30,7 @@ Esse programa é útil durante o desenvolvimento, porém, para a
 produção, o mod_wsgi é a indicação.
 """
 
+import os
 import sys
 
 def main():
@@ -38,18 +39,20 @@ def main():
     """
     # Cria a base de dados com a uri fornecida pelo arquivo de
     # configuração config.py.
-    from elixir import metadata, setup_all, create_all
-    from cdpc.config import DATABASE_URI
-    import cdpc.app.common.models
-    import cdpc.app.usuarios.models
-    import cdpc.app.projetos.models
-    metadata.bind = DATABASE_URI
-    metadata.bind.echo = True
-    setup_all()
     
     if '-d' in sys.argv:
         create_all()
         exit(0)
+
+    from cdpc.main import setup_models
+    setup_models()
+
+    if 'shell' in sys.argv:
+        print
+        print "from cdpc.main import setup_models"
+        print "setup_models()"
+        print
+        exit(os.system('python'))        
 
     from cdpc.main import create_app
     app = create_app()

@@ -82,7 +82,7 @@ function mostraProjeto(pid, o) {
         if ($cur.hasClass('loading')) return;
         $cur.addClass('selecionada');
         $cur.addClass('loading');
-        $.getJSON(pid + '.quickview.json', function (data) {
+        $.getJSON('/projetos/' + pid + '.quickview.json', function (data) {
             if (data.error) {
                 alert(data.error);
             } else {

@@ -28,7 +28,7 @@ from ..usuarios import models as usuarios_models
 class Paginator(object):
     
     def __init__(self, model, columns, search_fields, cvars={},
-                 quickview=None, trevent=None):
+                 quickview=None, trevent=None, fixedquery=None):
         self.model = model
         self.columns = columns
         self.search_fields = search_fields
@@ -36,6 +36,7 @@ class Paginator(object):
         self.limites = [10, 20, 30, 40, 50, 100, 200]
         self.quickview = quickview
         self.trevent = trevent
+        self.fixedquery = fixedquery
     
     def _order_columns(self, d):
         items = []
@@ -82,8 +83,17 @@ class Paginator(object):
     
     def _make_query(self):
         query = self.model.query
-        for col, props in self.search_fields:
-            value = request.args.get(col, '')
+        args = request.args.copy()
+        d = dict(self.search_fields).copy()
+        if self.fixedquery:
+            if self.fixedquery[1]:
+                d.update(self.fixedquery[1])
+            args.update(self.fixedquery[0])
+        for col, props in d.items():
+            subcol = None
+            value = args.get(col, '')
+            if col.find('.') != -1:
+                col, subcol = col.split('.')
             if not value:
                 continue
             if props.get('mcol'):
@@ -92,13 +102,14 @@ class Paginator(object):
                     cmodel = getattr(self.model, mcol).property.mapper.class_
                     query = query.filter(getattr(self.model, mcol).any(getattr(cmodel, col).contains(value)))                
             else:
-                if self.model.table.columns[col].foreign_keys._list:
-                    fk = self.model.table.columns[col].foreign_keys[0]
-                    table = fk.column.table.name
-                    cmodel = self._get_model(table)
-                    query = query.filter(getattr(cmodel, col).contains(value))
+                if subcol:
+                    cmodel = getattr(self.model, col).property.mapper.class_
+                    query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).contains(value)))
                 else:
-                    query = query.filter(getattr(self.model, col).contains(value))
+                    if props.get('exactly'):
+                        query = query.filter_by(**{col: value})                        
+                    else:
+                        query = query.filter(getattr(self.model, col).contains(value))
 
         return query
     
@@ -145,8 +156,10 @@ class Paginator(object):
         pagination = dict(count=count, limit=limit, pages=pages, page=page,
                           display=display)
 
+        items_count = len(items)
         cvars = request.args.copy()
         cvars['limit'] = limit
+        cvars['exibition'] = limit if limit <= items_count else items_count
         cvars['page'] = page
         cvars['limites'] = [i for i in self.limites]
         cvars['order_by'] = " ".join(order_by)

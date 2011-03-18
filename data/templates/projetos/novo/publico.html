@@ -43,6 +43,13 @@
            <label>
              Upload de Plano de trabalho e documentações do Projeto
            </label>
+           <div>
+            {% if projeto %}
+            {% autoescape false %}
+              {{ functions.file_list_for_edit(projeto.documentacoes, projeto.id) }}
+            {% endautoescape %}
+            {% endif %} 
+           </div>
            <input type="file" name="documentacoes" />        <a href="javascript: novaDocumentacao ($('#upload_doc'));" class="add">Outro arquivo</a>
          </li>
        </ul>

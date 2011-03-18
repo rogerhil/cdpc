@@ -16,9 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from urllib import urlopen
 from simplejson import dumps, loads
-from flask import Module, request
 from formencode import foreach
 
 PREFIX = 'OPCAO_SISTEMA'
@@ -67,41 +65,6 @@ TIPO_TEL_SEDE = format(
      u'Rádio',
      u'Rural',
      u'Público'])
-
-CONSULTA_CEP = 'http://viavirtual.com.br/webservicecep.php?cep=%s'
-CONSULTA_GEO = 'http://ws.geonames.org/postalCodeLookupJSON?postalcode=%s&country=BR'
-
-module = Module(__name__)
-
-@module.route("consulta_cep/")
-def consulta_cep():
-    """Usa um serviço na internet para baixar informações como rua,
-    bairro, cidade e uf a partir do cep.
-
-    Retorna um Json com as informações obtidas.
-    """
-    page = urlopen(CONSULTA_CEP % request.args.get('cep'))
-    content = page.read().decode('iso-8859-1')
-    rua, bairro, cidade, _, ufraw = content.split('||', 4)
-    return dumps({
-            'rua': rua, 'bairro': bairro, 'cidade': cidade,
-            'uf': ufraw.replace('|', '')})
-
-@module.route("consulta_geo/")
-def consulta_geo():
-    """Usa um serviço na internet para baixar latitude e longitude
-    a partir do cep.
-
-    Retorna um Json com a latitude e a longitude obtidas.
-    """
-    page = urlopen(CONSULTA_GEO % request.args.get('cep')[:5])
-    content = loads(page.read())
-    pcs = content['postalcodes'];
-    if pcs:
-        return dumps({
-                'lat': content['postalcodes'][0]['lat'],
-                'lng': content['postalcodes'][0]['lng']})
-    return dumps({'lat':'', 'lng':''})
         
 def prepare_data(lists, fields):
     data = {}

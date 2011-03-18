@@ -31,6 +31,11 @@ ul.steps li{
   margin-right:32px;
   padding-bottom:10px;
   text-transform:uppercase;
+  cursor: pointer;
+}
+
+ul.steps li:hover{
+  color:#A2B5C3;
 }
 
 ul.steps li.active{
@@ -92,6 +97,7 @@ div.main li .remove{
   color: red !important;
   background:url("../img/bg/bg_bt_remove.png") left center no-repeat;
   padding-left:17px;
+  cursor: pointer;
 }
 
 div.main li a:hover{
@@ -243,6 +249,9 @@ div.main .bordertop{
 div.main div.buttons .next
 , div.main div.buttons .previous
 , div.main div.buttons .cadastrar
+, div.main div.buttons .editar
+, div.main div.buttons .editar2
+, div.main div.buttons .trocar
 , div.main div.buttons button{
   overflow:hidden;
   text-indent:-999em;
@@ -251,6 +260,9 @@ div.main div.buttons .next
 div.main div.buttons .next:hover
 , div.main div.buttons .previous:hover
 , div.main div.buttons .cadastrar:hover
+, div.main div.buttons .editar:hover
+, div.main div.buttons .editar2:hover
+, div.main div.buttons .trocar:hover
 , div.main div.buttons button:hover{
   opacity:0.7;
 }
@@ -276,6 +288,27 @@ div.main div.buttons .cadastrar{
   width:127px;
 }
 
+div.main div.buttons .editar{
+  background:url("../img/bt/bt_edit.png") no-repeat;
+  float:right;
+  height:33px;
+  width:127px;
+}
+
+div.main div.buttons .editar2{
+  background:url("../img/bt/bt_edit2.png") no-repeat;
+  float:right;
+  height:33px;
+  width:127px;
+}
+
+div.main div.buttons .trocar{
+  background:url("../img/bt/bt_change.png") no-repeat;
+  float:right;
+  height:33px;
+  width:127px;
+  margin-right: -20px;
+}
 
 div.main div.buttons button{
   background:url("../img/bt/bt_register.png") no-repeat;
@@ -314,6 +347,14 @@ div.sidebar div.tip a{
 
 div.sidebar div.tip a:hover{
   text-decoration:underline;
+}
+
+div.file-item{
+    width: 240px;
+    float: left;
+    clear: left;
+    font-size: 16px;
+    padding-bottom: 5px;
 }
 
 .loading{

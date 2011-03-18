@@ -30,13 +30,23 @@ from flask import Flask, send_from_directory, request
 from jinja2 import FileSystemLoader
 from .config import STATIC_DIR, TEMPLATE_DIR
 from .app.index import is_logged_in, get_authenticated_user
-from .app.usuarios.usuarios import module as usuarios
-from .app.projetos.projetos import module as projetos
-from .app.common.cadastro import module as cadastro
+from .app.usuarios.views import module as usuarios
+from .app.projetos.views import module as projetos
+from .app.common.views import module as common
 from .app.index import module as index
 import flask
 
 SECRET_KEY = ''.join(choice(printable) for x in range(50))
+
+def setup_models():
+    from elixir import metadata, setup_all, create_all
+    from cdpc.config import DATABASE_URI
+    import cdpc.app.common.models
+    import cdpc.app.usuarios.models
+    import cdpc.app.projetos.models
+    metadata.bind = DATABASE_URI
+    metadata.bind.echo = True
+    setup_all()
 
 class WebApp(Flask):
     """Flask extention to retrieve static files from a configurable
@@ -87,8 +97,9 @@ def create_app():
     app.register_module(index, url_prefix="/")
     app.register_module(usuarios, url_prefix="/usuarios/")
     app.register_module(projetos, url_prefix="/projetos/")
-    app.register_module(cadastro, url_prefix="/cadastro/")
-    app.jinja_env.globals['is_logged_in'] = is_logged_in    
+    app.register_module(common, url_prefix="/cadastro/")
+    app.jinja_env.globals['is_logged_in'] = is_logged_in
+    app.jinja_env.globals['get_user'] = get_authenticated_user
     app.secret_key = SECRET_KEY
     return app
 

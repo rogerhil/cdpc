@@ -17,7 +17,7 @@
 var VALIDATOR;
 
 $(document).ready (function () {
-    if (ERRORS_LIST) {
+    if (ERRORS_LIST || VALUES_LIST) {
         novosCamposLista(VALUES_LIST);
         preencherCamposLista(VALUES_LIST, ERRORS_LIST);
     }
@@ -62,7 +62,9 @@ function preencherCamposLista(values, errors) {
             $(this).val(thev.splice(0,1));
         });
     }
-
+    
+    if (!errors) return;
+    
     for (var key in errors) {
         $('input[name=' + key + ']').each(function () {
             thee = errors[key].splice(0,1);
@@ -91,5 +93,43 @@ function novosCamposLista(values) {
             }
         }
     }
+}
+
+function makeErrorField(id, msg) {
+    var label = '<label id="' + id + '" class="error">' + msg + '</label>';
+    return $(label).css('', '');
+}
+
+function trocarSenha(o) {
+    var $par = $(o).parent();
+    var url = '/usuarios/meusdados/trocarsenha/trocarsenha.json';
+    var data = {senha_antiga: $('input[name=senha_antiga]').val(),
+                senha_nova: $('input[name=trocar_senha]').val(),
+                confirmar_senha: $('input[name=confirmar_trocar_senha]').val()};
+    var err, elid, msg;
+    var errid = 'erro-trocar-senhar';
+    var suc = '<span id="success_msg">Senha modificada com sucesso.</span>'
+    function success(rdata) {
+        $('input[name=senha_antiga]').removeClass('error');
+        $('input[name=trocar_senha]').removeClass('error');
+        $('input[name=confirmar_trocar_senha]').removeClass('error');
+        if (!rdata.success) {
+            elid = rdata.msg[0];
+            msg = rdata.msg[1];
+            err = makeErrorField(errid, msg);
+            $('#' + errid).remove();
+            $('#' + elid).before(err);
+            $('#' + elid).addClass('error');
+        } else {
+            $('#' + errid).remove();
+            toogleSingle(false, $('#bloco_trocar_senha'));
+            $('input[name=senha_antiga]').val('');
+            $('input[name=trocar_senha]').val('');
+            $('input[name=confirmar_trocar_senha]').val('');
+            suc = $(suc).css('color', '#9ACB44').css('font-size', '14px');
+            $('#bloco_trocar_senha').parent().append(suc);
+        }
+    }
+    $.post(url, data, success, 'json');
 }
 

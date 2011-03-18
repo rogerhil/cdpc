@@ -27,7 +27,7 @@ function cepWebService (cepField, form, prefix) {
     });
     if (matched) {
         cep = matched[1]+matched[2]+matched[3];
-        $.getJSON ('../../cadastro/consulta_cep/', {cep: cep}, function (data) {
+        $.getJSON ('/cadastro/consulta_cep/', {cep: cep}, function (data) {
             $($(form[prefix+'_logradouro'])[ind]).val(data.rua);
             $($(form[prefix+'_logradouro'])[ind]).focusout();
 
@@ -45,7 +45,7 @@ function cepWebService (cepField, form, prefix) {
             }
         });
 
-        $.getJSON ('../../cadastro/consulta_geo/', {cep: cep}, function (data) {
+        $.getJSON ('/cadastro/consulta_geo/', {cep: cep}, function (data) {
 	        $($(form[prefix+'_latitude'])[ind]).val(data.lat);
 	        $($(form[prefix+'_longitude'])[ind]).val(data.lng);
         });
