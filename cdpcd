@@ -40,12 +40,15 @@ def main():
     # Cria a base de dados com a uri fornecida pelo arquivo de
     # configuração config.py.
     
+    from cdpc.main import setup_models
+    
     if '-d' in sys.argv:
+        setup_models()    
         from elixir import create_all
         create_all()
         sys.exit(0)
 
-    from cdpc.main import setup_models
+    
     setup_models()
 
     if 'shell' in sys.argv:
