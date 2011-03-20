@@ -43,7 +43,7 @@ def main():
     if '-d' in sys.argv:
         from elixir import create_all
         create_all()
-        exit(0)
+        sys.exit(0)
 
     from cdpc.main import setup_models
     setup_models()
@@ -53,7 +53,7 @@ def main():
         print "from cdpc.main import setup_models"
         print "setup_models()"
         print
-        exit(os.system('python'))        
+        sys.exit(os.system('python'))        
 
     from cdpc.main import create_app
     app = create_app()
