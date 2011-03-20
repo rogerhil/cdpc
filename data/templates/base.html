@@ -46,25 +46,28 @@
       <div id="header">
         <div class="bg">
           <div class="centralize">
-          <div style="margin-top: -25px; float: right;">
-            {% if is_logged_in() %}
-              <ul class="access-bar">
-                <li>
-                  <a href="{{ url_for('usuarios.meusdados') }}">{{ get_user().nome }}</a>
-                </li>
-                <li>
-                  <a href="{{ url_for('index.logout') }}">Sair</a>
-                </li>                
-              </ul>
-            {% else %}
-              <ul class="access-bar">
-                <li>
-                  <a href="{{ url_for('index.login_form') }}">Login</a>
-                </li>
-              </ul>
-            {% endif %}
-          </div>
-            <h1>
+            <div style="margin-top: -25px; float: right;">
+              {% if is_logged_in() %}
+                <ul class="access-bar">
+                  <li>
+                    <a href="{{ url_for('usuarios.meusdados') }}">{{ get_user().nome }}</a>
+                  </li>
+                  <li>
+                    <a href="{{ url_for('index.logout') }}">Sair</a>
+                  </li>                
+                </ul>
+              {% else %}
+                <ul class="access-bar">
+                  <li>
+                    <a href="{{ url_for('index.login_form') }}">Login</a>
+                  </li>
+                </ul>
+              {% endif %}
+            </div>
+            
+            <img src="{{ url_for('.static', filename='img/graph/logo.png') }}" style="border: none; margin-top: -29px;" />
+            <h1 style="margin-left: 130px;">
+            
               <a href="/">
                 <span>Cadastramento dos</span> Pontos de Cultura
               </a>

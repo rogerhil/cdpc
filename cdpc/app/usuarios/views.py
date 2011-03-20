@@ -28,8 +28,9 @@ from elixir import session
 
 from ..common import models as common_models
 from ..index import get_authenticated_user, check_password
-from ..utils.paginator import Paginator
 from ..utils.filestorage import save_image
+from ..utils.paginator import Paginator
+from ..utils.validators import ReCaptchaField
 from . import cadastro
 from . import models
 from . import schemas
@@ -81,6 +82,9 @@ def meusdados():
 def novo():
     """Renderiza o formulário de cadastro de usuários
     """
+
+    recaptcha = ReCaptchaField()
+    
     if request.method == 'POST':
         # instanciando o validador
         validator = schemas.Usuario()
@@ -90,19 +94,31 @@ def novo():
             data.update(request.files)
             data = cadastro.prepare_data(data, validator.fields)
             validado = validator.to_python(data)
-            clean_list = lambda x: [i for i in x if i.strip()];
-
+            dd = request.form.to_dict()
+            d = {'recaptcha_challenge_field': dd['recaptcha_challenge_field'],
+                 'recaptcha_response_field': dd['recaptcha_response_field']}                
+            is_valid = recaptcha.is_valid(d)
+            if not is_valid:
+                raise Invalid(u'Captcha invalido', '', '')
         except Invalid, e:
             print e
             errors = e.unpack_errors()
+            captcha_error = ''
             if not isinstance(errors, dict):
-                raise Exception(errors)
+                if errors != u'Captcha invalido':
+                    raise Exception(e)
+                captcha_error = errors
+                errors = {}
+
+
             errors_list = dict([(i,j) for i,j in errors.items() if type(j) == list])
             values_list = [i for i  in request.form.lists() if len(i[1]) > 1]
             rendered = render_template(
                 'usuarios/novo.html',
                 title=u'Cadastro de usuários',
                 cadastro=cadastro,
+                recaptcha=recaptcha.render(),
+                captcha_error=captcha_error,
                 errors=dict([(i,j) for i,j in errors.items() if type(j) == list]),
                 errors_list=dumps(errors_list),
                 values_list=dumps(dict(values_list)),
@@ -121,7 +137,8 @@ def novo():
 
     return render_template('usuarios/novo.html',
                            title=u'Cadastro de usuários',
-                           cadastro=cadastro)
+                           cadastro=cadastro,
+                           recaptcha=recaptcha.render())
 
 @module.route("meusdados/editar/", methods=('GET', 'POST'))
 @login_required
@@ -147,7 +164,6 @@ def editar_meusdados():
             data.update(request.files)
             data = cadastro.prepare_data(data, validator.fields)
             validado = validator.to_python(data)
-            clean_list = lambda x: [i for i in x if i.strip()];
 
         except Invalid, e:
             print e

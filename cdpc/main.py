@@ -39,7 +39,7 @@ import flask
 SECRET_KEY = ''.join(choice(printable) for x in range(50))
 
 def setup_models():
-    from elixir import metadata, setup_all, create_all
+    from elixir import metadata, setup_all
     from cdpc.config import DATABASE_URI
     import cdpc.app.common.models
     import cdpc.app.usuarios.models

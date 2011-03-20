@@ -11,26 +11,13 @@
    
    
  * Usuários
-   - Formulário de cadastro: captcha;
    - Ocultar o CPF da listagem se não for o próprio usuário;
    
  * Geral
    - Implementar validacao RequireIfPresent do lado do cliente JS
    - Layout para o splash de ajax
-   - Verificar com o designer sobre possíveis layouts extra incluídos
-   - Implementar forms de edição de cada tipo de dados
    - Melhorias no layout em geral
    - Organizacão do CSS
-   
-   - Paginator: lista de pages, melhorar layout;
- 
+    
  * Tela principal
 
-
- * Imagens
-   - Imagem do lápis no topo
-
-
-
-BUG!!!!
- - Paginator: exactly para campos FK

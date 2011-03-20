@@ -4,11 +4,12 @@ from random import randint as r
 from urllib import urlopen
 from optparse import OptionParser
 
-from cdpc.app.projetos import cadastra_projeto
-from cdpc.app.cadastro import prepare_data
-from cdpc.app import schemas
-from cdpc.app.models import Pessoa
-from cdpc.app.cadastro import *
+from cdpc.app.projetos import schemas
+from cdpc.app.usuarios.models import Pessoa
+from cdpc.app.projetos.cadastro import *
+from cdpc.main import setup_models
+
+setup_models()
 
 latin = """
 Pri Putent Antiopam Convenire An Putent Erroribus Vel Dicunt Democritum Vel
@@ -53,6 +54,8 @@ randchoice = lambda X : X[r(0, len(X)-1)][0]
 randchoices = lambda X : [X[i][0] for i in xrange(r(1, len(X)-1))]
 randtel = lambda : (''.join([unicode(r(0,9)) for i in xrange(10)]), randchoice(TIPO_TEL_SEDE))
 randtellist = lambda : [randtel() for i in xrange(5)]
+
+randlist = lambda x: x[r(0, len(x)-1)]
     
 base = [('nome', randword),
         ('descricao', randtext),
@@ -127,7 +130,7 @@ def get_cep(cep):
         content = page.read().decode('iso-8859-1')
         rua, bairro, cidade, _, ufraw = content.split('||', 4)
     except:
-        cep = '00000000'
+        cep = '88888888'
         rua, bairro, cidade, ufraw = randword(), randword(), randword(), randword()
     return {'rua': rua, 'bairro': bairro, 'cidade': cidade, 'uf': ufraw.replace('|', ''), 'cep': cep}
         
@@ -161,29 +164,19 @@ def generate_data():
         if key.startswith('end_proj_'):
             if endprojfilled:
                 continue
-            data['end_proj_cep'] = []
-            data['end_proj_logradouro'] = []
-            data['end_proj_bairro'] = []
-            data['end_proj_cidade'] = []
-            data['end_proj_uf'] = []
-            data['end_proj_numero'] = []
-            data['end_proj_complemento'] = []
-            data['end_proj_numero'] = []
-            data['end_proj_complemento'] = []
-            data['end_proj_latitude'] = []
-            data['end_proj_longitude'] = []
-
             cep = randcep()
+            print cep
             d = get_cep(cep)
-            data['end_proj_cep'].append(d['cep'])
-            data['end_proj_logradouro'].append(d['rua'])
-            data['end_proj_bairro'].append(d['bairro'])
-            data['end_proj_cidade'].append(d['cidade'])
-            data['end_proj_uf'].append(d['uf'])
-            data['end_proj_numero'].append(randnum())
-            data['end_proj_complemento'].append(randcompl())
-            data['end_proj_latitude'].append(randnum())
-            data['end_proj_longitude'].append(randnum())
+            data['end_proj_cep'] = [d['cep']]
+            data['end_proj_logradouro'] = [d['rua']]
+            data['end_proj_bairro'] = [d['bairro']]
+            data['end_proj_cidade'] = [d['cidade']]
+            data['end_proj_uf'] = [d['uf']]
+            data['end_proj_numero'] = [randnum()]
+            data['end_proj_complemento'] = [randcompl()]
+            data['end_proj_latitude'] = [randnum()]
+            data['end_proj_longitude'] = [randnum()]
+
 
             if 'outros' in data['local_proj']:
                 rang = range(r(1,5))
@@ -313,7 +306,9 @@ if __name__ == '__main__':
         exit(4)        
 
     try:
-        user = Pessoa.query.filter_by(email=options.email).one()
+        users = [Pessoa.query.filter_by(email=u).one() \
+                 for u in options.email.split(',')]
+        
     except:
         print
         print "Usuário '%s' não encontrado." % options.email
@@ -325,5 +320,5 @@ if __name__ == '__main__':
     n = int(options.n)
     for i in xrange(n):
         data = generate_data()
-        validate_and_create(data, user)
+        validate_and_create(data, randlist(users))
 

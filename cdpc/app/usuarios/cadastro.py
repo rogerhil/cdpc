@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from hashlib import sha1
 from elixir import session
+from hashlib import sha1
 
 from ..common import models as common_models
 from ..common.cadastro import *
@@ -37,7 +37,7 @@ def set_values_pessoa(usuario, validado):
     # -- Dados de acesso
     usuario.email = validado['email']
     if validado.get('senha'):
-        set_senha(usuario.senha, validado['senha'])
+        set_senha(usuario, validado['senha'])
 
     # -- Dados pessoais
     usuario.nome = validado['nome']
@@ -128,4 +128,5 @@ def values_dict(pessoa):
     dynamic_values['feed_link'] = map(lambda x: x.link, pessoa.feeds)
     
     return values, dynamic_values
+
 

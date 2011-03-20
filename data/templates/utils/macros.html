@@ -72,3 +72,10 @@
       </div>
   {% endfor %}
 {%- endmacro %}
+
+{% macro button(value, onclick, active=False) -%}
+  <div class="btleft {% if active %}btleftactive{% endif %}"></div>
+  <div class="btcontent {% if active %}btcontentactive{% endif %}" onclick="{{ onclick }}">{{ value }}</div>
+  <div class="btright {% if active %}btrightactive{% endif %}"></div>
+{%- endmacro %}
+

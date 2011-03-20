@@ -35,4 +35,15 @@ function stopWaitCursor() {
     $('#loadcursor').remove();
 }
 
+function start() {
+    // config buttons
+    $('div.btcontent').hover(function () {
+        $(this).prev().css('opacity', 0.7);
+        $(this).next().css('opacity', 0.7);
+    }, function () {
+        $(this).prev().css('opacity', 1);
+        $(this).next().css('opacity', 1);
+    });
+}
 
+$(document).ready(start);

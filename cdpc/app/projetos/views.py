@@ -55,10 +55,13 @@ def _listing(title='Projetos', fixedquery=None, xcontext={}, search_fields={}):
 
     paginator = Paginator(models.Projeto, columns, search_fields,
                           trevent=trevent, fixedquery=fixedquery)
+
+    user = get_authenticated_user()
     
     return render_template('projetos/listing.html',
                            paginator=paginator.render(),
                            title=title,
+                           user=user,
                            **xcontext)
 
 @module.route('/')

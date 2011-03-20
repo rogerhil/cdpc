@@ -27,6 +27,8 @@ from ..usuarios import models as usuarios_models
 
 class Paginator(object):
     
+    pages_display_limit_range = 3
+    
     def __init__(self, model, columns, search_fields, cvars={},
                  quickview=None, trevent=None, fixedquery=None):
         self.model = model
@@ -100,11 +102,17 @@ class Paginator(object):
                 mcol = props['mcol']
                 if hasattr(getattr(self.model, mcol).property, 'mapper'):                
                     cmodel = getattr(self.model, mcol).property.mapper.class_
-                    query = query.filter(getattr(self.model, mcol).any(getattr(cmodel, col).contains(value)))                
+                    if props.get('exactly'):
+                        query = query.filter(getattr(self.model, mcol).any(getattr(cmodel, col).op('=')(value)))
+                    else:
+                        query = query.filter(getattr(self.model, mcol).any(getattr(cmodel, col).contains(value)))
             else:
                 if subcol:
                     cmodel = getattr(self.model, col).property.mapper.class_
-                    query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).contains(value)))
+                    if props.get('exactly'):
+                        query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).op('=')(value)))
+                    else:
+                        query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).contains(value)))
                 else:
                     if props.get('exactly'):
                         query = query.filter_by(**{col: value})                        
@@ -140,7 +148,8 @@ class Paginator(object):
         return value
         
     def render(self):
-        page = int(request.args.get('page', 1) or 1)
+        natural = lambda x: x if x > 0 else 1
+        page = natural(int(request.args.get('page', 1) or 1))
         limit = int(request.args.get('limit', 20))
         order_by = [i.strip() for i in request.args.get('order_by', '').split(' ') if i.strip()]
         
@@ -157,10 +166,17 @@ class Paginator(object):
                           display=display)
 
         items_count = len(items)
+
+        pd = self.pages_display_limit_range
+        upd = lambda x: x + pd + 1 if (x - pd + 1) > 1 else 2*pd + 2
+        dpd = lambda x: natural(page-pd) if (pages - x) > pd else natural(page-pd - (pd - (pages - x)))
+        until = lambda x: upd(x) if upd(x) <= pages else pages + 1
+        
         cvars = request.args.copy()
         cvars['limit'] = limit
         cvars['exibition'] = limit if limit <= items_count else items_count
         cvars['page'] = page
+        cvars['pages_range'] = range(dpd(page), until(page))
         cvars['limites'] = [i for i in self.limites]
         cvars['order_by'] = " ".join(order_by)
         cvars.update(self.cvars)

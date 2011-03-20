@@ -252,6 +252,9 @@ div.main div.buttons .next
 , div.main div.buttons .editar
 , div.main div.buttons .editar2
 , div.main div.buttons .trocar
+, div.main div.buttons .btleft
+, div.main div.buttons .btright
+, div.main div.buttons .btcontent
 , div.main div.buttons button{
   overflow:hidden;
   text-indent:-999em;
@@ -263,6 +266,9 @@ div.main div.buttons .next:hover
 , div.main div.buttons .editar:hover
 , div.main div.buttons .editar2:hover
 , div.main div.buttons .trocar:hover
+, div.main div.buttons .btleft:hover
+, div.main div.buttons .btright:hover
+, div.main div.buttons .btcontent:hover
 , div.main div.buttons button:hover{
   opacity:0.7;
 }
@@ -308,6 +314,57 @@ div.main div.buttons .trocar{
   height:33px;
   width:127px;
   margin-right: -20px;
+  cursor: pointer;
+}
+
+div.main div.buttons .btleft{
+  background:url("../img/bt/bt_left.png") no-repeat;
+  height:33px;
+  width:10px;
+  float: left;
+  cursor: pointer;
+}
+
+div.main div.buttons .btcontent{
+  background:url("../img/bt/bt_content.png");
+  height:24px;
+  min-width: 24px;
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: bold;
+  padding: 9px 5px 0px 5px;
+  text-align: center;
+  float: left;
+  text-indent:0em;
+  cursor: pointer;
+}
+
+div.main div.buttons .btright{
+  background:url("../img/bt/bt_right.png") no-repeat;
+  height:33px;
+  width:10px;
+  float: left;
+}
+
+div.main div.buttons .btleftactive{
+  background:url("../img/bt/bt_left_active.png") no-repeat;
+}
+
+div.main div.buttons .btrightactive{
+  background:url("../img/bt/bt_right_active.png") no-repeat;
+}
+
+div.main div.buttons .btcontentactive{
+  background:url("../img/bt/bt_content_active.png");
+}
+
+
+div.main div.buttons .dots{
+  background:url("../img/bt/3dots.png") no-repeat;
+  height:28px;
+  width:50px;
+  margin-top: 5px;
+  float: left;
 }
 
 div.main div.buttons button{

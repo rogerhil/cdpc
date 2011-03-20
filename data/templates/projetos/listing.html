@@ -1,4 +1,6 @@
+{% import "utils/macros.html" as macros %}
 {% set selected = "projetos" %}
+
 {% extends 'base.html' %}
 
 {% block extra_head %}
@@ -21,16 +23,19 @@
 
 {% block container %}
 
-{% if not meus_projetos %}
+<div class="main container">
+
+{% if user %}
 <div class="buttons" style="margin-bottom: 20px; float: right;">
-  <a href="{{ url_for('projetos.meus_projetos') }}"
-     style="color: grey; font-size: 16px;">
-    Ver somete meus projetos
-  </a>
+  {% if not meus_projetos %}
+    {{ macros.button("Ver somente meus projetos", "window.location = '" + url_for('projetos.meus_projetos') + "';") }}
+  {% else %}
+    {{ macros.button("Ver todos os projetos", "window.location = '" + url_for('projetos.listing') + "';") }}
+  {% endif %}
 </div>
+<div style="clear: both;"></div>
 {% endif %}
 
-<div class="main container">
 {% autoescape false %}
   {{ paginator }} 
 {% endautoescape %}

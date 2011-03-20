@@ -294,12 +294,23 @@
         </div>
       </li>
     </ul>
+    <div style="margin: -50px 280px 20px auto; width:200px">
+      {% if recaptcha %}
+        {% if captcha_error %}
+          <label class="error">{{ captcha_error }}</label>
+        {% endif %}
+        {% autoescape off %}
+          {{ recaptcha }}
+        {% endautoescape %}
+      {% endif %}
+    </div>
     <div class="buttons">
       <!-- <input type="submit" class="submit" value="Cadastrar"> -->
       <a href="javascript: submit()"
          class="{% if edit %}editar{% else %}cadastrar{% endif %}">
       </a>
     </div>
+    
   </div>
 </form>
 

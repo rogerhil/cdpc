@@ -40,16 +40,16 @@
         </li>
         {% else %}
         <li>
-          <label>Motivo por falta de telefone:</label>{{ projeto.pq_sem_tel }}
+          <label>Motivo por falta de telefone:</label>{{ functions.get_value(cadastro.PQ_SEM_TEL, projeto.pq_sem_tel) }}
         </li>
         {% endif %}
         {% if projeto.sede_possui_net %}
         <li>
-          <label>Tipo internet:</label> {{ projeto.tipo_internet }}
+          <label>Tipo internet:</label> {{ functions.get_value(cadastro.TIPO_INTERNET, projeto.tipo_internet) }}
         </li>
         {% else %}
         <li>
-          <label>Motivo por falta de internet:</label>{{ projeto.pq_sem_internet }}
+          <label>Motivo por falta de internet:</label>{{ functions.get_value(cadastro.PQ_SEM_INTERNET, projeto.pq_sem_internet) }}
         </li>
         {% endif %}  
         <li>

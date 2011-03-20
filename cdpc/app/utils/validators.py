@@ -22,8 +22,52 @@
 import re
 from formencode import FancyValidator
 from formencode.validators import _, Invalid, Email
-#from formencode.interfaces import *
-#from formencode.api import *
+from recaptcha.client import captcha
+
+from ...config import RECAPTCHA_PRIVATE_KEY, RECAPTCHA_PUBLIC_KEY
+
+class ReCaptchaField(object):
+    """
+    A Field that handles a Recaptcha widget 
+    """
+    default_error_messages = {
+        'invalid': u'Error: %s',
+        'wrong': u'Recaptcha error: %s'
+    }
+    
+    template = '<script type="text/javascript">var RecaptchaOptions = '  \
+               '{theme : "white"};</script> %s'
+    
+
+    def __init__(self):
+        self.required = False
+        from recaptcha.client import captcha
+        from django.conf import settings
+        out = captcha.displayhtml(RECAPTCHA_PUBLIC_KEY)
+        self.widget = self.template % out
+
+    def render(self):
+        return self.widget
+
+    def is_valid(self, value):
+        """
+        This clean method tries to submit the captcha and test it if
+        is valid
+        """
+        from recaptcha.client import captcha
+        if not value:
+            print submited.error_code
+            return False
+            #raise Invalid(self.error_messages['invalid'] % str(value))
+        
+        submited = captcha.submit(value['recaptcha_challenge_field'],
+                                  value['recaptcha_response_field'],
+                                  RECAPTCHA_PRIVATE_KEY, '')
+        if not submited.is_valid:
+            print submited.error_code
+            return False
+            #raise Invalid(self.error_messages['wrong'] % str(submited.error_code))
+        return True
 
 class CdpcEmail(Email):
 
