@@ -41,6 +41,7 @@ def main():
     # configuração config.py.
     
     if '-d' in sys.argv:
+        from elixir import create_all
         create_all()
         exit(0)
 
