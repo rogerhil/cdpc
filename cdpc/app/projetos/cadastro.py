@@ -23,11 +23,11 @@ from flask import Module, request
 from formencode import foreach
 
 from ..common import models as common_models
-from ..common.cadastro import *
 from ..utils.filestorage import save_image, save_file, remove_file
 from ..utils.schemas import CdpcSchema
 from . import models
 from . import schemas
+from cdpc.app.common.cadastro import *
 
 
 TIPO = format(

@@ -20,9 +20,9 @@ from elixir import session
 from hashlib import sha1
 
 from ..common import models as common_models
-from ..common.cadastro import *
 from ..utils.filestorage import save_image
 from . import models
+from cdpc.app.common.cadastro import *
 
 def set_senha(usuario, password):
     usuario.senha = sha1(password).hexdigest()

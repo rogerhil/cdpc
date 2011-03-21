@@ -17,9 +17,9 @@
 
 from functools import wraps
 
-from ..common.decorators import *
 from ..index import redirect_to_main, get_user_or_login
 from .models import Pessoa
+from cdpc.app.common.decorators import *
 
 def edit_allowed(f):
     """

@@ -44,7 +44,7 @@ def index():
 
 @module.route('login', methods=('POST',))
 def login():
-    """Autentica o usuário se ele existir na tabeloa de pessoas
+    """Autentica o usuário se ele existir na tabela de pessoas
     """
     usuario = request.form.get('email')
     senha = sha1(request.form.get('senha')).hexdigest()
