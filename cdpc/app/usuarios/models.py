@@ -21,7 +21,7 @@
 """
 
 from elixir import metadata, setup_all, using_options, Entity, Field, Unicode, \
-    DateTime, ManyToOne, ManyToMany
+    DateTime, ManyToOne, ManyToMany, OneToMany
 
 from ...config import DATABASE_URI
 from ..common.models import Cadastrado
@@ -31,7 +31,7 @@ class Pessoa(Cadastrado):
     """
     using_options(inheritance='multi', shortnames=True)
 
-    responsavel_por = ManyToMany('Projeto', inverse='responsavel')
+    responsavel_por = OneToMany('Projeto', inverse='responsavel')
     projetos = ManyToMany('Projeto')
 
     # -- Sobre sua participação

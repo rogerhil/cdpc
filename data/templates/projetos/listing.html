@@ -32,6 +32,7 @@
   {% else %}
     {{ macros.button("Ver todos os projetos", "window.location = '" + url_for('projetos.listing') + "';") }}
   {% endif %}
+  {{ macros.button("Cadastrar novo ponto", "window.location = '" + url_for('projetos.novo') + "';") }}
 </div>
 <div style="clear: both;"></div>
 {% endif %}

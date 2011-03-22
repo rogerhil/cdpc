@@ -20,6 +20,8 @@
 """Contém shortcuts para manipulação dos modelos
 """
 
+from elixir import session
+
 def get_or_create(model, **kwargs):
     """Helper function to search for an object or create it otherwise,
     based on the Django's Model.get_or_create() method.

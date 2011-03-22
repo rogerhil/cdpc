@@ -30,7 +30,7 @@ def edit_allowed(f):
         projeto = Projeto.get_by(id=pid)
         if not projeto:
             redirect_to_main(u'Projeto não existe.', 'error')
-        if not user or not user.id in [p.id for p in projeto.responsavel]:
+        if not user or user.id != projeto.responsavel.id:
             redirect_to_main(u'Acesso proibido.', 'error')
         return f(pid, *args, **kwargs)
 

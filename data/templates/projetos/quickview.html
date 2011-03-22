@@ -183,11 +183,15 @@
         </li>
       </ul>
 
-      {% if user and projeto.responsavel and projeto.responsavel[0].id == user.id %}
+      {% if user and projeto.responsavel and projeto.responsavel.id == user.id %}
       <div class="buttons" style="margin-top: 20px;">
-        <a href="/projetos/editar/{{ projeto.id }}/" class="editar2"></a>
+        {{ macros.button("Remover", "window.location = '/projetos/remover/" + functions.to_str(projeto.id) + "';") }}
+      </div>
+      <div class="buttons" style="margin-top: 20px;">
+        {{ macros.button("Editar", "window.location = '/projetos/editar/" + functions.to_str(projeto.id) + "';") }}
       </div>
       {% endif %}
+      
     </div>
   </li>
 </ul>

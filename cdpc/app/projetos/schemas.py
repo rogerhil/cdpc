@@ -20,8 +20,6 @@
 
 from formencode import Schema, ForEach
 from formencode import validators
-#from formencode.interfaces import *
-#from formencode.api import *
 
 from .models import Projeto
 from ..utils.schemas import CdpcSchema

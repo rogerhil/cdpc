@@ -42,16 +42,21 @@ module = Module('..projetos')
 def _listing(title='Projetos', fixedquery=None, xcontext={}, search_fields={}):
 
 
-    trevent = {'event': 'onclick',
-               'value': 'mostraProjeto(%s, this)',
-               'params': ['id']}
+    trevent = {
+        'event': 'onclick',
+        'value': 'mostraProjeto(%s, this)',
+        'params': ['id']
+    }
 
-    columns = [('nome',   {'title': 'Nome', 'ambiguity': 'projeto'}),
-               ('responsaveis', {'title': 'Cadastrado por',
-                                 'call': True}),
-               ('cidade', {'title': 'Cidade', 'mcol': 'endereco_sede'}),
-               ('uf', {'title': 'Estado', 'mcol': 'endereco_sede'}),
-               ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})]
+    columns = [
+        ('nome', {'title': 'Nome', 'ambiguity': 'projeto'}),
+        ('cadastrado_por', {'title': 'Cadastrado por', 'call': True,
+                            'mcol': 'responsavel', 'col': 'nome',
+                            'ambiguity': 'pessoa'}),
+        ('cidade', {'title': 'Cidade', 'mcol': 'endereco_sede'}),
+        ('uf', {'title': 'Estado', 'mcol': 'endereco_sede'}),
+        ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})
+    ]
 
     paginator = Paginator(models.Projeto, columns, search_fields,
                           trevent=trevent, fixedquery=fixedquery)
@@ -70,11 +75,12 @@ def listing():
     vals_uf = cadastro.VALORES_UF
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
-    search_fields = [('nome',   {'label': 'Nome', 'type': 'text'}),
-                     ('endereco_sede.cidade', {'label': 'Cidade',
-                                               'type': 'text'}),
-                     ('endereco_sede.uf', {'label': 'Estado', 'type': 'select',
-                                           'choices': vals_uf})]
+    search_fields = [
+        ('nome',   {'label': 'Nome', 'type': 'text'}),
+        ('endereco_sede.cidade', {'label': 'Cidade', 'type': 'text'}),
+        ('endereco_sede.uf', {'label': 'Estado', 'type': 'select', 
+                              'choices': vals_uf})
+    ]
     
     return _listing(search_fields=search_fields)
 
@@ -82,17 +88,18 @@ def listing():
 @login_required
 def meus_projetos():
     user = get_authenticated_user()
-    d = ({'id': user.id}, {'id': {'mcol': 'responsavel', 'exactly': True}})
+    d = ({'responsavel.id': user.id}, {'responsavel.id': {'exactly': True}})
     xc = {'meus_projetos': True}
 
     vals_uf = cadastro.VALORES_UF
     vals_uf.sort(lambda a, b: a > b and 1 or -1)
 
-    search_fields = [('nome',   {'label': 'Nome', 'type': 'text'}),
-                     ('endereco_sede.cidade', {'label': 'Cidade',
-                                               'type': 'text'}),
-                     ('endereco_sede.uf', {'label': 'Estado', 'type': 'select',
-                                           'choices': vals_uf})]
+    search_fields = [
+        ('nome', {'label': 'Nome', 'type': 'text'}),
+        ('endereco_sede.cidade', {'label': 'Cidade', 'type': 'text'}),
+        ('endereco_sede.uf', {'label': 'Estado', 'type': 'select',
+                              'choices': vals_uf})
+    ]
 
     return _listing(title=u'Meus projetos', fixedquery=d,
                     xcontext=xc, search_fields=search_fields)
@@ -124,7 +131,7 @@ def novo():
 
             dynamic_values = dict(values_list)
             rendered = render_template(
-                        'projetos/novo/main.html',
+                        'projetos/cadastro/main.html',
                         cadastro=cadastro,
                         dynamic_values=dumps(dynamic_values),
                         title=u'Cadastro de Projetos')
@@ -140,7 +147,7 @@ def novo():
             return redirect("/projetos")
 
     return render_template(
-        'projetos/novo/main.html',
+        'projetos/cadastro/main.html',
         cadastro=cadastro,
         title=u'Cadastro de Projetos')
 
@@ -173,7 +180,7 @@ def editar(pid):
             validado = validator.to_python(data)
         except Invalid, e:
             rendered = render_template(
-                        'projetos/novo/main.html',
+                        'projetos/cadastro/main.html',
                         title=u"Edição do projeto %s" % projeto.nome,
                         edit='true',
                         projeto=projeto,
@@ -196,7 +203,7 @@ def editar(pid):
     values['projeto_id'] = projeto.id
     
     rendered = render_template(
-                'projetos/novo/main.html',
+                'projetos/cadastro/main.html',
                 title=u"Edição do projeto %s" % projeto.nome,
                 edit='true',
                 projeto=projeto,
@@ -205,16 +212,24 @@ def editar(pid):
     
     filled = htmlfill.render(rendered, defaults=values)
     
-    #filled = rendered
-    print
-    print values
-    print
     return make_response(filled)
 
-#    return render_template(
-#        'projetos/novo/main.html',
-#        cadastro=cadastro,
-#        errors={})
+
+@module.route("remover/<int:pid>/", methods=('GET', 'POST'))
+@edit_allowed
+def remover(pid):
+    """View para remoção de projetos
+
+    O Usuário precisa estar autenticado para remover
+    """
+    user = get_authenticated_user()
+    projeto = Projeto.get_by(id=pid)
+    projeto.delete()
+
+    flash(u'Projeto removido com sucesso!', 'success')
+    
+    return redirect("/projetos")
+    
 
 ################################################################################
 # Asyncronous views
@@ -247,7 +262,7 @@ def validar():
         print e
         errors_list = dict([(i,j) for i,j in e.unpack_errors().items() if \
                            type(j) == list])
-        rendered = render_template('projetos/novo/%s.html' % class_name.lower(),
+        rendered = render_template('projetos/cadastro/%s.html' % class_name.lower(),
                                     projeto=projeto,
                                     cadastro=cadastro)
         errors = dict([(i,j) for i,j in e.unpack_errors().items() \
@@ -266,7 +281,7 @@ def validar():
         return make_response(dumps(ret))
 
     rendered = render_template(
-                'projetos/novo/%s.html' % class_name.lower(),
+                'projetos/cadastro/%s.html' % class_name.lower(),
                 cadastro=cadastro,
                 projeto=projeto,
                 errors={},

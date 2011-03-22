@@ -40,14 +40,18 @@ module = Module('..usuarios')
 
 def _listing(title='Pessoas', fixedquery=None, xcontext={}, search_fields={}):
 
-    trevent = {'event': 'onclick',
-               'value': 'mostraPessoa(%s, this)',
-               'params': ['id']}
+    trevent = {
+        'event': 'onclick',
+        'value': 'mostraPessoa(%s, this)',
+        'params': ['id']
+    }
 
-    columns = [('nome',   {'title': 'Nome', 'ambiguity': 'pessoa'}),
-               ('cidade', {'title': 'Cidade', 'mcol': 'endereco'}),
-               ('uf',     {'title': 'Estado', 'mcol': 'endereco'}),
-               ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})]
+    columns = [
+        ('nome', {'title': 'Nome', 'ambiguity': 'pessoa'}),
+        ('cidade', {'title': 'Cidade', 'mcol': 'endereco'}),
+        ('uf', {'title': 'Estado', 'mcol': 'endereco'}),
+        ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})
+    ]
 
     paginator = Paginator(models.Pessoa, columns, search_fields,
                           trevent=trevent, fixedquery=fixedquery)
@@ -61,12 +65,12 @@ def _listing(title='Pessoas', fixedquery=None, xcontext={}, search_fields={}):
 def listing():
     vals_uf = cadastro.VALORES_UF
     
-    search_fields = [('nome',   {'label': 'Nome', 'type': 'text'}),
-                     ('cidade', {'label': 'Cidade', 'type': 'text',
-                                 'mcol': 'endereco'}),
-                     ('uf',     {'label': 'Estado', 'type': 'select',
-                                  'mcol': 'endereco',
-                                 'choices': vals_uf})]
+    search_fields = [
+        ('nome',   {'label': 'Nome', 'type': 'text'}),
+        ('endereco.cidade', {'label': 'Cidade', 'type': 'text'}),
+        ('endereco.uf', {'label': 'Estado', 'type': 'select',
+                         'choices': vals_uf})
+    ]
     return _listing(search_fields=search_fields)
 
 @module.route('meusdados/')
@@ -114,7 +118,7 @@ def novo():
             errors_list = dict([(i,j) for i,j in errors.items() if type(j) == list])
             values_list = [i for i  in request.form.lists() if len(i[1]) > 1]
             rendered = render_template(
-                'usuarios/novo.html',
+                'usuarios/cadastro.html',
                 title=u'Cadastro de usuários',
                 cadastro=cadastro,
                 recaptcha=recaptcha.render(),
@@ -135,7 +139,7 @@ def novo():
             flash(u'Usuário cadastrado com sucesso!', 'success')
             return redirect("/usuarios/")
 
-    return render_template('usuarios/novo.html',
+    return render_template('usuarios/cadastro.html',
                            title=u'Cadastro de usuários',
                            cadastro=cadastro,
                            recaptcha=recaptcha.render())
@@ -174,7 +178,7 @@ def editar_meusdados():
                                 if type(j) == list])
             values_list = [i for i  in request.form.lists() if len(i[1]) > 1]
             rendered = render_template(
-                'usuarios/novo.html',
+                'usuarios/cadastro.html',
                 title=u'Meus dados',
                 pessoa=pessoa,
                 cadastro=cadastro,
@@ -201,7 +205,7 @@ def editar_meusdados():
     values, values_list = cadastro.values_dict(pessoa)
 
     rendered = render_template(
-        'usuarios/novo.html',
+        'usuarios/cadastro.html',
         title=u'Meus dados',
         pessoa=pessoa,
         cadastro=cadastro,

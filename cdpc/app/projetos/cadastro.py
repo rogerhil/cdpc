@@ -24,7 +24,9 @@ from formencode import foreach
 
 from ..common import models as common_models
 from ..utils.filestorage import save_image, save_file, remove_file
+from ..utils.model import get_or_create
 from ..utils.schemas import CdpcSchema
+
 from . import models
 from . import schemas
 from cdpc.app.common.cadastro import *
@@ -168,15 +170,17 @@ def set_values_projeto(projeto, validado, user):
     projeto.numero_convenio = validado['numero_convenio']
     
     # -- Localização geográfica do projeto
-    endsede = common_models.Endereco(cep=validado['end_proj_cep'],
-                              numero=validado['end_proj_numero'],
-                              logradouro=validado['end_proj_logradouro'],
-                              complemento=blank(validado['end_proj_complemento']),
-                              uf=validado['end_proj_uf'],
-                              cidade=validado['end_proj_cidade'],
-                              bairro=validado['end_proj_bairro'],
-                              latitude=blank(validado['end_proj_latitude']),
-                              longitude=blank(validado['end_proj_longitude']))
+    endsede = get_or_create(common_models.Endereco, 
+        cep=validado['end_proj_cep'],
+        numero=validado['end_proj_numero'],
+        logradouro=validado['end_proj_logradouro'],
+        complemento=blank(validado['end_proj_complemento']),
+        uf=validado['end_proj_uf'],
+        cidade=validado['end_proj_cidade'],
+        bairro=validado['end_proj_bairro'],
+        latitude=blank(validado['end_proj_latitude']),
+        longitude=blank(validado['end_proj_longitude']))[0]
+
     projeto.endereco_sede = endsede
 
     projeto.local = validado['local_proj']
@@ -185,7 +189,7 @@ def set_values_projeto(projeto, validado, user):
 
     if projeto.local == 'outros':
         for i in range(len(validado['end_outro_nome'])):
-            endereco = common_models.Endereco(
+            endereco = get_or_create(common_models.Endereco,
                 nome=validado['end_outro_nome'][i],
                 cep=validado['end_outro_cep'][i],
                 numero=validado['end_outro_numero'][i],
@@ -195,7 +199,7 @@ def set_values_projeto(projeto, validado, user):
                 cidade=validado['end_outro_cidade'][i],
                 bairro=validado['end_outro_bairro'][i],
                 latitude=blank(validado['end_outro_latitude'][i]),
-                longitude=blank(validado['end_outro_longitude'][i]))
+                longitude=blank(validado['end_outro_longitude'][i]))[0]
             projeto.enderecos.append(endereco)
 
     # -- Contatos e espaços na rede
@@ -214,17 +218,17 @@ def set_values_projeto(projeto, validado, user):
     projeto.redes_sociais = []
 
     for i in range(len(validado['rs_nome'])):
-        rsocial = common_models.RedeSocial()
-        rsocial.nome = validado['rs_nome'][i]
-        rsocial.link = validado['rs_link'][i]
+        rsocial = get_or_create(common_models.RedeSocial,
+                                nome=validado['rs_nome'][i],
+                                link=validado['rs_link'][i])[0]
         projeto.redes_sociais.append(rsocial)
 
     projeto.feeds = []
 
     for i in range(len(validado['feed_nome'])):
-        feed = common_models.Feed()
-        feed.nome = validado['feed_nome'][i]
-        feed.link = validado['feed_link'][i]
+        feed = get_or_create(common_models.Feed,
+                             nome = validado['feed_nome'][i],
+                             link = validado['feed_link'][i])[0]
         projeto.feeds.append(feed)
 
     # -- Comunicação e Cultura Digital
@@ -232,31 +236,14 @@ def set_values_projeto(projeto, validado, user):
     projeto.email = validado['email_proj']
     projeto.website = validado['website_proj']
 
-    def get_tel(numero):
-        tel = None
-        if common_models.Telefone.query.filter_by(numero=numero).count() and \
-           (numero in [t.numero for t in projeto.telefones] or \
-            numero in [t.numero for t in user.telefones] or \
-            projeto.entidade and numero in \
-            [t.numero for t in projeto.entidade.telefones]):
-            if numero in [t.numero for t in projeto.telefones]:
-                tel = [t for t in projeto.telefones if t.numero == numero][0]
-            if numero in [t.numero for t in user.telefones]:
-                tel = [t for t in user.telefones if t.numero == numero][0]
-            if projeto.entidade and numero in \
-               [t.numero for t in projeto.entidade.telefones]:
-                tel = [t for t in projeto.entidade.telefones if \
-                       t.numero == numero][0]
-        else:
-            tel = common_models.Telefone(numero=numero)
+    def get_tel(numero, tipo):
+        tel = get_or_create(common_models.Telefone, numero=numero, tipo=tipo)[0]
         return tel
 
     projeto.sede_possui_tel = validado['sede_possui_tel'] == 'sim'
     if projeto.sede_possui_tel:
         for i, t in enumerate(validado['sede_tel']):
-            tel = get_tel(t)
-            if validado['sede_tel_tipo']:
-                tel.tipo = validado['sede_tel_tipo'][i]
+            tel = get_tel(t, validado['sede_tel_tipo'][i])
             projeto.telefones.append(tel)
     else:
         projeto.pq_sem_tel = validado['pq_sem_tel']
@@ -271,94 +258,83 @@ def set_values_projeto(projeto, validado, user):
             projeto.pq_sem_internet = validado['pq_sem_internet_outro']
 
     # -- Entidade Proponente
-    projeto.entidade = models.Entidade(
-        nome=validado['nome_ent'],
-        )
+    projeto.entidade = get_or_create(models.Entidade,
+                                     nome=validado['nome_ent'])[0]
 
     if validado.get('endereco_ent_proj') == 'nao':
-        projeto.entidade.endereco =  common_models.Endereco(
-                nome=validado['nome_ent'],
-                cep=validado['end_ent_cep'],
-                numero=validado['end_ent_numero'],
-                logradouro=validado['end_ent_logradouro'],
-                complemento=blank(validado['end_ent_complemento']),
-                uf=validado['end_ent_uf'],
-                cidade=validado['end_ent_cidade'],
-                bairro=validado['end_ent_bairro'],
-                latitude=blank(validado['end_ent_latitude']),
-                longitude=blank(validado['end_ent_longitude'])
-                )
+        projeto.entidade.endereco = get_or_create(common_models.Endereco,
+            nome=validado['nome_ent'],
+            cep=validado['end_ent_cep'],
+            numero=validado['end_ent_numero'],
+            logradouro=validado['end_ent_logradouro'],
+            complemento=blank(validado['end_ent_complemento']),
+            uf=validado['end_ent_uf'],
+            cidade=validado['end_ent_cidade'],
+            bairro=validado['end_ent_bairro'],
+            latitude=blank(validado['end_ent_latitude']),
+            longitude=blank(validado['end_ent_longitude']))[0]
     else:
         projeto.entidade.endereco = projeto.endereco_sede
 
     projeto.entidade.telefones = []
 
     for i, t in enumerate(validado['ent_tel']):
-        tel = get_tel(t)
-        if validado['ent_tel_tipo']:
-            tel.tipo = validado['ent_tel_tipo'][i]        
+        tel = get_tel(t, validado['ent_tel_tipo'][i])
         projeto.entidade.telefones.append(tel)
 
     projeto.entidade.email = validado['email_ent']
     projeto.entidade.website = validado['website_ent']
 
+    projeto.entidade.convenios = []
     if validado['convenio_ent'] == 'sim':
         for i in validado['outro_convenio']:
-            conv = models.Convenio()
-            conv.nome = i
+            conv = get_or_create(models.Convenio, nome=i)[0]
             projeto.entidade.convenios.append(conv)
 
     # -- Atividades exercidas pelo projeto
     # --- Qual a área de atuação das atividades do Projeto?
     projeto.atividades = []
     for i in validado['atividade']:
-        obj = models.Atividade()
-        obj.nome = i
+        obj = get_or_create(models.Atividade, nome=i)[0]
         projeto.atividades.append(obj)
 
     # ---  Com qual Público Alvo o Projeto é desenvolvido?
     # ---- Sob aspectos de Faixa Etária
     projeto.publico_alvo = []
     for i in validado['publico_alvo']:
-        obj = models.PublicoAlvo()
-        obj.nome = i
+        obj = get_or_create(models.PublicoAlvo, nome=i)[0]
         projeto.publico_alvo.append(obj)
 
     # ---- Sob aspectos das Culturas Tradicionais
     projeto.culturas_tradicionais = []
     for i in validado['culturas_tradicionais']:
-        obj = models.CulturaTradicional()
-        obj.nome = i
+        obj = get_or_create(models.CulturaTradicional, nome=i)[0]
         projeto.culturas_tradicionais.append(obj)
 
     # ---- Sob aspectos de Ocupação do Meio
     projeto.ocupacao_do_meio = []
     for i in validado['ocupacao_do_meio']:
-        obj = models.OcupacaoDoMeio()
-        obj.nome = i
+        obj = get_or_create(models.OcupacaoDoMeio, nome=i)[0]
         projeto.ocupacao_do_meio.append(obj)
 
     # ---- Sob aspectos de Gênero
     projeto.genero = []
     for i in validado['genero']:
-        obj = models.Genero()
-        obj.nome = i
+        obj = get_or_create(models.Genero, nome=i)[0]
         projeto.genero.append(obj)
 
     # --- Quais são as Manifestações e Linguagens que o Projeto utiliza
     # em suas atividades?
     projeto.manifestacoes_linguagens = []
     for i in validado['manifestacoes_linguagens']:
-        obj = models.ManifestacaoLinguagem()
-        obj.nome = i
+        obj = get_or_create(models.ManifestacaoLinguagem, nome=i)[0]
         projeto.manifestacoes_linguagens.append(obj)
 
     # --- O Projeto participa de alguma Ação do Programa Cultura Viva?
     projeto.acao_cultura_viva = []
     if validado['participa_cultura_viva'] == 'sim':
         for i in validado['acao_cultura_viva']:
-            obj = models.AcaoCulturaViva()
-            obj.nome = i
+            obj = get_or_create(models.AcaoCulturaViva, nome=i)[0]
             projeto.acao_cultura_viva.append(obj)
 
     projeto.descricao = validado['descricao']
@@ -367,8 +343,7 @@ def set_values_projeto(projeto, validado, user):
     projeto.parcerias = []
     if validado['estabeleceu_parcerias'] == 'sim':
         for i in validado['parcerias'] + validado['outro_parceiro']:
-            obj = models.Parceiro()
-            obj.nome = i
+            obj = get_or_create(models.Parceiro, nome=i)[0]
             projeto.parcerias.append(obj)
 
     # -- Índice de acesso à cultura
@@ -376,8 +351,7 @@ def set_values_projeto(projeto, validado, user):
     projeto.ind_expectadores = validado['ind_expectadores']
     projeto.ind_populacao = validado['ind_populacao']
 
-    projeto.responsavel = []
-    projeto.responsavel.append(user)
+    projeto.responsavel = user
     
     try:
         session.commit()

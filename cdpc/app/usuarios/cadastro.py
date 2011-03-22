@@ -21,6 +21,7 @@ from hashlib import sha1
 
 from ..common import models as common_models
 from ..utils.filestorage import save_image
+from ..utils.model import get_or_create
 from . import models
 from cdpc.app.common.cadastro import *
 
@@ -46,16 +47,17 @@ def set_values_pessoa(usuario, validado):
     usuario.sexo = validado['sexo']
 
     # -- Sobre a sua localização geográfica
-    endereco = common_models.Endereco()
-    endereco.cep = validado['end_cep']
-    endereco.uf = validado['end_uf']
-    endereco.cidade = validado['end_cidade']
-    endereco.bairro = validado['end_bairro']
-    endereco.logradouro = validado['end_logradouro']
-    endereco.numero = validado['end_numero']
-    endereco.complemento = validado['end_complemento']
-    endereco.latitude = validado['end_latitude']
-    endereco.longitude = validado['end_longitude']
+    endereco = get_or_create(common_models.Endereco,
+        cep=validado['end_cep'],
+        uf=validado['end_uf'],
+        cidade=validado['end_cidade'],
+        bairro=validado['end_bairro'],
+        logradouro=validado['end_logradouro'],
+        numero=validado['end_numero'],
+        complemento=validado['end_complemento'],
+        latitude=validado['end_latitude'],
+        longitude=validado['end_longitude'])[0]
+    
     usuario.endereco = endereco
 
     # -- Contatos e espaços na rede
@@ -63,26 +65,24 @@ def set_values_pessoa(usuario, validado):
     
     usuario.telefones = []
     for i, num in enumerate(validado['pessoa_tel']):
-        tel = common_models.Telefone()
-        tel.numero = num
-        if validado['pessoa_tel_tipo']:
-            tel.tipo = validado['pessoa_tel_tipo'][i]
+        tel = get_or_create(common_models.Telefone, numero=num,
+                            tipo=validado['pessoa_tel_tipo'][i])[0]
         usuario.telefones.append(tel)
     
     usuario.redes_sociais = []
     if validado.has_key('rs_nome'):
         for i in range(len(validado['rs_nome'])):
-            rsocial = common_models.RedeSocial()
-            rsocial.nome = validado['rs_nome'][i]
-            rsocial.link = validado['rs_link'][i]
+            rsocial = get_or_create(common_models.RedeSocial,
+                                    nome=validado['rs_nome'][i],
+                                    link=validado['rs_link'][i])[0]
             usuario.redes_sociais.append(rsocial)
             
     usuario.feeds = []
     if validado.has_key('feed_nome'):
         for i in range(len(validado['feed_nome'])):
-            feed = common_models.Feed()
-            feed.nome = validado['feed_nome'][i]
-            feed.link = validado['feed_link'][i]
+            feed = get_or_create(common_models.Feed,
+                                 nome = validado['feed_nome'][i],
+                                 link = validado['feed_link'][i])[0]
             usuario.feeds.append(feed)
 
     try:

@@ -50,7 +50,7 @@
       <thead>
         <tr>
           {% for id, props in columns %}
-          <th class="{{ props.thclass }}" id="{% if props.mcol %}{{ props.mcol }}.{{ id }}{% else %}{{ id }}{% endif %}">{{ props.title }}</th>
+          <th class="{{ props.thclass }}" id="{% if props.mcol %}{{ props.mcol }}.{% endif %}{% if props.col %}{{ props.col }}{% else %}{{ id }}{% endif %}">{{ props.title }}</th>
           {% endfor %}
         </tr>
       </thead>

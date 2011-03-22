@@ -70,6 +70,9 @@ def file_list_for_edit(objs, pid):
 def to_dict(obj):
     return dict(obj)
 
+def to_str(obj):
+    return str(obj)
+
 def get_choices(name):
     return dict(getattr(cadastro, name, {}))
     

@@ -55,17 +55,19 @@ class Paginator(object):
             key = clause
             if hasattr(getattr(self.model, clause, None), '__call__'):
                 continue
-            match = re.match('^(\w+)\.(\w+)$', clause)
+            match = re.match('^([\w_]+)\.([\w_]+)$', clause)
             if match:
                 attr, subattr = match.groups()
                 clause = subattr
                 key = subattr
                 query = query.join(attr)
-            else:
-                amb = dict(self.columns)[clause].get('ambiguity')
-                if amb:
-                    clause = "%s.%s" % (amb, clause)
-                
+
+            amb = dict(self.columns)[clause].get('ambiguity')
+            dcol = dict(self.columns)[clause].get('col')
+            if dcol:
+                clause = dcol
+            if amb:
+                clause = "%s.%s" % (amb, clause)    
             if oby.startswith('-'):
                 query = query.order_by(desc(clause))
             else:
@@ -100,6 +102,7 @@ class Paginator(object):
                 continue
             if props.get('mcol'):
                 mcol = props['mcol']
+                col = props.get('col', col)
                 if hasattr(getattr(self.model, mcol).property, 'mapper'):                
                     cmodel = getattr(self.model, mcol).property.mapper.class_
                     if props.get('exactly'):
@@ -124,17 +127,18 @@ class Paginator(object):
     @staticmethod
     def cel_content(item, cid, props):
         value = ""
-        if props.get('mcol'):
-            mcol = getattr(item, props['mcol'])
-            if mcol:
-                if hasattr(mcol, '__iter__'):
-                    value = ", ".join(list(set([getattr(i, cid) for i in mcol])))
-                else:
-                    value = getattr(mcol, cid)
-        else:
-            value = getattr(item, cid)
         if props.get('call'):
-            value = value()
+            value = getattr(item, cid)()
+        else:
+            if props.get('mcol'):
+                mcol = getattr(item, props['mcol'])
+                if mcol:
+                    if hasattr(mcol, '__iter__'):
+                        value = ", ".join(list(set([getattr(i, cid) for i in mcol])))
+                    else:
+                        value = getattr(mcol, cid)
+            else:
+                value = getattr(item, cid)
         return value
     
     def tr_event(self, item):

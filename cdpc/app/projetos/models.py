@@ -96,7 +96,7 @@ class Projeto(Cadastrado):
     using_options(inheritance='multi', shortnames=True)
 
     # -- Responsável pelo projeto
-    responsavel = ManyToMany('Pessoa', inverse='responsavel_por')
+    responsavel = ManyToOne('Pessoa', inverse='responsavel_por')
     participantes = ManyToMany('Pessoa')
 
     # -- Dados do projeto
@@ -159,6 +159,6 @@ class Projeto(Cadastrado):
     # -- Avatar
     avatar = Field(Unicode(256)) # Caminho para o arquivo
 
-    def responsaveis(self):
-        return " ".join([resp.nome for resp in self.responsavel])
+    def cadastrado_por(self):
+        return getattr(self.responsavel, 'nome', '')
 
