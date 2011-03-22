@@ -6,6 +6,10 @@
 <link
    rel="stylesheet" type="text/css" media="all"
    href="{{ url_for('.static', filename='css/register.css') }}">
+<link
+   rel="stylesheet" type="text/css"
+   href="{{ url_for('.static', filename='css/inc/jquery-ui.css') }}">
+
 <script
    type="text/javascript"
    src="{{ url_for('.static', filename='js/inc/jquery.js') }}"></script>
@@ -14,6 +18,9 @@
 <script src="{{ url_for('.static', filename='js/inc/jquery.maskedinput-1.2.2.min.js') }}"></script>
 <script src="{{ url_for('.static', filename='js/inc/jquery.validate.fixed-0.1.js') }}"></script>
 <script src="{{ url_for('.static', filename='js/forms.js') }}"></script>
+<script
+   type="text/javascript"
+   src="{{ url_for('.static', filename='js/inc/jquery-ui.min.js') }}"></script>
 
 <script
    type="text/javascript"
@@ -49,10 +56,7 @@
   
 {% endblock %}
 
-{% block content %}  
-
-<div class="ajaxsplash" id="ajaxsplash">
-</div>
+{% block content %}
 
 <div id="fileaux" class="hidden"></div>
 

@@ -305,19 +305,17 @@ ul.access-bar a:hover {
 
 div.ajaxsplash {
     background: url('../img/bg/ajax-loader.gif') no-repeat center center;
-    background-color: white;
-    opacity: .8;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 9999;
-    color: white;
-    font-size: 70px;
-    padding-left: 700px;
-    padding-top: 500px;
-    width: 1200px;
-    height: 900px;
     display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    
 }
 
 div.site-message { 

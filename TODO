@@ -16,7 +16,6 @@
    
  * Geral
    - Implementar validacao RequireIfPresent do lado do cliente JS
-   - Layout para o splash de ajax
    - Organizacão do CSS
    - Login AJAX
    - Consertar script teia para a nova base de dados

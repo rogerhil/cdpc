@@ -14,6 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var loadAnimPath = "/static/img/graph/loadingAnimation.gif";
+
 if (typeof(String.prototype.strip) === "undefined") {
     String.prototype.trim = function () {
         return String(this).replace(/^\s+|\s+$/g, '');
@@ -35,7 +37,20 @@ function stopWaitCursor() {
     $('#loadcursor').remove();
 }
 
+function overlay(v) {
+    if (v == 'hide') {
+        $.ui.dialog.overlay.destroy($.ui.dialog.overlay.instances[0]);
+        $("div#ajaxsplash").hide();
+    } else {
+        $.ui.dialog.overlay();
+        $("div#ajaxsplash").show();
+    }
+}
+
 function start() {
+    imgLoader = new Image();
+    imgLoader.src = loadAnimPath;
+    
     // config buttons
     $('div.btcontent').hover(function () {
         $(this).prev().css('opacity', 0.7);

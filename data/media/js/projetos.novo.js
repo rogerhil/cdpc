@@ -215,7 +215,8 @@ function next(e, step) {
     
     function afterServerValidation(data) {
         var current = $("div#" + CURRENT_STEP);
-        $("div#ajaxsplash").fadeOut('fast');
+        $('#snapshot_hack').remove();
+        overlay("hide");
         if (data.error) {
 
             current.html($(data.html).children());
@@ -285,15 +286,20 @@ function next(e, step) {
     if (valid) {
         children = current.children();
         theForm = $("<form></form>").append(children);
+
+        current.append($('<div id="snapshot_hack"></div>').append(children.clone(true, true)));
+
         theForm.find("input[type=file]").each( function () {
-            //this.type = 'pseudofile';
             $('<input type="pseudofile" name="' + this.name + '">').insertAfter($(this));
             $('#fileaux').append($(this));
         });
-        $("div#ajaxsplash").fadeIn('fast');
+        overlay();
         $(theForm).ajaxSubmit(options);
     } else {
-        $('html, body').animate({scrollTop: 0}, 'slow');
+        var $firstError = $('.error:first');
+        $('html, body').animate({scrollTop: $firstError.position().top+280}, 'slow');
+        $('.error:visible:first').effect('bounce', {times: 3, direction: 'down', distance: 10}, 200);
+        $firstError.focus();
     }
     
     $('.site-message').remove();
