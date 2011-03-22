@@ -46,7 +46,7 @@ function submit() {
     if (valid) {
         document.getElementById('novoUsuario').submit();
     } else {
-        $('html, body').animate({scrollTop: 0}, 'slow');
+        focusAfterError();
     }
 }
 

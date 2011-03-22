@@ -157,5 +157,17 @@ function decorateRequiredLabels(id) {
         var html = $(this).html();
         var newHtml = html.replace('*', '<span class="requiredstar">*</span>');
         $(this).html(newHtml);
-    });   
+    });
+}
+
+function focusAfterError() {
+    var $firstError = $('.error:first');
+    var tops = [];
+    $('.error:visible').each(function () {
+        tops.push($(this).offset().top);
+    });
+    var minTop = minimun(tops);
+    $('html, body').animate({scrollTop: minTop - 30}, 'slow');
+    $('.error:visible:first').effect('bounce', {times: 3, direction: 'down', distance: 20}, 200);
+    $firstError.focus();
 }

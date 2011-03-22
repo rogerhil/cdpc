@@ -14,14 +14,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var loadAnimPath = "/static/img/graph/loadingAnimation.gif";
-
 if (typeof(String.prototype.strip) === "undefined") {
     String.prototype.trim = function () {
         return String(this).replace(/^\s+|\s+$/g, '');
     };
 }
 
+function minimun(l) {
+    var aux = l[0];
+    for (var k = 0; k < l.length; k++) {
+        if (l[k] < aux) {
+            aux = l[k];
+        }
+    }
+    return aux;
+}
 
 function startWaitCursor() {
     var $loadcursor = $('<div class="loadcursor" id="loadcursor">');
@@ -48,8 +55,6 @@ function overlay(v) {
 }
 
 function start() {
-    imgLoader = new Image();
-    imgLoader.src = loadAnimPath;
     
     // config buttons
     $('div.btcontent').hover(function () {

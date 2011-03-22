@@ -296,10 +296,7 @@ function next(e, step) {
         overlay();
         $(theForm).ajaxSubmit(options);
     } else {
-        var $firstError = $('.error:first');
-        $('html, body').animate({scrollTop: $firstError.position().top+280}, 'slow');
-        $('.error:visible:first').effect('bounce', {times: 3, direction: 'down', distance: 10}, 200);
-        $firstError.focus();
+        focusAfterError();
     }
     
     $('.site-message').remove();
