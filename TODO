@@ -4,11 +4,12 @@
    - Formulário de edição: documentos, undo delete;
    - Formulário, após submeter e ocorrer erro no server, perde os dados dos
      arquivos adicionados
-   - Confirm jQuery para remover projetos
    - Consertar scriptprojetos.py: campo de tipo internet ou tel aparece bizarro
                                   no quickview, ufs e cidades
    - Ao cadastrar ou editar, no ultimo passo, verificar se está logado. Senão
      estiver, mostrar o login ajax para depois submeter.
+   - Ao cadastrar ou editar, redirecionar para a pagina de listagem mas
+     mostrando somente o projeto editado (como é feito com o profile do usuário)
    
  * Usuários
    - Ocultar o CPF da listagem se não for o próprio usuário;

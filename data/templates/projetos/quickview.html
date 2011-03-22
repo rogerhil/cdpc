@@ -184,8 +184,11 @@
       </ul>
 
       {% if user and projeto.responsavel and projeto.responsavel.id == user.id %}
+      <div id="remove_dialog_{{ projeto.id }}" title="Remover projeto">
+        Você tem certeza que deseja remover o projeto "{{ projeto.nome }}"?
+      </div>
       <div class="buttons" style="margin-top: 20px;">
-        {{ macros.button("Remover", "window.location = '/projetos/remover/" + functions.to_str(projeto.id) + "';") }}
+        {{ macros.button("Remover", "removerProjeto(" + functions.to_str(projeto.id) + ");") }}
       </div>
       <div class="buttons" style="margin-top: 20px;">
         {{ macros.button("Editar", "window.location = '/projetos/editar/" + functions.to_str(projeto.id) + "';") }}

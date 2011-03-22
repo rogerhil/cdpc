@@ -100,6 +100,7 @@ function mostraProjeto(pid, o) {
             $cur.next().children().children().slideDown('slow', function(){
                 $cur.removeClass('loading');    
             });
+            start();
         });
     } else {
         if ($cur.hasClass('loading')) return;
@@ -113,3 +114,14 @@ function mostraProjeto(pid, o) {
     }
     
 }
+
+function removerProjeto(pid) {
+    var url = '/projetos/remover/' + pid;
+    $("#remove_dialog_" + pid).dialog({buttons: [
+        {text: "Não",
+         click: function () {$(this).dialog("close");}},
+        {text: "Sim",
+         click: function () {window.location = url;}}
+    ], modal: true});
+}
+
