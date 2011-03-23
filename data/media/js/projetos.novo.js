@@ -122,7 +122,7 @@ function configValidator() {
     var rules = {parcerias: {atLeastOne: true},
                  acao_cultura_viva: {atLeastOne: true},
                  atividade: {atLeastOne: true}};
-    VALIDATOR = $('#content form').validate({rules: rules, debug: true});
+    VALIDATOR = $('#content form#novoProjeto').validate({rules: rules, debug: true});
 }
 
 function configStepButtons() {
@@ -329,11 +329,22 @@ function hackEmptyFields(pattern) {
 }
 
 function submit(e) {
+    testIsAuthenticated(doSubmit, loginBeforeSubmit);
+}
+
+function doSubmit() {
     clearPlaceholders();
     hackEmptyFields('_complemento');
     hackEmptyFields('_latitude');
     hackEmptyFields('_longitude');
     document.getElementById("novoProjeto").submit();
+}
+
+function loginBeforeSubmit() {
+    var msg = "Por algum motivo sua sessão foi finalizada. " +
+              "Por favor efetue o login novamente para que o projeto " +
+              "seja cadastrado com sucesso." 
+    showLoginForm(msg, submit);
 }
 
 function changeParcerias(o) {

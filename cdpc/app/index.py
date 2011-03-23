@@ -17,10 +17,14 @@
 
 """Controllers da index
 """
+
+import simplejson
+
 from hashlib import sha1
 from sqlalchemy.orm.exc import NoResultFound
 from flask import Module, request, render_template, session, g, url_for, \
-    redirect, abort, flash
+    redirect, abort, flash, make_response
+
 from usuarios.models import Pessoa
 
 module = Module(__name__)
@@ -58,6 +62,24 @@ def login():
         proxima = '%s?erro=1&email=%s' % (url_for('index.login_form'), usuario)
         return redirect(proxima)
 
+@module.route('ajax_login', methods=('POST',))
+def ajax_login():
+    """Autentica o usuário se ele existir na tabela de pessoas
+    """
+    usuario = request.form.get('email')
+    password = sha1(request.form.get('password')).hexdigest()
+
+    ret = {'success': False, 'message': ''}
+
+    try:
+        g.usuario = Pessoa.query.filter_by(email=usuario, senha=password).one()
+        session['usuario'] = usuario
+        ret['success'] = True
+    except NoResultFound:
+        ret['message'] = 'Usuário ou senha incorretos.'
+
+    return make_response(simplejson.dumps(ret))
+
 @module.route('login_form')
 def login_form():
     """Exibe o form de login
@@ -79,6 +101,12 @@ def logout():
         session.pop('usuario')
     flash(u'Sessão finalizada!', 'info')
     return redirect(url_for('index.index'))
+
+@module.route('ajax_is_logged_in', methods=('GET',))
+def ajax_is_logged_in():
+    d = {'authenticated': 'usuario' in session}
+    return make_response(simplejson.dumps(d))
+
 
 def is_logged_in():
     """Retorna verdadeiro se o usuário estiver autenticado ou falso caso

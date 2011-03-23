@@ -54,6 +54,15 @@ function overlay(v) {
     }
 }
 
+function fancyAlert(title, msg) {
+    var $dialog = $("#fancy_dialog");
+    $dialog.html('<p>' + msg + '</p>');
+    $dialog.dialog({title: title, width: 500, buttons: [
+        {text: "Ok",
+         click: function () {$(this).dialog("close");}}
+    ]});
+}
+
 function start() {
     
     // config buttons

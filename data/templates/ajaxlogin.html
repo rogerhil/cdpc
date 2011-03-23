@@ -1,0 +1,18 @@
+<div class="sidebar hidden" id="ajax_login" title="Acesso">
+  <p style="margin-bottom: 10px;" id="description_message">
+    Por algum motivo sua sessão foi finalizada. Por favor efetue o login novamente.
+  </p>
+
+  <form action="{{ url_for('index.ajax_login') }}" id="form_ajax_login">
+    <div style="margin-bottom: 10px;">
+        <label for="email">E-mail:</label>
+        <input type="text" id="email" name="email" maxlength="100"
+               class="required email textarea" style="margin-left: 10px" />
+    </div>
+    <div style="margin-bottom: 5px;">
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="senha" maxlength="30"
+        placeholder="senha" class="required textarea" style="margin-left: 12px" />
+    </div>
+  </form>
+</div>
