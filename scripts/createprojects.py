@@ -150,7 +150,6 @@ def generate_data():
             if endprojfilled:
                 continue
             cep = randcep()
-            print cep
             d = get_cep(cep)
             data['end_proj_cep'] = [d['cep']]
             data['end_proj_logradouro'] = [d['rua']]
@@ -247,9 +246,6 @@ def validate_and_create(data, user):
         data = dict(data)
         data = prepare_data(data, ProjetoSchema.fields)
         validado = validator.to_python(data)
-        print "!"*40
-        print "OK! "*10
-        print "!"*40
     except Exception, e:
         print "-"*20
         print e

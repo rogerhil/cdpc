@@ -13,8 +13,6 @@ from shortcuts import *
 
 setup_models()
 
-print schemas.Usuario
-
 password = lambda : 'alabama'
     
 base = [('email', randemail),
@@ -52,7 +50,6 @@ def generate_data(email=None):
             if endfilled:
                 continue
             cep = randcep()
-            print cep
             d = get_cep(cep)
             data['end_cep'] = [d['cep']]
             data['end_logradouro'] = [d['rua']]
@@ -99,9 +96,6 @@ def validate_and_create(data):
         data = dict(data)
         data = prepare_data(data, schemas.Usuario.fields)
         validado = validator.to_python(data)
-        print "!"*40
-        print "OK! "*10
-        print "!"*40
     except Exception, e:
         print "-"*20
         print e
