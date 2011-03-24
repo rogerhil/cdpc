@@ -99,11 +99,12 @@ def novo():
             data = cadastro.prepare_data(data, validator.fields)
             validado = validator.to_python(data)
             dd = request.form.to_dict()
-            d = {'recaptcha_challenge_field': dd['recaptcha_challenge_field'],
-                 'recaptcha_response_field': dd['recaptcha_response_field']}                
-            is_valid = recaptcha.is_valid(d)
-            if not is_valid:
-                raise Invalid(u'Captcha invalido', '', '')
+            if dd.get('recaptcha_challenge_field'):
+                d = {'recaptcha_challenge_field': dd['recaptcha_challenge_field'],
+                     'recaptcha_response_field': dd['recaptcha_response_field']}                
+                is_valid = recaptcha.is_valid(d)
+                if not is_valid:
+                    raise Invalid(u'Captcha invalido', '', '')
         except Invalid, e:
             print e
             errors = e.unpack_errors()

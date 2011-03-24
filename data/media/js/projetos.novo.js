@@ -175,7 +175,7 @@ function configFields() {
 }
 
 function validateStep() {
-
+    
     var valid = true;
     var selector = "div#" + CURRENT_STEP + " input, " +
                    "div#" + CURRENT_STEP + " select, " +
@@ -188,7 +188,7 @@ function validateStep() {
             if ($(this).is(':hidden')) ret = true;
         });
         if (ret) return;
-        valid = VALIDATOR.element($(this));
+        valid = VALIDATOR.element($(this)) && valid;
     });
     return valid;
 }
@@ -229,6 +229,7 @@ function next(e, step) {
             preencherCamposLista(data.values_list, data.errors_list);
             configFields();
             changeParcerias($('input[name=parcerias][value*=Outros]')[0]);
+            focusAfterError();
         } else {
             finishStep(STEPS_I[CURRENT_STEP]);
             current.append(children);
@@ -279,7 +280,7 @@ function next(e, step) {
     };
     clearPlaceholders();
     var valid = validateStep();
-            
+
     // COMENTE A LINHA ABAIXO PARA DEBUGAR A VALIDACAO DO SERVIDOR
     //var valid = true;
     

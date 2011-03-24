@@ -46,7 +46,13 @@
 {% autoescape false %}
   {{ paginator }} 
 {% endautoescape %}
-</div>
 
+{% if view_projeto %}
+<script type="text/javascript">
+  $('tr').click();
+</script>
+{% endif %}
+
+</div>
 
 {% endblock %}

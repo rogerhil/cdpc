@@ -77,8 +77,8 @@
     <div class="column threecolumn">
       <h3>Dados gerais</h3>
       <ul>
-        <li><label>Tipo:</label>{{ projeto.tipo }}</li>
-        <li><label>Tipo convênio:</label>{{ projeto.tipo_convenio }}</li>
+        <li><label>Tipo:</label>{{ functions.get_value(cadastro.TIPO, projeto.tipo) }}</li>
+        <li><label>Tipo convênio:</label>{{ functions.get_value(cadastro.TIPO_CONVENIO, projeto.tipo_convenio) }}</li>
         <li>
           <label>Número convênio:</label>
           {% if projeto.numero_convenio %}

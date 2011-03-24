@@ -81,7 +81,6 @@ def listing():
         ('endereco_sede.uf', {'label': 'Estado', 'type': 'select', 
                               'choices': vals_uf})
     ]
-    
     return _listing(search_fields=search_fields)
 
 @module.route('meus/')
@@ -103,6 +102,14 @@ def meus_projetos():
 
     return _listing(title=u'Meus projetos', fixedquery=d,
                     xcontext=xc, search_fields=search_fields)
+
+@module.route('<int:pid>/')
+def view_projeto(pid):
+    d = ({'id': long(pid)}, {'id': {'exactly': True}})
+    xc = {'view_projeto': True}
+    projeto = Projeto.get_by(id=long(pid))
+    return _listing(title=u'Projeto %s' % projeto.nome, fixedquery=d,
+                    xcontext=xc, search_fields={})
 
 @module.route("novo/", methods=('GET', 'POST'))
 @login_required
@@ -144,7 +151,7 @@ def novo():
         else:
             projeto = cadastro.cadastra_projeto(validado, user)
             flash(u'Projeto cadastrado com sucesso!', 'success')
-            return redirect("/projetos")
+            return redirect(url_for('projetos.view_projeto', pid=projeto.id))
 
     return render_template(
         'projetos/cadastro/main.html',
@@ -195,7 +202,7 @@ def editar(pid):
             projeto = cadastro.set_values_projeto(projeto, validado, user)
 
             flash(u'Projeto editado com sucesso!', 'success')
-            return redirect("/projetos")
+            return redirect(url_for('projetos.view_projeto', pid=projeto.id))
     
     values, dynamic_values = cadastro.values_dict(projeto)
     values['step'] = 'dadosProjeto'
@@ -228,7 +235,7 @@ def remover(pid):
 
     flash(u'Projeto removido com sucesso!', 'success')
     
-    return redirect("/projetos")
+    return redirect(url_for('projetos.listing'))
     
 
 ################################################################################

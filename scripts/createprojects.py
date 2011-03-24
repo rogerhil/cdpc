@@ -1,5 +1,7 @@
 # -*- coding: utf-8; Mode: Python -*-
 
+import sys
+sys.path.insert(0, '..')
 from random import randint as r
 from urllib import urlopen
 from optparse import OptionParser
@@ -9,13 +11,27 @@ from cdpc.app.usuarios.models import Pessoa
 from cdpc.app.projetos.cadastro import *
 from cdpc.main import setup_models
 
+from shortcuts import *
+
 setup_models()
 
 latin = """
-Pri Putent Antiopam Convenire An Putent Erroribus Vel Dicunt Democritum Vel
-No At Erat Utroque Aliquyam Qui Ad Sea Euismod Inermis Intellegebat Id Mel
-Nonummy Electram Doctus Labitur Ponderum Id Pri Eos Vidit Quodsi Accumsan Ea
-Per Omnes Aeterno Minimum In Nibh Duis Reformidans Sea Eu Dico Legimus Ex Ius
+Lacus Laoreet Blandit Habitasse Elit Malesuada Est Litora Nunc Eros Hac Torquent
+Tellus Consectetur Facilisi Sapien Metus Non Congue Nibh Tincidunt Bibendum Nisi
+Consequat Condimentum Integer Odio Faucibus Ipsum Neque Mattis Nisl Nostra Curae
+Viverra Augue Porta Lacinia Orci Ultricies Mi Auctor Sagittis Suscipit Sed
+Sociosqu Vivamus Eu Et Sem Adipiscing Iaculis Diam Risus Nec Per Quisque Ligula
+Molestie Mollis Himenaeos Elementum Hendrerit Aptent Velit Leo Inceptos Euismod
+Magna Curabitur Maecenas Phasellus Amet Aenean Aliquam Vestibulum Eleifend Cras
+Justo Libero Tempor Facilisis Nulla Placerat Proin Pharetra Ultrices Varius
+Primis Purus Morbi Vel Venenatis Enim Ante Imperdiet Dui Praesent Quis Pretium
+Interdum Fringilla Conubia Rhoncus Feugiat Luctus Lobortis Eget Vehicula Tempus
+Taciti Scelerisque Ullamcorper Donec Suspendisse Accumsan Dapibus Tortor Ut
+Sollicitudin Posuere Egestas Vulputate Volutpat Sodales Felis Ac Dictum Ad
+Semper Cubilia Ornare Lectus Duis Erat At In Mauri Id Urna Nullam Mauris Sit
+Platea Convallis Nam Etiam Massa Dignissim Vitae Pulvinar Arcu Commodo Gravida
+Turpis Fusce Cursus Aliquet Lorem Class Porttitor Quam Dictumst Rutrum Tristique
+Pellentesque Dolor Fermentum
 """.strip()
 
 latin = ' '.join(latin.splitlines()).split(' ')
@@ -54,6 +70,7 @@ randchoice = lambda X : X[r(0, len(X)-1)][0]
 randchoices = lambda X : [X[i][0] for i in xrange(r(1, len(X)-1))]
 randtel = lambda : (''.join([unicode(r(0,9)) for i in xrange(10)]), randchoice(TIPO_TEL_SEDE))
 randtellist = lambda : [randtel() for i in xrange(5)]
+randuf = lambda : randchoice(VALORES_UF)
 
 randlist = lambda x: x[r(0, len(x)-1)]
     
@@ -121,38 +138,6 @@ base = [('nome', randword),
         ('ind_populacao', randnum),  
         ('ind_oficinas', randnum),
         ('ind_expectadores', randnum)]
-
-def get_cep(cep):
-    """
-    """
-    try:
-        page = urlopen(CONSULTA_CEP % cep)
-        content = page.read().decode('iso-8859-1')
-        rua, bairro, cidade, _, ufraw = content.split('||', 4)
-    except:
-        cep = '88888888'
-        rua, bairro, cidade, ufraw = randword(), randword(), randword(), randword()
-    return {'rua': rua, 'bairro': bairro, 'cidade': cidade, 'uf': ufraw.replace('|', ''), 'cep': cep}
-        
-def extract_value(value, data, key):
-    
-    tolist = lambda x : isinstance(x, list) and x or [x]
-    
-    if hasattr(value, '__call__'):
-        func = value
-        try:
-            return tolist(func())
-        except:
-            return tolist(func(globals()[key.upper()]))
-    elif isinstance(value, tuple):
-        func, cond, v = value
-        if v in data[cond]:
-            try:
-                return tolist(func())
-            except:
-                return tolist(func(globals()[key.upper()]))
-    else:
-        return tolist(value)
 
 def generate_data():
     data = {}
@@ -269,7 +254,6 @@ def validate_and_create(data, user):
         print "-"*20
         print e
         print "-"*20
-        raise e
     else:
         projeto = cadastra_projeto(validado, user)
         print
@@ -278,7 +262,7 @@ def validate_and_create(data, user):
 
 if __name__ == '__main__':
     parser = OptionParser()
-    parser.add_option("-n", "--nprojetos", dest="n", help=u"Número de projetos a serem gerados < 100")
+    parser.add_option("-n", "--nprojetos", dest="n", help=u"Número de projetos a serem gerados < 500")
     parser.add_option("-e", "--email", dest="email", help=u"E-mail do usuário dono do projeto")
     options, args = parser.parse_args()
 
@@ -293,9 +277,9 @@ if __name__ == '__main__':
         print
         exit(2)
 
-    if int(options.n) > 100:
+    if int(options.n) > 500:
         print
-        print "Número de projetos muito grande, forneca um valor < 100."
+        print "Número de projetos muito grande, forneca um valor < 500."
         print
         exit(3)
         
@@ -305,17 +289,20 @@ if __name__ == '__main__':
         print
         exit(4)        
 
-    try:
-        users = [Pessoa.query.filter_by(email=u).one() \
-                 for u in options.email.split(',')]
-        
-    except:
-        print
-        print "Usuário '%s' não encontrado." % options.email
-        print
-        exit(5)
 
-    #ok
+    if options.email == 'RANDOMALL':
+        users = Pessoa.query.all()
+    else:
+        try:
+            users = [Pessoa.query.filter_by(email=u).one() \
+                     for u in options.email.split(',')]
+            
+        except:
+            print
+            print "Usuário '%s' não encontrado." % options.email
+            print
+            exit(5)
+
     print "Gerando..."
     n = int(options.n)
     for i in xrange(n):

@@ -2,14 +2,8 @@
  * Projetos
    - Verificar os tips
    - Formulário de edição: documentos, undo delete;
-   - Formulário, após submeter e ocorrer erro no server, perde os dados dos
-     arquivos adicionados
-   - Consertar scriptprojetos.py: campo de tipo internet ou tel aparece bizarro
-                                  no quickview, ufs e cidades
-   - Ao cadastrar ou editar, no ultimo passo, verificar se está logado. Senão
-     estiver, mostrar o login ajax para depois submeter.
-   - Ao cadastrar ou editar, redirecionar para a pagina de listagem mas
-     mostrando somente o projeto editado (como é feito com o profile do usuário)
+   - Formulário, após submeter e ocorrer erro na validação do server, perde os
+     dados dos arquivos adicionados
    
  * Usuários
    - Ocultar o CPF da listagem se não for o próprio usuário;
@@ -17,8 +11,6 @@
  * Geral
    - Implementar validacao RequireIfPresent do lado do cliente JS
    - Organizacão do CSS
-   - Login AJAX
-   - Consertar script teia para a nova base de dados
     
  * Tela principal
 

@@ -103,7 +103,7 @@ class Projeto:
 
 
     class ComunicacaoCulturaDigital(CdpcSchema):
-        email_proj = CdpcEmail(not_empty=True, model=Projeto)
+        email_proj = CdpcEmail(not_empty=True, model=Projeto, unique=False)
         website_proj = validators.URL()
         
         sede_possui_tel = validators.String(not_empty=True)

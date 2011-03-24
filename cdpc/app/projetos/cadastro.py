@@ -28,7 +28,7 @@ from ..utils.model import get_or_create
 from ..utils.schemas import CdpcSchema
 
 from . import models
-from . import schemas
+from . import schemas as schemas_proj
 from cdpc.app.common.cadastro import *
 
 
@@ -424,8 +424,8 @@ def cadastra_projeto(validado, user):
 def make_schema():
     members = {}
     up = lambda x: members.update(x)
-    map(up, [getattr(schemas.Projeto, class_name).fields for class_name in \
-        dir(schemas.Projeto) if not class_name.startswith("__")])
+    map(up, [getattr(schemas_proj.Projeto, class_name).fields for class_name in \
+        dir(schemas_proj.Projeto) if not class_name.startswith("__")])
     class ProjetoSchema(CdpcSchema):
         pass
 

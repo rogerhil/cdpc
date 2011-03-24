@@ -72,11 +72,11 @@ class ReCaptchaField(object):
 class CdpcEmail(Email):
 
     """
-    Validates user in Cdpc Site
-    >>> cpf = CdpcUser()
+    Validates email in Cdpc Site
     """
     model = None
     valid_email = None
+    unique = True
     strip = True
     _cpf_re = [re.compile(r"^(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{3})[-_/\.\\ ]*(\d{2})$")]
     _store_format = "%s%s%s%s"
@@ -91,14 +91,15 @@ class CdpcEmail(Email):
             raise Invalid(self.message('stringFormat', state), value, state)
         clean_value = value.strip()
 
-        user = self.model.query.filter_by(email=clean_value)
-        alreadyExists = bool(user.count())
+        obj = self.model.query.filter_by(email=clean_value)
+        alreadyExists = bool(obj.count())
 
-        if self.valid_email:
-            alreadyExists = self.valid_email not in [u.email for u in user]
-        
-        if alreadyExists:
-            raise Invalid(self.message('alreadyExists', state), value, state)
+        if self.unique:
+            if self.valid_email:
+                alreadyExists = self.valid_email not in [u.email for u in obj]
+            
+            if alreadyExists:
+                raise Invalid(self.message('alreadyExists', state), value, state)
             
         return clean_value
 

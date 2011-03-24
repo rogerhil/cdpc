@@ -101,21 +101,21 @@ class Projeto(Cadastrado):
 
     # -- Dados do projeto
     nome = Field(Unicode(256))
-    tipo = Field(Unicode(32))
+    tipo = Field(Unicode(64))
     tipo_convenio = Field(Unicode(64))
-    numero_convenio = Field(Unicode(32))
+    numero_convenio = Field(Unicode(64))
 
     # -- Geolocalização
     endereco_sede = ManyToOne('Endereco')
     enderecos = ManyToMany('Endereco')
-    local = Field(Unicode(16))
+    local = Field(Unicode(64))
 
     # -- Comunicação e Cultura Digital
-    email = Field(Unicode(256), unique=True)
+    email = Field(Unicode(256))
     sede_possui_tel = Field(Boolean)
     pq_sem_tel = Field(Unicode(256))
     sede_possui_net = Field(Boolean)
-    tipo_internet = Field(Unicode(16))
+    tipo_internet = Field(Unicode(64))
     pq_sem_internet = Field(Unicode(256))
 
     # -- Entidade Proponente
