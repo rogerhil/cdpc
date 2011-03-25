@@ -20,7 +20,8 @@ from simplejson import dumps, loads
 from formencode import foreach
 
 PREFIX = 'OPCAO_SISTEMA'
-item_format = lambda x: ("%s: %s" % (PREFIX, x))
+#item_format = lambda x: ("%s: %s" % (PREFIX, x))
+item_format = lambda x: x
 format = lambda items: [(item_format(i), i) for i in items]
 
 EMPTY_HACK = '____________________'

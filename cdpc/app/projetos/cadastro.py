@@ -165,7 +165,10 @@ def set_values_projeto(projeto, validado, user):
 
     # -- Dados do projeto
     projeto.nome = validado['nome']
-    projeto.tipo = validado['tipo']
+    if validado['tipo'] == 'outro':
+        projeto.tipo = validado['tipo_outro']
+    else:    
+        projeto.tipo = validado['tipo']
     projeto.tipo_convenio = validado['tipo_convenio']
     projeto.numero_convenio = validado['numero_convenio']
     
@@ -206,13 +209,7 @@ def set_values_projeto(projeto, validado, user):
 
     ######################
     # CAMPOS EXCLUÍDOS!!!
-    #projeto.email = validado['email_proj']        ------------> INCLUIDO
-    #projeto.website = validado['website_proj']    ------------> INCLUIDO
     #projeto.frequencia = validado['frequencia']   
-    #for i in validado['proj_tel']:                ------------> INCLUIDO
-    #    tel = models.Telefone()
-    #    tel.numero = i
-    #    projeto.telefones.append(tel)
     ######################
 
     projeto.redes_sociais = []
@@ -449,13 +446,19 @@ def values_dict(projeto):
     outr_parc = lambda x: [i.nome for i in x \
                            if i.nome not in dict(PARCERIAS).keys()]
 
+    getop =  lambda x, y: 'outro' if x is not None and x not in y else x
+    getopoutro = lambda x, y: x if x not in y else None
+
     values = {}
     dynamic_values = {}
     
     #DadosProjeto
     values['nome'] = projeto.nome
     values['descricao'] = projeto.descricao
-    values['tipo'] = projeto.tipo
+    values['tipo'] = getop(projeto.tipo,
+                           ['ponto', 'pontao', 'iniciativa_premiada'])
+    values['tipo_outro'] = getopoutro(projeto.tipo,
+                           ['ponto', 'pontao', 'iniciativa_premiada'])
     values['tipo_convenio'] = projeto.tipo_convenio
     #values['avatar'] = projeto.avatar
     values['numero_convenio'] = projeto.numero_convenio
@@ -512,21 +515,17 @@ def values_dict(projeto):
         dynamic_values['end_ent_longitude'] = [projeto.entidade.endereco.longitude]
 
     #ComunicacaoCulturaDigital
-    
-    pqsem =  lambda x, y: 'outro' if x is not None and x not in y else x
-    pqsemoutro = lambda x, y: x if x not in y else None
-    
     values['email_proj'] = projeto.email
     values['website_proj'] = projeto.website
     values['sede_possui_tel'] = simnao(projeto.sede_possui_tel)
     dynamic_values['sede_tel_tipo'] = tel('tipo', projeto.telefones)
     dynamic_values['sede_tel'] = tel('numero', projeto.telefones)
-    values['pq_sem_tel'] = pqsem(projeto.pq_sem_tel, PQ_SEM_TEL)
-    values['pq_sem_tel_outro'] = pqsemoutro(projeto.pq_sem_tel, PQ_SEM_TEL)
+    values['pq_sem_tel'] = getop(projeto.pq_sem_tel, PQ_SEM_TEL)
+    values['pq_sem_tel_outro'] = getopoutro(projeto.pq_sem_tel, PQ_SEM_TEL)
     values['sede_possui_net'] = simnao(projeto.sede_possui_net)
     values['tipo_internet'] = projeto.tipo_internet
-    values['pq_sem_internet'] = pqsem(projeto.pq_sem_internet, PQ_SEM_INTERNET)
-    values['pq_sem_internet_outro'] = pqsemoutro(projeto.pq_sem_internet,
+    values['pq_sem_internet'] = getop(projeto.pq_sem_internet, PQ_SEM_INTERNET)
+    values['pq_sem_internet_outro'] = getopoutro(projeto.pq_sem_internet,
                                                  PQ_SEM_INTERNET)
     dynamic_values['rs_nome'] = rss('nome')
     dynamic_values['rs_link'] = rss('link')

@@ -45,6 +45,7 @@ class Projeto:
         nome = validators.String(not_empty=True)
         descricao = validators.String(not_empty=True)
         tipo = validators.String(not_empty=True)
+        tipo_outro = Dependent(schema=validators.String(not_empty=True), depend_field=('tipo', 'outro'))
         tipo_convenio = validators.String(not_empty=True)
         avatar = validators.FieldStorageUploadConverter()
         numero_convenio = validators.String(not_empty=True)
@@ -156,19 +157,7 @@ class Projeto:
         ind_expectadores = validators.Int()
         ind_populacao = validators.Int()
 
-
-    #class ParceriasProjeto(CdpcSchema):
-    #    estabeleceu_parcerias = validators.String(not_empty=True)
-    #    parcerias = Dependent(schema=AtLeastOne(schema=ForEach(validators.String())), depend_field=('estabeleceu_parcerias', 'sim'))
-
-    #class Avatar(formencode.Schema):
-    #    avatar = validators.FieldStorageUploadConverter()
-
-
     # CAMPOS EXCLUIDOS!!!!!!!
     #class ContatosEspacoRede(CdpcSchema):
-    #    proj_tel = ForEach(BrazilPhoneNumber(not_empty=True))
-    #    email_proj = validators.Email(not_empty=True)
-    #    website_proj = validators.URL()
     #    frequencia = validators.String()
 

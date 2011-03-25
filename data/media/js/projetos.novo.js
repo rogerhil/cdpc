@@ -217,30 +217,32 @@ function next(e, step) {
         var current = $("div#" + CURRENT_STEP);
         $('#snapshot_hack').remove();
         overlay("hide");
-        if (data.error) {
+        children.find("input[type=pseudofile]").each( function () {
+            var $inpfile = $('input[name=' + this.name + ']', '#fileaux');
+            $inpfile.insertAfter($(this));
+            $(this).remove();
+        });
 
+        if (data.error) {
             current.html($(data.html).children());
-            try {
-                eval("load" + CURRENT_STEP.capitalize() + "()");
-            } catch (e) {
-                alert(e);
-            }
             novosCamposLista(data.values_list);
             preencherCamposLista(data.values_list, data.errors_list);
             configFields();
             changeParcerias($('input[name=parcerias][value*=Outros]')[0]);
             focusAfterError();
+            decorateRequiredLabels('novoProjeto');
+            try {
+                eval("load" + CURRENT_STEP.capitalize() + "()");
+            } catch (e) {
+                alert(e);
+            }
+            
         } else {
             finishStep(STEPS_I[CURRENT_STEP]);
             current.append(children);
                         
             $('label[generated=true]', current).remove();
             $('.error', current).removeClass('error');
-            children.find("input[type=pseudofile]").each( function () {
-                var $inpfile = $('input[name=' + this.name + ']', '#fileaux');
-                $inpfile.insertAfter($(this));
-                $(this).remove();
-            });
             
             $('div#' + CURRENT_STEP).fadeOut('fast', function() {
                 $('div#' + next_step).fadeIn('fast');
@@ -375,6 +377,25 @@ function loadDadosProjeto() {
                            'sim', 'parcerias_sim');
 
     changeParcerias($('input[name=parcerias][value*=Outros]')[0]);
+
+    $('#tipo').change(function () {
+        if ($(this).val () == 'outro') {
+            toogleSingle(true, $('#tipo_outro_escolhido'));
+        } else {
+            toogleSingle(false, $('#tipo_outro_escolhido'));
+        }
+    });    
+    
+    var change = function (id) {
+        if ($('#' + id).val () == 'outro') {
+            toogleSingle(true, $('#' + id + '_outro_escolhido'));
+        } else {
+            toogleSingle(false, $('#' + id + '_outro_escolhido'));
+        }
+    
+    }
+
+    change('tipo');
 }
 
 function loadLocalizacaoGeoProjeto() {
@@ -395,6 +416,7 @@ function loadLocalizacaoGeoProjeto() {
 }
 
 function loadComunicacaoCulturaDigital() {
+
     $("input[name=sede_possui_tel]").change(function () {
         loadRadioSingleExtra(this, 'sim', 'sede_possui_tel_sim', 'sede_possui_tel_nao');
     });
@@ -412,7 +434,6 @@ function loadComunicacaoCulturaDigital() {
     });
 
     $('#pq_sem_internet').change(function () {
-        
         if ($(this).val () == 'outro') {
             toogleSingle(true, $('#pq_sem_internet_outro_escolhido'));
         } else {
@@ -435,7 +456,6 @@ function loadComunicacaoCulturaDigital() {
     }
     change('pq_sem_tel');
     change('pq_sem_internet');
-
 }
 
 function loadEntidadeProponente() {
