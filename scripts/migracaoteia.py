@@ -60,6 +60,7 @@ from sqlalchemy.exc import IntegrityError
 from cdpc.app.usuarios.models import Pessoa
 from cdpc.app.projetos.models import Projeto, Entidade
 from cdpc.app.common.models import Endereco, Telefone
+from cdpc.app.common.cadastro import item_format
 from cdpc.app.utils.model import get_or_create
 from cdpc.main import setup_models
 
@@ -87,7 +88,7 @@ def utf_8_encoder(unicode_csv_data):
 def get_tipo(tel):
     p = tel[0]
     tipo = TIPOSTEL.get(p, u'Fixo')
-    return format(tipo)
+    return item_format(tipo)
 
 def add_tel(tel_list, ddd, tel):
     ddd = ddd.strip()
