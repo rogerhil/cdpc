@@ -166,6 +166,8 @@ def main():
             site=p_blog,
             entidade=entidade)
 
+        projeto.responsavel = responsavel
+
         projeto.endereco_sede = get_or_create(Endereco, 
                 logradouro=clean_name(p_logradouro),
                 numero=p_num,
