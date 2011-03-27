@@ -77,7 +77,5 @@ def get_choices(name):
     return dict(getattr(cadastro, name, {}))
     
 def get_value(d, value):
-    print "#"*100
-    print value
     return dict(d).get(value, value)
 

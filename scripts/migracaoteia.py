@@ -61,6 +61,7 @@ from cdpc.app.usuarios.models import Pessoa
 from cdpc.app.projetos.models import Projeto, Entidade
 from cdpc.app.common.models import Endereco, Telefone
 from cdpc.app.common.cadastro import item_format
+from cdpc.app.usuarios.cadastro import set_senha
 from cdpc.app.utils.model import get_or_create
 from cdpc.main import setup_models
 
@@ -139,6 +140,16 @@ def main():
         if created:
             responsavel.nome = clean_name(r_nome)
             add_tel(responsavel.telefones, r_ddd, r_tel)
+            set_senha(responsavel, 'alabama')
+            responsavel.endereco = get_or_create(Endereco, 
+                logradouro="",
+                numero="",
+                complemento="",
+                bairro="",
+                cep="",
+                cidade="",
+                uf="")[0]
+            
 
         # Criando a linha para a entidade responsável pelo projeto e
         # suas relações

@@ -85,7 +85,23 @@
             {{ projeto.numero_convenio }}
           {% endif %}
         </li>
-      </ul>    
+        <li>
+          <div class="column">
+            <label>Ação Cultura Viva:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.acao_cultura_viva, 'nome') }}
+          </div>
+        </li>
+        <li>
+          <div class="column">
+            <label>Parcerias:</label>
+          </div>
+          <div class="column last">
+            {{ macros.make_list(projeto.parcerias, 'nome') }}
+          </div>
+        </li>
+      </ul>
     </div>
     <div class="column threecolumn">
       <h3>Entidade proponente</h3>

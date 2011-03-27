@@ -105,7 +105,8 @@ def values_dict(pessoa):
     values['email'] = pessoa.email    
     values['nome'] = pessoa.nome
     values['cpf'] = pessoa.cpf
-    values['data_nascimento'] = pessoa.data_nascimento.strftime('%d/%m/%Y')
+    if pessoa.data_nascimento:
+        values['data_nascimento'] = pessoa.data_nascimento.strftime('%d/%m/%Y')
     values['sexo'] = pessoa.sexo
 
     dynamic_values['pessoa_tel'] = map(lambda x: x.numero, pessoa.telefones)

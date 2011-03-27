@@ -47,10 +47,10 @@ def _listing(title='Pessoas', fixedquery=None, xcontext={}, search_fields={}):
     }
 
     columns = [
-        ('nome', {'title': 'Nome', 'ambiguity': 'pessoa'}),
-        ('cidade', {'title': 'Cidade', 'mcol': 'endereco'}),
-        ('uf', {'title': 'Estado', 'mcol': 'endereco'}),
-        ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})
+        ('nome', {'title': 'Nome', 'ambiguity': 'pessoa_nome', 'width': 380}),
+        ('endereco.cidade', {'title': 'Cidade', 'width': 300}),
+        ('endereco.uf', {'title': 'UF', 'width': 20}),
+        ('data_cadastro', {'title': 'Data cadastro', 'type': 'data'})
     ]
 
     paginator = Paginator(models.Pessoa, columns, search_fields,

@@ -49,13 +49,12 @@ def _listing(title='Projetos', fixedquery=None, xcontext={}, search_fields={}):
     }
 
     columns = [
-        ('nome', {'title': 'Nome', 'ambiguity': 'projeto'}),
-        ('cadastrado_por', {'title': 'Cadastrado por', 'call': True,
-                            'mcol': 'responsavel', 'col': 'nome',
-                            'ambiguity': 'pessoa'}),
-        ('cidade', {'title': 'Cidade', 'mcol': 'endereco_sede'}),
-        ('uf', {'title': 'Estado', 'mcol': 'endereco_sede'}),
-        ('data_cadastro', {'title': 'Data do cadastro', 'type': 'data'})
+        ('nome', {'title': 'Nome', 'ambiguity': 'projeto_nome', 'width': 300}),
+        ('responsavel.nome', {'title': 'Cadastrado por',
+                              'ambiguity': 'pessoa_nome', 'width': 200}),
+        ('endereco_sede.cidade', {'title': 'Cidade', 'width': 150}),
+        ('endereco_sede.uf', {'title': 'UF', 'width': 20}),
+        ('data_cadastro', {'title': 'Data cadastro', 'type': 'data'})
     ]
 
     paginator = Paginator(models.Projeto, columns, search_fields,
@@ -278,9 +277,6 @@ def validar():
                                  prefix_error=False,
                                  auto_error_formatter=ERROR_TAG)
 
-        print "--------------"
-        print values_list
-        print "--------------"
         ret = {'html': filled,
                'error': True,
                'errors_list': errors_list,

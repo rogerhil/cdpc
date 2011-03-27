@@ -11,12 +11,6 @@
  * Geral
    - Implementar validacao RequireIfPresent do lado do cliente JS
    - Organizacão do CSS
-   
-   - Listagem ordenação: cadastrado por, verificar, não funciona direito;
-   - Visuzalisação dos dados pessoais quando está logado, e dos dados das
-     pessoas publicamente;
-   - Quickview mais completa para os projetos, alguns campos do step 1 ainda
-     não constam lá. Melhorar a disposição dos dados.
     
  * Tela principal
 

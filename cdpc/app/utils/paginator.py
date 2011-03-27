@@ -55,19 +55,17 @@ class Paginator(object):
             key = clause
             if hasattr(getattr(self.model, clause, None), '__call__'):
                 continue
+
             match = re.match('^([\w_]+)\.([\w_]+)$', clause)
             if match:
                 attr, subattr = match.groups()
                 clause = subattr
-                key = subattr
                 query = query.join(attr)
 
-            amb = dict(self.columns)[clause].get('ambiguity')
-            dcol = dict(self.columns)[clause].get('col')
-            if dcol:
-                clause = dcol
+            amb = dict(self.columns)[key].get('ambiguity')
+
             if amb:
-                clause = "%s.%s" % (amb, clause)    
+                clause = amb
             if oby.startswith('-'):
                 query = query.order_by(desc(clause))
             else:
@@ -100,27 +98,17 @@ class Paginator(object):
                 col, subcol = col.split('.')
             if not value:
                 continue
-            if props.get('mcol'):
-                mcol = props['mcol']
-                col = props.get('col', col)
-                if hasattr(getattr(self.model, mcol).property, 'mapper'):                
-                    cmodel = getattr(self.model, mcol).property.mapper.class_
-                    if props.get('exactly'):
-                        query = query.filter(getattr(self.model, mcol).any(getattr(cmodel, col).op('=')(value)))
-                    else:
-                        query = query.filter(getattr(self.model, mcol).any(getattr(cmodel, col).contains(value)))
-            else:
-                if subcol:
-                    cmodel = getattr(self.model, col).property.mapper.class_
-                    if props.get('exactly'):
-                        query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).op('=')(value)))
-                    else:
-                        query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).contains(value)))
+            if subcol:
+                cmodel = getattr(self.model, col).property.mapper.class_
+                if props.get('exactly'):
+                    query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).op('=')(value)))
                 else:
-                    if props.get('exactly'):
-                        query = query.filter_by(**{col: value})                        
-                    else:
-                        query = query.filter(getattr(self.model, col).contains(value))
+                    query = query.filter(getattr(self.model, col).has(getattr(cmodel, subcol).contains(value)))
+            else:
+                if props.get('exactly'):
+                    query = query.filter_by(**{col: value})                        
+                else:
+                    query = query.filter(getattr(self.model, col).contains(value))
 
         return query
     
@@ -130,13 +118,11 @@ class Paginator(object):
         if props.get('call'):
             value = getattr(item, cid)()
         else:
-            if props.get('mcol'):
-                mcol = getattr(item, props['mcol'])
-                if mcol:
-                    if hasattr(mcol, '__iter__'):
-                        value = ", ".join(list(set([getattr(i, cid) for i in mcol])))
-                    else:
-                        value = getattr(mcol, cid)
+            if cid.find('.') != -1:
+                attr1, attr2 = cid.split('.')
+                obj = getattr(item, attr1)
+                if obj:
+                    value = getattr(obj, attr2)
             else:
                 value = getattr(item, cid)
         return value
