@@ -415,11 +415,7 @@ div.file-item{
 }
 
 .loading{
-    background:url('../img/bg/ajax-loader.gif') no-repeat right center;
-}
-
-.loading td{
-    padding: 11px 32px 11px 0px !important;
+    background:url('../img/bg/ajax-loader-mini.gif') no-repeat right center;
 }
 
 .loading:hover {
