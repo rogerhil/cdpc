@@ -34,7 +34,7 @@ def avatar_pessoa(obj):
 def avatar_projeto(obj):
     urlpath = "/static/upload/avatar/projeto/%s.jpg" % obj.id
     fspath = os.path.join(UPLOAD_PATH_AVATAR_PROJETO, "%s.jpg" % obj.id)
-    img = '<img src="%s" width="175" />'
+    img = '<img src="%s" height="100" />'
     if os.path.isfile(fspath):
         return img % urlpath
     return img % '/static/img/bg/project_icon.jpg'    
